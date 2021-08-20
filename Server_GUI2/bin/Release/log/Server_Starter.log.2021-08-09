@@ -1,0 +1,17 @@
+[INFO ] 2021/08/09 15:13:10, 989 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/08/09 15:13:12, 478 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/08/09 15:13:12, 540 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/08/09 15:13:12, 543 [1] Server_GUI2.Data_list - Read the local info data
+[INFO ] 2021/08/09 15:13:12, 548 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter
+[INFO ] 2021/08/09 15:13:13, 965 [1] Server_GUI2.Functions - Read the local Versions
+[INFO ] 2021/08/09 15:13:13, 990 [1] Server_GUI2.Functions - Read the local Worlds
+[INFO ] 2021/08/09 15:13:13, 990 [1] Server_GUI2.MainWindow - Read the new Versions
+[INFO ] 2021/08/09 15:13:13, 992 [1] Server_GUI2.Read_json - Import new Version List (release)
+[INFO ] 2021/08/09 15:13:14, 124 [1] Server_GUI2.Read_json - Import new Version List (snapshot)
+[INFO ] 2021/08/09 15:13:14, 125 [1] Server_GUI2.Read_json - Import new Version List (all)
+[INFO ] 2021/08/09 15:13:15, 908 [1] Server_GUI2.More_Settings - Read the server.properties at .\World_Data\1.16.5\server.properties
+[INFO ] 2021/08/09 15:13:15, 918 [1] Server_GUI2.More_Settings - set_value method
+[INFO ] 2021/08/09 15:13:15, 919 [1] Server_GUI2.More_Settings - Change the propertie about [entity-broadcast-range-percentage = 100]
+[INFO ] 2021/08/09 15:13:31, 452 [1] Server_GUI2.More_Settings - Click the Cancel Button
+[INFO ] 2021/08/09 15:13:33, 011 [1] Server_GUI2.MainWindow - Starter was pushed Close Button
+[INFO ] 2021/08/09 15:13:33, 014 [1] Server_GUI2.MainWindow - This System is successfully over

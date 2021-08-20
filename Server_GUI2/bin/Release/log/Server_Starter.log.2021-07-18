@@ -1,0 +1,38 @@
+[INFO ] 2021/07/18 21:21:18, 214 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/07/18 21:21:19, 676 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/07/18 21:21:19, 739 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/07/18 21:21:19, 743 [1] Server_GUI2.Functions - Read the local info data (System.IO.StreamReader)
+[INFO ] 2021/07/18 21:21:19, 748 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter
+[INFO ] 2021/07/18 21:21:21, 161 [1] Server_GUI2.Functions - Read the local Versions
+[INFO ] 2021/07/18 21:21:21, 177 [1] Server_GUI2.Functions - Read the local Worlds
+[INFO ] 2021/07/18 21:21:21, 178 [1] Server_GUI2.MainWindow - Read the new Versions
+[INFO ] 2021/07/18 21:21:21, 178 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/07/18 21:21:21, 294 [1] Server_GUI2.Read_json - Import new Version List (release)
+[INFO ] 2021/07/18 21:21:21, 444 [1] Server_GUI2.Read_json - Import new Version List (snapshot)
+[INFO ] 2021/07/18 21:21:21, 444 [1] Server_GUI2.Read_json - Import new Version List (all)
+[DEBUG] 2021/07/18 21:21:27, 823 [1] Server_GUI2.MainWindow - ------------------------------------------------------------
+[INFO ] 2021/07/18 21:21:27, 823 [1] Server_GUI2.MainWindow - Start the Server Opening
+[INFO ] 2021/07/18 21:21:27, 823 [1] Server_GUI2.Functions - Define_OpenWorld
+[INFO ] 2021/07/18 21:21:27, 823 [1] Server_GUI2.Functions - Check copy world (Copy is 'True')
+[INFO ] 2021/07/18 21:21:27, 832 [1] Server_GUI2.Functions - Chenge info about latest Minecraft Version([2])
+[INFO ] 2021/07/18 21:21:27, 833 [1] Server_GUI2.Functions - Writte Properties
+[INFO ] 2021/07/18 21:21:27, 834 [1] Server_GUI2.Functions - Change info about The latest Minecraft World name
+[INFO ] 2021/07/18 21:21:27, 834 [1] Server_GUI2.Functions - Start Writting for server.properties
+[INFO ] 2021/07/18 21:21:27, 835 [1] Server_GUI2.Functions - Delete the bat files about pull_NOTpause
+[INFO ] 2021/07/18 21:21:27, 835 [1] Server_GUI2.Functions - System Start the pull ShareWorld
+[INFO ] 2021/07/18 21:21:29, 773 [1] Server_GUI2.Functions - Read the ShareWorld > Server_bat-files info
+[INFO ] 2021/07/18 21:21:29, 773 [1] Server_GUI2.Functions - Read the local info data (System.IO.StreamReader)
+[INFO ] 2021/07/18 21:21:29, 773 [1] Server_GUI2.Functions - Create bat files (pull & push)
+[INFO ] 2021/07/18 21:21:29, 774 [1] Server_GUI2.Functions - Create pull.bat at .\World_Data\1.17.1\ShareWorld\pull.bat
+[INFO ] 2021/07/18 21:21:29, 775 [1] Server_GUI2.Functions - Create push.bat at .\World_Data\1.17.1\ShareWorld\push.bat
+[INFO ] 2021/07/18 21:21:29, 776 [1] Server_GUI2.Functions - Check the ShareWorld's info (There are already started Server or not)
+[INFO ] 2021/07/18 21:21:29, 776 [1] Server_GUI2.Functions - Change info about the server_open -> True
+[INFO ] 2021/07/18 21:21:29, 776 [1] Server_GUI2.Functions - Change info about the server version -> 1.17.1
+[INFO ] 2021/07/18 21:21:29, 777 [1] Server_GUI2.Functions - Delete the bat files about push_NOTpause
+[INFO ] 2021/07/18 21:21:29, 777 [1] Server_GUI2.Functions - System Start the push ShareWorld
+[INFO ] 2021/07/18 21:21:33, 400 [1] Server_GUI2.Functions - Start the server of 1.17.1
+[INFO ] 2021/07/18 21:24:02, 338 [1] Server_GUI2.Functions - Change info about the server_open -> False
+[INFO ] 2021/07/18 21:24:02, 338 [1] Server_GUI2.Functions - Change info about the server version -> 1.17.1
+[INFO ] 2021/07/18 21:24:02, 339 [1] Server_GUI2.Functions - Delete the bat files about push_NOTpause
+[INFO ] 2021/07/18 21:24:02, 339 [1] Server_GUI2.Functions - System Start the push ShareWorld
+[INFO ] 2021/07/18 21:24:13, 990 [1] Server_GUI2.MainWindow - This System is successfully over

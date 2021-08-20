@@ -1,0 +1,32 @@
+[INFO ] 2021/08/14 12:58:41, 867 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/08/14 12:58:43, 466 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/08/14 12:58:43, 530 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/08/14 12:58:43, 531 [1] Server_GUI2.Functions - Created the Directory of World_Data
+[INFO ] 2021/08/14 12:58:53, 207 [1] Server_GUI2.info_builder - Build new info.txt
+[INFO ] 2021/08/14 12:58:53, 243 [1] Server_GUI2.Data_list - Read the local info data
+[INFO ] 2021/08/14 12:58:53, 249 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter
+[INFO ] 2021/08/14 12:58:54, 638 [1] Server_GUI2.Functions - Read the local Versions
+[INFO ] 2021/08/14 12:58:54, 648 [1] Server_GUI2.Functions - Read the local Worlds
+[INFO ] 2021/08/14 12:58:54, 649 [1] Server_GUI2.MainWindow - Read the new Versions
+[INFO ] 2021/08/14 12:58:54, 651 [1] Server_GUI2.Read_json - Import new Version List (release)
+[INFO ] 2021/08/14 12:58:54, 788 [1] Server_GUI2.Read_json - Import new Version List (snapshot)
+[INFO ] 2021/08/14 12:58:54, 789 [1] Server_GUI2.Read_json - Import new Version List (all)
+[INFO ] 2021/08/14 12:59:02, 286 [1] Server_GUI2.More_Settings - Read the server.properties at 
+[WARN ] 2021/08/14 12:59:02, 286 [1] Server_GUI2.More_Settings - Read the Default server.properties in this system.
+[INFO ] 2021/08/14 12:59:02, 298 [1] Server_GUI2.More_Settings - set_value method
+[INFO ] 2021/08/14 12:59:02, 300 [1] Server_GUI2.More_Settings - Change the propertie about [entity-broadcast-range-percentage = 100]
+[INFO ] 2021/08/14 13:02:27, 343 [1] Server_GUI2.More_Settings - Click the Cancel Button
+[INFO ] 2021/08/14 13:03:23, 686 [1] Server_GUI2.More_Settings - Read the server.properties at 
+[WARN ] 2021/08/14 13:03:23, 686 [1] Server_GUI2.More_Settings - Read the Default server.properties in this system.
+[INFO ] 2021/08/14 13:03:23, 695 [1] Server_GUI2.More_Settings - set_value method
+[INFO ] 2021/08/14 13:03:23, 696 [1] Server_GUI2.More_Settings - Change the propertie about [entity-broadcast-range-percentage = 100]
+[INFO ] 2021/08/14 13:03:35, 079 [1] Server_GUI2.More_Settings - Change the display of propertie's selection about [entity-broadcast-range-percentage = 100]
+[INFO ] 2021/08/14 13:03:50, 778 [1] Server_GUI2.More_Settings - Change the display of propertie's selection about [allow-flight = false]
+[INFO ] 2021/08/14 13:04:22, 403 [1] Server_GUI2.More_Settings - Click the Cancel Button
+[INFO ] 2021/08/14 14:32:38, 164 [1] Server_GUI2.More_Settings - Read the server.properties at 
+[WARN ] 2021/08/14 14:32:38, 165 [1] Server_GUI2.More_Settings - Read the Default server.properties in this system.
+[INFO ] 2021/08/14 14:32:38, 174 [1] Server_GUI2.More_Settings - set_value method
+[INFO ] 2021/08/14 14:32:38, 175 [1] Server_GUI2.More_Settings - Change the propertie about [entity-broadcast-range-percentage = 100]
+[INFO ] 2021/08/14 15:41:30, 781 [1] Server_GUI2.More_Settings - Click the Cancel Button
+[INFO ] 2021/08/14 15:41:32, 663 [1] Server_GUI2.MainWindow - Starter was pushed Close Button
+[INFO ] 2021/08/14 15:41:32, 666 [1] Server_GUI2.MainWindow - This System is successfully over

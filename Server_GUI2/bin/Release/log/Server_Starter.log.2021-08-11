@@ -1,0 +1,13 @@
+[INFO ] 2021/08/11 17:08:28, 436 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/08/11 17:08:29, 982 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/08/11 17:08:30, 052 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/08/11 17:08:30, 055 [1] Server_GUI2.Data_list - Read the local info data
+[INFO ] 2021/08/11 17:08:30, 062 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter
+[INFO ] 2021/08/11 17:08:31, 603 [1] Server_GUI2.Functions - Read the local Versions
+[INFO ] 2021/08/11 17:08:31, 625 [1] Server_GUI2.Functions - Read the local Worlds
+[INFO ] 2021/08/11 17:08:31, 625 [1] Server_GUI2.MainWindow - Read the new Versions
+[INFO ] 2021/08/11 17:08:31, 627 [1] Server_GUI2.Read_json - Import new Version List (release)
+[INFO ] 2021/08/11 17:08:31, 806 [1] Server_GUI2.Read_json - Import new Version List (snapshot)
+[INFO ] 2021/08/11 17:08:31, 806 [1] Server_GUI2.Read_json - Import new Version List (all)
+[INFO ] 2021/08/11 17:08:41, 062 [1] Server_GUI2.MainWindow - Starter was pushed Close Button
+[INFO ] 2021/08/11 17:08:41, 066 [1] Server_GUI2.MainWindow - This System is successfully over

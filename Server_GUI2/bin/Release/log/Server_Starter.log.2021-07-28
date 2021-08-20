@@ -1,0 +1,12 @@
+[INFO ] 2021/07/28 01:14:34, 354 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/07/28 01:14:35, 956 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/07/28 01:14:36, 024 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/07/28 01:14:36, 027 [1] Server_GUI2.Data_list - Read the local info data
+[INFO ] 2021/07/28 01:14:36, 032 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter
+[INFO ] 2021/07/28 01:14:37, 458 [1] Server_GUI2.Functions - Read the local Versions
+[INFO ] 2021/07/28 01:14:37, 473 [1] Server_GUI2.Functions - Read the local Worlds
+[INFO ] 2021/07/28 01:14:37, 474 [1] Server_GUI2.MainWindow - Read the new Versions
+[INFO ] 2021/07/28 01:14:37, 475 [1] Server_GUI2.Read_json - Import new Version List (release)
+[INFO ] 2021/07/28 01:14:37, 627 [1] Server_GUI2.Read_json - Import new Version List (snapshot)
+[INFO ] 2021/07/28 01:14:37, 627 [1] Server_GUI2.Read_json - Import new Version List (all)
+[INFO ] 2021/07/28 01:14:42, 947 [1] Server_GUI2.More_Settings - set_value method

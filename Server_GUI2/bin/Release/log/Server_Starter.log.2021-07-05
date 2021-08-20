@@ -1,0 +1,16 @@
+[INFO ] 2021/07/05 16:26:48, 494 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/07/05 16:26:48, 960 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/07/05 16:26:49, 033 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/07/05 16:26:49, 040 [1] Server_GUI2.Functions - Read the local info data (System.IO.StreamReader)
+[INFO ] 2021/07/05 16:26:49, 046 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter
+[INFO ] 2021/07/05 16:26:50, 024 [1] Server_GUI2.Functions - Read the local Versions
+[INFO ] 2021/07/05 16:26:50, 041 [1] Server_GUI2.Functions - Read the local Worlds
+[INFO ] 2021/07/05 16:26:50, 041 [1] Server_GUI2.MainWindow - Read the new Versions
+[INFO ] 2021/07/05 16:26:50, 042 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/07/05 16:26:50, 186 [1] Server_GUI2.Read_json - Import new Version List (release)
+[INFO ] 2021/07/05 16:26:50, 336 [1] Server_GUI2.Read_json - Import new Version List (snapshot)
+[INFO ] 2021/07/05 16:26:50, 337 [1] Server_GUI2.Read_json - Import new Version List (all)
+[WARN ] 2021/07/05 16:26:59, 266 [1] Server_GUI2.MainWindow - Warning the delete Version data
+[INFO ] 2021/07/05 16:26:59, 267 [1] Server_GUI2.MainWindow - The Version kusa was sucessfuly deleted
+[INFO ] 2021/07/05 16:27:36, 176 [1] Server_GUI2.MainWindow - Starter was pushed Close Button
+[INFO ] 2021/07/05 16:27:36, 179 [1] Server_GUI2.MainWindow - This System is sucessfuly over

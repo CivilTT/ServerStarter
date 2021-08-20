@@ -1,0 +1,22 @@
+[INFO ] 2021/08/15 23:46:27, 533 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[WARN ] 2021/08/15 23:46:29, 509 [1] Server_GUI2.More_Settings - Read the Default server.properties in this system.
+[INFO ] 2021/08/15 23:46:29, 509 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/08/15 23:46:29, 518 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/08/15 23:46:29, 522 [1] Server_GUI2.Data_list - Read the local info data
+[INFO ] 2021/08/15 23:46:29, 527 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter
+[INFO ] 2021/08/15 23:46:30, 908 [1] Server_GUI2.Functions - Read the local Versions
+[WARN ] 2021/08/15 23:46:30, 927 [1] Server_GUI2.More_Settings - Read the Default server.properties in this system.
+[INFO ] 2021/08/15 23:46:30, 928 [1] Server_GUI2.Functions - Read the local Worlds
+[INFO ] 2021/08/15 23:46:30, 928 [1] Server_GUI2.MainWindow - Read the new Versions
+[INFO ] 2021/08/15 23:46:30, 930 [1] Server_GUI2.Read_json - Import new Version List (release)
+[INFO ] 2021/08/15 23:46:31, 066 [1] Server_GUI2.Read_json - Import new Version List (snapshot)
+[INFO ] 2021/08/15 23:46:31, 066 [1] Server_GUI2.Read_json - Import new Version List (all)
+[INFO ] 2021/08/15 23:46:33, 039 [1] Server_GUI2.More_Settings - set_value method
+[INFO ] 2021/08/15 23:46:33, 040 [1] Server_GUI2.More_Settings - Change the propertie about [entity-broadcast-range-percentage = 100]
+[INFO ] 2021/08/15 23:46:38, 760 [1] Server_GUI2.More_Settings - Click the Cancel Button
+[INFO ] 2021/08/15 23:46:48, 014 [1] Server_GUI2.More_Settings - set_value method
+[INFO ] 2021/08/15 23:46:49, 493 [1] Server_GUI2.More_Settings - Click the Cancel Button
+[INFO ] 2021/08/15 23:46:51, 173 [1] Server_GUI2.More_Settings - set_value method
+[INFO ] 2021/08/15 23:46:53, 947 [1] Server_GUI2.More_Settings - Click the Cancel Button
+[INFO ] 2021/08/15 23:46:55, 170 [1] Server_GUI2.MainWindow - Starter was pushed Close Button
+[INFO ] 2021/08/15 23:46:55, 173 [1] Server_GUI2.MainWindow - This System is successfully over

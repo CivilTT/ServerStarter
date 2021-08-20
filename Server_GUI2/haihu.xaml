@@ -1,0 +1,40 @@
+﻿<Window x:Class="Server_GUI2.haihu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Server_GUI2"
+        mc:Ignorable="d"
+        Title="More_Settings (Custom Map)" Height="255.781" Width="530">
+    <Grid>
+        <TextBlock Text="Custom Map" HorizontalAlignment="Left" Height="33" Margin="25,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" FontSize="20" TextDecorations="Underline" FontStyle="Italic"/>
+        <StackPanel HorizontalAlignment="Right" Height="53" VerticalAlignment="Top" Width="119" Margin="0,5,132,0" Orientation="Vertical">
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Opening Version" VerticalAlignment="Top" RenderTransformOrigin="0.755,-1.125" Height="21" Width="119" FontSize="14" FontWeight="Thin"/>
+            <TextBlock x:Name="Version" HorizontalAlignment="Left" TextWrapping="Wrap" Text="1.XX.YY" VerticalAlignment="Top" RenderTransformOrigin="0.755,-1.125" Height="21" Width="109" FontSize="14" TextAlignment="Right" FontWeight="Thin"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right" Height="53" VerticalAlignment="Top" Width="117" Margin="0,5,0,0" Orientation="Vertical">
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Opening World" VerticalAlignment="Top" RenderTransformOrigin="0.755,-1.125" Height="21" Width="117" FontSize="14" FontWeight="Thin"/>
+            <TextBlock x:Name="World" TextWrapping="Wrap" Text="XXXX" VerticalAlignment="Top" RenderTransformOrigin="0.755,-1.125" Height="21" FontSize="14" TextAlignment="Right" FontWeight="Thin" Margin="0,0,10,0"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Left"  Height="129" VerticalAlignment="Top"  Width="110" Margin="30,74,0,0" Orientation="Vertical">
+            <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="Data Kinds" VerticalAlignment="Top" Width="104" FontSize="18" TextAlignment="Right"/>
+            <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="Operation" VerticalAlignment="Top" Width="104" FontSize="18" Margin="0 10 0 15" TextAlignment="Right"/>
+        </StackPanel>
+        <StackPanel  Margin="150,79,10,55" Orientation="Vertical">
+            <StackPanel HorizontalAlignment="Left"  Height="21" VerticalAlignment="Top"  Width="360" Orientation="Horizontal">
+                <RadioButton x:Name="zip" Content="ZIP" Margin="75,0,50,0" Width="45" Checked="Zip_Checked" FontSize="14" HorizontalAlignment="Left"/>
+                <RadioButton x:Name="folder" Content="FOLDER" Margin="50,0" Width="75" Checked="Folder_Checked" FontSize="14" HorizontalAlignment="Left"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left"  Height="40" Margin="0,10" Width="360" Orientation="Horizontal">
+                <Button Content="Import" Width="94" FontSize="18" Margin="30,5,30,5" Click="Import_click" />
+                <TextBlock x:Name="haihu_path" HorizontalAlignment="Left" TextWrapping="Wrap" Text="(None)" VerticalAlignment="Top" FontSize="18" TextAlignment="Left"  Margin="0,5,0,5"/>
+            </StackPanel>
+
+
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Width="280" Margin="0,0,0,10" Orientation="Horizontal">
+            <Button x:Name="OK" Content="OK" Width="130" Height="40" FontSize="18" Click="OK_Click"/>
+            <Button x:Name="Cancel" Content="キャンセル" Width="130" Height="40" FontSize="18" Margin="10,0,10,0" Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

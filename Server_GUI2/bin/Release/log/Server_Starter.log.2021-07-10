@@ -1,0 +1,32 @@
+[INFO ] 2021/07/10 22:44:19, 520 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/07/10 22:44:20, 224 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/07/10 22:44:20, 295 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/07/10 22:44:20, 300 [1] Server_GUI2.Functions - Read the local info data (System.IO.StreamReader)
+[INFO ] 2021/07/10 22:44:20, 306 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter
+[INFO ] 2021/07/10 22:44:21, 737 [1] Server_GUI2.Functions - Read the local Versions
+[INFO ] 2021/07/10 22:44:21, 752 [1] Server_GUI2.Functions - Read the local Worlds
+[INFO ] 2021/07/10 22:44:21, 753 [1] Server_GUI2.MainWindow - Read the new Versions
+[INFO ] 2021/07/10 22:44:21, 753 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/07/10 22:44:21, 864 [1] Server_GUI2.Read_json - Import new Version List (release)
+[INFO ] 2021/07/10 22:44:22, 016 [1] Server_GUI2.Read_json - Import new Version List (snapshot)
+[INFO ] 2021/07/10 22:44:22, 016 [1] Server_GUI2.Read_json - Import new Version List (all)
+[DEBUG] 2021/07/10 22:44:28, 653 [1] Server_GUI2.MainWindow - ------------------------------------------------------------
+[INFO ] 2021/07/10 22:44:28, 653 [1] Server_GUI2.MainWindow - Start the Server Opening
+[INFO ] 2021/07/10 22:44:28, 653 [1] Server_GUI2.Functions - Define_OpenWorld
+[INFO ] 2021/07/10 22:44:28, 654 [1] Server_GUI2.Functions - Check copy world (Copy is 'True')
+[INFO ] 2021/07/10 22:44:28, 663 [1] Server_GUI2.Read_json - There are already new version, or not
+[INFO ] 2021/07/10 22:44:28, 663 [1] Server_GUI2.Read_json - Download server.jar
+[INFO ] 2021/07/10 22:44:32, 238 [1] Server_GUI2.Functions - Generate start.bat
+[INFO ] 2021/07/10 22:44:32, 239 [1] Server_GUI2.Functions - Start the server of 1.17.1
+[INFO ] 2021/07/10 22:44:36, 987 [1] Server_GUI2.Functions - Start modifying eula.txt
+[INFO ] 2021/07/10 22:44:36, 987 [1] Server_GUI2.Functions - Read the eula.txt
+[INFO ] 2021/07/10 22:44:36, 987 [1] Server_GUI2.Functions - Write the eula.txt
+[INFO ] 2021/07/10 22:44:36, 988 [1] Server_GUI2.Functions - Chenge info about latest Minecraft Version([2])
+[INFO ] 2021/07/10 22:44:36, 989 [1] Server_GUI2.Functions - Writte Properties
+[INFO ] 2021/07/10 22:44:36, 990 [1] Server_GUI2.Functions - Read more_Settings
+[INFO ] 2021/07/10 22:44:36, 994 [1] Server_GUI2.More_Settings - Read the server.properties at .\World_Data\1.17.1\server.properties
+[INFO ] 2021/07/10 22:44:36, 996 [1] Server_GUI2.More_Settings - set_value method
+[INFO ] 2021/07/10 22:44:36, 998 [1] Server_GUI2.Functions - Change info about The latest Minecraft World name
+[INFO ] 2021/07/10 22:44:36, 998 [1] Server_GUI2.Functions - Start Writting for server.properties
+[INFO ] 2021/07/10 22:44:36, 999 [1] Server_GUI2.Functions - Start the server of 1.17.1
+[INFO ] 2021/07/10 22:46:17, 976 [1] Server_GUI2.MainWindow - This System is successfully over

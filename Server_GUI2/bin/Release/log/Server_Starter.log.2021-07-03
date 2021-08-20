@@ -1,0 +1,5 @@
+[INFO ] 2021/07/03 23:59:09, 458 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/07/03 23:59:09, 918 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/07/03 23:59:09, 991 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/07/03 23:59:09, 996 [1] Server_GUI2.Functions - Read the local info data (System.IO.StreamReader)
+[INFO ] 2021/07/03 23:59:10, 001 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter

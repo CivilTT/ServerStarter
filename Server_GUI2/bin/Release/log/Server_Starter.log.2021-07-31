@@ -1,0 +1,31 @@
+[INFO ] 2021/07/31 22:11:53, 155 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/07/31 22:11:54, 700 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/07/31 22:11:54, 762 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/07/31 22:11:54, 765 [1] Server_GUI2.Data_list - Read the local info data
+[INFO ] 2021/07/31 22:11:54, 767 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter
+[INFO ] 2021/07/31 22:11:55, 824 [1] Server_GUI2.MainWindow - Read the new Versions
+[INFO ] 2021/07/31 22:11:55, 826 [1] Server_GUI2.Read_json - Import new Version List (release)
+[INFO ] 2021/07/31 22:11:55, 836 [1] Server_GUI2.Read_json - Import new Version List (snapshot)
+[INFO ] 2021/07/31 22:11:55, 837 [1] Server_GUI2.Read_json - Import new Version List (all)
+[INFO ] 2021/07/31 22:11:55, 885 [1] Server_GUI2.More_Settings - Read the Default server.properties in this system.
+[DEBUG] 2021/07/31 22:11:55, 887 [1] Server_GUI2.MainWindow - ------------------------------------------------------------
+[INFO ] 2021/07/31 22:11:55, 887 [1] Server_GUI2.MainWindow - Start the Server Opening
+[INFO ] 2021/07/31 22:11:55, 890 [1] Server_GUI2.Functions - Define_OpenWorld
+[INFO ] 2021/07/31 22:11:55, 892 [1] Server_GUI2.Read_json - There are already new version, or not
+[INFO ] 2021/07/31 22:11:55, 892 [1] Server_GUI2.Read_json - Download server.jar
+[INFO ] 2021/07/31 22:11:58, 892 [1] Server_GUI2.Functions - Generate start.bat
+[INFO ] 2021/07/31 22:11:58, 893 [1] Server_GUI2.Functions - Start the server of 1.17
+[INFO ] 2021/07/31 22:12:02, 917 [1] Server_GUI2.Functions - Start modifying eula.txt
+[INFO ] 2021/07/31 22:12:02, 917 [1] Server_GUI2.Functions - Read the eula.txt
+[INFO ] 2021/07/31 22:12:02, 919 [1] Server_GUI2.Functions - Check user agreement
+[INFO ] 2021/07/31 22:12:11, 414 [1] Server_GUI2.Functions - Write the eula.txt
+[INFO ] 2021/07/31 22:12:11, 415 [1] Server_GUI2.Functions - Check copy world (Copy is 'True')
+[INFO ] 2021/07/31 22:12:11, 535 [1] Server_GUI2.Functions - Write Properties
+[INFO ] 2021/07/31 22:12:11, 542 [1] Server_GUI2.Functions - Change info about The latest Minecraft World name
+[INFO ] 2021/07/31 22:12:11, 546 [1] Server_GUI2.Functions - Start Writting for server.properties
+[INFO ] 2021/07/31 22:12:11, 549 [1] Server_GUI2.Functions - Check the datapacks
+[INFO ] 2021/07/31 22:12:11, 549 [1] Server_GUI2.Functions - There are not datapack necessary
+[INFO ] 2021/07/31 22:12:11, 550 [1] Server_GUI2.Functions - Check the Custom Map
+[INFO ] 2021/07/31 22:12:11, 551 [1] Server_GUI2.Functions - There are not datapack necessary
+[INFO ] 2021/07/31 22:12:11, 552 [1] Server_GUI2.Functions - Start the server of 1.17
+[INFO ] 2021/07/31 22:12:52, 746 [1] Server_GUI2.MainWindow - This System is successfully over

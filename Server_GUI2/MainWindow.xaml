@@ -1,0 +1,78 @@
+﻿<Window x:Class="Server_GUI2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Server_GUI2"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        Title="Server Starter" Height="520" Width="560" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:DataSource x:Key="world_name" ID="input_name"/>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="Background" Value="#ffeeff" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Line Stroke="#FFBDBCBC" StrokeThickness="2" X1="20" Y1="95" X2="540" Y2="95" Grid.Column="1"/>
+        <Line Stroke="#FFBDBCBC" StrokeThickness="2" X1="20" Y1="290" X2="540" Y2="290" Grid.Column="1"/>
+        <Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="38" Y1="325" X2="38" Y2="348" Grid.Column="1"/>
+        <Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="38" Y1="348" X2="70" Y2="348" Grid.Column="1"/>
+
+        <StackPanel x:Name="select_version" Visibility="Hidden" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="389" Margin="80,115,0,0" Orientation="Horizontal" Grid.Column="1">
+            <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" VerticalAlignment="Top" Width="68" FontSize="18" TextAlignment="Right" Text="Version"/>
+            <CheckBox x:Name="release" Margin="20,0,30,0" VerticalAlignment="Top" Content="release" FontSize="20" VerticalContentAlignment="Center" Click="Version_Click" IsChecked="True"/>
+            <CheckBox x:Name="snapshot" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="snapshot" FontSize="20" Click="Version_Click"/>
+        </StackPanel>
+        <StackPanel x:Name="version_main" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="512" Margin="30,140,0,0" Orientation="Horizontal" Grid.Column="1">
+            <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="Server Version" VerticalAlignment="Top" Width="120" FontSize="18" TextAlignment="Right"/>
+            <ComboBox x:Name="Version" HorizontalAlignment="Left" Margin="70,0,70,0" VerticalAlignment="Top" Width="150" Height="33" FontSize="16" DropDownClosed="World_reload"/>
+            <Button x:Name="Delete_v" Width="85" Height="33" FontSize="18" Margin="0,0,0,0" Content="Delete" Click="Delete_version"/>
+        </StackPanel>
+        <StackPanel x:Name="world_main" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="500" Margin="30,230,0,0" Orientation="Horizontal" Grid.Column="1">
+            <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="World Name" VerticalAlignment="Top" Width="120" FontSize="18" TextAlignment="Right"/>
+            <ComboBox x:Name="World" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,0,70,0" Width="150" Height="33" FontSize="16" DropDownClosed="Name_reload" MaxDropDownHeight="165"/>
+            <Button x:Name="Delete_w" Width="85" Height="33" FontSize="18" Margin="0,0,0,0" Content="Delete" Click="Delete_world"/>
+        </StackPanel>
+
+        <StackPanel x:Name="version_hide" Visibility="Hidden"  HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="500" Margin="30,160,0,0" Orientation="Horizontal" Grid.Column="1">
+            <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="Server Version" VerticalAlignment="Top" Width="120" FontSize="18" TextAlignment="Right"/>
+            <ComboBox x:Name="Version2" HorizontalAlignment="Left" Margin="20,0,20,0" VerticalAlignment="Top" Width="145" Height="33" FontSize="16" DropDownClosed="World_reload" ItemsSource="{Binding Items, ElementName=Version}"/>
+            <!--<TextBox x:Name="input_box_version" HorizontalAlignment="Left" Height="33" Text="{Binding ID, Source={StaticResource version}, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="145" FontSize="18"/>
+            -->
+            <ComboBox x:Name="new_Version" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="185" Height="33" FontSize="16" MaxDropDownHeight="165" DropDownClosed="World_reload"/>
+        </StackPanel>
+        <StackPanel x:Name="world_hide" Visibility="Hidden" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="500" Margin="30,230,0,0" Orientation="Horizontal" Grid.Column="1">
+            <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="World Name" VerticalAlignment="Top" Width="120" FontSize="18" TextAlignment="Right"/>
+            <ComboBox x:Name="World2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,20,0" Width="145" Height="33" FontSize="16" DropDownClosed="Name_reload" ItemsSource="{Binding Items, ElementName=World}"/>
+            <TextBox x:Name="input_box_world" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="185" FontSize="18" Text="{Binding ID, Source={StaticResource world_name}, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" TextChanged="Check_WorldName"/>
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Right" Height="100" VerticalAlignment="Top" Width="150" Margin="0,5,10,0" Orientation="Vertical" Grid.Column="1">
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Your name in Minecraft" VerticalAlignment="Top" RenderTransformOrigin="0.755,-1.125" Height="21" Width="140" FontSize="14" FontWeight="Thin"/>
+            <TextBlock x:Name="name" HorizontalAlignment="Left" TextWrapping="Wrap" Text="XXXX" VerticalAlignment="Top" RenderTransformOrigin="0.755,-1.125" Height="21" Width="149" FontSize="14" TextAlignment="Right" FontWeight="Thin"/>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Server Starter's version" VerticalAlignment="Top" RenderTransformOrigin="0.755,-1.125" Height="21" Width="149" FontSize="14" FontWeight="Thin"/>
+            <TextBlock x:Name="info_version" HorizontalAlignment="Left" TextWrapping="Wrap" Text="XX.YY" VerticalAlignment="Top" RenderTransformOrigin="0.755,-1.125" Height="21" Width="149" FontSize="14" TextAlignment="Right" FontWeight="Thin"/>
+        </StackPanel>
+        <StackPanel x:Name="Execute" HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Width="420" Margin="0,0,0,10" Orientation="Horizontal" Grid.Column="1" >
+            <Button Content="Close" Width="130" Height="40" FontSize="18" Margin="0,0,10,0" Click="Close_Click"/>
+            <Button x:Name="More_Settings_button" Content="More Settings" Width="130" Height="40" FontSize="18" Margin="0,0,10,0" Click="More_Settings_Click"/>
+            <Button x:Name="Run_button" Content="Run" Width="130" Height="40" FontSize="18" Click="START_Click"/>
+        </StackPanel>
+        <Button x:Name="info" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="60" Height="30" FontSize="18" Margin="10,0,0,10" Content="info" Grid.Column="1" Click="Info_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="300" FontSize="24" Grid.Column="1" Text="Minecraft Server Starter"/>
+        <CheckBox x:Name="re_world" Content="Recreate World (When you want to reset the selected world)" HorizontalAlignment="Left" Margin="30,310,0,0" VerticalAlignment="Top" FontSize="14" Click="Reset_world_Click" Grid.Column="1" Height="18" Width="391"/>
+        <CheckBox x:Name="sa_world" Content="Save old World before recreating it (Saving name : ...__old(1))" HorizontalAlignment="Left" Margin="70,340,0,0" VerticalAlignment="Top" FontSize="14" Checked="Save_world_Click" Grid.Column="1" Height="18" Width="399" IsEnabled="False" Foreground="LightGray"/>
+        <CheckBox x:Name="op" Content="XXXX has op rights in this version's server" HorizontalAlignment="Left" Margin="30,370,0,0" VerticalAlignment="Top" FontSize="14" IsChecked="True" Click="Op_Click" Grid.Column="1" Height="18" Width="391"/>
+        <CheckBox x:Name="shutdown" Content="Shutdown this PC after stopping the server." HorizontalAlignment="Left" Margin="30,400,0,0" VerticalAlignment="Top" FontSize="14" Click="Shutdown_Click" Grid.Column="1" Height="18" Width="391"/>
+    </Grid>
+</Window>

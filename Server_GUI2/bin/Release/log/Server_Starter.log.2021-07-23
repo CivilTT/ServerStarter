@@ -1,0 +1,3 @@
+[INFO ] 2021/07/23 15:41:46, 598 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/07/23 15:41:46, 994 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/07/23 15:41:47, 072 [1] Server_GUI2.UPnP - Start the check of NAT (Port mapping)
