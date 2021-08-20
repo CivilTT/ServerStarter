@@ -34,7 +34,7 @@
 You can easily build the Minecraft Multiplay server
 
 # How to use
-1. Download `Setup_ServerStarter.msi` at [this](https://github.com/CivilTT/ServerStarter/raw/master/Setup_ServerStarter/Release/Setup_ServerStarter.msi)
+1. Download `Setup_ServerStarter.msi` at [here](https://github.com/CivilTT/ServerStarter/raw/master/Setup_ServerStarter/Release/Setup_ServerStarter.msi)
 2. Start this file and check to create `Server Starter` at your Desktop
 3. Start `Server Starter`
 4. Set any information and Select Version and World
