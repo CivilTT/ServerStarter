@@ -14,7 +14,7 @@ namespace Server_GUI2
         public static List<string> Info_index { get; } = new List<string>()
         {
             "1>Your name in Minecraft------------",
-            "2>The version of 'Server_bat-files'-",
+            "2>The version of 'Server Starter'---",
             "3>The latest Minecraft version------",
             "4>The latest Minecraft World name---",
             "5>Is any Servers opening now ?------",
@@ -72,7 +72,7 @@ namespace Server_GUI2
             {"max-world-size","29999984" }
         };
 
-        public static string Starter_Version { get { return "5.1"; } }
+        public static string Starter_Version { get { return "5.2"; } }
         public static string Version { get; set; }
         public static bool Import_spigot { get; set; }
         public static string Copy_version { get; set; }

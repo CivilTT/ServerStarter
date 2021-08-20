@@ -1,9 +1,17 @@
 {
   "latest": {
-    "name": "5.1",
+    "name": "5.2",
     "url": "https://drive.google.com/uc?export=download&confirm=AgdN&id=1XOsK6MatYtcLYQfw-PHfrZHE7w0TEOn2"
   },
   "versions": [
+    {
+      "name":"5.2",
+      "time":"2021-08-20",
+      "type":"Fixed",
+      "points":[
+        "Fixed program reading info.txt in ShareWorld "
+      ]
+    },
     {
       "name":"5.1",
       "time":"2021-08-18",

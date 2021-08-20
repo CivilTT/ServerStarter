@@ -276,6 +276,8 @@ namespace Server_GUI2
 
 
             wc.DownloadFile(url, $@".\..\Server_GUI2.zip");
+
+            MainWindow.Pd.Close();
             try
             {
                 string args_list = "";
