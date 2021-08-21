@@ -25,8 +25,8 @@
             <TextBlock x:Name="game_version" HorizontalAlignment="Left" Height="33" Text="( You choose it later )" VerticalAlignment="Top" Width="245" FontSize="18"/>
             <TextBlock x:Name="world" HorizontalAlignment="Left" Height="33" Text="( You choose it later )" VerticalAlignment="Top" Width="245" FontSize="18"/>
             <TextBlock x:Name="open_server" HorizontalAlignment="Left" Height="33" Text="( I get it later )" VerticalAlignment="Top" Width="145" FontSize="18"/>
-            <TextBox x:Name="git_name" HorizontalAlignment="Left" Height="33" Text="Gomicas" VerticalAlignment="Top" Width="245" FontSize="18"/>
-            <TextBox x:Name="git_address" HorizontalAlignment="Left" Height="33" Text="kyouyuu0only0t.t@gmail.com" VerticalAlignment="Top" Width="245" FontSize="18" Margin="0,0,-100,0"/>
+            <TextBox x:Name="git_name" HorizontalAlignment="Left" Height="33" Text="Example" VerticalAlignment="Top" Width="245" FontSize="18"/>
+            <TextBox x:Name="git_address" HorizontalAlignment="Left" Height="33" Text="Example@mail.com" VerticalAlignment="Top" Width="245" FontSize="18" Margin="0,0,-100,0"/>
         </StackPanel>
         <StackPanel HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Width="280" Margin="0,0,0,10" Orientation="Horizontal">
             <Button x:Name="OK" Content="OK" Width="130" Height="40" FontSize="18" Click="OK_Click"/>

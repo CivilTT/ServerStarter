@@ -22,7 +22,7 @@ namespace Server_GUI2
             this_version.Text = Data_list.Starter_Version;
         }
 
-        private void regist_info()
+        private void Regist_info()
         {
             string[] index = new string[] {
                 $"{Data_list.Info_index[0]}->{name.Text}",
@@ -41,7 +41,7 @@ namespace Server_GUI2
         {
             logger.Info("Build new info.txt");
             
-            regist_info();
+            Regist_info();
             
             using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\info.txt", false))
             {
