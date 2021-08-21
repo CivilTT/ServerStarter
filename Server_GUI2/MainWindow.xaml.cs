@@ -52,9 +52,11 @@ namespace Server_GUI2
             InitializeComponent();
             GUI = gui;
 
-            Pd = new ProgressDialog();
-            //ダイアログのタイトルを設定
-            Pd.Title = "Server Starter";
+            Pd = new ProgressDialog
+            {
+                //ダイアログのタイトルを設定
+                Title = "Server Starter"
+            };
             //進行状況ダイアログを表示する
             Pd.Show();
 
@@ -153,8 +155,10 @@ namespace Server_GUI2
         {
             logger.Debug("------------------------------------------------------------");
             logger.Info("Start the Server Opening");
-            Pd = new ProgressDialog();
-            Pd.Title = $"the server {Data_list.Version}/{Data_list.World}";
+            Pd = new ProgressDialog
+            {
+                Title = $"the server {Data_list.Version}/{Data_list.World}"
+            };
             Pd.Show();
 
             if(Data_list.Import_spigot && Data_list.World == "ShareWorld")
@@ -166,7 +170,7 @@ namespace Server_GUI2
                 return;
             }
 
-            string ver_folder = (Data_list.Import_spigot) ? $"Spigot_{Data_list.Version}" : Data_list.Version;
+            string ver_folder = Data_list.Import_spigot ? $"Spigot_{Data_list.Version}" : Data_list.Version;
 
             dynamic start_func;
             if (Data_list.Import_spigot)
@@ -183,9 +187,6 @@ namespace Server_GUI2
             start_func.Define_OpenWorld(World, gui);
             Pd.Value = 10;
             Pd.Message = "Define opening World";
-            
-            // これ以降メイン画面を再び呼び出す必要はないから
-            Close();
 
             //バージョンについて分岐
             if (!Data_list.VerWor_list.ContainsKey(ver_folder))
@@ -244,7 +245,7 @@ namespace Server_GUI2
             //GUIの終了
             logger.Info("This System is successfully over");
             start_func.Shutdown();
-            Environment.Exit(0);
+            Close();
         }
 
         [Obsolete]

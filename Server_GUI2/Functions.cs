@@ -51,8 +51,7 @@ namespace Server_GUI2
                 bool? res = window.ShowDialog();
                 if (res == false)
                 {
-                    //強制終了
-                    Environment.Exit(0);
+                    throw new UserSelectException("Stop building the info.txt by user");
                 }
             }
             catch (Exception ex)
@@ -173,7 +172,7 @@ namespace Server_GUI2
                     
                     logger.Error($"User nmae the new world for {Data_list.World}");
                     Console.Write(App.end_str);
-                    Environment.Exit(0);
+                    throw new ArgumentException("World name in invalid");
                 }
                 if (world.Items.Contains(Data_list.World))
                 {
@@ -184,7 +183,7 @@ namespace Server_GUI2
                     
                     logger.Error($"'{Data_list.World}' (World) already existed");
                     Console.Write(App.end_str);
-                    Environment.Exit(0);
+                    throw new ArgumentException("World already exist");
                 }
             }
         }
@@ -316,7 +315,7 @@ namespace Server_GUI2
 
 
             Process.Start(@".\tmp.bat", @" > .\log\tmp(versionUP)_log.txt 2>&1");
-            Environment.Exit(0);
+            throw new Exception("Version up this system");
         }
 
         /// <summary>
@@ -451,7 +450,7 @@ namespace Server_GUI2
                 if (result == System.Windows.Forms.DialogResult.No)
                 {
                     logger.Info("User reject downgrading");
-                    Environment.Exit(0);
+                    throw new DowngradeException("User reject downgrading");
                 }
             }
 
@@ -468,7 +467,7 @@ namespace Server_GUI2
                     $"{info2[0]}のサーバーが閉じたことを確認したうえでサーバーを再起動してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 
                 logger.Warn("There are already opened server so system is over");
-                Environment.Exit(0);
+                throw new ServerException("There are already opened server so system is over");
             }
             else
             {
@@ -523,8 +522,8 @@ namespace Server_GUI2
                 if (result == System.Windows.Forms.DialogResult.No)
                 {
                     logger.Info("User chose NO");
-                    Environment.Exit(0);
                     Close();
+                    throw new UserSelectException("User chose NO");
                 }
             }
         }
@@ -578,7 +577,7 @@ namespace Server_GUI2
             if (result == System.Windows.Forms.DialogResult.Cancel)
             {
                 logger.Info("User didn't agree eula");
-                Environment.Exit(0);
+                throw new UserSelectException("User didn't agree eula");
             }
         }
 
@@ -780,7 +779,7 @@ namespace Server_GUI2
             {
                 Error($"サーバーの開設に失敗しました。(エラーコード：{p.ExitCode})");
                 Console.Write(App.end_str);
-                Environment.Exit(0);
+                throw new ServerException("Failed to open the server");
             }
         }
 
@@ -794,8 +793,8 @@ namespace Server_GUI2
                 MainWindow.Pd.Show();
 
                 //info.txtのなかのserver_openをFalseに戻す
-                Change_info(4, Opening_Server: false);
                 MainWindow.Pd.Value = 50;
+                Change_info(4, Opening_Server: false);
 
                 //push
                 git.Push();
@@ -926,7 +925,7 @@ namespace Server_GUI2
                 if (result1 == System.Windows.Forms.DialogResult.Cancel)
                 {
                     logger.Info("User interrupt the opening server");
-                    Environment.Exit(0);
+                    throw new ServerException("User interrupt the opening server");
                 }
             }
         }

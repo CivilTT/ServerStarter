@@ -116,7 +116,7 @@ namespace Server_GUI2
                     {
                         Application.Restart();
                     }
-                    Environment.Exit(0);
+                    throw new ArgumentException("Did not select opening version");
                 }
 
                 if (Data_list.Import_spigot)

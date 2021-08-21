@@ -159,6 +159,7 @@
     <Compile Include="dp_Settings.xaml.cs">
       <DependentUpon>dp_Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Exception.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="Git.cs" />
     <Compile Include="haihu.xaml.cs">
