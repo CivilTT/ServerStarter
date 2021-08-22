@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace Server_GUI2
 {
@@ -51,7 +52,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                        "サーバーの移行に失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new WinCommandException($"Failed to switch the server system (Error Message : {ex.Message})");
             }
         }
 
@@ -75,7 +80,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                        "ワールドデータの初期化に失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException($"Failed to delete world data (Error Message : {ex.Message})");
             }
         }
 
@@ -100,7 +109,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                        "ワールドデータのバックアップ作成に失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new WinCommandException("Failed to make the back up world data");
             }
         }
 
@@ -121,9 +134,9 @@ namespace Server_GUI2
                 File.Delete($@"{MainWindow.Data_Path}\{ver_folder}\build.bat");
                 File.Delete($@"{MainWindow.Data_Path}\{ver_folder}\BuildTools.jar");
             }
-            catch
+            catch(Exception ex)
             {
-                logger.Info("There are not build.bat and BuildTools.jar");
+                logger.Info($"Failed to delete build.bat and BuildTools.jar ({ex.Message})");
             }
         }
 

@@ -28,6 +28,9 @@ namespace Server_GUI2
         private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool GUI = true;
 
+        public static ProgressDialog Pd { get; set; }
+        public static bool Set_new_Version { get; set; } = true;
+
 
         private List<string> release_versions = new List<string>();
         private List<string> snapshot_versions = new List<string>();
@@ -39,7 +42,6 @@ namespace Server_GUI2
         public bool Save_world { get; set; } = false;
         public bool Get_op { get; set; }
 
-        public static ProgressDialog Pd { get; set; }
 
         private Data_list data = new Data_list();
         private Spigot_Function spi_func = new Spigot_Function();
@@ -71,7 +73,7 @@ namespace Server_GUI2
             //info.txtの読み取り
             using (StreamReader sr = new StreamReader($@"{Data_Path}\info.txt", Encoding.GetEncoding("Shift_JIS")))
             {
-                data.Set_info(sr);
+                Data_list.Info = data.Set_info(sr);
             }
             Pd.Message = "Read the local info data";
             Pd.Value = 30;
@@ -191,6 +193,14 @@ namespace Server_GUI2
             //バージョンについて分岐
             if (!Data_list.VerWor_list.ContainsKey(ver_folder))
             {
+                if (!Set_new_Version)
+                {
+                    string message =
+                        "Minecraftのバージョン一覧を取得していないため、新規バージョンの導入ができません。\n" +
+                        $"新規バージョンの導入を行うためにはServer Starterを再起動してください。\n\n";
+                    System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    throw new ArgumentException("Can not import new Version's server");
+                }
                 Pd.Message = "Download server.jar";
                 jsonReader.Import_server();
             }

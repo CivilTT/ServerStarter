@@ -1,76 +1,94 @@
-﻿using System;
+﻿using log4net;
+using System;
+using System.Reflection;
 
 namespace Server_GUI2
 {
     class DowngradeException : Exception
     {
-        public DowngradeException() : base()
-        {
-            //
-        }
+        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public DowngradeException(string message) : base(message)
         {
-            //
-        }
-
-        public DowngradeException(string message, Exception innerException) : base(message, innerException)
-        {
-            //
+            logger.Info(message);
+            Console.WriteLine(App.end_str);
         }
     }
 
     class GitException: Exception
     {
-        public GitException() : base()
-        {
-            //
-        }
+        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public GitException(string message) : base(message)
         {
-            //
-        }
-
-        public GitException(string message, Exception innerException) : base(message, innerException)
-        {
-            //
+            logger.Info(message);
+            Console.WriteLine(App.end_str);
         }
     }
 
     class UserSelectException : Exception
     {
-        public UserSelectException() : base()
-        {
-            //
-        }
+        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public UserSelectException(string message) : base(message)
         {
-            //
-        }
-
-        public UserSelectException(string message, Exception innerException) : base(message, innerException)
-        {
-            //
+            logger.Error(message);
+            Console.WriteLine(App.end_str);
         }
     }
 
     class ServerException : Exception
     {
-        public ServerException() : base()
-        {
-            //
-        }
+        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public ServerException(string message) : base(message)
         {
-            //
+            logger.Error(message);
+            Console.WriteLine(App.end_str);
         }
+    }
 
-        public ServerException(string message, Exception innerException) : base(message, innerException)
+    class WinCommandException : Exception
+    {
+        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public WinCommandException(string message) : base(message)
         {
-            //
+            logger.Error(message);
+            Console.WriteLine(App.end_str);
+        }
+    }
+
+    class ArgumentException : Exception
+    {
+        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public ArgumentException(string message) : base(message)
+        {
+            logger.Error(message);
+            Console.Write(App.end_str);
+        }
+    }
+
+    class IOException : Exception
+    {
+        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public IOException(string message) : base(message)
+        {
+            logger.Error(message);
+            Console.WriteLine(App.end_str);
+        }
+    }
+
+    class DownloadException : Exception
+    {
+        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public DownloadException(string message) : base(message)
+        {
+            logger.Error(message);
+            Console.WriteLine(App.end_str);
         }
     }
 }
