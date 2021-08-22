@@ -35,9 +35,13 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                func.Error(ex.Message);
+                string message =
+                        "Minecraftのバージョン一覧の取得に失敗しました。\n" +
+                        $"新しいバージョンのサーバーの導入はできません\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MainWindow.Set_new_Version = false;
             }
-
         }
 
         public List<string> Import_version(string type_name)
@@ -47,25 +51,18 @@ namespace Server_GUI2
             string id = "";
             int i = 0;
 
-            try
+            //ここでrelease、snapshotのみかすべてまとめて取得するのかを決める
+            while (id != "1.0")
             {
-                //ここでrelease、snapshotのみかすべてまとめて取得するのかを決める
-                while (id != "1.0")
+                id = root.versions[i].id;
+                string type = root.versions[i].type;
+
+                if (type_name == "all"|| type_name == type)
                 {
-                    id = root.versions[i].id;
-                    string type = root.versions[i].type;
-
-                    if (type_name == "all"|| type_name == type)
-                    {
-                        list_versions.Add($"{type} {id}");
-                    }
-
-                    i++;
+                    list_versions.Add($"{type} {id}");
                 }
-            }
-            catch (Exception ex)
-            {
-                func.Error(ex.Message);
+
+                i++;
             }
 
             return list_versions;
@@ -106,32 +103,23 @@ namespace Server_GUI2
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-            try
+            if (Data_list.Version == "")
             {
-                if (Data_list.Version == "")
+                DialogResult result = MessageBox.Show("導入するサーバーのバージョンが選択されていません。\r\nサーバーのバージョンを選択をした上で再度「Run」を押してください。", "Server Starter", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                if (result == DialogResult.OK)
                 {
-                    DialogResult result = MessageBox.Show("導入するサーバーのバージョンが選択されていません。\r\nサーバーのバージョンを選択をした上で再度「Run」を押してください。", "Server Starter", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
-                    if (result == DialogResult.OK)
-                    {
-                        Application.Restart();
-                    }
-                    throw new ArgumentException("Did not select opening version");
+                    Application.Restart();
                 }
-
-                if (Data_list.Import_spigot)
-                {
-                    Import_spigot(ver_folder);
-                }
-                else
-                {
-                    Import_vanila();
-                }
-
+                throw new ArgumentException("Did not select opening version");
             }
-            catch(Exception ex)
+
+            if (Data_list.Import_spigot)
             {
-                func.Error(ex.Message);
+                Import_spigot(ver_folder);
+            }
+            else
+            {
+                Import_vanila();
             }
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
@@ -155,16 +143,41 @@ namespace Server_GUI2
                 i++;
             }
 
-            //サーバーダウンロードのurlが記されたjsonをダウンロード
-            string url = root.versions[i].url;
-            string new_jsonStr = wc.DownloadString(url);
+            string url2;
+            try
+            {
+                //サーバーダウンロードのurlが記されたjsonをダウンロード
+                string url = root.versions[i].url;
+                string new_jsonStr = wc.DownloadString(url);
 
-            dynamic root2 = Newtonsoft.Json.JsonConvert.DeserializeObject(new_jsonStr);
-            string url2 = root2.downloads.server.url;
+                dynamic root2 = Newtonsoft.Json.JsonConvert.DeserializeObject(new_jsonStr);
+                url2 = root2.downloads.server.url;
+            }
+            catch(Exception ex)
+            {
+                string message =
+                        "Vanila サーバーのダウンロードに失敗しました。\n" +
+                        $"{Data_list.Version}はマルチサーバーが存在しない可能性があります。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new DownloadException($"Failed to get url to download server.jar (Error Message : {ex.Message})");
+            }
 
             Directory.CreateDirectory($@"{MainWindow.Data_Path}\{Data_list.Version}");
-            wc.DownloadFile(url2, $@"{MainWindow.Data_Path}\{Data_list.Version}\server.jar");
-            wc.Dispose();
+            
+            try
+            {
+                wc.DownloadFile(url2, $@"{MainWindow.Data_Path}\{Data_list.Version}\server.jar");
+                wc.Dispose();
+            }
+            catch(Exception ex)
+            {
+                string message =
+                        "Vanila サーバーのダウンロードに失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new DownloadException($"Failed to download server.jar (Error Message : {ex.Message})");
+            }
         }
 
         private void Import_spigot(string ver_folder)
@@ -172,9 +185,20 @@ namespace Server_GUI2
             logger.Info("Import Spigot Server");
             Directory.CreateDirectory($@"{MainWindow.Data_Path}\{ver_folder}");
 
-            wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36");
-            wc.DownloadFile("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar", $@"{MainWindow.Data_Path}\{ver_folder}\BuildTools.jar");
-            wc.Dispose();
+            try
+            {
+                wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36");
+                wc.DownloadFile("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar", $@"{MainWindow.Data_Path}\{ver_folder}\BuildTools.jar");
+                wc.Dispose();
+            }
+            catch(Exception ex)
+            {
+                string message =
+                        "Spigot サーバーのビルドファイルのダウンロードに失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})");
+            }
 
             Create_bat(ver_folder);
             Process p = Process.Start($@"{MainWindow.Data_Path}\{ver_folder}\build.bat");
@@ -196,7 +220,9 @@ namespace Server_GUI2
                         message = $"Spigotサーバーのビルドに失敗しました（エラーコード：{p.ExitCode}）";
                         break;
                 }
-                func.Error(message, "BuildTools.log.txt");
+
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})");
             }
 
             // 余計なファイルの削除
@@ -226,7 +252,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                func.Error(ex.Message);
+                string message =
+                        "Spigotサーバーをビルドするための必要ファイルの作成に失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException($"Failed to write build.bat (Error Message : {ex.Message})");
             }
         }
 

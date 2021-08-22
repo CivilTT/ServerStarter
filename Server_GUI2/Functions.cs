@@ -27,36 +27,30 @@ namespace Server_GUI2
         private Git git = new Git();
 
         WebClient wc = new WebClient();
+        Data_list data = new Data_list();
 
         public void Build_info()
         {
-            try
+            logger.Info("Check the info.txt");
+            var window = new info_builder();
+
+            //本来あるべきinfoの行数
+            int all_line_num = Data_list.Info_index.Count;
+
+            //ファイルが存在し、かつ、ファイルの行数が正しいときはbuildしない
+            if (File.Exists($@"{MainWindow.Data_Path}\info.txt"))
             {
-                logger.Info("Check the info.txt");
-                var window = new info_builder();
-
-                //本来あるべきinfoの行数
-                int all_line_num = Data_list.Info_index.Count;
-
-                //ファイルが存在し、かつ、ファイルの行数が正しいときはbuildしない
-                if (File.Exists($@"{MainWindow.Data_Path}\info.txt"))
+                string[] lines = File.ReadAllLines($@"{MainWindow.Data_Path}\info.txt");
+                if (lines.Length == all_line_num)
                 {
-                    string[] lines = File.ReadAllLines($@"{MainWindow.Data_Path}\info.txt");
-                    if (lines.Length == all_line_num)
-                    {
-                        return;
-                    }
-                }
-
-                bool? res = window.ShowDialog();
-                if (res == false)
-                {
-                    throw new UserSelectException("Stop building the info.txt by user");
+                    return;
                 }
             }
-            catch (Exception ex)
+
+            bool? res = window.ShowDialog();
+            if (res == false)
             {
-                Error(ex.Message);
+                throw new UserSelectException("Stop building the info.txt by user");
             }
         }
 
@@ -74,19 +68,12 @@ namespace Server_GUI2
         {
             logger.Info("Read the local Versions");
 
-            try
+            foreach (KeyValuePair<string, List<string>> kvp in Data_list.VerWor_list)
             {
-                foreach (KeyValuePair<string, List<string>> kvp in Data_list.VerWor_list)
-                {
-                    Version.Items.Add(kvp.Key);
-                }
-                Version.Items.Add("【new Version】");
-                Version = Check_index(Version, Properties.Settings.Default.Version);
+                Version.Items.Add(kvp.Key);
             }
-            catch (Exception ex)
-            {
-                Error(ex.Message);
-            }
+            Version.Items.Add("【new Version】");
+            Version = Check_index(Version, Properties.Settings.Default.Version);
 
             return Version;
         }
@@ -95,52 +82,27 @@ namespace Server_GUI2
         {
             logger.Info("Read the local Worlds");
 
-            try
+            foreach (KeyValuePair<string, List<string>> kvp in Data_list.VerWor_list)
             {
-                // //以前開いたバージョンが存在しない場合の処理
-                // if (!(Directory.Exists($@"{MainWindow.Data_Path}\{read_version}")) || read_version == "")
-                // {
-                //     string[] subFolders = Directory.GetDirectories(
-                //         $@"{MainWindow.Data_Path}\", "*", SearchOption.TopDirectoryOnly);
-
-                //     //World_Dataフォルダに一つもデータが存在しない場合、read_versionを空欄で返す
-                //     read_version = (subFolders.Length == 0) ? "" : Path.GetFileName(subFolders[0]);
-                // }
-
-                // string[] Worlds = Directory.GetDirectories(
-                //     $@"{MainWindow.Data_Path}\{read_version}", "*", SearchOption.TopDirectoryOnly);
-                // for (int i = 0; i < Worlds.Length; i++)
-                // {
-                //     string World_name = Path.GetFileName(Worlds[i]);
-                //     World.Items.Add(World_name);
-                // }
-                // World.Items.Remove("logs");
-                foreach (KeyValuePair<string, List<string>> kvp in Data_list.VerWor_list)
+                foreach (string world_name in kvp.Value)
                 {
-                    foreach (string world_name in kvp.Value)
+                    if (world_name != "ShareWorld")
                     {
-                        if (world_name != "ShareWorld")
+                        if (kvp.Key.Contains("Spigot") && world_name.Contains("_nether") || world_name.Contains("_the_end") || world_name == "plugins")
                         {
-                            if (kvp.Key.Contains("Spigot") && world_name.Contains("_nether") || world_name.Contains("_the_end") || world_name == "plugins")
-                            {
-                                continue;
-                            }
-                            World.Items.Add($"{kvp.Key}/{world_name}");
+                            continue;
                         }
+                        World.Items.Add($"{kvp.Key}/{world_name}");
                     }
                 }
-                if (Data_list.Avail_sw)
-                {
-                    World.Items.Add("ShareWorld");
-                }
-                World.Items.Add("【new World】");
-                string index_name = (Data_list.Info[3] == "ShareWorld") ? Data_list.Info[3] : $"{Properties.Settings.Default.Version}/{Data_list.Info[3]}";
-                World = Check_index(World, index_name);
             }
-            catch (Exception ex)
+            if (Data_list.Avail_sw)
             {
-                Error(ex.Message);
+                World.Items.Add("ShareWorld");
             }
+            World.Items.Add("【new World】");
+            string index_name = (Data_list.Info[3] == "ShareWorld") ? Data_list.Info[3] : $"{Properties.Settings.Default.Version}/{Data_list.Info[3]}";
+            World = Check_index(World, index_name);
 
             return World;
         }
@@ -170,9 +132,7 @@ namespace Server_GUI2
                         "ワールド名に「(空欄)」、「ShareWorld」、「logs」は指定できません。\r\n" +
                         "これら以外の名称で再登録してください。", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
-                    logger.Error($"User nmae the new world for {Data_list.World}");
-                    Console.Write(App.end_str);
-                    throw new ArgumentException("World name in invalid");
+                    throw new ArgumentException($"User nmae the new world for {Data_list.World}");
                 }
                 if (world.Items.Contains(Data_list.World))
                 {
@@ -181,42 +141,9 @@ namespace Server_GUI2
                         $"存在するワールドを新しく起動することはできません。\n" +
                         $"同じ名前でワールドを作り直す場合は、メイン画面にてRecreateにチェックを入れてください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                     
-                    logger.Error($"'{Data_list.World}' (World) already existed");
-                    Console.Write(App.end_str);
-                    throw new ArgumentException("World already exist");
+                    throw new ArgumentException($"'{Data_list.World}' (World) already existed");
                 }
             }
-        }
-
-        
-
-        public List<string> Add_info(StreamReader sr)
-        {
-            logger.Info($"Read the local info data");
-
-            string line;
-            List<string> tmp_info = new List<string>();
-
-            try
-            {
-                while ((line = sr.ReadLine()) != null)
-                {
-                    //＞が入っていない行ははじく
-                    if (line.IndexOf(">") == -1)
-                    {
-                        continue;
-                    }
-
-                    //-＞の前後をリストとして登録している
-                    tmp_info.Add(line.Substring(line.IndexOf("->") + 2));
-                }
-            }
-            catch (Exception ex)
-            {
-                Error(ex.Message);
-            }
-
-            return tmp_info;
         }
 
         public void Check_file_directory_SW()
@@ -263,7 +190,11 @@ namespace Server_GUI2
                 }
                 catch (Exception ex)
                 {
-                    Error(ex.Message);
+                    string message =
+                        "サーバーの実行ファイル(start.bat)の作成に失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                    System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    throw new IOException($"Failed to write start.bat (Error Message : {ex.Message})");
                 }
             }
         }
@@ -277,29 +208,31 @@ namespace Server_GUI2
             wc.DownloadFile(url, $@".\..\Server_GUI2.zip");
 
             MainWindow.Pd.Close();
+            
+            // コマンド実行による引数をここで受け取り、再実行する。
+            string args_list = "";
+            if (App.Args != null)
+            {
+                foreach (string key in App.Args)
+                {
+                    args_list += $" {key}";
+                }
+            }
+
+            List<string> versionUP = new List<string>()
+            {
+                "@echo off",
+                @"taskkill /IM Server_GUI2.exe /F",
+                $@"@powershell Expand-Archive -Path {self_path}\..\Server_GUI2.zip -DestinationPath {self_path} -Force",
+                // 更新後に再起動する
+                $@"start Server_GUI2.exe{args_list}",
+                $@"del {self_path}\..\Server_GUI2.zip",
+                //自分自身を削除する
+                "del /f \"%~dp0%~nx0\""
+            };
+            
             try
             {
-                string args_list = "";
-                if (App.Args != null)
-                {
-                    foreach (string key in App.Args)
-                    {
-                        args_list += $" {key}";
-                    }
-                }
-
-
-                List<string> versionUP = new List<string>()
-                {
-                    "@echo off",
-                    @"taskkill /IM Server_GUI2.exe /F",
-                    $@"@powershell Expand-Archive -Path {self_path}\..\Server_GUI2.zip -DestinationPath {self_path} -Force",
-                    // 更新後に再起動する
-                    $@"start Server_GUI2.exe{args_list}",
-                    $@"del {self_path}\..\Server_GUI2.zip",
-                    //自分自身を削除する
-                    "del /f \"%~dp0%~nx0\""
-                };
                 using (var writer = new StreamWriter(@".\tmp.bat", false))
                 {
                     foreach (string line in versionUP)
@@ -310,9 +243,15 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message, "tmp(versionUP)_log.txt");
+                string message =
+                        "Server Starterの更新ファイルの作成に失敗しました。\n" +
+                        "システムの更新をせずに実行します。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Warn($"Failed to write tmp.bat (Error Message : {ex.Message})");
+                Change_info(1, new_system_vesion: Data_list.Starter_Version);
+                return;
             }
-
 
             Process.Start(@".\tmp.bat", @" > .\log\tmp(versionUP)_log.txt 2>&1");
             throw new Exception("Version up this system");
@@ -322,15 +261,16 @@ namespace Server_GUI2
         /// info.txtの書き換えを行います。
         /// </summary>
         /// <param name="index">1:Starter_Version, 2:Version, 3:World, 4: Server_Opening (bool) を書き換えます。</param>
-        /// <param name="Opening_Server">index = 4を書き換える際に必要です。</param>
-        public void Change_info(int index, bool Opening_Server = true)
+        /// <param name="new_system_vesion">index = 1 を書き換える際に必要です。</param>
+        /// <param name="Opening_Server">index = 4 を書き換える際に必要です。</param>
+        public void Change_info(int index, string new_system_vesion = "", bool Opening_Server = true)
         {
             string info_path = $@"{MainWindow.Data_Path}\info.txt";
 
             switch (index)
             {
                 case 1:
-                    Change_info1();
+                    Change_info1(new_system_vesion);
                     break;
                 case 2:
                     Change_info2();
@@ -356,7 +296,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                        "Server Starterの保管ファイル(info.txt)の書き換えに失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException($"Failed to write info.txt (Error Message : {ex.Message})");
             }
         }
 
@@ -383,11 +327,11 @@ namespace Server_GUI2
             Data_list.Info[2] = (Data_list.Import_spigot) ? "Spigot_" + Data_list.Version : Data_list.Version;
         }
 
-        private void Change_info1()
+        private void Change_info1(string version)
         {
             //Server_Starterのバージョンの項目について書き換え
             logger.Info("Change the lateset Server Starter's version number");
-            Data_list.Info[1] = Data_list.Starter_Version;
+            Data_list.Info[1] = version;
         }
 
         public virtual void Check_copy_world()
@@ -422,7 +366,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                        "サーバー開設に必要なワールドデータの操作に失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new WinCommandException($"Failed to copy wrold data (Error Message : {ex.Message})");
             }
         }
 
@@ -449,7 +397,6 @@ namespace Server_GUI2
                 
                 if (result == System.Windows.Forms.DialogResult.No)
                 {
-                    logger.Info("User reject downgrading");
                     throw new DowngradeException("User reject downgrading");
                 }
             }
@@ -466,7 +413,6 @@ namespace Server_GUI2
                     $"ShareWorldのサーバーはすでに{info2[0]}によって起動されています。\r\n" +
                     $"{info2[0]}のサーバーが閉じたことを確認したうえでサーバーを再起動してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 
-                logger.Warn("There are already opened server so system is over");
                 throw new ServerException("There are already opened server so system is over");
             }
             else
@@ -507,7 +453,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                        "server.propertiesの書き込みに失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException($"Failed to write server.properties (Error Code : {ex.Message})");
             }
         }
 
@@ -521,8 +471,6 @@ namespace Server_GUI2
 
                 if (result == System.Windows.Forms.DialogResult.No)
                 {
-                    logger.Info("User chose NO");
-                    Close();
                     throw new UserSelectException("User chose NO");
                 }
             }
@@ -531,24 +479,33 @@ namespace Server_GUI2
         public void Change_eula()
         {
             logger.Info("Start modifying eula.txt");
+
+            //eula.txtの読み取り
+            string line;
+            List<string> eula_lines = new List<string>();
+            logger.Info("Read the eula.txt");
+            string ver = (Data_list.Import_spigot) ? "Spigot_" + Data_list.Version : Data_list.Version;
+            if (!File.Exists($@"{MainWindow.Data_Path}\{ver}\eula.txt"))
+            {
+                string message =
+                    "server.jarより有効なeula.txtが生成されませんでした。\n" +
+                    $"{ver}フォルダ内を確認してください。";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException("Was not created eula.txt");
+            }
+            using (StreamReader sr = new StreamReader($@"{MainWindow.Data_Path}\{ver}\eula.txt", Encoding.GetEncoding("Shift_JIS")))
+            {
+                while ((line = sr.ReadLine()) != "eula=false")
+                {
+                    eula_lines.Add(line);
+                }
+            }
+            eula_lines.Add("eula=true");
+
+            Agree(eula_lines);
+
             try
             {
-                //eula.txtの読み取り
-                string line;
-                List<string> eula_lines = new List<string>();
-                logger.Info("Read the eula.txt");
-                string ver = (Data_list.Import_spigot) ? "Spigot_" + Data_list.Version : Data_list.Version;
-                using (StreamReader sr = new StreamReader($@"{MainWindow.Data_Path}\{ver}\eula.txt", Encoding.GetEncoding("Shift_JIS")))
-                {
-                    while ((line = sr.ReadLine()) != "eula=false")
-                    {
-                        eula_lines.Add(line);
-                    }
-                }
-                eula_lines.Add("eula=true");
-
-                Agree(eula_lines);
-
                 //書き込み
                 logger.Info("Write the eula.txt");
                 using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{ver}\eula.txt", false))
@@ -561,7 +518,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                        "eula.txtの書き込みに失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException($"Failed to write eula.txt (Error Message : {ex.Message})");
             }
 
         }
@@ -576,7 +537,6 @@ namespace Server_GUI2
 
             if (result == System.Windows.Forms.DialogResult.Cancel)
             {
-                logger.Info("User didn't agree eula");
                 throw new UserSelectException("User didn't agree eula");
             }
         }
@@ -617,13 +577,14 @@ namespace Server_GUI2
 
             //Server_bat-files内のinfo.txtの中身を読み取る(ShareWorld起動時のみ使用するためここに記載している)
             logger.Info("Read the ShareWorld > Server_bat-files info");
+
             try
             {
                 if (File.Exists($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\info.txt"))
                 {
                     using (StreamReader sr = new StreamReader($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\info.txt", Encoding.GetEncoding("Shift_JIS")))
                     {
-                        info2 = Add_info(sr);
+                        info2 = data.Set_info(sr);
                     }
                 }
                 else
@@ -633,7 +594,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                        "ShareWorld内のinfo.txtの読み込みに失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException($"Failed to read info.txt in ShareWorld (Error Message : {ex.Message})");
             }
         }
 
@@ -656,7 +621,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                        "ワールドデータの初期化に失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException($"Failed to delete world data (Error Message : {ex.Message})");
             }
         }
 
@@ -677,10 +646,12 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                        "ワールドデータのバックアップ作成に失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new WinCommandException("Failed to make the back up world data");
             }
-            //CopyDirectory($@"{MainWindow.Data_Path}\{version}\{world}\", $@"{MainWindow.Data_Path}\{version}\{world}_old({num})\");
-
         }
 
         public void Import_datapack(More_Settings m_set_window)
@@ -777,9 +748,11 @@ namespace Server_GUI2
 
             if (p.ExitCode != 0)
             {
-                Error($"サーバーの開設に失敗しました。(エラーコード：{p.ExitCode})");
-                Console.Write(App.end_str);
-                throw new ServerException("Failed to open the server");
+                string message =
+                    "サーバーの実行途中で予期せぬエラーが発生しました。\n\n" +
+                    $"【エラーコード】　{p.ExitCode}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new ServerException("Failed to process the server");
             }
         }
 
@@ -817,7 +790,7 @@ namespace Server_GUI2
             if (Data_list.Starter_Version != latest_ver)
             {
                 //Server Starterのバージョンを書き直し
-                Change_info(1);
+                Change_info(1, new_system_vesion:latest_ver);
 
                 //.exeをアップデート
                 Starter_versionUP(url);
@@ -846,7 +819,7 @@ namespace Server_GUI2
             logger.Info("Check existence of World_Data Folder");
             try
             {
-                if (!(Directory.Exists(MainWindow.Data_Path)))
+                if (!Directory.Exists(MainWindow.Data_Path))
                 {
                     Directory.CreateDirectory(MainWindow.Data_Path);
                     logger.Info("Created the Directory of World_Data");
@@ -854,7 +827,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                        "サーバーデータを保管するフォルダ(World_Data)の作成に失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException($"Failed to create World_Data folder (Error Message : {ex.Message})");
             }
 
         }
@@ -924,8 +901,7 @@ namespace Server_GUI2
                 DialogResult result1 = System.Windows.Forms.MessageBox.Show($"op権限の処理に失敗しました。\nこのままサーバーを開設して良いですか？", "Server Starter", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (result1 == System.Windows.Forms.DialogResult.Cancel)
                 {
-                    logger.Info("User interrupt the opening server");
-                    throw new ServerException("User interrupt the opening server");
+                    throw new UserSelectException("User interrupt the opening server by op process failed");
                 }
             }
         }
@@ -991,19 +967,6 @@ namespace Server_GUI2
             };
 
             Process.Start(psi);
-        }
-
-        public void Error(string ex_message, string file_name = "Server_Starter.log")
-        {
-            System.Windows.Forms.MessageBox.Show(
-                $"実行途中でエラーが発生しました。\r\n" +
-                $"logファイルとともに開発者にお問い合わせください。\r\n" +
-                $"【logファイルの場所】\r\n{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}log\\{file_name}\r\n\n" +
-                $"【エラー内容】\r\n{ex_message}", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            
-            logger.Error(ex_message);
-            Console.Write(App.end_str);
-            Environment.Exit(0);
         }
     }
 }

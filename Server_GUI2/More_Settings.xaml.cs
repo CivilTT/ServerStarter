@@ -95,54 +95,47 @@ namespace Server_GUI2
             //other_settingsのリストを作る
             List<string> other_settings_TF_1 = new List<string>();
             List<string> other_settings_last_1 = new List<string>();
-            try
+
+            foreach (string key in Data_list.Server_Properties.Keys)
             {
-                foreach (string key in Data_list.Server_Properties.Keys)
+                if (key == "level-name" || key == "difficulty" || key == "gamemode" || key == "hardcore" || key == "force-gamemode" || key == "white-list" || key == "enforce-whitelist" || key.Contains("#"))
                 {
-                    if (key == "level-name" || key == "difficulty" || key == "gamemode" || key == "hardcore" || key == "force-gamemode" || key == "white-list" || key == "enforce-whitelist" || key.Contains("#"))
-                    {
-                        continue;
-                    }
-                    if (Data_list.Server_Properties[key] == "true" || Data_list.Server_Properties[key] == "false")
-                    {
-                        other_settings_TF_1.Add(key);
-                    }
-                    else
-                    {
-                        other_settings_last_1.Add(key);
-                    }
+                    continue;
                 }
-                //型を合わせるための処理
-                string[] other_settings_TF = new string[other_settings_TF_1.Count];
-                string[] other_settings_last = new string[other_settings_last_1.Count];
-                for (int i = 0; i < other_settings_TF_1.Count; i++)
+                if (Data_list.Server_Properties[key] == "true" || Data_list.Server_Properties[key] == "false")
                 {
-                    other_settings_TF[i] = other_settings_TF_1[i];
+                    other_settings_TF_1.Add(key);
                 }
-                for (int i = 0; i < other_settings_last_1.Count; i++)
+                else
                 {
-                    other_settings_last[i] = other_settings_last_1[i];
+                    other_settings_last_1.Add(key);
                 }
-
-                //MAIN Settings
-                Register_combo(difficulty, difficulty_list, Data_list.Server_Properties["difficulty"]);
-                Register_combo(hardcore, true_false_list, Data_list.Server_Properties["hardcore"]);
-                Register_combo(gamemode, gamemode_list, Data_list.Server_Properties["gamemode"]);
-                Register_combo(force_gamemode, true_false_list, Data_list.Server_Properties["force-gamemode"]);
-                Register_combo(white_list, true_false_list, Data_list.Server_Properties["white-list"]);
-                Register_combo(enforce_white_list, true_false_list, Data_list.Server_Properties["enforce-whitelist"]);
-
-                //OTHER Settings
-                Register_combo(true_false, other_settings_TF, other_settings_TF[0]);
-                Register_combo(true_false_combo, true_false_list, Data_list.Server_Properties[other_settings_TF[0]]);
-                Register_combo(input_text, other_settings_last, other_settings_last[0]);
-                input_text_txt.Text = Data_list.Server_Properties[other_settings_last[0]];
             }
-            catch(Exception ex)
+            //型を合わせるための処理
+            string[] other_settings_TF = new string[other_settings_TF_1.Count];
+            string[] other_settings_last = new string[other_settings_last_1.Count];
+            for (int i = 0; i < other_settings_TF_1.Count; i++)
             {
-                func.Error(ex.Message);
+                other_settings_TF[i] = other_settings_TF_1[i];
+            }
+            for (int i = 0; i < other_settings_last_1.Count; i++)
+            {
+                other_settings_last[i] = other_settings_last_1[i];
             }
 
+            //MAIN Settings
+            Register_combo(difficulty, difficulty_list, Data_list.Server_Properties["difficulty"]);
+            Register_combo(hardcore, true_false_list, Data_list.Server_Properties["hardcore"]);
+            Register_combo(gamemode, gamemode_list, Data_list.Server_Properties["gamemode"]);
+            Register_combo(force_gamemode, true_false_list, Data_list.Server_Properties["force-gamemode"]);
+            Register_combo(white_list, true_false_list, Data_list.Server_Properties["white-list"]);
+            Register_combo(enforce_white_list, true_false_list, Data_list.Server_Properties["enforce-whitelist"]);
+
+            //OTHER Settings
+            Register_combo(true_false, other_settings_TF, other_settings_TF[0]);
+            Register_combo(true_false_combo, true_false_list, Data_list.Server_Properties[other_settings_TF[0]]);
+            Register_combo(input_text, other_settings_last, other_settings_last[0]);
+            input_text_txt.Text = Data_list.Server_Properties[other_settings_last[0]];
         }
 
         private void Register_combo(System.Windows.Controls.ComboBox name_combo, string[] index_list, object IndexOf)
@@ -156,7 +149,6 @@ namespace Server_GUI2
                 }
             }
 
-            Console.WriteLine(IndexOf);
             name_combo.SelectedIndex = name_combo.Items.IndexOf(IndexOf);
         }
 

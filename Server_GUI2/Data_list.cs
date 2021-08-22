@@ -85,7 +85,6 @@ namespace Server_GUI2
 
         public static List<string> Argument { get; set; }
 
-        private readonly Functions func = new Functions();
         private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         WebClient wc = new WebClient();
 
@@ -142,32 +141,26 @@ namespace Server_GUI2
             }
         }
 
-        public void Set_info(StreamReader sr)
+        public List<string> Set_info(StreamReader sr)
         {
             logger.Info("Read the local info data");
 
             string line;
             List<string> tmp_Info = new List<string>();
-            try
+            while ((line = sr.ReadLine()) != null)
             {
-                while ((line = sr.ReadLine()) != null)
+                //＞が入っていない行ははじく
+                if (line.IndexOf(">") == -1)
                 {
-                    //＞が入っていない行ははじく
-                    if (line.IndexOf(">") == -1)
-                    {
-                        continue;
-                    }
-
-                    //-＞の前後をリストとして登録している
-                    tmp_Info.Add(line.Substring(line.IndexOf("->") + 2));
-                    
+                    continue;
                 }
-                Info = tmp_Info;
+
+                //-＞の前後をリストとして登録している
+                tmp_Info.Add(line.Substring(line.IndexOf("->") + 2));
+                    
             }
-            catch (Exception ex)
-            {
-                func.Error(ex.Message);
-            }
+
+            return tmp_Info;
         }
 
         public void Set_SW()

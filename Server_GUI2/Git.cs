@@ -74,33 +74,26 @@ namespace Server_GUI2
             logger.Info("Start the cloning ShareWorld");
             MainWindow.Pd.Message = "\n---Start the cloning ShareWorld---\n";
 
-            try
-            {
-                // ProcessStartInfo info = new ProcessStartInfo();
-                // info.FileName = "clone.bat";
-                // info.WorkingDirectory = $@"{MainWindow.Data_Path}\{version}\";
-                // info.Arguments = @" > .\log\clone_log.txt 2>&1";
+            // ProcessStartInfo info = new ProcessStartInfo();
+            // info.FileName = "clone.bat";
+            // info.WorkingDirectory = $@"{MainWindow.Data_Path}\{version}\";
+            // info.Arguments = @" > .\log\clone_log.txt 2>&1";
 
-                // Process p = Process.Start(info);
-                // Process p = Process.Start($@"{MainWindow.Data_Path}\{version}\clone.bat");
+            // Process p = Process.Start(info);
+            // Process p = Process.Start($@"{MainWindow.Data_Path}\{version}\clone.bat");
 
-                // string command = $@"{MainWindow.Data_Path}\{version}\clone.bat 2>&1 | " + "%{ \"\"\"$_\"\"\" }" + @" | Set-Content -Path .\log\clone_log.txt -PassThru";
-                // Process p = Process.Start("powershell", command);
-                // p.WaitForExit();
-                // if (p.ExitCode != 0 && p.ExitCode != 1)
-                // {
-                //     Error($"Git clone に失敗しました。(エラーコード：{p.ExitCode})");
-                // }
+            // string command = $@"{MainWindow.Data_Path}\{version}\clone.bat 2>&1 | " + "%{ \"\"\"$_\"\"\" }" + @" | Set-Content -Path .\log\clone_log.txt -PassThru";
+            // Process p = Process.Start("powershell", command);
+            // p.WaitForExit();
+            // if (p.ExitCode != 0 && p.ExitCode != 1)
+            // {
+            //     Error($"Git clone に失敗しました。(エラーコード：{p.ExitCode})");
+            // }
 
-                Bat_start($@"{MainWindow.Data_Path}\{version}\clone.bat", "clone");
+            Bat_start($@"{MainWindow.Data_Path}\{version}\clone.bat", "clone");
 
-                logger.Info("Delete clone.bat");
-                File.Delete($@"{MainWindow.Data_Path}\{version}\clone.bat");
-            }
-            catch (Exception ex)
-            {
-                Error(ex.Message);
-            }
+            logger.Info("Delete clone.bat");
+            File.Delete($@"{MainWindow.Data_Path}\{version}\clone.bat");
         }
 
         private void Bat_start(string file_path, string git_type)
@@ -126,7 +119,9 @@ namespace Server_GUI2
 
             if (p.ExitCode != 0 && p.ExitCode != 1)
             {
-                Error($"Git {git_type} に失敗しました。(エラーコード：{p.ExitCode})");
+                string message = $"Git {git_type} に失敗しました。(エラーコード：{p.ExitCode})";
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new GitException($"Failed to process 'Git {git_type}' (Error Code : {p.ExitCode})");
             }
         }
 
@@ -154,6 +149,7 @@ namespace Server_GUI2
                 "git -C %~dp0 commit -m \"%info[1]%\"",
                 "git -C %~dp0 push --progress"
             };
+
             try
             {
                 using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\push.bat", false))
@@ -166,7 +162,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                    "ShareWorldの処理に必要なファイル(push.bat)の生成に失敗しました。\n\n" +
+                    $"【エラー要因】\n{ex.Message}";
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException("Failed to make push.bat");
             }
         }
 
@@ -193,7 +193,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                    "ShareWorldの処理に必要なファイル(pull.bat)の生成に失敗しました。\n\n" +
+                    $"【エラー要因】\n{ex.Message}";
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException("Failed to make pull.bat");
             }
         }
 
@@ -221,21 +225,12 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                string message =
+                    "ShareWorldの処理に必要なファイル(clone.bat)の生成に失敗しました。\n\n" +
+                    $"【エラー要因】\n{ex.Message}";
+                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new IOException("Failed to make clone.bat");
             }
-        }
-
-        private void Error(string ex_message, string file_name = "Server_Starter.log")
-        {
-            MessageBox.Show(
-                $"実行途中でエラーが発生しました。\r\n" +
-                $"logファイルとともに開発者にお問い合わせください。\r\n" +
-                $"【logファイルの場所】\r\n{AppDomain.CurrentDomain.SetupInformation.ApplicationBase}log\\{file_name}\r\n\n" +
-                $"【エラー内容】\r\n{ex_message}", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            logger.Error(ex_message);
-            Console.Write(App.end_str);
-            Environment.Exit(0);
         }
     }
 }

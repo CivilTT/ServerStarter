@@ -216,14 +216,17 @@ namespace Server_GUI2
             logger.Info("Import new datapack");
             foreach(string key in add_list)
             {
-                try
+                Process p = Process.Start("xcopy", $@"{key} {Data_Path}\{Data_list.Version}\{Data_list.World}\datapacks\{Path.GetFileName(key)} /E /H /I /Y");
+                p.WaitForExit();
+
+                if(p.ExitCode != 0)
                 {
-                    Process p = Process.Start("xcopy", $@"{key} {Data_Path}\{Data_list.Version}\{Data_list.World}\datapacks\{System.IO.Path.GetFileName(key)} /E /H /I /Y");
-                    p.WaitForExit();
-                }
-                catch (Exception ex)
-                {
-                    func.Error(ex.Message);
+                    string message = 
+                        "datapackの導入に失敗しました。\n" +
+                        "このdatapackの導入をせずにサーバーを起動します。\n\n" +
+                        $"【失敗したデータパック名】  {Path.GetFileName(key)}";
+                    System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    logger.Warn($"Failed to import datapack ({Path.GetFileName(key)})");
                 }
             }
         }

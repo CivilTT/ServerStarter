@@ -24,15 +24,10 @@ namespace Server_GUI2
 
         public static string[] Args { get; set; }
 
-        public App()
-        {
-            Data_list.Argument = new List<string>();
-        }
-
-
-        [STAThread]
         [Obsolete]
+#pragma warning disable CS0809 // 旧形式のメンバーが、旧形式でないメンバーをオーバーライドします
         protected override void OnStartup(StartupEventArgs e)
+#pragma warning restore CS0809 // 旧形式のメンバーが、旧形式でないメンバーをオーバーライドします
         {
             base.OnStartup(e);
             bool reset_data = false;
@@ -61,6 +56,18 @@ namespace Server_GUI2
                 bool op = false;
                 foreach (string key in e.Args)
                 {
+                    Data_list.Argument.Add(key);
+
+                    if (key.Substring(0,2) == "-s")
+                    {
+                        prop_dict_str = key.Substring(2);
+                        prop_dict_str = prop_dict_str.Replace("{", "{\"");
+                        prop_dict_str = prop_dict_str.Replace(",", "\",\"");
+                        prop_dict_str = prop_dict_str.Replace(":", "\":\"");
+                        prop_dict_str = prop_dict_str.Replace("}", "\"}");
+                        continue;
+                    }
+
                     switch (key)
                     {
                         case "-o":
@@ -83,19 +90,11 @@ namespace Server_GUI2
                         case "/delete":
                             delete_data = true;
                             continue;
+                        default:
+                            Console.WriteLine($"'{key}' is unknown paramater.");
+                            Console.WriteLine(end_str);
+                            return;
                     }
-                    if(key.Substring(0,2) == "-s")
-                    {
-                        prop_dict_str = key.Substring(2);
-                        prop_dict_str = prop_dict_str.Replace("{", "{\"");
-                        prop_dict_str = prop_dict_str.Replace(",", "\",\"");
-                        prop_dict_str = prop_dict_str.Replace(":", "\":\"");
-                        prop_dict_str = prop_dict_str.Replace("}", "\"}");
-                        continue;
-                    }
-
-                    Data_list.Argument.Add(key);
-
                 }
 
                 Data_delete(delete_data);
@@ -197,7 +196,7 @@ namespace Server_GUI2
             }
             catch(Exception ex)
             {
-                func.Error($"The Settings of properties is invalid\n(Error Message : {ex.Message})");
+                throw new ArgumentException($"The Settings of properties is invalid\n(Error Message : {ex.Message})");
             }
         }
 
@@ -231,6 +230,7 @@ namespace Server_GUI2
                     Data_list.World = Data_list.Argument[1];
                     break;
             }
+
             try
             {
                 Directory.Delete($@"{Server_GUI2.MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}", true);
@@ -238,7 +238,7 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                func.Error(ex.Message);
+                throw new IOException($"Failed to delete World data (Error Message : {ex.Message})");
             }
 
             Finish();
@@ -246,7 +246,7 @@ namespace Server_GUI2
 
         private void Finish()
         {
-            this.Shutdown();
+            Shutdown();
             Environment.Exit(0);
         }
     }

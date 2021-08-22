@@ -178,7 +178,11 @@ namespace Server_GUI2
             }
             catch (Exception ex)
             {
-                func.Error(ex.Message);
+                string message =
+                        "配布ワールドの導入に失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new WinCommandException($"Failed to import the custom map (Error Message : {ex.Message})");
             }
         }
     }

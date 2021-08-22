@@ -16,8 +16,6 @@ namespace Server_GUI2
     {
         private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly Functions func = new Functions();
-
         public More_Settings m_settings { get; set; }
         public bool import_plugin { get; set; }
 
@@ -131,7 +129,12 @@ namespace Server_GUI2
                 }
                 catch (Exception ex)
                 {
-                    func.Error(ex.Message);
+                    string message =
+                        "プラグインの導入に失敗しました。\n" +
+                        "導入を行わない状態でサーバーを起動します。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                    System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    logger.Warn($"Failed to import the plugin (Error Message : {ex.Message})");
                 }
             }
         }
