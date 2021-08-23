@@ -32,8 +32,6 @@ namespace Server_GUI2
             Dp_window = new Dp_Settings();
             Haihu_window = new haihu();
             Spigot_window = new Spigot();
-
-            Read_properties();
         }
 
         public void Read_properties()

@@ -1,1 +1,4 @@
-[INFO ] 2021/08/23 16:00:09, 803 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/08/23 16:34:00, 719 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/08/23 16:34:02, 713 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/08/23 16:34:02, 723 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/08/23 16:34:02, 724 [1] Server_GUI2.Functions - Check the info.txt
