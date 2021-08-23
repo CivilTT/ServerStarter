@@ -11,6 +11,7 @@ namespace Server_GUI2
     public partial class Git
     {
         private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static List<string> log_text { get; set; } = new List<string>();
 
         public void Pull(string version)
         {
@@ -123,6 +124,8 @@ namespace Server_GUI2
                 MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw new GitException($"Failed to process 'Git {git_type}' (Error Code : {p.ExitCode})");
             }
+
+            Write_log(git_type);
         }
 
         //OutputDataReceivedイベントハンドラ
@@ -132,9 +135,26 @@ namespace Server_GUI2
             //出力された文字列を表示する
             // Console.WriteLine(e.Data);
             MainWindow.Pd.Message = e.Data;
+            log_text.Add(e.Data);
         }
 
-
+        private void Write_log(string git_type)
+        {
+            try
+            {
+                using (var writer = new StreamWriter($@".\{git_type}_log.txt", false))
+                {
+                    foreach (string line in log_text)
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Warn($"Failed to make {git_type}_log.txt (Error Message : {ex.Message})");
+            }
+        }
 
         public void Create_bat_push()
         {
