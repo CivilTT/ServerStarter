@@ -295,9 +295,9 @@ namespace Server_GUI2
             if(java_version == "Java is not installed in this PC")
             {
                 MessageBox.Show(
-                    "このPCにはJavaが導入されていません。以下の手順に従ってJava (JDK)をインストールしてください。\r\n\n" +
-                    "・Step１\r\n　Oracleのサイト（https://www.oracle.com/java/technologies/javase-jdk16-downloads.html）より最新のJDKのインストーラーをダウンロードする。\r\n\n" +
-                    "・Step２\r\n　以下二つの環境変数を「システム環境変数」に登録する。\r\n" +
+                    "このPCにはJava (JDK)が導入されていません。以下の手順に従ってJava (JDK)をインストールしてください。\r\n\n" +
+                    "---Step１---\r\n　Oracleのサイト（https://www.oracle.com/java/technologies/javase-jdk16-downloads.html）より最新のJDKのインストーラーをダウンロードする。\r\n\n" +
+                    "---Step２---\r\n　以下二つの環境変数を「システム環境変数」に登録する。\r\n" +
                     "　　・【JAVA_HOME】 ex) C:\\Program Files\\Java\\jdk-16.0.1\r\n" +
                     "　　・【Path】 ex) C:\\Program Files\\Java\\jdk-16.0.1\\bin", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

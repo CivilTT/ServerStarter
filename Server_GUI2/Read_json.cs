@@ -92,7 +92,7 @@ namespace Server_GUI2
                 wc.Dispose();
 
                 //一度実行し、eula.txtなどの必要ファイルを書き出す
-                func.Start_server();
+                func.Start_server(true);
 
                 //eulaの書き換え
                 func.Change_eula();
@@ -123,7 +123,7 @@ namespace Server_GUI2
             }
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            func.Start_server();
+            func.Start_server(true);
             MainWindow.Pd.Value = 15;
             MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
 
