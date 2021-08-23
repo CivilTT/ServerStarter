@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Server_GUI2"
         mc:Ignorable="d"
-        Title="Info Builder" Height="450" Width="700">
+        Title="Info Builder" Height="450" Width="700" Topmost="True">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="40,21,0,0" TextWrapping="Wrap" Text="Info Builder" VerticalAlignment="Top" Height="48" Width="300" FontSize="24"/>
         <TextBlock HorizontalAlignment="Left" Margin="50,70,0,0" TextWrapping="Wrap" Text="I could not get infomation completly. Please fill all them." VerticalAlignment="Top" Height="34" Width="575" FontSize="20"/>
