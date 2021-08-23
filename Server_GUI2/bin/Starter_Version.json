@@ -1,9 +1,20 @@
 {
   "latest": {
-    "name": "5.2",
+    "name": "1.0.0",
     "url": "https://drive.google.com/uc?export=download&confirm=AgdN&id=1XOsK6MatYtcLYQfw-PHfrZHE7w0TEOn2"
   },
   "versions": [
+    {
+      "name":"1.0.0",
+      "time":"2021-08-23",
+      "type":"Added",
+      "points":[
+        "Publish the system",
+        "Fixed the command of 'git config' --global -> --local",
+        "Added the log file of git process",
+        "Fixed the error system (Added a lot of new Exception)"
+      ]
+    },
     {
       "name":"5.2",
       "time":"2021-08-20",
