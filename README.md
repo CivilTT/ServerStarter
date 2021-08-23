@@ -17,8 +17,8 @@
 6. 少しするとサーバーの起動が開始されます。
 
 # 詳細な解説＆機能紹介
-こちらのリンクよりご確認ください。
-https://qiita.com/CivilTT/items/a59d9be7cea50d60a666
+[こちら](https://qiita.com/CivilTT/items/a59d9be7cea50d60a666)のリンクよりご確認ください。
+
 
   </div>
 </details>
@@ -40,8 +40,7 @@ You can easily build the Minecraft Multiplay server
 6. You can build the Minecraft Server!!
 
 # More Information
-It is HERE!!
-https://qiita.com/CivilTT/items/a59d9be7cea50d60a666
+It is [HERE](https://qiita.com/CivilTT/items/a59d9be7cea50d60a666)!!
 
   </div>
 </details>
