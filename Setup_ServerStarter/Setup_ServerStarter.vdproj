@@ -1570,7 +1570,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Server_Starter"
         "ProductCode" = "8:{BBA3CA7F-98F3-49FD-8C42-52C546C2F543}"
-        "PackageCode" = "8:{6E10DD62-9EDC-4DFE-A922-D1F2CB13E1EF}"
+        "PackageCode" = "8:{D696EC32-9451-4CA4-A135-84A3C1A77036}"
         "UpgradeCode" = "8:{58271BB8-46BD-45BF-9599-2557AA6164BC}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1701,7 +1701,7 @@
             "Target" = "8:_17AF757B14304F2B9818FCC82046AF98"
             "Folder" = "8:_523CFEEEC92A493AB2ED33FD01555021"
             "WorkingFolder" = "8:_8891410FE2C04E48A0737A13AF24ABED"
-            "Icon" = "8:"
+            "Icon" = "8:_319EEB0770A54A2F99B206F1A541E128"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_BBF6D6314B4E4DBD961D279C2E96A9D6"
@@ -1715,7 +1715,7 @@
             "Target" = "8:_17AF757B14304F2B9818FCC82046AF98"
             "Folder" = "8:_AA25812A6E1944308CBF0D73EF921D36"
             "WorkingFolder" = "8:_8891410FE2C04E48A0737A13AF24ABED"
-            "Icon" = "8:"
+            "Icon" = "8:_319EEB0770A54A2F99B206F1A541E128"
             "Feature" = "8:"
             }
         }
