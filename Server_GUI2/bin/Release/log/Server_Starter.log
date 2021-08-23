@@ -1,21 +1,18 @@
-[INFO ] 2021/08/23 17:21:27, 962 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
-[INFO ] 2021/08/23 17:21:28, 736 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
-[INFO ] 2021/08/23 17:21:28, 751 [1] Server_GUI2.Functions - Check existence of World_Data Folder
-[INFO ] 2021/08/23 17:21:28, 753 [1] Server_GUI2.Functions - Check the info.txt
-[INFO ] 2021/08/23 17:21:28, 757 [1] Server_GUI2.Data_list - Read the local info data
-[INFO ] 2021/08/23 17:21:28, 763 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter
-[INFO ] 2021/08/23 17:21:29, 815 [1] Server_GUI2.Data_list - Check the all Directories of Server Version and World
-[INFO ] 2021/08/23 17:21:29, 817 [1] Server_GUI2.Data_list - Check the environment of this PC
-[INFO ] 2021/08/23 17:21:30, 206 [1] Server_GUI2.MainWindow - Read the new Versions
-[INFO ] 2021/08/23 17:21:30, 208 [1] Server_GUI2.Read_json - Import new Version List (release)
-[INFO ] 2021/08/23 17:21:30, 344 [1] Server_GUI2.Read_json - Import new Version List (snapshot)
-[INFO ] 2021/08/23 17:21:30, 345 [1] Server_GUI2.Read_json - Import new Version List (all)
-[INFO ] 2021/08/23 17:21:30, 346 [1] Server_GUI2.Functions - Read the local Versions
-[INFO ] 2021/08/23 17:21:30, 353 [1] Server_GUI2.More_Settings - Read the server.properties at 
-[WARN ] 2021/08/23 17:21:30, 354 [1] Server_GUI2.More_Settings - Read the Default server.properties in this system.
-[INFO ] 2021/08/23 17:21:30, 356 [1] Server_GUI2.Functions - Read the local Worlds
-[INFO ] 2021/08/23 17:21:33, 670 [1] Server_GUI2.More_Settings - set_value method
-[INFO ] 2021/08/23 17:21:33, 671 [1] Server_GUI2.More_Settings - Change the propertie about [entity-broadcast-range-percentage = 100]
-[INFO ] 2021/08/23 17:21:34, 944 [1] Server_GUI2.More_Settings - Click the OK Button
-[INFO ] 2021/08/23 17:21:35, 723 [1] Server_GUI2.MainWindow - Starter was pushed Close Button
-[INFO ] 2021/08/23 17:21:35, 726 [1] Server_GUI2.MainWindow - This System is successfully over
+[INFO ] 2021/08/23 19:37:26, 409 [1] Server_GUI2.Read_json - Import version_manifest_v2.json
+[INFO ] 2021/08/23 19:37:28, 072 [1] Server_GUI2.MainWindow - The system of Server Starter is started.
+[INFO ] 2021/08/23 19:37:28, 080 [1] Server_GUI2.Functions - Check existence of World_Data Folder
+[INFO ] 2021/08/23 19:37:28, 081 [1] Server_GUI2.Functions - Check the info.txt
+[INFO ] 2021/08/23 19:37:28, 085 [1] Server_GUI2.Data_list - Read the local info data
+[INFO ] 2021/08/23 19:37:28, 088 [1] Server_GUI2.Functions - Check the versionUP about this system, Server Starter
+[INFO ] 2021/08/23 19:37:29, 246 [1] Server_GUI2.Data_list - Check the all Directories of Server Version and World
+[INFO ] 2021/08/23 19:37:29, 248 [1] Server_GUI2.Data_list - Check the environment of this PC
+[INFO ] 2021/08/23 19:37:29, 668 [1] Server_GUI2.MainWindow - Read the new Versions
+[INFO ] 2021/08/23 19:37:29, 670 [1] Server_GUI2.Read_json - Import new Version List (release)
+[INFO ] 2021/08/23 19:37:29, 680 [1] Server_GUI2.Read_json - Import new Version List (snapshot)
+[INFO ] 2021/08/23 19:37:29, 681 [1] Server_GUI2.Read_json - Import new Version List (all)
+[INFO ] 2021/08/23 19:37:29, 682 [1] Server_GUI2.Functions - Read the local Versions
+[INFO ] 2021/08/23 19:37:29, 689 [1] Server_GUI2.More_Settings - Read the server.properties at 
+[WARN ] 2021/08/23 19:37:29, 689 [1] Server_GUI2.More_Settings - Read the Default server.properties in this system.
+[INFO ] 2021/08/23 19:37:29, 691 [1] Server_GUI2.Functions - Read the local Worlds
+[INFO ] 2021/08/23 19:37:33, 126 [1] Server_GUI2.MainWindow - Starter was pushed Close Button
+[INFO ] 2021/08/23 19:37:33, 129 [1] Server_GUI2.MainWindow - This System is successfully over
