@@ -142,8 +142,8 @@ namespace Server_GUI2
             List<string> push = new List<string>
             {
                 "@echo off",
-                "git config --global user.name %info[6]%",
-                "git config --global user.email %info[7]%",
+                "git config --local user.name %info[6]%",
+                "git config --local user.email %info[7]%",
                 "for /f \"tokens=1,3 delims=>\" %%a in (%~dp0\\..\\..\\info.txt) do (set info[%%a]=%%b)",
                 "git -C %~dp0 add -A",
                 "git -C %~dp0 commit -m \"%info[1]%\"",
@@ -177,8 +177,8 @@ namespace Server_GUI2
             {
                 "@echo off",
                 "for /f \"tokens=1,3 delims=>\" %%a in (%~dp0\\..\\..\\info.txt) do (set info[%%a]=%%b)",
-                "git config --global user.name %info[6]%",
-                "git config --global user.email %info[7]%",
+                "git config --local user.name %info[6]%",
+                "git config --local user.email %info[7]%",
                 "git -C %~dp0 pull --progress"
             };
             try
@@ -211,7 +211,7 @@ namespace Server_GUI2
                 "git config --global user.name %info[6]%",
                 "git config --global user.email %info[7]%",
                 $@"cd {MainWindow.Data_Path}\{version}",
-                "git clone https://github.com/Gomicas/ShareWorld --depth 1 --progress"
+                "git clone https://github.com/%info[6]%/ShareWorld --depth 1 --progress"
             };
             try
             {

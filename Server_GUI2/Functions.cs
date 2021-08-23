@@ -735,7 +735,7 @@ namespace Server_GUI2
             }
         }
 
-        public virtual void Start_server()
+        public virtual void Start_server(bool first_launch = false)
         {
             //server.jarの起動に必要なstart.batを作成
             Create_bat_start();
@@ -752,6 +752,11 @@ namespace Server_GUI2
                     "サーバーの実行途中で予期せぬエラーが発生しました。\n\n" +
                     $"【エラーコード】　{p.ExitCode}";
                 System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (first_launch)
+                {
+                    // 中途半端にserver.jarとstart.batのみ残ることを防止
+                    Directory.Delete($@"{MainWindow.Data_Path}\{ver_name}", true);
+                }
                 throw new ServerException("Failed to process the server");
             }
         }
