@@ -18,9 +18,7 @@
 
 # 詳細な解説＆機能紹介
 こちらのリンクよりご確認ください。
-~~~
-現在準備中です…。
-~~~
+https://qiita.com/CivilTT/items/a59d9be7cea50d60a666
 
   </div>
 </details>
@@ -43,9 +41,7 @@ You can easily build the Minecraft Multiplay server
 
 # More Information
 It is HERE!!
-~~~
-URL is coming soon...
-~~~
+https://qiita.com/CivilTT/items/a59d9be7cea50d60a666
 
   </div>
 </details>
