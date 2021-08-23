@@ -9,7 +9,7 @@
 ボタンクリックによって簡単にサーバーを立てることができるようにするソフトウェアです。
 
 # 使い方
-1. `Setup_ServerStarter.msi`を[こちら](https://github.com/CivilTT/ServerStarter/raw/master/Setup_ServerStarter/Release/Setup_ServerStarter.msi)からダウンロードしてください。
+1. `Setup_ServerStarter.msi`を[こちら](https://github.com/CivilTT/ServerStarter/releases/download/v1.0.0/Setup_ServerStarter.msi)からダウンロードしてください。
 2. ダウンロードしたファイルを起動し、デスクトップに`Server Starter`というショートカットが作成されたことを確認してください。
 3. `Server Starter`を起動してください。
 4. プレイヤー名などを入力する画面にて情報を入力し、次の画面で起動したいサーバーのバージョンとワールド名を設定してください。
@@ -32,7 +32,7 @@
 You can easily build the Minecraft Multiplay server
 
 # How to use
-1. Download `Setup_ServerStarter.msi` at [here](https://github.com/CivilTT/ServerStarter/raw/master/Setup_ServerStarter/Release/Setup_ServerStarter.msi)
+1. Download `Setup_ServerStarter.msi` at [here](https://github.com/CivilTT/ServerStarter/releases/download/v1.0.0/Setup_ServerStarter.msi)
 2. Start this file and check to create `Server Starter` at your Desktop
 3. Start `Server Starter`
 4. Set any information and Select Version and World
