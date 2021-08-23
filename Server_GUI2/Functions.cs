@@ -805,7 +805,7 @@ namespace Server_GUI2
         private void Read_Starter_json()
         {
             // 最新のjsonをダウンロード
-            string url = "https://drive.google.com/uc?id=1cWaNVXzfXsm-xq3PcQl46WBSgwzIRGoh";
+            string url = "https://drive.google.com/uc?id=1Z9o-1SZpJESlNolOqX6ET5FgPItqXoH0";
             wc.DownloadFile(url, $@"{MainWindow.Data_Path}\Starter_Version.json");
 
             // jsonの全文読み込み
