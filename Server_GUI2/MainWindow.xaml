@@ -69,7 +69,7 @@
             <Button x:Name="Run_button" Content="Run" Width="130" Height="40" FontSize="18" Click="START_Click"/>
         </StackPanel>
         <Button x:Name="info" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="60" Height="30" FontSize="18" Margin="10,0,0,10" Content="info" Grid.Column="1" Click="Info_Click"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="300" FontSize="24" Grid.Column="1" Text="Minecraft Server Starter"/>
+        <TextBlock HorizontalAlignment="Left" Margin="30,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="300" FontSize="24" Grid.Column="1" Text="Server Starter for Minecraft"/>
         <CheckBox x:Name="re_world" Content="Recreate World (When you want to reset the selected world)" HorizontalAlignment="Left" Margin="30,310,0,0" VerticalAlignment="Top" FontSize="14" Click="Reset_world_Click" Grid.Column="1" Height="18" Width="391"/>
         <CheckBox x:Name="sa_world" Content="Save old World before recreating it (Saving name : ...__old(1))" HorizontalAlignment="Left" Margin="70,340,0,0" VerticalAlignment="Top" FontSize="14" Checked="Save_world_Click" Grid.Column="1" Height="18" Width="399" IsEnabled="False" Foreground="LightGray"/>
         <CheckBox x:Name="op" Content="XXXX has op rights in this version's server" HorizontalAlignment="Left" Margin="30,370,0,0" VerticalAlignment="Top" FontSize="14" IsChecked="True" Click="Op_Click" Grid.Column="1" Height="18" Width="391"/>

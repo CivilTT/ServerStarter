@@ -110,6 +110,7 @@ namespace Server_GUI2
             p.OutputDataReceived += p_OutputDataReceived;
             p.ErrorDataReceived += p_OutputDataReceived;
 
+            log_text = new List<string>();
             p.Start();
 
             //非同期で出力の読み取りを開始
@@ -142,7 +143,7 @@ namespace Server_GUI2
         {
             try
             {
-                using (var writer = new StreamWriter($@".\{git_type}_log.txt", false))
+                using (var writer = new StreamWriter($@".\log\{git_type}_log.txt", false))
                 {
                     foreach (string line in log_text)
                     {
