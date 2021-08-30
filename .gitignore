@@ -5,9 +5,6 @@ Server_GUI2/bin/Release/World_Data/
 .vs/
 Server_GUI2/Resource/
 Server_GUI2/obj/
-Server_GUI2/bin/Server_Starter.zip
-Server_GUI2/bin/When_Using_upload.bat
-Server_GUI2/bin/Release/log
-Server_GUI2/bin/Release/All-VerWor.json
+Server_GUI2/bin/
 Setup_ServerStarter/
 /get_count.py
