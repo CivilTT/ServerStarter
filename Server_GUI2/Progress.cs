@@ -244,11 +244,11 @@ namespace Server_GUI2
             startEvent = new System.Threading.ManualResetEvent(false);
 
             //スレッドを作成
-            thread = new System.Threading.Thread(
-                new System.Threading.ThreadStart(Run));
-            thread.IsBackground = true;
-            this.thread.ApartmentState =
-                System.Threading.ApartmentState.STA;
+            thread = new System.Threading.Thread(new System.Threading.ThreadStart(Run))
+            {
+                IsBackground = true,
+                ApartmentState = System.Threading.ApartmentState.STA
+            };
             thread.Start();
 
             //フォームが表示されるまで待機する
@@ -343,7 +343,7 @@ namespace Server_GUI2
             _canceled = true;
         }
 
-        private void form_Closing(object sender, CancelEventArgs e)
+        private void Form_Closing(object sender, CancelEventArgs e)
         {
             if (!closing)
             {
@@ -352,9 +352,9 @@ namespace Server_GUI2
             }
         }
 
-        private void form_Activated(object sender, EventArgs e)
+        private void Form_Activated(object sender, EventArgs e)
         {
-            form.Activated -= new EventHandler(form_Activated);
+            form.Activated -= new EventHandler(Form_Activated);
             startEvent.Set();
         }
         
