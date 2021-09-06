@@ -47,7 +47,7 @@ namespace Server_GUI2
         private Spigot_Function spi_func = new Spigot_Function();
         private More_Settings m_set_window = new More_Settings();
 
-        [Obsolete]
+
         public MainWindow(bool gui)
         {
             logger.Info("The system of Server Starter is started.");
@@ -152,7 +152,6 @@ namespace Server_GUI2
             // pd.Dispose();
         }
 
-        [Obsolete]
         public void Start(bool gui=true)
         {
             logger.Debug("------------------------------------------------------------");
