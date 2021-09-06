@@ -119,14 +119,14 @@ namespace Server_GUI2
 
             p.WaitForExit();
 
+            Write_log(git_type);
+
             if (p.ExitCode != 0 && p.ExitCode != 1)
             {
                 string message = $"Git {git_type} に失敗しました。(エラーコード：{p.ExitCode})";
                 MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw new GitException($"Failed to process 'Git {git_type}' (Error Code : {p.ExitCode})");
             }
-
-            Write_log(git_type);
         }
 
         //OutputDataReceivedイベントハンドラ

@@ -58,6 +58,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoClosingMessageBox, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoClosingMessageBox.1.0.0.2\lib\net40\AutoClosingMessageBox.dll</HintPath>
+    </Reference>
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.4.0\lib\net462\ControlzEx.dll</HintPath>
     </Reference>

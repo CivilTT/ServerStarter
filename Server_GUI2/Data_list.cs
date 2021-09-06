@@ -72,7 +72,7 @@ namespace Server_GUI2
             {"max-world-size","29999984" }
         };
 
-        public static string Starter_Version { get { return "1.0.0"; } }
+        public static string Starter_Version { get { return "1.0.1"; } }
         public static string Version { get; set; }
         public static bool Import_spigot { get; set; }
         public static string Copy_version { get; set; }

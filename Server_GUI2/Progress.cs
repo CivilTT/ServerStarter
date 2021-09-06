@@ -182,7 +182,9 @@ namespace Server_GUI2
             {
                 _value = value;
                 if (form != null)
+                {
                     form.Dispatcher.Invoke(new MethodInvoker(SetProgressValue));
+                }
             }
             get
             {
@@ -233,7 +235,6 @@ namespace Server_GUI2
         /// <remarks>
         /// このメソッドは一回しか呼び出せません。
         /// </remarks>
-        [Obsolete]
         public void Show()
         {
             if (showed)
@@ -300,7 +301,15 @@ namespace Server_GUI2
         {
             if (form != null)
             {
+                form.bar_display.Text = $"Finish {_value}%";
                 form.ProgressBar1.Value = _value;
+            }
+        }
+
+        private void SetProgressText()
+        {
+            if (form != null)
+            {
                 form.bar_display.Text = $"Finish {_value}%";
             }
         }
