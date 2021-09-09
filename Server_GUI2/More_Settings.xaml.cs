@@ -17,7 +17,8 @@ namespace Server_GUI2
         private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public MainWindow Main { get; set; }
-        private readonly Functions func = new Functions();
+        // private readonly Functions func = new Functions();
+        
         public Dp_Settings Dp_window { get; set; }
         public haihu Haihu_window { get; set; }
         public Spigot Spigot_window { get; set; }
@@ -28,10 +29,6 @@ namespace Server_GUI2
         public More_Settings()
         {
             InitializeComponent();
-
-            Dp_window = new Dp_Settings();
-            Haihu_window = new haihu();
-            Spigot_window = new Spigot();
         }
 
         public void Read_properties()
@@ -235,6 +232,9 @@ namespace Server_GUI2
         private void Import_click(object sender, RoutedEventArgs e)
         {
             Hide();
+            if (Haihu_window == null)
+                Haihu_window = new haihu();
+
             Haihu_window.m_settings = this;
             Haihu_window.ShowDialog();
         }
@@ -242,6 +242,9 @@ namespace Server_GUI2
         private void Dp_click(object sender, RoutedEventArgs e)
         {
             Hide();
+            if (Dp_window == null)
+                Dp_window = new Dp_Settings();
+
             Dp_window.m_settings = this;
             Dp_window.Display();
         }
@@ -262,6 +265,9 @@ namespace Server_GUI2
         private void Spigot_click(object sender, RoutedEventArgs e)
         {
             Hide();
+            if (Spigot_window == null)
+                Spigot_window = new Spigot();
+
             Spigot_window.m_settings = this;
             Spigot_window.Display();
         }
