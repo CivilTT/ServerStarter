@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -203,10 +204,11 @@ namespace Server_GUI2
         private void Starter_versionUP(string url)
         {
             logger.Info("Delete old .exe and download new .exe");
+            MainWindow.Pd.Message = "---START Version-up this system---";
+            MainWindow.Pd.Message = "Delete old .exe and download new .exe";
             string self_path = Directory.GetCurrentDirectory();
 
-
-            wc.DownloadFile(url, $@".\..\Server_GUI2.zip");
+            wc.DownloadFile(url, @".\..\Server_GUI2.zip");
 
             MainWindow.Pd.Close();
             
@@ -224,7 +226,7 @@ namespace Server_GUI2
             {
                 "@echo off",
                 @"taskkill /IM Server_GUI2.exe /F",
-                $@"@powershell Expand-Archive -Path {self_path}\..\Server_GUI2.zip -DestinationPath {self_path} -Force",
+                $"Powershell -Command \"Expand-Archive -Path "+$@"{self_path}\..\Server_GUI2.zip -DestinationPath {self_path} -Force"+"\"",
                 // 更新後に再起動する
                 $@"start Server_GUI2.exe{args_list}",
                 $@"del {self_path}\..\Server_GUI2.zip",
@@ -255,7 +257,7 @@ namespace Server_GUI2
             }
 
             Task.Run(() => Process.Start(@".\tmp.bat", @" > .\log\tmp(versionUP)_log.txt 2>&1"));
-            throw new Exception("Version up this system");
+            Environment.Exit(0);
         }
 
         /// <summary>
@@ -658,7 +660,7 @@ namespace Server_GUI2
         public void Import_datapack(More_Settings m_set_window)
         {
             logger.Info("Check the datapacks");
-            if (!m_set_window.Dp_window.import_dp)
+            if (m_set_window.Dp_window == null || !m_set_window.Dp_window.import_dp)
             {
                 logger.Info("There are not datapack necessary");
                 return;
@@ -671,7 +673,7 @@ namespace Server_GUI2
         public void Import_World(More_Settings m_set_window)
         {
             logger.Info("Check the Custom Map");
-            if (!m_set_window.Haihu_window.import_haihu)
+            if (m_set_window.Haihu_window == null || !m_set_window.Haihu_window.import_haihu)
             {
                 logger.Info("There are not Custom Map necessary");
                 return;
@@ -683,7 +685,7 @@ namespace Server_GUI2
         public void Import_plugins(More_Settings m_set_window)
         {
             logger.Info("Check the plugins");
-            if (!m_set_window.Spigot_window.import_plugin)
+            if (m_set_window.Spigot_window == null || !m_set_window.Spigot_window.import_plugin)
             {
                 logger.Info("There are not plugins necessary");
                 return;

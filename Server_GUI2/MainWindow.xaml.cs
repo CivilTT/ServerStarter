@@ -255,9 +255,9 @@ namespace Server_GUI2
             logger.Info("This System is successfully over");
             start_func.Shutdown();
             Close();
+            System.Windows.Application.Current.Shutdown();
         }
 
-        [Obsolete]
         private void START_Click(object sender, RoutedEventArgs e)
         {
             //MAINを閉じる

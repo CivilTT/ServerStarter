@@ -116,7 +116,7 @@ namespace Server_GUI2
                 }
 
                 // FileNameで選択されたフォルダを取得する
-                string datapack_name = System.IO.Path.GetFileName(cofd.FileName);
+                string datapack_name = Path.GetFileName(cofd.FileName);
                 Imported.Items.Remove("(None)");
                 Imported.Items.Add("【new】"+datapack_name);
                 // MessageBox.Show($"{cofd.FileName}を選択しました");
@@ -150,7 +150,7 @@ namespace Server_GUI2
             //     }
             // }
 
-            string file_extension = System.IO.Path.GetExtension(file_path);
+            string file_extension = Path.GetExtension(file_path);
             // そもそもzipやフォルダでないものははじく
             bool isDirectory = File.GetAttributes(file_path).HasFlag(FileAttributes.Directory)
 ;
@@ -162,7 +162,7 @@ namespace Server_GUI2
             else if (file_extension == ".zip")
             {
                 // Zipを展開
-                string extract_path = System.IO.Path.GetDirectoryName(file_path) + @"\" + System.IO.Path.GetFileNameWithoutExtension(file_path);
+                string extract_path = Path.GetDirectoryName(file_path) + @"\" + Path.GetFileNameWithoutExtension(file_path);
                 if (Directory.Exists(extract_path))
                 {
                     DialogResult result = System.Windows.Forms.MessageBox.Show($"以下の場所に展開先のフォルダと同名のフォルダが存在しています。\n同名のフォルダを展開フォルダで上書きしますか？\n\n【場所（展開先）】\n{extract_path}", "Server Starter", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -180,7 +180,7 @@ namespace Server_GUI2
                 file_path = extract_path;
             }
 
-            // フォルダの直下(or一つ下)にadvancementsフォルダが存在しているかを確認する
+            // フォルダの直下(or一つ下)に pack.mcmeta & dataフォルダ が存在しているかを確認する
             if (Directory.Exists($@"{file_path}\data") && File.Exists($@"{file_path}\pack.mcmeta"))
             {
                 logger.Info($"{file_path} is a valid file as Datapack");
@@ -207,6 +207,10 @@ namespace Server_GUI2
             // Okを押したときにはdatapackの作業は行わず、Runが入り、propertiesの編集が終わったあたりで、コピーなどの作業を行う
             // ShareWorldの新規導入などで衝突が起こったとしても、ファイルが上書きされるだけのため、問題なし
             import_dp = true;
+
+            // 再表示のためにGUI上の表示はリセットしておく
+            Imported.Items.Clear();
+
             Hide();
             m_settings.Show();
         }
@@ -237,7 +241,7 @@ namespace Server_GUI2
             foreach(string key in remove_list)
             {
                 string _path = $@"{Data_Path}\{Data_list.Version}\{Data_list.World}\datapacks\{key}";
-                string extend = System.IO.Path.GetExtension(key);
+                string extend = Path.GetExtension(key);
                 if (extend == string.Empty)
                 {
                     DirectoryInfo di = new DirectoryInfo(_path);
@@ -305,7 +309,7 @@ namespace Server_GUI2
             }
             foreach(string key in add_list)
             {
-                Imported.Items.Add("【new】" + System.IO.Path.GetFileName(key));
+                Imported.Items.Add("【new】" + Path.GetFileName(key));
             }
             foreach(string key in remove_list)
             {

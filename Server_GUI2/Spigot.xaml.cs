@@ -114,6 +114,10 @@ namespace Server_GUI2
             logger.Info("Click the OK Button");
             // Okを押したときにはpluginsの作業は行わず、Runが入り、propertiesの編集が終わったあたりで、コピーなどの作業を行う
             import_plugin = true;
+
+            // 再表示のためにGUI上の表示はリセットしておく
+            Imported.Items.Clear();
+
             Hide();
             m_settings.Show();
         }
