@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:Server_GUI2"
         mc:Ignorable="d"
         ResizeMode="NoResize"
+        ui:WindowHelper.UseModernWindowStyle="True"
         Title="More_Settings" Height="633" Width="450" WindowStartupLocation="CenterScreen">
     <Grid>
         <Line Stroke="#FFBDBCBC" StrokeThickness="2" X1="15" Y1="145" X2="435" Y2="145" Grid.Column="1"/>
@@ -16,13 +17,15 @@
             <TextBlock Text="Opening World" HorizontalAlignment="Right"  Height="33" Margin="0,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" FontSize="18" TextAlignment="Right"/>
             <TextBlock Text="Import Spigot Server" HorizontalAlignment="Right"  Height="33" Margin="0,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170" FontSize="18" TextAlignment="Right"/>
         </StackPanel>
-        <StackPanel HorizontalAlignment="Right"  Height="140" VerticalAlignment="Top"  Width="107" Orientation="Vertical" Margin="0,0,150,0">
+        <StackPanel HorizontalAlignment="Right"  Height="140" VerticalAlignment="Top" Width="120" Orientation="Vertical" Margin="0,0,140,0">
             <TextBlock x:Name="m_Version" Text="1.XX.YY" HorizontalAlignment="Left"  Height="33" Margin="20,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" FontSize="18" TextAlignment="Left"/>
-            <TextBlock x:Name="m_World" Text="XXX" HorizontalAlignment="Left"  Height="33" Margin="20,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" FontSize="18" TextAlignment="Left"/>
-            <mah:ToggleSwitch x:Name="Toggle_spigot" OffContent="  No" OnContent="  Yes" FontSize="18" Margin="20,13,0,0" Toggled="TF_spigot" Width="87"/>
+            <Viewbox Height="33" Width="85" HorizontalAlignment="Left" Margin="20 10 0 0">
+                <TextBlock x:Name="m_World" Text="XXX" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow"  VerticalAlignment="Top" TextAlignment="Left"/>
+            </Viewbox>
+            <ui:ToggleSwitch x:Name="Toggle_spigot" OffContent="No" OnContent="Yes" FontSize="18" Margin="15,8,0,0" Toggled="TF_spigot"/>
             <!--<TextBlock x:Name="TF_Spigot" Text="No" HorizontalAlignment="Left"  Height="33" Margin="20,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" FontSize="18" TextAlignment="Left"/>-->
         </StackPanel>
-        <StackPanel HorizontalAlignment="Right"  Height="140" VerticalAlignment="Top"  Width="150" Orientation="Vertical">
+        <StackPanel HorizontalAlignment="Right"  Height="140" VerticalAlignment="Top"  Width="140" Orientation="Vertical">
             <Button x:Name="import_World" Content="Custom Map" Width="120" Height="33" FontSize="18" Margin="0,15,0,0" Click="Import_click"/>
             <Button x:Name="dp" Content="DataPack" Width="120" Height="33" FontSize="18" Margin="0,10,0,0" Click="Dp_click"/>
             <Button x:Name="Plugins" Content="Plugins" Width="120" Height="33" FontSize="18" Margin="0,10,0,0" Click="Spigot_click"/>
@@ -43,7 +46,7 @@
                         <ComboBox x:Name="input_text" Margin="35,20,0,0" VerticalAlignment="Top" Width="145" Height="33" FontSize="16" DropDownClosed="IT_reload"/>
 
                     </StackPanel>
-                    <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20 0">
                         <ComboBox x:Name="difficulty" Margin="0,63,0,0" VerticalAlignment="Top" Width="145" Height="33" FontSize="16" DropDownClosed="Difficulty_CB"/>
                         <ComboBox x:Name="hardcore" Margin="0,20,0,0" VerticalAlignment="Top" Width="145" Height="33" FontSize="16" DropDownClosed="Hardcore_CB"/>
                         <ComboBox x:Name="gamemode" Margin="0,20,0,0" VerticalAlignment="Top" Width="145" Height="33" FontSize="16" DropDownClosed="Gamemode_CB"/>

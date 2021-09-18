@@ -3,7 +3,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Forms;
+using MW = ModernWpf;
 
 namespace Server_GUI2
 {
@@ -55,7 +57,7 @@ namespace Server_GUI2
                 string message =
                         "サーバーの移行に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new WinCommandException($"Failed to switch the server system (Error Message : {ex.Message})");
             }
         }
@@ -83,7 +85,7 @@ namespace Server_GUI2
                 string message =
                         "ワールドデータの初期化に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException($"Failed to delete world data (Error Message : {ex.Message})");
             }
         }
@@ -112,7 +114,7 @@ namespace Server_GUI2
                 string message =
                         "ワールドデータのバックアップ作成に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new WinCommandException("Failed to make the back up world data");
             }
         }

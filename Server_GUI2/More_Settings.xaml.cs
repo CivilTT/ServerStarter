@@ -1,5 +1,4 @@
 ﻿using log4net;
-using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +17,7 @@ namespace Server_GUI2
 
         public MainWindow Main { get; set; }
         // private readonly Functions func = new Functions();
-        
+
         public Dp_Settings Dp_window { get; set; }
         public haihu Haihu_window { get; set; }
         public Spigot Spigot_window { get; set; }
@@ -76,7 +75,7 @@ namespace Server_GUI2
             m_World.Text = Data_list.World;
             Json.Content = $@"Get All-VerWor.json at {Directory.GetCurrentDirectory()}\All-VerWor.json";
             Json.IsChecked = Properties.Settings.Default.Output_VW;
-            Toggle_spigot.IsOn = Data_list.Import_spigot;
+            // Toggle_spigot.IsOn = Data_list.Import_spigot;
             Plugins.IsEnabled = Data_list.Import_spigot;
 
             // GUIでの変更を保存するための仕掛け
@@ -274,18 +273,15 @@ namespace Server_GUI2
 
         private void TF_spigot(object sender, RoutedEventArgs e)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (Toggle_spigot.IsOn == true)
             {
-                if (toggleSwitch.IsOn == true)
-                {
-                    Plugins.IsEnabled = true;
-                    Data_list.Import_spigot = true;
-                }
-                else
-                {
-                    Plugins.IsEnabled = false;
-                    Data_list.Import_spigot = false;
-                }
+                Plugins.IsEnabled = true;
+                Data_list.Import_spigot = true;
+            }
+            else
+            {
+                Plugins.IsEnabled = false;
+                Data_list.Import_spigot = false;
             }
         }
     }

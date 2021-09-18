@@ -12,6 +12,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using MW = ModernWpf;
+
 
 namespace Server_GUI2
 {
@@ -129,16 +131,16 @@ namespace Server_GUI2
             {
                 if (Data_list.World == "ShareWorld" || Data_list.World == "logs" || Data_list.World == "")
                 {
-                    System.Windows.Forms.MessageBox.Show(
+                    MW.MessageBox.Show(
                         "新しく作るワールド名が不正なものとなっています。\r\n" +
                         "ワールド名に「(空欄)」、「ShareWorld」、「logs」は指定できません。\r\n" +
-                        "これら以外の名称で再登録してください。", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        "これら以外の名称で再登録してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                     
                     throw new ArgumentException($"User nmae the new world for {Data_list.World}");
                 }
                 if (world.Items.Contains(Data_list.World))
                 {
-                    System.Windows.MessageBox.Show(
+                    MW.MessageBox.Show(
                         $"{Data_list.World}はすでに存在するワールドです。\n" +
                         $"存在するワールドを新しく起動することはできません。\n" +
                         $"同じ名前でワールドを作り直す場合は、メイン画面にてRecreateにチェックを入れてください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -195,7 +197,7 @@ namespace Server_GUI2
                     string message =
                         "サーバーの実行ファイル(start.bat)の作成に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                    System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                     throw new IOException($"Failed to write start.bat (Error Message : {ex.Message})");
                 }
             }
@@ -250,7 +252,7 @@ namespace Server_GUI2
                         "Server Starterの更新ファイルの作成に失敗しました。\n" +
                         "システムの更新をせずに実行します。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 logger.Warn($"Failed to write tmp.bat (Error Message : {ex.Message})");
                 Change_info(1, new_system_vesion: Data_list.Starter_Version);
                 return;
@@ -302,7 +304,7 @@ namespace Server_GUI2
                 string message =
                         "Server Starterの保管ファイル(info.txt)の書き換えに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException($"Failed to write info.txt (Error Message : {ex.Message})");
             }
         }
@@ -372,7 +374,7 @@ namespace Server_GUI2
                 string message =
                         "サーバー開設に必要なワールドデータの操作に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new WinCommandException($"Failed to copy wrold data (Error Message : {ex.Message})");
             }
         }
@@ -394,11 +396,11 @@ namespace Server_GUI2
             if (re_V_num > re_CV_num)
             {
                 logger.Warn($"The World-Data will be recreated by {Data_list.Version} from {Data_list.Copy_version}");
-                var result = System.Windows.Forms.MessageBox.Show(
+                var result = MW.MessageBox.Show(
                     $"ワールドデータを{Data_list.Copy_version}から{Data_list.Version}へバージョンダウンしようとしています。\n" +
-                    $"データが破損する可能性が極めて高い操作ですが、危険性を理解したうえで実行しますか？", "Server Starter", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    $"データが破損する可能性が極めて高い操作ですが、危険性を理解したうえで実行しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 
-                if (result == System.Windows.Forms.DialogResult.No)
+                if (result == MessageBoxResult.No)
                 {
                     throw new DowngradeException("User reject downgrading");
                 }
@@ -412,7 +414,7 @@ namespace Server_GUI2
             logger.Info("Check the ShareWorld's info (There are already started Server or not)");
             if (info2[4] == "True")
             {
-                System.Windows.MessageBox.Show(
+                MW.MessageBox.Show(
                     $"ShareWorldのサーバーはすでに{info2[0]}によって起動されています。\r\n" +
                     $"{info2[0]}のサーバーが閉じたことを確認したうえでサーバーを再起動してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 
@@ -459,7 +461,7 @@ namespace Server_GUI2
                 string message =
                         "server.propertiesの書き込みに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException($"Failed to write server.properties (Error Code : {ex.Message})");
             }
         }
@@ -470,9 +472,9 @@ namespace Server_GUI2
             if (info2[2] != Data_list.Version)
             {
                 logger.Warn("The Version is Different of latest open by ShareWorld.");
-                DialogResult result = System.Windows.Forms.MessageBox.Show($"前回のShareWorldでのサーバー起動バージョンは{info2[2]}です。\r\nバージョン{Data_list.Version}で起動を続けますか？\r\n（「いいえ(N)」を選択した場合はもう一度起動をやり直してください。）", "Server Starter", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                MessageBoxResult? result = MW.MessageBox.Show($"前回のShareWorldでのサーバー起動バージョンは{info2[2]}です。\r\nバージョン{Data_list.Version}で起動を続けますか？\r\n（「いいえ(N)」を選択した場合はもう一度起動をやり直してください。）", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-                if (result == System.Windows.Forms.DialogResult.No)
+                if (result == MessageBoxResult.No)
                 {
                     throw new UserSelectException("User chose NO");
                 }
@@ -493,7 +495,7 @@ namespace Server_GUI2
                 string message =
                     "server.jarより有効なeula.txtが生成されませんでした。\n" +
                     $"{ver}フォルダ内を確認してください。";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException("Was not created eula.txt");
             }
             using (StreamReader sr = new StreamReader($@"{MainWindow.Data_Path}\{ver}\eula.txt", Encoding.GetEncoding("Shift_JIS")))
@@ -524,7 +526,7 @@ namespace Server_GUI2
                 string message =
                         "eula.txtの書き込みに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException($"Failed to write eula.txt (Error Message : {ex.Message})");
             }
 
@@ -536,9 +538,9 @@ namespace Server_GUI2
 
             string html = eula_lines[0].Substring(eula_lines[0].IndexOf("(") + 1);
             html = html.Replace(").", "");
-            var result = System.Windows.Forms.MessageBox.Show($"以下のURLに示されているサーバー利用に関する注意事項に同意しますか？\n\n【EULAのURL】\n{html}", "Server Starter", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            var result = MW.MessageBox.Show($"以下のURLに示されているサーバー利用に関する注意事項に同意しますか？\n\n【EULAのURL】\n{html}", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Information);
 
-            if (result == System.Windows.Forms.DialogResult.Cancel)
+            if (result == MessageBoxResult.Cancel)
             {
                 throw new UserSelectException("User didn't agree eula");
             }
@@ -600,7 +602,7 @@ namespace Server_GUI2
                 string message =
                         "ShareWorld内のinfo.txtの読み込みに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException($"Failed to read info.txt in ShareWorld (Error Message : {ex.Message})");
             }
         }
@@ -627,7 +629,7 @@ namespace Server_GUI2
                 string message =
                         "ワールドデータの初期化に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException($"Failed to delete world data (Error Message : {ex.Message})");
             }
         }
@@ -652,7 +654,7 @@ namespace Server_GUI2
                 string message =
                         "ワールドデータのバックアップ作成に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new WinCommandException("Failed to make the back up world data");
             }
         }
@@ -754,7 +756,7 @@ namespace Server_GUI2
                 string message =
                     "サーバーの実行途中で予期せぬエラーが発生しました。\n\n" +
                     $"【エラーコード】　{p.ExitCode}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 if (first_launch)
                 {
                     // 中途半端にserver.jarとstart.batのみ残ることを防止
@@ -825,7 +827,7 @@ namespace Server_GUI2
                         "Server Starterの更新データの取得に失敗しました。\n" +
                         "最新バージョンの確認を行わずに起動します。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -856,7 +858,7 @@ namespace Server_GUI2
                 string message =
                         "サーバーデータを保管するフォルダ(World_Data)の作成に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException($"Failed to create World_Data folder (Error Message : {ex.Message})");
             }
 
@@ -924,8 +926,8 @@ namespace Server_GUI2
             catch (Exception ex)
             {
                 logger.Warn($"Failed op process (Error Code : {ex.Message})");
-                DialogResult result = System.Windows.Forms.MessageBox.Show($"op権限の処理に失敗しました。\nこのままサーバーを開設して良いですか？", "Server Starter", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (result == System.Windows.Forms.DialogResult.Cancel)
+                MessageBoxResult? result = MW.MessageBox.Show($"op権限の処理に失敗しました。\nこのままサーバーを開設して良いですか？", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Cancel)
                 {
                     throw new UserSelectException("User interrupt the opening server by op process failed");
                 }

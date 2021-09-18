@@ -8,6 +8,8 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
+using MW = ModernWpf;
+
 
 namespace Server_GUI2
 {
@@ -107,7 +109,7 @@ namespace Server_GUI2
                 bool? result = Check_valid(cofd.FileName);
                 if (result == false)
                 {
-                    System.Windows.Forms.MessageBox.Show($"この{(data_kinds == "ZIP" ? "ファイル" : "フォルダ")}はデータパックとして無効です。", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MW.MessageBox.Show($"この{(data_kinds == "ZIP" ? "ファイル" : "フォルダ")}はデータパックとして無効です。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 else if (result == null)
@@ -165,14 +167,14 @@ namespace Server_GUI2
                 string extract_path = Path.GetDirectoryName(file_path) + @"\" + Path.GetFileNameWithoutExtension(file_path);
                 if (Directory.Exists(extract_path))
                 {
-                    DialogResult result = System.Windows.Forms.MessageBox.Show($"以下の場所に展開先のフォルダと同名のフォルダが存在しています。\n同名のフォルダを展開フォルダで上書きしますか？\n\n【場所（展開先）】\n{extract_path}", "Server Starter", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (result == System.Windows.Forms.DialogResult.Yes)
+                    MessageBoxResult? result = MW.MessageBox.Show($"以下の場所に展開先のフォルダと同名のフォルダが存在しています。\n同名のフォルダを展開フォルダで上書きしますか？\n\n【場所（展開先）】\n{extract_path}", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
                     {
                         Directory.Delete(extract_path, true);
                     }
                     else
                     {
-                        System.Windows.Forms.MessageBox.Show("展開をしなかったため、データパックの導入ができませんでした。", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MW.MessageBox.Show("展開をしなかったため、データパックの導入ができませんでした。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
                         return null;
                     }
                 }
@@ -229,7 +231,7 @@ namespace Server_GUI2
                         "datapackの導入に失敗しました。\n" +
                         "このdatapackの導入をせずにサーバーを起動します。\n\n" +
                         $"【失敗したデータパック名】  {Path.GetFileName(key)}";
-                    System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
                     logger.Warn($"Failed to import datapack ({Path.GetFileName(key)})");
                 }
             }
@@ -272,7 +274,7 @@ namespace Server_GUI2
             object selected_data = Imported.SelectedItem;
             if(selected_data == null)
             {
-                System.Windows.Forms.MessageBox.Show($"Importedより削除したいdatapackを選択してください。", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MW.MessageBox.Show($"Importedより削除したいdatapackを選択してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             if (selected_data.ToString() == "(None)")
@@ -280,8 +282,8 @@ namespace Server_GUI2
                 return;
             }
 
-            DialogResult result = System.Windows.Forms.MessageBox.Show($"{selected_data} を削除しますか？", "Server Starter", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if(result == System.Windows.Forms.DialogResult.Yes)
+            MessageBoxResult? result = MW.MessageBox.Show($"{selected_data} を削除しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if(result == MessageBoxResult.Yes)
             {
                 Imported.Items.Remove(selected_data);
                 if (selected_data.ToString().Contains("【new】"))

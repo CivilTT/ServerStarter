@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Forms;
+using MW = ModernWpf;
 
 //メモ
 //launcherに表示されるバージョン名一覧の取得方法は.minecraft\versions\version_manifest_v2.jsonに一覧として保管されている
@@ -39,7 +41,7 @@ namespace Server_GUI2
                         "Minecraftのバージョン一覧の取得に失敗しました。\n" +
                         $"新しいバージョンのサーバーの導入はできません\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
                 MainWindow.Set_new_Version = false;
             }
         }
@@ -105,10 +107,10 @@ namespace Server_GUI2
 
             if (Data_list.Version == "")
             {
-                DialogResult result = MessageBox.Show("導入するサーバーのバージョンが選択されていません。\r\nサーバーのバージョンを選択をした上で再度「Run」を押してください。", "Server Starter", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
-                if (result == DialogResult.OK)
+                MessageBoxResult? result = MW.MessageBox.Show("導入するサーバーのバージョンが選択されていません。\r\nサーバーのバージョンを選択をした上で再度「Run」を押してください。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                if (result == MessageBoxResult.OK)
                 {
-                    Application.Restart();
+                    System.Windows.Forms.Application.Restart();
                 }
                 throw new ArgumentException("Did not select opening version");
             }
@@ -159,7 +161,7 @@ namespace Server_GUI2
                         "Vanila サーバーのダウンロードに失敗しました。\n" +
                         $"{Data_list.Version}はマルチサーバーが存在しない可能性があります。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new DownloadException($"Failed to get url to download server.jar (Error Message : {ex.Message})");
             }
 
@@ -175,7 +177,7 @@ namespace Server_GUI2
                 string message =
                         "Vanila サーバーのダウンロードに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new DownloadException($"Failed to download server.jar (Error Message : {ex.Message})");
             }
         }
@@ -196,7 +198,7 @@ namespace Server_GUI2
                 string message =
                         "Spigot サーバーのビルドファイルのダウンロードに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})");
             }
 
@@ -221,7 +223,7 @@ namespace Server_GUI2
                         break;
                 }
 
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})");
             }
 
@@ -255,7 +257,7 @@ namespace Server_GUI2
                 string message =
                         "Spigotサーバーをビルドするための必要ファイルの作成に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException($"Failed to write build.bat (Error Message : {ex.Message})");
             }
         }

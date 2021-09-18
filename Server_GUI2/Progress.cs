@@ -5,11 +5,12 @@ using System.Windows.Forms;
 
 namespace Server_GUI2
 {
-    public partial class ProgressForm : Window
+    public partial class ProgressForm : Window, IDisposable
     {
         /// <summary>
         /// 必要なデザイナ変数です。
         /// </summary>
+        private bool disposedValue;
         // private System.ComponentModel.Container components = null;
 
         public ProgressForm()
@@ -22,6 +23,35 @@ namespace Server_GUI2
             //
             // TODO: InitializeComponent 呼び出しの後に、コンストラクタ コードを追加してください。
             //
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: マネージド状態を破棄します (マネージド オブジェクト)
+                }
+
+                // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
+                // TODO: 大きなフィールドを null に設定します
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
+        // ~ProgressBar()
+        // {
+        //     // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         // /// <summary>
@@ -247,9 +277,9 @@ namespace Server_GUI2
             //スレッドを作成
             thread = new System.Threading.Thread(new System.Threading.ThreadStart(Run))
             {
-                IsBackground = true,
-                ApartmentState = System.Threading.ApartmentState.STA
+                IsBackground = true
             };
+            thread.SetApartmentState(System.Threading.ApartmentState.STA);
             thread.Start();
 
             //フォームが表示されるまで待機する
@@ -280,7 +310,7 @@ namespace Server_GUI2
             //フォームの表示
             form.ShowDialog();
 
-            // form.Dispose();
+            form.Dispose();
         }
 
         /// <summary>
