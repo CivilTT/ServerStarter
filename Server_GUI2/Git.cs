@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Forms;
+using MW = ModernWpf;
 
 namespace Server_GUI2
 {
@@ -124,7 +126,7 @@ namespace Server_GUI2
             if (p.ExitCode != 0 && p.ExitCode != 1)
             {
                 string message = $"Git {git_type} に失敗しました。(エラーコード：{p.ExitCode})";
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new GitException($"Failed to process 'Git {git_type}' (Error Code : {p.ExitCode})");
             }
         }
@@ -186,7 +188,7 @@ namespace Server_GUI2
                 string message =
                     "ShareWorldの処理に必要なファイル(push.bat)の生成に失敗しました。\n\n" +
                     $"【エラー要因】\n{ex.Message}";
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException("Failed to make push.bat");
             }
         }
@@ -217,7 +219,7 @@ namespace Server_GUI2
                 string message =
                     "ShareWorldの処理に必要なファイル(pull.bat)の生成に失敗しました。\n\n" +
                     $"【エラー要因】\n{ex.Message}";
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException("Failed to make pull.bat");
             }
         }
@@ -249,7 +251,7 @@ namespace Server_GUI2
                 string message =
                     "ShareWorldの処理に必要なファイル(clone.bat)の生成に失敗しました。\n\n" +
                     $"【エラー要因】\n{ex.Message}";
-                MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException("Failed to make clone.bat");
             }
         }

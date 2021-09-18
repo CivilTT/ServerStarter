@@ -1,13 +1,50 @@
 ﻿<Application x:Class="Server_GUI2.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019"
              xmlns:local="clr-namespace:Server_GUI2"
+             Startup="OnStartup"
              >
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+                <ui:ThemeResources>
+                    <ui:ThemeResources.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Light">
+                            <ResourceDictionary.MergedDictionaries>
+                                <ui:ColorPaletteResources
+                                    ListLow="Black"
+                                    BaseMediumLow="LightGray"
+                                    BaseMedium="Blue"
+                                    BaseLow="YellowGreen"
+                                    BaseHigh="Blue"
+                                    AltMediumLow="Brown"
+                                    TargetTheme="Light"
+                                    Accent="Green"
+                                    AltHigh="WhiteSmoke" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Dark">
+                            <ResourceDictionary.MergedDictionaries>
+                                <!--
+                                ・ListLow    ListBoxの上にカーソルを置いた時の色
+                                ・
+                                -->
+                                <ui:ColorPaletteResources
+                                    ListLow="Purple"
+                                    BaseMediumLow="Red"
+                                    BaseMedium="Blue"
+                                    BaseLow="Purple"
+                                    BaseHigh="GreenYellow"
+                                    AltMediumLow="Brown"
+                                    TargetTheme="Dark"
+                                    Accent="Red"
+                                    AltHigh="Black"/>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ui:ThemeResources.ThemeDictionaries>
+                </ui:ThemeResources>
+                <ui:XamlControlsResources/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

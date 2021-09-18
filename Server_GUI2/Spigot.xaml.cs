@@ -6,6 +6,8 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
+using MW = ModernWpf;
+
 
 namespace Server_GUI2
 {
@@ -80,7 +82,7 @@ namespace Server_GUI2
             object selected_data = Imported.SelectedItem;
             if (selected_data == null)
             {
-                System.Windows.Forms.MessageBox.Show($"Importedより削除したいpluginを選択してください。", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MW.MessageBox.Show($"Importedより削除したいpluginを選択してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             if (selected_data.ToString() == "(None)")
@@ -88,8 +90,8 @@ namespace Server_GUI2
                 return;
             }
 
-            DialogResult result = System.Windows.Forms.MessageBox.Show($"{selected_data} を削除しますか？", "Server Starter", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == System.Windows.Forms.DialogResult.Yes)
+            MessageBoxResult? result = MW.MessageBox.Show($"{selected_data} を削除しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
             {
                 Imported.Items.Remove(selected_data);
                 if (selected_data.ToString().Contains("【new】"))
@@ -137,7 +139,7 @@ namespace Server_GUI2
                         "プラグインの導入に失敗しました。\n" +
                         "導入を行わない状態でサーバーを起動します。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                    System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
                     logger.Warn($"Failed to import the plugin (Error Message : {ex.Message})");
                 }
             }

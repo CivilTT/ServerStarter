@@ -7,6 +7,8 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
+using MW = ModernWpf;
+
 
 namespace Server_GUI2
 {
@@ -85,7 +87,7 @@ namespace Server_GUI2
                 bool? result = Check_valid(cofd.FileName);
                 if (result == false)
                 {
-                    System.Windows.Forms.MessageBox.Show($"この{(data_kinds == "ZIP" ? "ファイル" : "フォルダ")}は配布ワールドとして無効です。", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MW.MessageBox.Show($"この{(data_kinds == "ZIP" ? "ファイル" : "フォルダ")}は配布ワールドとして無効です。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 else if(result == null)
@@ -118,14 +120,14 @@ namespace Server_GUI2
                 // Zipを展開
                 if (Directory.Exists(extract_path))
                 {
-                    DialogResult result = System.Windows.Forms.MessageBox.Show($"以下の場所に展開先のフォルダと同名のフォルダが存在しています\n同名のフォルダを展開フォルダで上書きしますか？\n\n【場所（展開先）】\n{extract_path}", "Server Starter", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if(result == System.Windows.Forms.DialogResult.Yes)
+                    MessageBoxResult? result = MW.MessageBox.Show($"以下の場所に展開先のフォルダと同名のフォルダが存在しています\n同名のフォルダを展開フォルダで上書きしますか？\n\n【場所（展開先）】\n{extract_path}", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if(result == MessageBoxResult.Yes)
                     {
                         Directory.Delete(extract_path, true);
                     }
                     else
                     {
-                        System.Windows.Forms.MessageBox.Show("展開をしなかったため、配布ワールドの導入ができませんでした。", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MW.MessageBox.Show("展開をしなかったため、配布ワールドの導入ができませんでした。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
                         return null;
                     }
                 }
@@ -154,10 +156,10 @@ namespace Server_GUI2
         {
             if (Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}"))
             {
-                DialogResult result = System.Windows.Forms.MessageBox.Show($"配布ワールドを導入しようとしているワールドはすでに別のワールドとして存在しています。\n前のワールドデータを上書きして配布ワールドを導入しますか？", "Server Starter", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if(result == System.Windows.Forms.DialogResult.No)
+                MessageBoxResult? result = MW.MessageBox.Show($"配布ワールドを導入しようとしているワールドはすでに別のワールドとして存在しています。\n前のワールドデータを上書きして配布ワールドを導入しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if(result == MessageBoxResult.No)
                 {
-                    System.Windows.Forms.MessageBox.Show("配布ワールドの導入を中止しました。", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MW.MessageBox.Show("配布ワールドの導入を中止しました。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
                     return false;
                 }
             }
@@ -181,7 +183,7 @@ namespace Server_GUI2
                 string message =
                         "配布ワールドの導入に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new WinCommandException($"Failed to import the custom map (Error Message : {ex.Message})");
             }
         }

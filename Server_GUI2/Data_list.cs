@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Forms;
+using MW = ModernWpf;
 
 namespace Server_GUI2
 {
@@ -290,23 +292,23 @@ namespace Server_GUI2
             if(git_version == "Git is not installed in this PC")
             {
                 Avail_sw = false;
-                MessageBox.Show("このPCではGitが導入されていないため、ShareWorldが使えません。", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MW.MessageBox.Show("このPCではGitが導入されていないため、ShareWorldが使えません。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             if(java_version == "Java is not installed in this PC")
             {
-                MessageBox.Show(
+                MW.MessageBox.Show(
                     "このPCにはJava (JDK)が導入されていません。以下の手順に従ってJava (JDK)をインストールしてください。\r\n\n" +
                     "---Step１---\r\n　Oracleのサイト（https://www.oracle.com/java/technologies/javase-jdk16-downloads.html）より最新のJDKのインストーラーをダウンロードする。\r\n\n" +
                     "---Step２---\r\n　以下二つの環境変数を「システム環境変数」に登録する。\r\n" +
                     "　　・【JAVA_HOME】 ex) C:\\Program Files\\Java\\jdk-16.0.1\r\n" +
-                    "　　・【Path】 ex) C:\\Program Files\\Java\\jdk-16.0.1\\bin", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    "　　・【Path】 ex) C:\\Program Files\\Java\\jdk-16.0.1\\bin", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else if(!java_version.Contains("java 16"))
             {
-                MessageBox.Show(
+                MW.MessageBox.Show(
                     $"このPCに入っているJavaのバージョンは最新バージョンではありません。\n" +
                     $"バージョン1.17以降のサーバーは開設できない可能性があります。\n\n" +
-                    $"【Javaのバージョン情報】\n    {java_version}", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    $"【Javaのバージョン情報】\n    {java_version}", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
 

@@ -5,31 +5,28 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace Server_GUI2
 {
     /// <summary>
     /// App.xaml の相互作用ロジック
     /// </summary>
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
         [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
         public static extern bool AttachConsole(int processId);
 
         private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly Functions func = new Functions();
         private Dictionary<string, string> prop_dict = new Dictionary<string, string>();
         private string prop_dict_str = null;
         public const string end_str = "\n\nIf you want to go back writting mode, please type 'Enter' ...";
 
         public static string[] Args { get; set; }
 
-        [Obsolete]
-#pragma warning disable CS0809 // 旧形式のメンバーが、旧形式でないメンバーをオーバーライドします
-        protected override void OnStartup(StartupEventArgs e)
-#pragma warning restore CS0809 // 旧形式のメンバーが、旧形式でないメンバーをオーバーライドします
+        private void OnStartup(object sender, StartupEventArgs e)
         {
-            base.OnStartup(e);
+            // base.OnStartup(e);
             bool reset_data = false;
             bool save_data = false;
             bool delete_data = false;
@@ -37,7 +34,9 @@ namespace Server_GUI2
             if (e.Args.Length == 0)
             {
                 // GUIを立ち上げる
+                Console.WriteLine("kokokara");
                 MainWindow main = new MainWindow(true);
+                // main.Dispatcher.Invoke(new MethodInvoker(main.Show));
                 main.Show();
                 return;
             }
@@ -93,6 +92,7 @@ namespace Server_GUI2
                         default:
                             Console.WriteLine($"'{key}' is unknown paramater.");
                             Console.WriteLine(end_str);
+                            Finish();
                             return;
                     }
                 }
@@ -105,6 +105,7 @@ namespace Server_GUI2
                 main.Save_world = save_data;
 
                 bool result = Check_valid(main);
+
                 if (result)
                 {
                     main.Get_op = op;
@@ -112,6 +113,7 @@ namespace Server_GUI2
                     m_settings.Read_properties();
                     main.Start(false);
                 }
+
                 Console.Write(end_str);
                 Finish();
             }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Forms;
+using MW = ModernWpf;
 
 
 // Read_json.csに1.18対応の試験的なコードを記載している。正式にリリースされたら不要のため、このファイルの109,111行目と合わせて、削除の必要あり
@@ -25,15 +26,15 @@ namespace Server_GUI2
         public static string Data_Path { get { return @".\World_Data"; } }
 
         //インスタンス変数を宣言
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private bool GUI = true;
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly bool GUI = true;
 
         public static ProgressDialog Pd { get; set; }
         public static bool Set_new_Version { get; set; } = true;
 
 
-        private List<string> release_versions = new List<string>();
-        private List<string> snapshot_versions = new List<string>();
+        private readonly List<string> release_versions = new List<string>();
+        private readonly List<string> snapshot_versions = new List<string>();
         public List<string> All_versions { get; set; }
         private readonly Functions func = new Functions();
         private readonly Read_json jsonReader = new Read_json();
@@ -43,8 +44,8 @@ namespace Server_GUI2
         public bool Get_op { get; set; }
 
 
-        private Data_list data = new Data_list();
-        private Spigot_Function spi_func = new Spigot_Function();
+        private readonly Data_list data = new Data_list();
+        private readonly Spigot_Function spi_func = new Spigot_Function();
         private More_Settings m_set_window = new More_Settings();
 
 
@@ -149,7 +150,6 @@ namespace Server_GUI2
             }
             Pd.Value = 100;
             Pd.Close();
-            // pd.Dispose();
         }
 
         public void Start(bool gui=true)
@@ -165,7 +165,7 @@ namespace Server_GUI2
             if(Data_list.Import_spigot && Data_list.World == "ShareWorld")
             {
                 logger.Info("ShareWorld doesn't correspond to Spigot Server");
-                System.Windows.Forms.MessageBox.Show("SpigotサーバーにShareWorldは対応していません。\nShareWorldを使う場合はバニラサーバーにて起動してください。", "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MW.MessageBox.Show("SpigotサーバーにShareWorldは対応していません。\nShareWorldを使う場合はバニラサーバーにて起動してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 logger.Info("Show MainWindow again");
                 Show();
                 return;
@@ -197,7 +197,7 @@ namespace Server_GUI2
                     string message =
                         "Minecraftのバージョン一覧を取得していないため、新規バージョンの導入ができません。\n" +
                         $"新規バージョンの導入を行うためにはServer Starterを再起動してください。\n\n";
-                    System.Windows.Forms.MessageBox.Show(message, "Server Starter", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                     throw new ArgumentException("Can not import new Version's server");
                 }
                 Pd.Message = "Download server.jar";
@@ -307,6 +307,7 @@ namespace Server_GUI2
             }
 
             data.Set_Version(Version, new_Version.Text);
+            m_set_window = new More_Settings();
             m_set_window.Read_properties();
         }
 
@@ -365,9 +366,9 @@ namespace Server_GUI2
 
         private void Delete_version(object sender, RoutedEventArgs e)
         {
-            DialogResult result = System.Windows.Forms.MessageBox.Show($"このバージョンを削除しますか？\r\n「{Data_list.Version}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            MessageBoxResult? result = MW.MessageBox.Show($"このバージョンを削除しますか？\r\n「{Data_list.Version}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             logger.Warn("Warning the delete Version data");
-            if (result == System.Windows.Forms.DialogResult.OK)
+            if (result == MessageBoxResult.OK)
             {
                 if (Data_list.Import_spigot)
                 {
@@ -390,12 +391,12 @@ namespace Server_GUI2
 
         private void Delete_world(object sender, RoutedEventArgs e)
         {
-            DialogResult result;
+            MessageBoxResult? result;
             if (Data_list.World == "ShareWorld")
             {
                 logger.Warn("Warning the delete ShareWorld");
-                result = System.Windows.Forms.MessageBox.Show("ShareWorldの内容を変更する場合は削除する必要はなく、メイン画面のRecreateにチェックを入れてください。\r\nこれを理解したうえで削除しますか？", "Server Starter", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if(result == System.Windows.Forms.DialogResult.No)
+                result = MW.MessageBox.Show("ShareWorldの内容を変更する場合は削除する必要はなく、メイン画面のRecreateにチェックを入れてください。\r\nこれを理解したうえで削除しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if(result == MessageBoxResult.No)
                 {
                     return;
                 }
@@ -403,10 +404,10 @@ namespace Server_GUI2
             else
             {
                 logger.Warn("Warning the delete World data");
-                result = System.Windows.Forms.MessageBox.Show($"このワールドを削除しますか？\r\n「{Data_list.World}」は完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                result = MW.MessageBox.Show($"このワールドを削除しますか？\r\n「{Data_list.World}」は完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             }
 
-            if (result == System.Windows.Forms.DialogResult.OK)
+            if (result == MessageBoxResult.OK)
             {
                 int before_index = World.SelectedIndex;
                 if (Data_list.CopyVer_IsSpigot)
@@ -488,7 +489,7 @@ namespace Server_GUI2
                 $"Git\t\t  {Data_list.Env_list["Git"]}\n\n" +
                 $"Java\t\t  {Data_list.Env_list["Java"]}";
 
-            System.Windows.Forms.MessageBox.Show(info, "Server Starter");
+            MW.MessageBox.Show(info, "Server Starter");
         }
 
         private void Save_world_Click(object sender, RoutedEventArgs e)
