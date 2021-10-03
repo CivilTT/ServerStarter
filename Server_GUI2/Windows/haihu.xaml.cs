@@ -17,7 +17,7 @@ namespace Server_GUI2
     /// </summary>
     public partial class haihu : Window
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public More_Settings m_settings { get; set; }
         private string data_kinds = "ZIP";
         private readonly Functions func = new Functions();
@@ -31,7 +31,7 @@ namespace Server_GUI2
         {
             InitializeComponent();
 
-            Version.Text = Data_list.Version;
+            Version.Text = Data_list.ReadVersion;
             World.Text = Data_list.World;
             import_haihu = false;
             import_path = "";
@@ -106,10 +106,15 @@ namespace Server_GUI2
             }
         }
 
+        /// <summary>
+        /// 配布ワールドとしての有効性を確認する
+        /// </summary>
+        /// <param name="file_path">確認するファイル（フォルダ）のパス</param>
+        /// <returns>有効な場合はtrueを返し、無効な場合はfalseを返す。このメソッド内でユーザーに無効であることを通達済みの場合はnullを返す。</returns>
         private bool? Check_valid(string file_path)
         {
             string file_extension = Path.GetExtension(file_path);
-            string extract_path = Path.GetDirectoryName(file_path) + @"\" + System.IO.Path.GetFileNameWithoutExtension(file_path);
+            string extract_path = Path.GetDirectoryName(file_path) + @"\" + Path.GetFileNameWithoutExtension(file_path);
             // そもそもzipやフォルダでないものははじく
             if (file_extension != ".zip" && file_extension != string.Empty)
             {
@@ -131,7 +136,25 @@ namespace Server_GUI2
                         return null;
                     }
                 }
-                ZipFile.ExtractToDirectory(file_path, extract_path);
+
+                try
+                {
+                    ZipFile.ExtractToDirectory(file_path, extract_path);
+                }
+                catch(Exception ex)
+                {
+                    logger.Warn($"System can not check valid of the custom map. Reason:{ex.Message}");
+                    if (!Directory.Exists(extract_path))
+                    {
+                        string message =
+                            "指定したZipファイルの検証中にエラーが発生しました。\n" +
+                            "Zipファイルを展開し、展開後のフォルダを追加対象として指定してください。\n\n" +
+                            $"【エラー要因】\n{ex.Message}";
+                        MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        logger.Error("System gave up to add the datapack");
+                        return false;
+                    }
+                }
             }
 
             // フォルダの直下(or一つ下)にadvancementsフォルダが存在しているかを確認する
@@ -154,7 +177,7 @@ namespace Server_GUI2
 
         private bool Check_Override()
         {
-            if (Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}"))
+            if (!Data_list.Import_NewWorld)
             {
                 MessageBoxResult? result = MW.MessageBox.Show($"配布ワールドを導入しようとしているワールドはすでに別のワールドとして存在しています。\n前のワールドデータを上書きして配布ワールドを導入しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if(result == MessageBoxResult.No)

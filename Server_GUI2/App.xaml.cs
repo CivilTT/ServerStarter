@@ -17,7 +17,7 @@ namespace Server_GUI2
         [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
         public static extern bool AttachConsole(int processId);
 
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private Dictionary<string, string> prop_dict = new Dictionary<string, string>();
         private string prop_dict_str = null;
         public const string end_str = "\n\nIf you want to go back writting mode, please type 'Enter' ...";
@@ -34,9 +34,7 @@ namespace Server_GUI2
             if (e.Args.Length == 0)
             {
                 // GUIを立ち上げる
-                Console.WriteLine("kokokara");
                 MainWindow main = new MainWindow(true);
-                // main.Dispatcher.Invoke(new MethodInvoker(main.Show));
                 main.Show();
                 return;
             }

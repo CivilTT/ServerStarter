@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Forms;
+using System.Windows.Media;
 using MW = ModernWpf;
 
 
@@ -35,9 +35,11 @@ namespace Server_GUI2
 
         private readonly List<string> release_versions = new List<string>();
         private readonly List<string> snapshot_versions = new List<string>();
-        public List<string> All_versions { get; set; }
+        private readonly List<string> spigot_versions = new List<string>();
+        public List<string> All_versions { get; set; } = new List<string>();
         private readonly Functions func = new Functions();
-        private readonly Read_json jsonReader = new Read_json();
+        private readonly ReadJson jsonReader = new ReadJson();
+        private readonly ReadHTML htmlReader = new ReadHTML();
 
         public bool Reset_world { get; set; } = false;
         public bool Save_world { get; set; } = false;
@@ -86,8 +88,8 @@ namespace Server_GUI2
 
             //右上 & opの仕様の変更
             name.Text = Data_list.Info[0];
-            info_version.Text = Data_list.Starter_Version;
             op.Content = Data_list.Info[0] + " has op rights in this version's server";
+            info_version.Text = $"ver {Data_list.Starter_Version}";
             Get_op = true;
             shutdown.IsChecked = Properties.Settings.Default.Shutdown;
             Pd.Message = "Set the value of GUI";
@@ -105,17 +107,12 @@ namespace Server_GUI2
 
             //追加バージョンの読み込み
             logger.Info("Read the new Versions");
-            // var jsonReader = new Read_json();
             release_versions = jsonReader.Import_version("release");
-            snapshot_versions = jsonReader.Import_version("snapshot");
-            snapshot_versions.Insert(2, "snapshot 1.18-3");
-            All_versions = new List<string>();
             All_versions = jsonReader.Import_version("all");
-            All_versions.Insert(2, "snapshot 1.18-3");
+            spigot_versions = htmlReader.Get_SpigotVers();
+            
             new_Version = func.Init_new_Versions(new_Version, release_versions);
             new_Version.SelectedIndex = 0;
-            // foreach(string i in release_versions)
-            //     Console.WriteLine(i);
             Pd.Message = "Read the new Versions";
             Pd.Value = 80;
 
@@ -158,7 +155,7 @@ namespace Server_GUI2
             logger.Info("Start the Server Opening");
             Pd = new ProgressDialog
             {
-                Title = $"the server {Data_list.Version}/{Data_list.World}"
+                Title = $"the server {Data_list.ReadVersion}/{Data_list.World}"
             };
             Pd.Show();
 
@@ -171,8 +168,6 @@ namespace Server_GUI2
                 return;
             }
 
-            string ver_folder = Data_list.Import_spigot ? $"Spigot_{Data_list.Version}" : Data_list.Version;
-
             dynamic start_func;
             if (Data_list.Import_spigot)
             {
@@ -183,14 +178,14 @@ namespace Server_GUI2
                 start_func = new Functions();
             }
 
-            start_func.main = this;
+            start_func.Main = this;
 
             start_func.Define_OpenWorld(World, gui);
             Pd.Value = 10;
             Pd.Message = "Define opening World";
 
             //バージョンについて分岐
-            if (!Data_list.VerWor_list.ContainsKey(ver_folder))
+            if (Data_list.Import_NewVersion)
             {
                 if (!Set_new_Version)
                 {
@@ -203,7 +198,7 @@ namespace Server_GUI2
                 Pd.Message = "Download server.jar";
                 jsonReader.Import_server();
             }
-            else if (ver_folder != Data_list.Info[2])
+            else if (Data_list.ReadVersion != Data_list.Info[2])
             {
                 //infoのVersionを書き換え
                 // ShareWorld内のinfoにバージョンを記録する作業はCheck_ShareWorld()で行う
@@ -255,7 +250,7 @@ namespace Server_GUI2
             logger.Info("This System is successfully over");
             start_func.Shutdown();
             Close();
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
         private void START_Click(object sender, RoutedEventArgs e)
@@ -276,7 +271,7 @@ namespace Server_GUI2
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             logger.Info("Starter was pushed Close Button");
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
             logger.Info("This System is successfully over");
         }
 
@@ -291,14 +286,12 @@ namespace Server_GUI2
                 //new Versionでないほうの表示項目は仮置きしておき、選択された際に決定する
                 Version.SelectedIndex = -1;
                 version_main.Visibility = Visibility.Hidden;
-                select_version.Visibility = Visibility.Visible;
             }
             else if (Version.SelectedIndex == -1)
             {
                 version_main.Visibility = Visibility.Visible;
                 Version.SelectedIndex = Version2.SelectedIndex;
                 version_hide.Visibility = Visibility.Hidden;
-                select_version.Visibility = Visibility.Hidden;
             }
 
             if (world_hide.Visibility == Visibility.Visible)
@@ -331,34 +324,59 @@ namespace Server_GUI2
                     //仮置きの内容をWorld2で選択されたものに決定
                     World.SelectedIndex = World.Items.IndexOf(World2.Text);
                 }
+
+                // ワールド名を新規でないものにする場合はRUNボタンなどを有効に戻す
+                if (!Run_button.IsEnabled)
+                {
+                    Run_button.IsEnabled = true;
+                    More_Settings_button.IsEnabled = true;
+                    input_box_world.Text = "input_name";
+                }
             }
 
             data.Set_World(World, input_box_world.Text);
         }
 
-        private void Version_Click(object sender, RoutedEventArgs e)
-        {
-            // 選択がなくなってしまった場合に落ちるバグを修正
-            if (release.IsChecked == false && snapshot.IsChecked == false)
-            {
-                release.IsChecked = true;
-            }
+        // private void Version_Click(object sender, RoutedEventArgs e)
+        // {
+        //     // 選択がなくなってしまった場合に落ちるバグを修正
+        //     if (release.IsChecked == false && snapshot.IsChecked == false)
+        //     {
+        //         release.IsChecked = true;
+        //     }
 
+        //     string selected_item = new_Version.SelectedItem.ToString();
+        //     new_Version.Items.Clear();
+
+        //     //Versionのチェックボックスで選択されているものに応じて追加バージョン候補の表示を変える
+        //     if (release.IsChecked == true && snapshot.IsChecked == false)
+        //     {
+        //         new_Version = func.Init_new_Versions(new_Version, release_versions);
+        //     }
+        //     if (snapshot.IsChecked == true && release.IsChecked == false)
+        //     {
+        //         new_Version = func.Init_new_Versions(new_Version, snapshot_versions);
+        //     }
+        //     if (release.IsChecked == true && snapshot.IsChecked == true)
+        //     {
+        //         new_Version = func.Init_new_Versions(new_Version, All_versions);
+        //     }
+
+        //     new_Version.SelectedIndex = (new_Version.Items.IndexOf(selected_item) == -1) ? 0 : new_Version.Items.IndexOf(selected_item);
+        // }
+
+        private void VersionToggle(object sender, RoutedEventArgs e)
+        {
             string selected_item = new_Version.SelectedItem.ToString();
             new_Version.Items.Clear();
 
-            //Versionのチェックボックスで選択されているものに応じて追加バージョン候補の表示を変える
-            if (release.IsChecked == true && snapshot.IsChecked == false)
-            {
-                new_Version = func.Init_new_Versions(new_Version, release_versions);
-            }
-            if (snapshot.IsChecked == true && release.IsChecked == false)
-            {
-                new_Version = func.Init_new_Versions(new_Version, snapshot_versions);
-            }
-            if (release.IsChecked == true && snapshot.IsChecked == true)
+            if (toggleVersions.IsOn)
             {
                 new_Version = func.Init_new_Versions(new_Version, All_versions);
+            }
+            else
+            {
+                new_Version = func.Init_new_Versions(new_Version, release_versions);
             }
 
             new_Version.SelectedIndex = (new_Version.Items.IndexOf(selected_item) == -1) ? 0 : new_Version.Items.IndexOf(selected_item);
@@ -366,27 +384,26 @@ namespace Server_GUI2
 
         private void Delete_version(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult? result = MW.MessageBox.Show($"このバージョンを削除しますか？\r\n「{Data_list.Version}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            MessageBoxResult? result = MW.MessageBox.Show($"このバージョンを削除しますか？\r\n「{Data_list.ReadVersion}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             logger.Warn("Warning the delete Version data");
             if (result == MessageBoxResult.OK)
             {
-                if (Data_list.Import_spigot)
-                {
-                    spi_func.Delete_dir($"Spigot_{Data_list.Version}");
-                    Directory.Delete($@"{Data_Path}\Spigot_{Data_list.Version}\", true);
-                    Version.Items.Remove($"Spigot_{Data_list.Version}");
-                    logger.Info($"The Version Spi{Data_list.Version} was successfully deleted");
-                }
-                else
-                {
-                    Directory.Delete($@"{Data_Path}\{Data_list.Version}\", true);
-                    Version.Items.Remove(Data_list.Version);
-                    logger.Info($"The Version {Data_list.Version} was successfully deleted");
-                }
+                Directory.Delete($@"{Data_Path}\{Data_list.ReadVersion}\", true);
+                Version.Items.Remove(Data_list.ReadVersion);
+
+                // 削除したバージョンのワールドも表示（＆内部データ）から消す
+                Data_list.VerWor_list[Data_list.ReadVersion].ForEach(t => World.Items.Remove($"{Data_list.ReadVersion}/{t}"));
+                Data_list.VerWor_list.Remove(Data_list.ReadVersion);
+
+                logger.Info($"The Version {Data_list.ReadVersion} was successfully deleted");
+
+
                 int before_index = Version.SelectedIndex;
                 Version.SelectedIndex = (before_index - 1 >= 0) ? before_index - 1 : 0;
+                
+                World_reload(null, null);
+                Name_reload(null, null);
             }
-            World_reload(null, null);
         }
 
         private void Delete_world(object sender, RoutedEventArgs e)
@@ -479,36 +496,58 @@ namespace Server_GUI2
 
         private void Info_Click(object sender, RoutedEventArgs e)
         {
-            string info =
-                $"OS\t\t  {Data_list.Env_list["OS"]}\n\n" +
-                $"CPU\t\t  {Data_list.Env_list["CPU"]}\n\n" +
-                $"GPU\t\t  {Data_list.Env_list["GPU"]}\n\n" +
-                $"Memory (All)\t  {Data_list.Env_list["Memory_All"]} KB  ({Math.Round(double.Parse(Data_list.Env_list["Memory_All"]) /(1000*1000),1)} GB)\n\n" +
-                $"Memory (Available)\t  {Data_list.Env_list["Memory_Ava"]} KB  ({Math.Round(double.Parse(Data_list.Env_list["Memory_Ava"]) / (1000 * 1000), 1)} GB)\n\n" +
-                $"IP address\t  {Data_list.Env_list["IP"]}\n\n" +
-                $"Git\t\t  {Data_list.Env_list["Git"]}\n\n" +
-                $"Java\t\t  {Data_list.Env_list["Java"]}";
-
-            MW.MessageBox.Show(info, "Server Starter");
+            Hide();
+            Infomation _info = new Infomation();
+            _info.ShowDialog();
+            Show();
         }
 
         private void Save_world_Click(object sender, RoutedEventArgs e)
         {
-            Save_world = sa_world.IsChecked == true;
             //そもそもresetにチェックがついていないときはバックアップを生成しない。
-            Save_world = (sa_world.IsEnabled == false) ? false : Save_world;
+            Save_world = sa_world.IsEnabled != false && Save_world;
         }
 
         private void Reset_world_Click(object sender, RoutedEventArgs e)
         {
             Reset_world = re_world.IsChecked == true;
             sa_world.IsEnabled = re_world.IsChecked == true;
-            sa_world.Foreground = (re_world.IsChecked == true) ? System.Windows.Media.Brushes.Black : System.Windows.Media.Brushes.LightGray;
+            sa_world.Foreground = (re_world.IsChecked == true) ? Brushes.Black : Brushes.LightGray;
             if (re_world.IsChecked == false)
             {
                 sa_world.IsChecked = false;
                 Save_world = false;
             }
+        }
+
+        private void TF_spigot(object sender, RoutedEventArgs e)
+        {
+            new_Version.Items.Clear();
+
+            if (Toggle_spigot.IsOn == true)
+            {
+                Data_list.Import_spigot = true;
+                toggleVersions.IsEnabled = false;
+                foreach(var spi_ver in spigot_versions)
+                {
+                    new_Version.Items.Add(spi_ver);
+                }
+            }
+            else
+            {
+                Data_list.Import_spigot = false;
+                toggleVersions.IsEnabled = true;
+                if (toggleVersions.IsOn)
+                {
+                    new_Version = func.Init_new_Versions(new_Version, All_versions);
+                }
+                else
+                {
+                    new_Version = func.Init_new_Versions(new_Version, release_versions);
+                }
+            }
+
+            new_Version.SelectedIndex = 0;
         }
     }
 
@@ -537,7 +576,7 @@ namespace Server_GUI2
                         //     result = "Please enter the Version as 1.16.5 or 21w10a";
                         //     break;
                         // }
-                        if (!Regex.IsMatch(ID, @"^[0-9a-zA-Z-_]+$"))
+                        if (!Regex.IsMatch(ID, @"^[0-9a-zA-Z_-]+$"))
                         {
                             result = @"You can use only capital and small letters";
                             break;

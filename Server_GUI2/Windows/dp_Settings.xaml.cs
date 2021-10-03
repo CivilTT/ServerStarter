@@ -7,7 +7,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Forms;
 using MW = ModernWpf;
 
 
@@ -18,15 +17,13 @@ namespace Server_GUI2
     /// </summary>
     public partial class Dp_Settings : Window
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        private readonly Functions func = new Functions();
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly string Data_Path = MainWindow.Data_Path;
         private string data_kinds = "ZIP";
-        private List<string> existed_list = new List<string>();
-        private List<string> add_list = new List<string>();
-        private List<string> remove_list = new List<string>();
+        private readonly List<string> existed_list = new List<string>();
+        private readonly List<string> add_list = new List<string>();
+        private readonly List<string> remove_list = new List<string>();
 
         public More_Settings m_settings { get; set; }
         public bool import_dp { get; set; }
@@ -36,7 +33,7 @@ namespace Server_GUI2
         {
             InitializeComponent();
 
-            Version.Text = Data_list.Version;
+            Version.Text = Data_list.ReadVersion;
             World.Text = Data_list.World;
             import_dp = false;
 
@@ -47,14 +44,14 @@ namespace Server_GUI2
 
         private void Set_imported()
         {
-            if (!Directory.Exists($@"{Data_Path}\{Data_list.Version}\{Data_list.World}\datapacks\"))
+            if (!Directory.Exists($@"{Data_Path}\{Data_list.Copy_version}\{Data_list.World}\datapacks\"))
             {
                 Imported.Items.Add("(None)");
                 return;
             }
             
-            string[] datapacks_zip = Directory.GetFiles($@"{Data_Path}\{Data_list.Version}\{Data_list.World}\datapacks\");
-            string[] datapacks_dir = Directory.GetDirectories($@"{Data_Path}\{Data_list.Version}\{Data_list.World}\datapacks\");
+            string[] datapacks_zip = Directory.GetFiles($@"{Data_Path}\{Data_list.Copy_version}\{Data_list.World}\datapacks\");
+            string[] datapacks_dir = Directory.GetDirectories($@"{Data_Path}\{Data_list.Copy_version}\{Data_list.World}\datapacks\");
 
             foreach (string key in datapacks_zip)
             {
@@ -167,7 +164,11 @@ namespace Server_GUI2
                 string extract_path = Path.GetDirectoryName(file_path) + @"\" + Path.GetFileNameWithoutExtension(file_path);
                 if (Directory.Exists(extract_path))
                 {
-                    MessageBoxResult? result = MW.MessageBox.Show($"以下の場所に展開先のフォルダと同名のフォルダが存在しています。\n同名のフォルダを展開フォルダで上書きしますか？\n\n【場所（展開先）】\n{extract_path}", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult? result = MW.MessageBox.Show(
+                        $"Datapack追加の処理のためにZipファイルを展開します。\n" +
+                        $"以下の場所に展開先のフォルダと同名のフォルダが存在しています。\n" +
+                        $"同名のフォルダを展開フォルダで上書きしますか？\n\n" +
+                        $"【場所（展開先）】\n{extract_path}", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         Directory.Delete(extract_path, true);
@@ -178,7 +179,25 @@ namespace Server_GUI2
                         return null;
                     }
                 }
-                ZipFile.ExtractToDirectory(file_path, extract_path);
+
+                try
+                {
+                    ZipFile.ExtractToDirectory(file_path, extract_path);
+                }
+                catch(Exception ex)
+                {
+                    logger.Warn($"System can not check valid of the datapack. Reason:{ex.Message}");
+                    if (!Directory.Exists(extract_path))
+                    {
+                        string message =
+                            "指定したZipファイルの検証中にエラーが発生しました。\n" +
+                            "Zipファイルを展開し、展開後のフォルダを追加対象として指定してください。\n\n" +
+                            $"【エラー要因】\n{ex.Message}";
+                        MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        logger.Error("System gave up to add the datapack");
+                        return false;
+                    }
+                }
                 file_path = extract_path;
             }
 

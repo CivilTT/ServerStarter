@@ -13,7 +13,7 @@ namespace Server_GUI2
     /// </summary>
     public partial class More_Settings : Window
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public MainWindow Main { get; set; }
         // private readonly Functions func = new Functions();
@@ -21,9 +21,10 @@ namespace Server_GUI2
         public Dp_Settings Dp_window { get; set; }
         public haihu Haihu_window { get; set; }
         public Spigot Spigot_window { get; set; }
-        private Data_list data = new Data_list();
+        private readonly Data_list data = new Data_list();
 
         private SortedDictionary<string, string> tmp_properites;
+
 
         public More_Settings()
         {
@@ -33,7 +34,7 @@ namespace Server_GUI2
         public void Read_properties()
         {
             //Worldのバージョンを渡してパスを書き直す
-            string read_version = Data_list.Import_spigot ? $"Spigot_{Data_list.Version}" : Data_list.Version;
+            string read_version = Data_list.ReadVersion;
 
             // new Versionが選択された際には、前回の起動バージョンのpropertiesを読み込む
             if (!Directory.Exists($@"{MainWindow.Data_Path}\{read_version}"))
@@ -70,13 +71,8 @@ namespace Server_GUI2
         {
             logger.Info("set_value method");
 
-            // GUIでの表示を設定
-            m_Version.Text = Data_list.Version;
-            m_World.Text = Data_list.World;
-            Json.Content = $@"Get All-VerWor.json at {Directory.GetCurrentDirectory()}\All-VerWor.json";
-            Json.IsChecked = Properties.Settings.Default.Output_VW;
-            // Toggle_spigot.IsOn = Data_list.Import_spigot;
-            Plugins.IsEnabled = Data_list.Import_spigot;
+            SetGUI();
+
 
             // GUIでの変更を保存するための仕掛け
             // 何も考えずにtmp_properties = Data_list.Server_Propertiesとすると「参照渡し」になってしまい、tmp_propertiesの変更がData_list.Server_Propertiesにも反映されてしまう。
@@ -130,6 +126,19 @@ namespace Server_GUI2
             Register_combo(true_false_combo, true_false_list, Data_list.Server_Properties[other_settings_TF[0]]);
             Register_combo(input_text, other_settings_last, other_settings_last[0]);
             input_text_txt.Text = Data_list.Server_Properties[other_settings_last[0]];
+        }
+
+        private void SetGUI()
+        {
+            // GUIでの表示を設定
+            m_Version.Text = Data_list.Version;
+            m_World.Text = Data_list.World;
+            Json.Content = $@"Get All-VerWor.json at {Directory.GetCurrentDirectory()}\All-VerWor.json";
+            Json.IsChecked = Properties.Settings.Default.Output_VW;
+            import_World.IsEnabled = Data_list.Import_NewWorld;
+            Plugins.IsEnabled = Data_list.Import_spigot;
+            TF_Spigot.Text = Data_list.Import_spigot ? "Yes" : "No";
+            // Toggle_spigot.IsOn = Data_list.Import_spigot;
         }
 
         private void Register_combo(System.Windows.Controls.ComboBox name_combo, string[] index_list, object IndexOf)
@@ -231,7 +240,7 @@ namespace Server_GUI2
         private void Import_click(object sender, RoutedEventArgs e)
         {
             Hide();
-            if (Haihu_window == null)
+            if (Haihu_window == null || Haihu_window.Version.Text != Data_list.ReadVersion || Haihu_window.World.Text != Data_list.World)
                 Haihu_window = new haihu();
 
             Haihu_window.m_settings = this;
@@ -241,11 +250,22 @@ namespace Server_GUI2
         private void Dp_click(object sender, RoutedEventArgs e)
         {
             Hide();
-            if (Dp_window == null)
+            if (Dp_window == null || Dp_window.Version.Text != Data_list.ReadVersion || Dp_window.World.Text != Data_list.World)
                 Dp_window = new Dp_Settings();
 
             Dp_window.m_settings = this;
             Dp_window.Display();
+        }
+
+        private void Spigot_click(object sender, RoutedEventArgs e)
+        {
+            Hide();
+            // Pluginはワールドに関係ないため他とは変えている
+            if (Spigot_window == null || Spigot_window.Version.Text != Data_list.ReadVersion)
+                Spigot_window = new Spigot();
+
+            Spigot_window.MoreSetting = this;
+            Spigot_window.Display();
         }
 
         private void Json_Click(object sender, RoutedEventArgs e)
@@ -261,28 +281,18 @@ namespace Server_GUI2
             Properties.Settings.Default.Save();
         }
 
-        private void Spigot_click(object sender, RoutedEventArgs e)
-        {
-            Hide();
-            if (Spigot_window == null)
-                Spigot_window = new Spigot();
-
-            Spigot_window.m_settings = this;
-            Spigot_window.Display();
-        }
-
-        private void TF_spigot(object sender, RoutedEventArgs e)
-        {
-            if (Toggle_spigot.IsOn == true)
-            {
-                Plugins.IsEnabled = true;
-                Data_list.Import_spigot = true;
-            }
-            else
-            {
-                Plugins.IsEnabled = false;
-                Data_list.Import_spigot = false;
-            }
-        }
+        // private void TF_spigot(object sender, RoutedEventArgs e)
+        // {
+        //     if (Toggle_spigot.IsOn == true)
+        //     {
+        //         Plugins.IsEnabled = true;
+        //         Data_list.Import_spigot = true;
+        //     }
+        //     else
+        //     {
+        //         Plugins.IsEnabled = false;
+        //         Data_list.Import_spigot = false;
+        //     }
+        // }
     }
 }

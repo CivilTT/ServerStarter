@@ -75,9 +75,70 @@ namespace Server_GUI2
         };
 
         public static string Starter_Version { get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); } }
+
+        /// <summary>
+        /// Spigotのような文字を排した純粋なバージョン番号
+        /// </summary>
         public static string Version { get; set; }
+        /// <summary>
+        /// 各バージョンのファイル名などに使われているSpigotのような文字を含んだバージョン名
+        /// </summary>
+        public static string ReadVersion
+        {
+            get
+            {
+                string read_version = Import_spigot ? $"Spigot_{Version}" : Version;
+                return read_version;
+            }
+        }
+        /// <summary>
+        /// 新しいバージョンを導入するか
+        /// trueの時は新しいバージョンを導入する。初期化処理などの際にReadVersionがnullの際にはtrueを返す
+        /// </summary>
+        public static bool Import_NewVersion 
+        {
+            get
+            {
+                bool ans = ReadVersion == null || !VerWor_list.ContainsKey(ReadVersion);
+                return ans;
+            }
+        }
+        public static bool Import_NewWorld
+        {
+            get
+            {
+                bool ans;
+                if (Import_NewVersion)
+                    ans = ReadCopy_Version == null || !VerWor_list.ContainsKey(ReadCopy_Version);
+                else
+                    ans = ReadCopy_Version == null || !VerWor_list[ReadCopy_Version].Contains(World);
+                
+                return ans;
+            }
+        }
+
         public static bool Import_spigot { get; set; }
+        
+        /// <summary>
+        /// ワールドコピー元のバージョンを示す
+        /// Versionと同じように文字を含まずに保管する
+        /// </summary>
         public static string Copy_version { get; set; }
+        /// <summary>
+        /// 各バージョンのファイル名などに使われているSpigotのような文字を含んだワールドコピー元のバージョン名
+        /// </summary>
+        public static string ReadCopy_Version
+        {
+            get
+            {
+                string read_version = CopyVer_IsSpigot ? $"Spigot_{Copy_version}" : Copy_version;
+                return read_version;
+            }
+        }
+
+        /// <summary>
+        /// コピー元のバージョンがSpigotであるかどうかを返す
+        /// </summary>
         public static bool CopyVer_IsSpigot { get; set; }
         public static string World { get; set; }
         public static bool Avail_sw { get; set; } = true;
@@ -87,20 +148,20 @@ namespace Server_GUI2
 
         public static List<string> Argument { get; set; }
 
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        WebClient wc = new WebClient();
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly WebClient wc = new WebClient();
 
         //OS情報の読み取りで使用
         public static System.Management.ManagementClass mc = new System.Management.ManagementClass("Win32_OperatingSystem");
-        System.Management.ManagementObjectCollection moc = mc.GetInstances();
+        readonly System.Management.ManagementObjectCollection moc = mc.GetInstances();
 
         //CPU情報の読み取りで使用
         public static System.Management.ManagementClass mc2 = new System.Management.ManagementClass("Win32_Processor");
-        System.Management.ManagementObjectCollection moc2 = mc2.GetInstances();
+        readonly System.Management.ManagementObjectCollection moc2 = mc2.GetInstances();
 
         //GPU情報の読み取りで使用
         public static System.Management.ManagementClass mc3 = new System.Management.ManagementClass("Win32_VideoController");
-        System.Management.ManagementObjectCollection moc3 = mc3.GetInstances();
+        readonly System.Management.ManagementObjectCollection moc3 = mc3.GetInstances();
 
 
         public void Set_Version(System.Windows.Controls.ComboBox combo_version1, string combo_version2)
@@ -110,10 +171,11 @@ namespace Server_GUI2
 
             if (combo_version1.SelectedIndex == -1)
             {
+                Import_spigot = combo_version2.Contains("Spigot");
                 Version = combo_version2.Substring(combo_version2.IndexOf(" ") + 1);
             }
 
-            Properties.Settings.Default.Version = Import_spigot ? $"Spigot_{Version}" : Version;
+            Properties.Settings.Default.Version = ReadVersion;
             Properties.Settings.Default.Save();
         }
 
@@ -138,7 +200,8 @@ namespace Server_GUI2
             else if(combo_world.SelectedIndex == -1)
             {
                 // World名に1.17.1/(World)のようにバージョンが入らなかった場合のVdownでのバグを防止している
-                Copy_version = "";
+                Copy_version = Version;
+                CopyVer_IsSpigot = Import_spigot;
                 World = text_world;
             }
         }
@@ -224,7 +287,7 @@ namespace Server_GUI2
                 foreach (string wor_path in Worlds)
                 {
                     string World_name = Path.GetFileName(wor_path);
-                    if (World_name != "logs")
+                    if (World_name != "logs" && !(subfolder.Contains("Spigot") && (World_name.Contains("_nether") || World_name.Contains("_the_end") || World_name == "plugins")))
                     {
                         World_list.Add(World_name);
                     }

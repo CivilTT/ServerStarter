@@ -14,6 +14,9 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,11 +29,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,14 +55,11 @@
     <ApplicationIcon>Resource\f279e8b23161526e8ba6ae11abbf85b3_xxo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="netstandard" />
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Downloads\Json130r1\Bin\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -93,19 +90,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="dp_Settings.xaml">
+    <Page Include="Windows\dp_Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="haihu.xaml">
+    <Page Include="Windows\haihu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="info_builder.xaml">
+    <Page Include="Windows\Infomation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\info_builder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -113,48 +114,50 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data_list.cs" />
-    <Compile Include="dp_Settings.xaml.cs">
+    <Compile Include="Core\Data_list.cs" />
+    <Compile Include="Windows\dp_Settings.xaml.cs">
       <DependentUpon>dp_Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Exception.cs" />
-    <Compile Include="Functions.cs" />
-    <Compile Include="Git.cs" />
-    <Compile Include="haihu.xaml.cs">
+    <Compile Include="Core\Exception.cs" />
+    <Compile Include="Core\Functions.cs" />
+    <Compile Include="Core\Git.cs" />
+    <Compile Include="Windows\haihu.xaml.cs">
       <DependentUpon>haihu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Progress.cs" />
-    <Compile Include="Progress_Bar.xaml.cs">
+    <Compile Include="Windows\Infomation.xaml.cs">
+      <DependentUpon>Infomation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Progress_Bar.xaml.cs">
       <DependentUpon>Progress_Bar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Spigot.xaml.cs">
+    <Compile Include="Windows\Spigot.xaml.cs">
       <DependentUpon>Spigot.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Spigot_Function.cs" />
-    <Compile Include="UPnP.cs" />
-    <Compile Include="Read_json.cs" />
-    <Compile Include="info_builder.xaml.cs">
+    <Compile Include="Core\Spigot_Function.cs" />
+    <Compile Include="Core\UPnP.cs" />
+    <Compile Include="Core\ReadContents.cs" />
+    <Compile Include="Windows\info_builder.xaml.cs">
       <DependentUpon>info_builder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="More_Settings.xaml">
+    <Page Include="Windows\More_Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Progress_Bar.xaml">
+    <Page Include="Windows\Progress_Bar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Spigot.xaml">
+    <Page Include="Windows\Spigot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="More_Settings.xaml.cs">
+    <Compile Include="Windows\More_Settings.xaml.cs">
       <DependentUpon>More_Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -178,6 +181,7 @@
     <None Include="log4net.config">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -188,7 +192,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Newtonsoft.Json.dll" />
+    <Resource Include="Resources\main_image.png" />
+    <Resource Include="Resources\trash-alt-regular.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <EmbeddedResource Include="Resources\Guide.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -218,8 +225,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AngleSharp">
+      <Version>0.16.0</Version>
+    </PackageReference>
     <PackageReference Include="AutoClosingMessageBox">
       <Version>1.0.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="Costura.Fody">
+      <Version>5.6.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="HtmlAgilityPack">
       <Version>1.11.33</Version>
@@ -233,6 +248,12 @@
     <PackageReference Include="ModernWpfUI">
       <Version>0.9.4</Version>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="SharpVectors">
+      <Version>1.7.6</Version>
+    </PackageReference>
     <PackageReference Include="System.IO.Compression">
       <Version>4.3.0</Version>
     </PackageReference>
@@ -243,5 +264,13 @@
       <Version>1.1.1</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!--<Target Name="AfterResolveReferences">
+    <ItemGroup>
+      <EmbeddedResource Include="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths.Extension)' == '.dll'">
+        <LogicalName>%(ReferenceCopyLocalPaths.DestinationSubDirectory)%(ReferenceCopyLocalPaths.Filename)%(ReferenceCopyLocalPaths.Extension)</LogicalName>
+      </EmbeddedResource>
+    </ItemGroup>
+  </Target>-->
 </Project>

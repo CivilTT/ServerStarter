@@ -13,15 +13,15 @@
                         <ResourceDictionary x:Key="Light">
                             <ResourceDictionary.MergedDictionaries>
                                 <ui:ColorPaletteResources
-                                    ListLow="Black"
+                                    ListLow="Gray"
                                     BaseMediumLow="LightGray"
-                                    BaseMedium="Blue"
-                                    BaseLow="YellowGreen"
-                                    BaseHigh="Blue"
-                                    AltMediumLow="Brown"
+                                    BaseMedium="Black"
+                                    BaseLow="#717171"
+                                    BaseHigh="Black"
+                                    AltMediumLow="White"
                                     TargetTheme="Light"
-                                    Accent="Green"
-                                    AltHigh="WhiteSmoke" />
+                                    Accent="#7CBB00"
+                                    AltHigh="White" />
                             </ResourceDictionary.MergedDictionaries>
                         </ResourceDictionary>
                         <ResourceDictionary x:Key="Dark">
@@ -31,15 +31,15 @@
                                 ・
                                 -->
                                 <ui:ColorPaletteResources
-                                    ListLow="Purple"
-                                    BaseMediumLow="Red"
-                                    BaseMedium="Blue"
-                                    BaseLow="Purple"
-                                    BaseHigh="GreenYellow"
-                                    AltMediumLow="Brown"
+                                    ListLow="Gray"
+                                    BaseMediumLow="#3B3B3B"
+                                    BaseMedium="White"
+                                    BaseLow="#717171"
+                                    BaseHigh="White"
+                                    AltMediumLow="Black"
                                     TargetTheme="Dark"
-                                    Accent="Red"
-                                    AltHigh="Black"/>
+                                    Accent="#7CBB00"
+                                    AltHigh="#262626" />
                             </ResourceDictionary.MergedDictionaries>
                         </ResourceDictionary>
                     </ui:ThemeResources.ThemeDictionaries>

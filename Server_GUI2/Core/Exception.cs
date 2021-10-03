@@ -6,7 +6,7 @@ namespace Server_GUI2
 {
     class DowngradeException : Exception
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public DowngradeException(string message) : base(message)
         {
@@ -17,7 +17,7 @@ namespace Server_GUI2
 
     class GitException: Exception
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public GitException(string message) : base(message)
         {
@@ -28,7 +28,7 @@ namespace Server_GUI2
 
     class UserSelectException : Exception
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public UserSelectException(string message) : base(message)
         {
@@ -39,7 +39,7 @@ namespace Server_GUI2
 
     class ServerException : Exception
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public ServerException(string message) : base(message)
         {
@@ -50,7 +50,7 @@ namespace Server_GUI2
 
     class WinCommandException : Exception
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public WinCommandException(string message) : base(message)
         {
@@ -61,7 +61,7 @@ namespace Server_GUI2
 
     class ArgumentException : Exception
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public ArgumentException(string message) : base(message)
         {
@@ -72,7 +72,7 @@ namespace Server_GUI2
 
     class IOException : Exception
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public IOException(string message) : base(message)
         {
@@ -83,7 +83,7 @@ namespace Server_GUI2
 
     class DownloadException : Exception
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public DownloadException(string message) : base(message)
         {

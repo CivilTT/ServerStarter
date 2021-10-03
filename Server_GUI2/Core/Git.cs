@@ -12,7 +12,7 @@ namespace Server_GUI2
 {
     public partial class Git
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static List<string> log_text { get; set; } = new List<string>();
 
         public void Pull(string version)
