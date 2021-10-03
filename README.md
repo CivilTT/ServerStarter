@@ -9,12 +9,15 @@
 ボタンクリックによって簡単にサーバーを立てることができるようにするソフトウェアです。
 
 # 使い方
-1. `Setup_ServerStarter.msi`を[こちら](https://github.com/CivilTT/ServerStarter/releases/download/v1.0.0/Setup_ServerStarter.msi)からダウンロードしてください。
+1. `Setup_ServerStarter.msi`を[こちら](https://github.com/CivilTT/ServerStarter/releases/download/v1.1.0/Setup_ServerStarter.msi)からダウンロードしてください。
 2. ダウンロードしたファイルを起動し、デスクトップに`Server Starter`というショートカットが作成されたことを確認してください。
 3. `Server Starter`を起動してください。
 4. プレイヤー名などを入力する画面にて情報を入力し、次の画面で起動したいサーバーのバージョンとワールド名を設定してください。
 5. "RUN"を押してください。
 6. 少しするとサーバーの起動が開始されます。
+
+# 搭載機能
+ 制作中...
 
 # 詳細な解説＆機能紹介
 [こちら](https://qiita.com/CivilTT/items/a59d9be7cea50d60a666)のリンクよりご確認ください。
