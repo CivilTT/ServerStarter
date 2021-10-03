@@ -12,7 +12,7 @@ namespace Server_GUI2
     public partial class info_builder : Window
     {
 
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public List<string> list_info_index = new List<string>();
 
         public info_builder()

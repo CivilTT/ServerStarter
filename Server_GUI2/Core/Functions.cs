@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -19,19 +18,18 @@ namespace Server_GUI2
 {
     public partial class Functions : Window
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private List<string> info2 = new List<string>();
 
-        private List<string> Version_Folders = new List<string>();
-        private List<string> World_Folders = new List<string>();
+        private readonly List<string> Version_Folders = new List<string>();
+        private readonly List<string> World_Folders = new List<string>();
         private dynamic root;
 
-        public MainWindow main { get; set; }
-        private Git git = new Git();
-
-        WebClient wc = new WebClient();
-        Data_list data = new Data_list();
+        public MainWindow Main { get; set; }
+        private readonly Git git = new Git();
+        readonly WebClient wc = new WebClient();
+        readonly Data_list data = new Data_list();
 
         public void Build_info()
         {
@@ -90,16 +88,13 @@ namespace Server_GUI2
             {
                 foreach (string world_name in kvp.Value)
                 {
-                    if (world_name != "ShareWorld")
-                    {
-                        if (kvp.Key.Contains("Spigot") && world_name.Contains("_nether") || world_name.Contains("_the_end") || world_name == "plugins")
-                        {
-                            continue;
-                        }
-                        World.Items.Add($"{kvp.Key}/{world_name}");
-                    }
+                    if (world_name == "ShareWorld")
+                        continue;
+
+                    World.Items.Add($"{kvp.Key}/{world_name}");
                 }
             }
+
             if (Data_list.Avail_sw)
             {
                 World.Items.Add("ShareWorld");
@@ -160,8 +155,7 @@ namespace Server_GUI2
 
         public void Create_bat_start()
         {
-            string ver = (Data_list.Import_spigot) ? "Spigot_" + Data_list.Version : Data_list.Version;
-            if (File.Exists($@"{MainWindow.Data_Path}\{ver}\start.bat"))
+            if (File.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\start.bat"))
             {
                 return;
             }
@@ -184,7 +178,7 @@ namespace Server_GUI2
 
                 try
                 {
-                    using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{ver}\start.bat", false))
+                    using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\start.bat", false))
                     {
                         foreach (string line in start)
                         {
@@ -203,12 +197,19 @@ namespace Server_GUI2
             }
         }
 
+        [Obsolete]
         private void Starter_versionUP(string url)
         {
             logger.Info("Delete old .exe and download new .exe");
             MainWindow.Pd.Message = "---START Version-up this system---";
             MainWindow.Pd.Message = "Delete old .exe and download new .exe";
             string self_path = Directory.GetCurrentDirectory();
+
+            if (File.Exists(@".\tmp.bat"))
+            {
+                Process.Start(@".\tmp.bat");
+                Environment.Exit(0);
+            }
 
             wc.DownloadFile(url, @".\..\Server_GUI2.zip");
 
@@ -259,6 +260,73 @@ namespace Server_GUI2
             }
 
             Task.Run(() => Process.Start(@".\tmp.bat", @" > .\log\tmp(versionUP)_log.txt 2>&1"));
+            Environment.Exit(0);
+        }
+
+        private void StarterVersionUP(string url)
+        {
+            logger.Info("Delete old .exe and download new .exe");
+            MainWindow.Pd.Message = "---START Version-up this system---";
+            MainWindow.Pd.Message = "Delete old .exe and download new .exe";
+
+            if (File.Exists(@".\tmp.bat"))
+            {
+                Process.Start(@".\tmp.bat");
+                Environment.Exit(0);
+            }
+
+            wc.DownloadFile(url, @".\Setup_ServerStarter.msi");
+
+            MainWindow.Pd.Close();
+
+            // コマンド実行による引数をここで受け取り、再実行する。
+            string args_list = "";
+            if (App.Args != null)
+            {
+                foreach (string key in App.Args)
+                {
+                    args_list += $" {key}";
+                }
+            }
+
+            string[] versionUP = new string[]
+            {
+                "@echo off",
+                "call Setup_ServerStarter.msi /passive",
+                // 更新後に再起動する
+                $@"if not %errorlevel%==1602 (start Server_GUI2.exe{args_list})",
+                "del Setup_ServerStarter.msi",
+                //自分自身を削除する
+                "del /f \"%~dp0%~nx0\""
+            };
+
+            try
+            {
+                using (var writer = new StreamWriter(@".\tmp.bat", false))
+                {
+                    foreach (string line in versionUP)
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string message =
+                        "Server Starterの更新ファイルの作成に失敗しました。\n" +
+                        "システムの更新をせずに実行します。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                logger.Warn($"Failed to write tmp.bat (Error Message : {ex.Message})");
+                Change_info(1, new_system_vesion: Data_list.Starter_Version);
+                return;
+            }
+
+            string mes =
+                "Server Starterの更新を開始します。\n" +
+                "Setup_ServerStarter.msiによってシステムを更新するため、次に表示される確認画面で許可してください。";
+            MW.MessageBox.Show(mes, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
+            Process.Start(@".\tmp.bat", @" > .\log\tmp(versionUP)_log.txt 2>&1");
             Environment.Exit(0);
         }
 
@@ -317,21 +385,18 @@ namespace Server_GUI2
             Data_list.Info[4] = Opening_Server.ToString();
             Data_list.Info[2] = Data_list.Version;
         }
-
         private void Change_info3()
         {
             //The latest Minecraft World nameの項目について書き換え
             logger.Info("Change info about The latest Minecraft World name");
             Data_list.Info[3] = Data_list.World;
         }
-
         private void Change_info2()
         {
             //The latest Minecraft Versionの項目について書き換え
             logger.Info("Chenge info about latest Minecraft Version");
-            Data_list.Info[2] = (Data_list.Import_spigot) ? "Spigot_" + Data_list.Version : Data_list.Version;
+            Data_list.Info[2] = Data_list.ReadVersion;
         }
-
         private void Change_info1(string version)
         {
             //Server_Starterのバージョンの項目について書き換え
@@ -379,25 +444,29 @@ namespace Server_GUI2
             }
         }
 
+        /// <summary>
+        /// ワールドのバージョンダウンに関するチェックを行う
+        /// </summary>
+        /// <returns>バージョンダウン（コピー）を行う場合はtrueを返す</returns>
         public bool Check_Vdown()
         {
-            // 新規ワールド作成時（開くバージョンと同じワールドの時）の Copy_version="" は警告の必要性なし
-            if ((Data_list.Version == Data_list.Copy_version && Data_list.Import_spigot == Data_list.CopyVer_IsSpigot) || Data_list.Copy_version == "" || Data_list.World == "ShareWorld")
+            // 新規ワールド作成時（開くバージョンと同じワールドの時）の Copy_version="" はコピーの必要性なし
+            if ((Data_list.Version == Data_list.Copy_version && Data_list.Import_spigot == Data_list.CopyVer_IsSpigot) || Data_list.World == "ShareWorld")
             {
                 return false;
             }
 
-            string re_V = Regex.IsMatch(Data_list.Version, @"[1-9]\.[0-9]+\.[0-9]") ? $"release {Data_list.Version}" : $"snapshot {Data_list.Version}";
-            string re_CV = Regex.IsMatch(Data_list.Copy_version, @"[1-9]\.[0-9]+\.[0-9]") ? $"release {Data_list.Copy_version}" : $"snapshot {Data_list.Copy_version}";
+            string re_V = Regex.IsMatch(Data_list.Version, @"[1-9]\.[0-9]+") ? $"release {Data_list.Version}" : $"snapshot {Data_list.Version}";
+            string re_CV = Regex.IsMatch(Data_list.Copy_version, @"[1-9]\.[0-9]+") ? $"release {Data_list.Copy_version}" : $"snapshot {Data_list.Copy_version}";
 
-            int re_V_num = main.All_versions.IndexOf(re_V);
-            int re_CV_num = main.All_versions.IndexOf(re_CV);
+            int re_V_num = Main.All_versions.IndexOf(re_V);
+            int re_CV_num = Main.All_versions.IndexOf(re_CV);
 
             if (re_V_num > re_CV_num)
             {
                 logger.Warn($"The World-Data will be recreated by {Data_list.Version} from {Data_list.Copy_version}");
                 var result = MW.MessageBox.Show(
-                    $"ワールドデータを{Data_list.Copy_version}から{Data_list.Version}へバージョンダウンしようとしています。\n" +
+                    $"ワールドデータを{Data_list.ReadCopy_Version}から{Data_list.ReadVersion}へバージョンダウンしようとしています。\n" +
                     $"データが破損する可能性が極めて高い操作ですが、危険性を理解したうえで実行しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 
                 if (result == MessageBoxResult.No)
@@ -440,8 +509,7 @@ namespace Server_GUI2
             logger.Info("Start Writting for server.properties");
             try
             {
-                string ver = (Data_list.Import_spigot) ? $"Spigot_{Data_list.Version}" : Data_list.Version;
-                using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{ver}\server.properties", false))
+                using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\server.properties", false))
                 {
                     foreach (string key in Data_list.Server_Properties.Keys)
                     {
@@ -488,17 +556,18 @@ namespace Server_GUI2
             //eula.txtの読み取り
             string line;
             List<string> eula_lines = new List<string>();
+
             logger.Info("Read the eula.txt");
-            string ver = (Data_list.Import_spigot) ? "Spigot_" + Data_list.Version : Data_list.Version;
-            if (!File.Exists($@"{MainWindow.Data_Path}\{ver}\eula.txt"))
+            if (!File.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\eula.txt"))
             {
                 string message =
                     "server.jarより有効なeula.txtが生成されませんでした。\n" +
-                    $"{ver}フォルダ内を確認してください。";
+                    $"{Data_list.ReadVersion}フォルダ内を確認してください。";
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException("Was not created eula.txt");
             }
-            using (StreamReader sr = new StreamReader($@"{MainWindow.Data_Path}\{ver}\eula.txt", Encoding.GetEncoding("Shift_JIS")))
+
+            using (StreamReader sr = new StreamReader($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\eula.txt", Encoding.GetEncoding("Shift_JIS")))
             {
                 while ((line = sr.ReadLine()) != "eula=false")
                 {
@@ -513,7 +582,7 @@ namespace Server_GUI2
             {
                 //書き込み
                 logger.Info("Write the eula.txt");
-                using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{ver}\eula.txt", false))
+                using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\eula.txt", false))
                 {
                     foreach (string key in eula_lines)
                     {
@@ -687,7 +756,7 @@ namespace Server_GUI2
         public void Import_plugins(More_Settings m_set_window)
         {
             logger.Info("Check the plugins");
-            if (m_set_window.Spigot_window == null || !m_set_window.Spigot_window.import_plugin)
+            if (m_set_window.Spigot_window == null || !m_set_window.Spigot_window.Import_plugin)
             {
                 logger.Info("There are not plugins necessary");
                 return;
@@ -742,13 +811,29 @@ namespace Server_GUI2
 
         public virtual void Start_server(bool first_launch = false)
         {
-            //server.jarの起動に必要なstart.batを作成
+            // server.jarの起動に必要なstart.batを作成
             Create_bat_start();
 
-            string ver_name = (Data_list.Import_spigot) ? $"Spigot_{Data_list.Version}" : Data_list.Version;
-            logger.Info($"Start the server of {ver_name}");
-            
-            Process p = Process.Start($@"{MainWindow.Data_Path}\{ver_name}\start.bat");
+            // eula.txtの存在確認
+            var app = new ProcessStartInfo
+            {
+                FileName = "start.bat",
+                UseShellExecute = true,
+                WorkingDirectory = $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}"
+            };
+
+            Process p;
+            if (!File.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\eula.txt"))
+            {
+                p = Process.Start(app);
+                p.WaitForExit();
+
+                Change_eula();
+            }
+
+
+            logger.Info($"Start the server of {Data_list.ReadVersion}");
+            p = Process.Start(app);
             p.WaitForExit();
 
             if (p.ExitCode != 0)
@@ -760,13 +845,12 @@ namespace Server_GUI2
                 if (first_launch)
                 {
                     // 中途半端にserver.jarとstart.batのみ残ることを防止
-                    Directory.Delete($@"{MainWindow.Data_Path}\{ver_name}", true);
+                    Directory.Delete($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}", true);
                 }
                 throw new ServerException("Failed to process the server");
             }
         }
 
-        [Obsolete]
         public void Upload_ShareWorld()
         {
             if (Data_list.World == "ShareWorld")
@@ -791,28 +875,23 @@ namespace Server_GUI2
         public void Check_versionUP()
         {
             logger.Info("Check the versionUP about this system, Server Starter");
-            Read_Starter_json();
+            string[] result = Read_json_forGit();
 
             // このように宣言と代入を分けておかないとうまくjsonの中身を読み込むことができない
-            if(root == null)
-            {
+            if (result == null)
                 return;
-            }
-            string latest_ver;
-            string url;
-            latest_ver = root.latest.name;
-            url = root.latest.url;
 
-            if (Data_list.Starter_Version != latest_ver)
+            if (Data_list.Starter_Version != result[0])
             {
                 //Server Starterのバージョンを書き直し
-                Change_info(1, new_system_vesion:latest_ver);
+                Change_info(1, new_system_vesion:result[0]);
 
                 //.exeをアップデート
-                Starter_versionUP(url);
+                StarterVersionUP(result[1]);
             }
         }
 
+        [Obsolete]
         private void Read_Starter_json()
         {
             // 最新のjsonをダウンロード
@@ -841,6 +920,47 @@ namespace Server_GUI2
             root = JsonConvert.DeserializeObject(jsonStr);
         }
 
+        /// <summary>
+        /// GitHubのreleaseから最新バージョンについて取得する
+        /// </summary>
+        /// <returns>0番目に最新バージョン、1番目にダウンロードurlを返す</returns>
+        private string[] Read_json_forGit()
+        {
+            string url = "https://api.github.com/repos/CivilTT/ServerStarter/releases";
+            string jsonStr;
+            try
+            {
+                wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36");
+                jsonStr = wc.DownloadString(url);
+            }
+            catch (Exception ex)
+            {
+                string message =
+                        "Server Starterの更新データの取得に失敗しました。\n" +
+                        "最新バージョンの確認を行わずに起動します。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
+                return null;
+            }
+
+            root = JsonConvert.DeserializeObject(jsonStr);
+            // このように宣言と代入を分けておかないとうまくjsonの中身を読み込むことができない
+            if (root == null)
+                return null;
+
+            string name = root[0].name;
+            name = name.Replace("version ", "");
+            string downloadurl = root[0].assets[1].browser_download_url;
+
+            string[] result = new string[2]
+            {
+                name,
+                downloadurl
+            };
+
+            return result;
+        }
+
         public void Check_data_folder()
         {
             //World_Dataフォルダの確認
@@ -866,7 +986,7 @@ namespace Server_GUI2
 
         public void Check_op()
         {
-            if (main.Get_op)
+            if (Main.Get_op)
             {
                 Make_op();
             }
@@ -893,8 +1013,7 @@ namespace Server_GUI2
         private void Make_op(int level = 4, bool bypassesPlayerLimit = false)
         {
             logger.Info($"Check ops.josn ({Data_list.Info[0]} has op rights, or not)");
-            string ver_name = (Data_list.Import_spigot) ? $"Spigot_{Data_list.Version}" : Data_list.Version;
-            string ops_path = $@"{MainWindow.Data_Path}\{ver_name}\ops.json";
+            string ops_path = $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ops.json";
             string ops_line = (File.Exists(ops_path)) ? File.ReadAllText(ops_path) : "[]";
             if (ops_line != "[]")
             {
@@ -969,7 +1088,7 @@ namespace Server_GUI2
             }
             vw.Versions = ver_list;
 
-            vw.All_vers = main.All_versions;
+            vw.All_vers = Main.All_versions;
 
             string jsonData = JsonConvert.SerializeObject(vw);
             using (var sw = new StreamWriter($@"{Directory.GetCurrentDirectory()}\All-VerWor.json", false, Encoding.UTF8))

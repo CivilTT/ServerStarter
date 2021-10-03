@@ -57,4 +57,4 @@ using System.Windows;
 // log4net を利用するための設定
 //インストーラーを使う関係上、リビルドを行うときにはexeと同じ階層でconfigを読み込むために.\log4net.configにする。（普段は..\..\log4net.config）
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "./log4net.config", Watch = true)]
-
+[assembly: NeutralResourcesLanguage("ja-JP")]

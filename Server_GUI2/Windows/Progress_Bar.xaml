@@ -13,7 +13,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock x:Name="title_box" Margin="15,20,15,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" FontSize="22" Text="Ready to XXXX ..."/>
-        <ui:ProgressBar x:Name="ProgressBar1" Height="20" Margin="15,70,15,0" VerticalAlignment="Top"/>
+        <ui:ProgressBar x:Name="ProgressBar1" Height="20" Margin="15,70,15,0" VerticalAlignment="Top" Background="#EBEBEB"/>
         <TextBlock x:Name="bar_display" Margin="15,95,15,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" FontSize="18" Grid.Column="1" TextAlignment="Right" Text="Finish 0%"/>
         <Expander Margin="15,130,15,10" Header="More infomation" FontSize="15" VerticalAlignment="Top" ExpandDirection="Down">
             <Border BorderBrush="DimGray" BorderThickness="1" Margin="5 5 0 0">

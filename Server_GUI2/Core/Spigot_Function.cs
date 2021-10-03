@@ -11,7 +11,7 @@ namespace Server_GUI2
 {
     class Spigot_Function : Functions
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public override void Check_copy_world()
         {

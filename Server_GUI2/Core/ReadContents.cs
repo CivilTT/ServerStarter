@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using AngleSharp.Html.Parser;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,7 +7,6 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Forms;
 using MW = ModernWpf;
 
 //メモ
@@ -16,18 +16,18 @@ using MW = ModernWpf;
 
 namespace Server_GUI2
 {
-    public partial class Read_json
+    public partial class ReadJson
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly Functions func = new Functions();
-        WebClient wc = new WebClient();
-        Spigot_Function spi_func = new Spigot_Function();
-        private string jsonStr;
-        private dynamic root;
+        readonly WebClient wc = new WebClient();
+        readonly Spigot_Function spi_func = new Spigot_Function();
+        private readonly string jsonStr;
+        private readonly dynamic root;
 
 
-        public Read_json()
+        public ReadJson()
         {
             logger.Info("Import version_manifest_v2.json");
             try
@@ -54,7 +54,8 @@ namespace Server_GUI2
             int i = 0;
 
             //ここでrelease、snapshotのみかすべてまとめて取得するのかを決める
-            while (id != "1.0")
+            // バージョン1.2.5以前はマルチサーバーが存在しない
+            while (id != "1.2.5")
             {
                 id = root.versions[i].id;
                 string type = root.versions[i].type;
@@ -72,39 +73,14 @@ namespace Server_GUI2
 
         public bool Import_server()
         {
-            string ver_folder = (Data_list.Import_spigot) ? $"Spigot_{Data_list.Version}" : Data_list.Version;
             logger.Info("There are already new version, or not");
-            if (Directory.Exists($@"{MainWindow.Data_Path}\{ver_folder}\"))
+            if (Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\"))
             {
                 logger.Info("There are already new version");
                 return false;
             }
             
             logger.Info("Download server.jar");
-
-
-            // 試験的な追加
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            if (Data_list.Version == "1.18-3" && !Data_list.Import_spigot)
-            {
-                string url2 = "https://launcher.mojang.com/v1/objects/cbe106c19f5072222ce54039aa665a8aaf97097d/server.jar";
-                Directory.CreateDirectory($@"{MainWindow.Data_Path}\{Data_list.Version}");
-                wc.DownloadFile(url2, $@"{MainWindow.Data_Path}\{Data_list.Version}\server.jar");
-                wc.Dispose();
-
-                //一度実行し、eula.txtなどの必要ファイルを書き出す
-                func.Start_server(true);
-
-                //eulaの書き換え
-                func.Change_eula();
-
-                return true;
-            }
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
             if (Data_list.Version == "")
             {
                 MessageBoxResult? result = MW.MessageBox.Show("導入するサーバーのバージョンが選択されていません。\r\nサーバーのバージョンを選択をした上で再度「Run」を押してください。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Error);
@@ -117,7 +93,7 @@ namespace Server_GUI2
 
             if (Data_list.Import_spigot)
             {
-                Import_spigot(ver_folder);
+                Import_spigot(Data_list.ReadVersion);
             }
             else
             {
@@ -268,12 +244,69 @@ namespace Server_GUI2
             {
                 File.Move($@"{MainWindow.Data_Path}\{ver_folder}\BuildTools.log.txt", @".\log\BuildTools.log.txt");
             }
-            catch
+            catch (IOException)
             {
                 File.Delete(@".\log\BuildTools.log.txt");
                 File.Move($@"{MainWindow.Data_Path}\{ver_folder}\BuildTools.log.txt", @".\log\BuildTools.log.txt");
             }
+            catch (DirectoryNotFoundException)
+            {
+                Directory.CreateDirectory(@".\log");
+                File.Move($@"{ MainWindow.Data_Path}\{ver_folder}\BuildTools.log.txt", @".\log\BuildTools.log.txt");
+            }
         }
 
+    }
+
+    public class ReadHTML
+    {
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        readonly WebClient wc = new WebClient();
+
+
+        public List<string> Get_SpigotVers()
+        {
+            wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36");
+            Stream st = wc.OpenRead("https://hub.spigotmc.org/versions/");
+
+            string html;
+            using (var sr = new StreamReader(st))
+            {
+                html = sr.ReadToEnd();
+            }
+
+            // HTMLParserのインスタンス生成
+            var parser = new HtmlParser();
+            var doc = parser.ParseDocument(html);
+
+            var table = doc.QuerySelectorAll("body > pre > a");
+
+            SortedList<double, string> _vers = new SortedList<double, string>();
+            foreach(var htmlDatas in table)
+            {
+                string ver = htmlDatas.InnerHtml;
+                if (ver.Substring(0,2) != "1.")
+                    continue;
+
+                // 1. と .jsonを除いた形
+                string ver_tmp = ver.Substring(2).Replace(".json", "");
+                // version名を小数に変換 (-preに関しては小数第２位にその数字を入れ、ひとつ前のバージョンとするために0.1引く)
+                double pre_num = ver.Contains("-pre") ? double.Parse(ver_tmp.Substring(ver_tmp.Length - 1)) : 0;
+                double ver_num = ver.Contains("-pre") ? double.Parse(ver_tmp.Substring(0, ver_tmp.IndexOf("-pre"))) + pre_num * 0.01 - 0.1 : double.Parse(ver_tmp);
+
+                _vers.Add(ver_num, "Spigot " + ver.Replace(".json", ""));
+                
+                // 1.9.jsonが対応バージョン一覧の最後に記載されているため
+                if (ver == "1.9.json")
+                    break;
+            }
+
+            List<string> vers = new List<string>(_vers.Values);
+            // 最新バージョンが一番上にくるようにする
+            vers.Reverse();
+
+            return vers;
+        }
     }
 }

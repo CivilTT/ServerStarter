@@ -14,12 +14,11 @@ namespace Server_GUI2
 {
     public partial class UPnP
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly Functions func = new Functions();
-
-        UPnPNATClass upnpnat = new UPnPNATClass();
-        IPGlobalProperties ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+        readonly UPnPNATClass upnpnat = new UPnPNATClass();
+        readonly IPGlobalProperties ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
 
 
 

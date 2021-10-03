@@ -161,7 +161,7 @@ namespace Server_GUI2
             {
                 _title = value;
                 if (form != null)
-                form.Dispatcher.Invoke(new MethodInvoker(SetTitle));
+                    form.Dispatcher.Invoke(new MethodInvoker(SetTitle));
             }
             get
             {
@@ -229,7 +229,7 @@ namespace Server_GUI2
         {
             set
             {
-                if(value == null)
+                if (value == null)
                 {
                     return;
                 }
@@ -396,6 +396,6 @@ namespace Server_GUI2
             form.Activated -= new EventHandler(Form_Activated);
             startEvent.Set();
         }
-        
+
     }
 }

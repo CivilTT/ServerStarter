@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Forms;
 using MW = ModernWpf;
 
 
@@ -16,36 +15,38 @@ namespace Server_GUI2
     /// </summary>
     public partial class Spigot : Window
     {
-        private ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public More_Settings m_settings { get; set; }
-        public bool import_plugin { get; set; }
+        public More_Settings MoreSetting { get; set; }
+        public bool Import_plugin { get; set; }
 
-        private List<string> existed_list = new List<string>();
-        private List<string> add_list = new List<string>();
-        private List<string> remove_list = new List<string>();
+
+        private readonly List<string> existed_list = new List<string>();
+        private readonly List<string> add_list = new List<string>();
+        private readonly List<string> remove_list = new List<string>();
 
 
         public Spigot()
         {
             InitializeComponent();
 
-            Version.Text = Data_list.Version;
+            Version.Text = Data_list.ReadVersion;
             World.Text = Data_list.World;
-            import_plugin = false;
+            Import_plugin = false;
 
             Set_imported();
         }
 
         private void Set_imported()
         {
-            if (!Directory.Exists($@"{MainWindow.Data_Path}\" + $"\"Spigot_{Data_list.Version}\"" + @"\plugins\"))
+            if (!Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\plugins\"))
             {
                 Imported.Items.Add("(None)");
+                Remove.IsEnabled = false;
                 return;
             }
 
-            string[] plugins = Directory.GetFiles($@"{MainWindow.Data_Path}\" + $"\"Spigot_{Data_list.Version}\"" + @"\plugins\");
+            string[] plugins = Directory.GetFiles($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\plugins\");
 
             foreach (string key in plugins)
             {
@@ -69,10 +70,16 @@ namespace Server_GUI2
                     return;
                 }
 
+                if(Path.GetExtension(cofd.FileName) != ".jar")
+                {
+                    MW.MessageBox.Show("Pluginとして無効なファイルです。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 // FileNameで選択されたフォルダを取得する
                 add_list.Add(cofd.FileName);
                 string datapack_name = Path.GetFileName(cofd.FileName);
                 Imported.Items.Remove("(None)");
+                Remove.IsEnabled = true;
                 Imported.Items.Add("【new】" + datapack_name);
             }
         }
@@ -108,6 +115,7 @@ namespace Server_GUI2
             if (Imported.Items.Count == 0)
             {
                 Imported.Items.Add("(None)");
+                Remove.IsEnabled = false;
             }
         }
 
@@ -115,13 +123,13 @@ namespace Server_GUI2
         {
             logger.Info("Click the OK Button");
             // Okを押したときにはpluginsの作業は行わず、Runが入り、propertiesの編集が終わったあたりで、コピーなどの作業を行う
-            import_plugin = true;
+            Import_plugin = true;
 
             // 再表示のためにGUI上の表示はリセットしておく
             Imported.Items.Clear();
 
             Hide();
-            m_settings.Show();
+            MoreSetting.Show();
         }
 
         public void Add_data()
@@ -164,7 +172,7 @@ namespace Server_GUI2
             add_list.Clear();
             remove_list.Clear();
 
-            m_settings.Show();
+            MoreSetting.Show();
         }
 
         public void Display()
@@ -185,6 +193,7 @@ namespace Server_GUI2
             if (Imported.Items.Count == 0)
             {
                 Imported.Items.Add("(None)");
+                Remove.IsEnabled = false;
             }
             ShowDialog();
         }
