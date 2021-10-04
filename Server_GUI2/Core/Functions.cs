@@ -875,6 +875,8 @@ namespace Server_GUI2
         public void Check_versionUP()
         {
             logger.Info("Check the versionUP about this system, Server Starter");
+            if (File.Exists($@"{MainWindow.Data_Path}\Starter_Version.json"))
+                File.Delete($@"{MainWindow.Data_Path}\Starter_Version.json");
             string[] result = Read_json_forGit();
 
             // このように宣言と代入を分けておかないとうまくjsonの中身を読み込むことができない
