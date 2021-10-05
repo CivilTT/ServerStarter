@@ -51,13 +51,33 @@ Spigotサーバーを導入する場合は【new Version】にて`Import Spigot`
 ## ShareWorld
 サーバーの起動を常に1人が行う場合、その人がいないときはマルチプレイができません。<br>
 しかし、このShareWorldを用いることで、前回サーバーを立てた人とは別の人でもサーバーを最新の状態で起動することができます。<br>
+### 事前準備１（Gitレポジトリの設定）
+
+### 事前準備２（登録・確認作業）
+
+### 利用方法
 
 ## More Settings
+メイン画面の一番下にある`More Settings`を選択することにより、新しいウィンドウが開きます。
 ### Server Properties
-
-### 配布ワールド＆Datapacks＆Plugins 
-
+以下のような画面にて設定を行うことができます。<br>
+主要な項目を**Main Settings**にて表示し、そのほかの項目についてはtrue/falseで設定するもの、数字などの文字で指定するものに分けて**Other Settings**にて表示しています。<br>
+![moresettings1](https://github.com/CivilTT/ServerStarter/blob/master/Images/moresettings1.png)
     
+### 配布ワールド＆Datapacks＆Plugins 
+これらの設定はMore Settingsの上部にあるボタンより、別のウィンドウを立ち上げることで、設定できるようになります。
+#### 配布ワールド（Custom Map）
+配布ワールドは新規ワールドのの導入時のみ、開くことができる設定になっています。<br>
+配布ワールドの製作者様が作成したzipファイルや展開済みのフォルダをImportボタンを押して、選択してください。<br>
+この時、選択するデータの種類をあらかじめ設定しておいてください。以下の画像ではImportを押すとzipファイルを選択できるようになっています。<br>
+![custom1](https://github.com/CivilTT/ServerStarter/blob/master/Images/custom1.png)
+    
+
+#### Datapacks
+    
+#### Plugins
+
+
 ## Others
 
     
