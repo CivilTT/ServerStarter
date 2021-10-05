@@ -43,6 +43,9 @@ GitについてはShareWorldというレポジトリを作成し、[サーバー
 <br>
 ![main3](https://github.com/CivilTT/ServerStarter/blob/master/Images/main3.png)
 
+### 既存ワールドの導入
+
+
 ### Spigot
 Spigotサーバーを導入する場合は【new Version】にて`Import Spigot`をYesに変更してください。<br>
 これにより、バージョンの一覧がSpigotのものに切り替わります。<br>
@@ -60,11 +63,14 @@ Spigotサーバーを導入する場合は【new Version】にて`Import Spigot`
 ## ShareWorld
 サーバーの起動を常に1人が行う場合、その人がいないときはマルチプレイができません。<br>
 しかし、このShareWorldを用いることで、前回サーバーを立てた人とは別の人でもサーバーを最新の状態で起動することができます。<br>
-### 事前準備１（Gitレポジトリの設定）
-
-### 事前準備２（登録・確認作業）
+### 事前準備（Gitレポジトリの設定）
+[こちらの記事](https://qiita.com/CivilTT/items/16d53b734ac9d75c2e79)にまとめてあるため、参照しながら作業を進めてください。
 
 ### 利用方法
+`info.txt`の編集が終わり次第、保存したうえでこれを閉じ、本システムをショートカットより起動して下さい。<br>
+すると、以下の写真のようにWorldの一覧に`ShareWorld`が追加されています。<br>
+これを選択してワールドを起動することで、同期されたサーバーシステムを構築することができます。<br>
+![main2]()
 
 ## More Settings
 メイン画面の一番下にある`More Settings`を選択することにより、新しいウィンドウが開きます。
