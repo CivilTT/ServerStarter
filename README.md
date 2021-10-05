@@ -35,19 +35,28 @@ GitについてはShareWorldというレポジトリを作成し、後述する�
 以下の写真のように、起動したいサーバーバージョンと、バージョンアップしたいワールドを選択してください。<br>
 この場合、**1.17.1**でサーバーを起動するため、**1.16.1のworld**を1.17.1にバージョンアップします。<br>
 ![main3](https://github.com/CivilTT/ServerStarter/blob/master/Images/main3.png)
-    
 
 ### Spigot
 Spigotサーバーを導入する場合は【new Version】にて`Import Spigot`をYesに変更してください。<br>
 これにより、バージョンの一覧がSpigotのものに切り替わります。<br>
-![Spigot1]()
 次回以降Spigotがすでに導入されている状態では、普通のバージョンと同じようにバージョン一覧から選択できるようになっています。<br>
-
+![Spigot1]()
+    
 ### SpigotとVanila
-    
+もともとVanilaサーバーとして作成したワールドをSpigotサーバーとして立てたい場合、自動的に変換する機能が作動します。<br>
+また、逆にSpigotからVanilaに変換することもできます。<br>
+バージョンアップの際と同様に起動したいサーバーともともとのワールドを選択するだけで自動的にサーバーデータの変換が行われます。<br>
+![Spigot2]()
+
 ## ShareWorld
-    
+サーバーの起動を常に1人が行う場合、その人がいないときはマルチプレイができません。<br>
+しかし、このShareWorldを用いることで、前回サーバーを立てた人とは別の人でもサーバーを最新の状態で起動することができます。<br>
+
 ## More Settings
+### Server Properties
+
+### 配布ワールド＆Datapacks＆Plugins 
+
     
 ## Others
 
