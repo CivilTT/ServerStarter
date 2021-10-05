@@ -24,8 +24,8 @@
 ~~~
 インストール後に最初に起動すると以下のような画面が表示されます。<br>
 自身のゲーム内での名前を入力してください。<br>
-GitについてはShareWorldというレポジトリを作成し、後述するサーバー同期機能を使用する場合は入力してください。<br>
-使用しない場合はExampleのままで大丈夫です。<br>
+GitについてはShareWorldというレポジトリを作成し、[サーバー同期機能](https://github.com/CivilTT/ServerStarter#shareworld)を使用する場合は入力してください。<br>
+使用しない場合はExampleのままで問題ありません。<br>
 <br>
 ![infobuilder](https://github.com/CivilTT/ServerStarter/blob/master/Images/infobuilder.jpg)
 
@@ -120,6 +120,15 @@ Server_GUI2.exe /?
 また、More Settingsの最下部にある`Get All-VerWor.json`のチェックボックスを適用することにより、本システムにインストールされているバージョンとワールドデータの一覧を表示することができます。<br>
 <br>
 ![all-verwor]()
+    
+# 利用規約
+インストーラに同梱されており、利用開始時にこれに同意する必要があります。<br>
+なお利用規約はバージョンの改定とともに、予告なく変更する可能性がありますこと、予めご了承ください。
+
+# 問題が発生した場合
+個別の環境における問題については、作者が回答することはありません。<br>
+しかし、明らかなシステム側のバグである場合やバグであることが疑われる場合は、恐れ入りますが作者の[Twitter](https://twitter.com/CivilT_T)のDMにそっとご報告いただけますと幸いです。<br>
+よろしくお願いいたします。
 
 # 詳細な解説＆機能紹介
 [こちら](https://qiita.com/CivilTT/items/a59d9be7cea50d60a666)のリンクよりご確認ください。
