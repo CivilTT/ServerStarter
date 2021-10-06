@@ -54,6 +54,8 @@ GitについてはShareWorldというレポジトリを作成し、[サーバー
     |
     ├─advancements
     ├─datapacks
+    :
+    (現在編集中です)
 ~~~
 
 ### Spigot
