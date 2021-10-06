@@ -44,21 +44,31 @@ GitについてはShareWorldというレポジトリを作成し、[サーバー
 ![main3](https://github.com/CivilTT/ServerStarter/blob/master/Images/main3.png)
 
 ### 既存ワールドの導入
-
+本システムを導入した際など、もともとのワールドデータを移行したい場面に対応します。<br>
+【new World】として新規ワールドの名称を設定し、More SettingsよりCustom Mapボタンを押します。<br>
+[配布ワールドを導入する](https://github.com/CivilTT/ServerStarter#%E9%85%8D%E5%B8%83%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89custom-map)際と同じ手順でワールドデータの入ったフォルダを選択してください。<br>
+なお、選択するフォルダの階層が以下のようになっていることも確認してください。<br>
+そのあとは、OKを押し、RUNすることでサーバーを本システムより起動することができるようになります。<br>
+~~~
+（選択するフォルダ）
+    |
+    ├─advancements
+    ├─datapacks
+~~~
 
 ### Spigot
 Spigotサーバーを導入する場合は【new Version】にて`Import Spigot`をYesに変更してください。<br>
 これにより、バージョンの一覧がSpigotのものに切り替わります。<br>
 次回以降Spigotがすでに導入されている状態では、普通のバージョンと同じようにバージョン一覧から選択できるようになっています。<br>
 <br>
-![Spigot1]()
+![Spigot1](https://github.com/CivilTT/ServerStarter/blob/master/Images/Spigot1.png)
     
 ### SpigotとVanila
 もともとVanilaサーバーとして作成したワールドをSpigotサーバーとして立てたい場合、自動的に変換する機能が作動します。<br>
 また、逆にSpigotからVanilaに変換することもできます。<br>
 バージョンアップの際と同様に起動したいサーバーともともとのワールドを選択するだけで自動的にサーバーデータの変換が行われます。<br>
 <br>
-![Spigot2]()
+![Spigot2](https://github.com/CivilTT/ServerStarter/blob/master/Images/Spigot2.png)
 
 ## ShareWorld
 サーバーの起動を常に1人が行う場合、その人がいないときはマルチプレイができません。<br>
@@ -70,8 +80,11 @@ Spigotサーバーを導入する場合は【new Version】にて`Import Spigot`
 `info.txt`の編集が終わり次第、保存したうえでこれを閉じ、本システムをショートカットより起動して下さい。<br>
 すると、以下の写真のようにWorldの一覧に`ShareWorld`が追加されています。<br>
 これを選択してワールドを起動することで、同期されたサーバーシステムを構築することができます。<br>
-![main2]()
-
+<br>
+![main2](https://github.com/CivilTT/ServerStarter/blob/master/Images/main2.png)
+<br>
+なお、同様の設定をサーバーを共有で開く可能性のある人にも行うことで、サーバー起動時にその人にも最新のデータが同期されるようになります。
+    
 ## More Settings
 メイン画面の一番下にある`More Settings`を選択することにより、新しいウィンドウが開きます。
 ### Server Properties
@@ -125,7 +138,7 @@ Server_GUI2.exe /?
 
 また、More Settingsの最下部にある`Get All-VerWor.json`のチェックボックスを適用することにより、本システムにインストールされているバージョンとワールドデータの一覧を表示することができます。<br>
 <br>
-![all-verwor]()
+![all-verwor](https://github.com/CivilTT/ServerStarter/blob/master/Images/All-VerWor.png)
     
 # 利用規約
 インストーラに同梱されており、利用開始時にこれに同意する必要があります。<br>
