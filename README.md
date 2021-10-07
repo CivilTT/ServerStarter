@@ -53,9 +53,19 @@ GitについてはShareWorldというレポジトリを作成し、[サーバー
 （選択するフォルダ）
     |
     ├─advancements
+    ├─data
     ├─datapacks
-    :
-    (現在編集中です)
+    ├─DIM1
+    ├─DIM-1
+    ├─dimensions
+    ├─entities
+    ├─playerdata
+    ├─poi
+    ├─region
+    ├─stats
+    ├─level.dat
+    ├─level.dat_old
+    └─session.lock
 ~~~
 
 ### Spigot
