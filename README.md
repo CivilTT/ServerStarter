@@ -205,6 +205,121 @@ You can easily build the Minecraft Multiplay server
 4. Set any information and Select Version and World
 5. Push "RUN" button
 6. You can build the Minecraft Server!!
+    
+# Functions
+## Init Settings
+~~~
+This system does not support the port open (port mapping) function.
+Open port 25565 as it is a necessary task for others to enter the server.
+~~~
+    
+When you start it for the first time after installation, the following screen will be displayed.<br>
+Enter your in-game name.<br>
+For Git, create a repository called ShareWorld and type it if you want to use the [Server Synchronization Function]().<br>
+If you do not use it, you can leave it as Example.<br>
+<br>
+![infobuilder](https://github.com/CivilTT/ServerStarter/blob/master/Images/infobuilder.jpg)
+
+## Start the Server
+The following screen is the main screen of this system.<br>
+Select the version of the server to start with `Version`, and select the world to start with `World`.<br>
+At first, neither Version nor Word is installed, so select the version you want to install from 【new Version (World)】 and decide the name of the World.<br>
+<br>
+![main1](https://github.com/CivilTT/ServerStarter/blob/master/Images/main1.png)
+    
+### Version-UP
+You can upgrade the version of the world due to factors such as the latest version being released.<br>
+Select the server version you want to start and the world you want to upgrade, as shown in the picture below.<br>
+In this case, since the server will be started with **1.17.1**, the **World of 1.16.1** will be upgraded to 1.17.1.<br>
+<br>
+![main3](https://github.com/CivilTT/ServerStarter/blob/master/Images/main3.png)
+
+### Import existing world
+I can correspond the case you want to import the original world data, such as when this system is introduced.<br>
+Set the name of the new world as 【new World】 and push the Custom Map button from More Settings.<br>
+Select the folder containing the world data in the same process as when [Import Custom Map]().<br>
+Also, make sure that the hierarchy of the selected folder is as follows.<br>
+After that, you can start the server from this system by pushing OK and running.<br>
+~~~
+（Selected Folder）
+    |
+    ├─advancements
+    ├─data
+    ├─datapacks
+    ├─DIM1
+    ├─DIM-1
+    ├─dimensions
+    ├─entities
+    ├─playerdata
+    ├─poi
+    ├─region
+    ├─stats
+    ├─level.dat
+    ├─level.dat_old
+    └─session.lock
+~~~
+
+### Spigot
+When installing the Spigot server, change Import Spigot to Yes in 【new Version】.<br>
+This will switch the list of versions to Spigot's.<br>
+From the next time onwards, when Spigot is already installed, you can select from the version list in the same way as a vanila version.<br>
+<br>
+![Spigot1](https://github.com/CivilTT/ServerStarter/blob/master/Images/Spigot1.png)
+    
+### Spigot and Vanila
+If you want to set up a World originally created as a Vanila server as a Spigot server, the automatic conversion function will work.<br>
+Of cource, you can also convert from Spigot to Vanila.<br>
+Just select the server Version you want to start and the original World, then the server data will be converted automatically.<br>
+<br>
+![Spigot2](https://github.com/CivilTT/ServerStarter/blob/master/Images/Spigot2.png)
+    
+## ShareWorld
+If one person is always opening the server, multiplayer will not be possible without that one.<br>
+However, by using this ShareWorld, even another person who set up the server last time can start the server everytime in the latest state.<br>
+    
+### Init Settings (Set the Git repository)
+I wrote it in [this page](https://qiita.com/CivilTT/items/16d53b734ac9d75c2e79). Please set the repository yourself with it.
+
+### How to use
+As soon as you finish editing `info.txt`, start this system from the shortcut.<br>
+Then, ShareWorld is added to the list of World as shown in the picture below.<br>
+You can build Synchronized Server System by selecting ShareWorld and launching the World.<br>
+<br>
+![main2](https://github.com/CivilTT/ServerStarter/blob/master/Images/main2.png)
+<br>
+In addition, a person who will open the ShareWorld Server has to do same settings. Then, you and a person share World data.  
+
+## More Settings
+Select More Settings at the bottom of the main window.
+    
+### Server Properties
+You can make settings on the screen below.<br>
+Main items are displayed in **Main Settings**, and other items are displayed in **Other Settings** separately for those set with true / false and those specified with characters such as numbers.<br>
+<br>
+![moresettings1](https://github.com/CivilTT/ServerStarter/blob/master/Images/moresettings1.png)
+    
+### Custom Map & Datapacks & Plugins
+#### Custom Map
+    
+#### Datapacks
+    
+#### Plugins
+    
+
+## Others
+### Reset the World
+    
+### Delete the data
+    
+### Give OP rights
+    
+### Shutdown your PC after stopping the Server
+    
+### For Developpers (Beta Ver.)
+
+# Terms of Service
+    
+# TroubleShooting
 
 # More Information
 It is [HERE](https://qiita.com/CivilTT/items/a59d9be7cea50d60a666)!!
