@@ -180,7 +180,7 @@ Server_GUI2.exe /?
 
 # 問題が発生した場合
 個別の環境における問題については、作者が回答することはありません。<br>
-しかし、明らかなシステム側のバグである場合やバグであることが疑われる場合は、恐れ入りますが作者の[Twitter](https://twitter.com/CivilT_T)のDMにそっとご報告いただけますと幸いです。<br>
+しかし、明らかなシステム側のバグである場合やバグであることが疑われる場合は、恐れ入りますが作者の[TwitterのDM](https://twitter.com/CivilT_T)にそっとご報告いただけますと幸いです。<br>
 よろしくお願いいたします。
 
 # 詳細な解説＆機能紹介
@@ -355,12 +355,28 @@ A confirmation dialog will be displayed before shutting down, so you can choose 
 ![shutdown](https://github.com/CivilTT/ServerStarter/blob/master/Images/shutdown.png)
     
 ### For Developpers (Beta Ver.)
+The basic functions of this system can be operated from the command line.<br>
+For detailed explanation, move the current directory to the installation folder and check from the /? Option.<br>
+If it is installed in the specified installation folder, you can check it with the following command.<br>
 
+~~~
+cd .\AppData\Roaming\.minecraft\Servers
+Server_GUI2.exe /?
+~~~
+
+You can also display a list of versions and world data installed on this system by applying the `Get All-VerWor.json` checkbox at the bottom of More Settings.<br>
+<br>
+![all-verwor](https://github.com/CivilTT/ServerStarter/blob/master/Images/All-VerWor.png)
 
 
 # Terms of Service
+It is included with the installer and you must agree to it when you start using it.
+Please note that the terms of use are subject to change without notice as the version is revised.
     
 # TroubleShooting
+The author does not answer questions in individual environments.
+However, if it is an obvious system bug or suspected one, please kindly report it to the author's [Twitter DM](https://twitter.com/CivilT_T).
+Thank you.
 
 # More Information
 It is [HERE](https://qiita.com/CivilTT/items/a59d9be7cea50d60a666)!!
