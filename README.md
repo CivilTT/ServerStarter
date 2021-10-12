@@ -299,19 +299,48 @@ Main items are displayed in **Main Settings**, and other items are displayed in 
 ![moresettings1](https://github.com/CivilTT/ServerStarter/blob/master/Images/moresettings1.png)
     
 ### Custom Map & Datapacks & Plugins
+These settings can be set by launching another window from the button at the top of More Settings.
+
 #### Custom Map
+The Custom Map is set to be open only when a new world is introduced.<br>
+Click the Import button to select the zip file or extracted folder created by the creator of it.<br>
+At this time, set the type of data to be selected in advance. In the image below, you can select the zip file by pressing Import.<br>
+Then, press the OK button to save the settings.<br>
+<br>    
+![custom1](https://github.com/CivilTT/ServerStarter/blob/master/Images/custom1.png)
     
 #### Datapacks
+As with the Custom Map, Datapacks can also be set by selecting the files to be installed.<br>
+You can also remove the Datapack by selecting it in the list and pressing the Remove button.<br>
+<br>
+![datapack1](https://github.com/CivilTT/ServerStarter/blob/master/Images/datapack1.png)
     
 #### Plugins
+The Plugin can only be available when useing the Spigot server.<br>
+This can also be set by selecting the jar file in the same procedure as for the Custom Map.<br>
+Also, deleting the Plugin will be reflected by pressing the Remove button after selecting it on the list.<br>
+<br>
+![plugin1](https://github.com/CivilTT/ServerStarter/blob/master/Images/plugins1.png)
     
 
 ## Others
 ### Reset the World
+If you want to recreate a new world with the same name, you can reset the world.<br>
+Check the `Recreate World` checkbox on the main screen as shown in the image below.<br>
+Also, if you want to save the previous world, check the `Save World` checkbox below it.<br>
+<br>
+![reset](https://github.com/CivilTT/ServerStarter/blob/master/Images/Reset.png)
     
 ### Delete the data
+You can also delete a World not to recreat it with the same name.<br>
+There is a trash button where next to the Version and World list.<br>
+You can delete the data by selecting the Version or World you want to delete and pressing this button.<br>
+<br>
+![delete1]()
+![delete2]()
     
 ### Give OP rights
+
     
 ### Shutdown your PC after stopping the Server
     
