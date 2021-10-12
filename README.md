@@ -340,9 +340,14 @@ You can delete the data by selecting the Version or World you want to delete and
 ![delete2]()
     
 ### Give OP rights
-
+I think there are many situations where you want to give OP authority to yourself, such as when you want to use any commands.<br>
+As shown in the image below, you can automatically get OP rights by checking the `~~ has op rights` check box on the main screen.<br>
+At this time, the authority level to be granted will be the highest 4, and OP rights will not be automatically granted to other participants.<br>
+<br>
+![op](https://github.com/CivilTT/ServerStarter/blob/master/Images/op.png)
     
 ### Shutdown your PC after stopping the Server
+
     
 ### For Developpers (Beta Ver.)
 
