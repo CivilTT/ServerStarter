@@ -347,9 +347,16 @@ At this time, the authority level to be granted will be the highest 4, and OP ri
 ![op](https://github.com/CivilTT/ServerStarter/blob/master/Images/op.png)
     
 ### Shutdown your PC after stopping the Server
-
+I think that you may leave the game first, and the PC may be left on even after all the participants have left.<br>
+By checking the Shutdown this PC checkbox on the main screen as shown in the image below, the PC will be shut down automatically after the server is stopped.<br>
+Participants need to stop the server, so they need to type /stop command in-game.<br>
+A confirmation dialog will be displayed before shutting down, so you can choose not to shut down after the server is end.<br>
+<br>
+![shutdown](https://github.com/CivilTT/ServerStarter/blob/master/Images/shutdown.png)
     
 ### For Developpers (Beta Ver.)
+
+
 
 # Terms of Service
     
