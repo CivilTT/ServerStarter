@@ -3,6 +3,8 @@ Server_GUI2/bin/Release/World_Data/
 /push.bat
 /pull.bat
 .vs/
+Archive/
+MigrationBackup/
 Server_GUI2/Resource/
 Server_GUI2/obj/
 Server_GUI2/bin/
