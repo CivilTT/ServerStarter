@@ -142,8 +142,8 @@ PluginはSpigotサーバーを導入する際にのみ、設定を行うこと�
 メイン画面にてバージョンやワールドの選択を行う欄の横にゴミ箱ボタンがあります。<br>
 削除したいバージョンやワールドを選択したうえでこのボタンを押すことで、データを削除することができます。<br>
 <br>
-![delete1]()
-![delete2]()
+![delete1](https://github.com/CivilTT/ServerStarter/blob/master/Images/delete1.png)<br>
+![delete2](https://github.com/CivilTT/ServerStarter/blob/master/Images/delete2.png)
 
 ### OP権限の付与
 サーバーを起動した際にコマンドを使いたい時など、自身にOP権限を付与したい場面は多いと思います。<br>
@@ -336,8 +336,8 @@ You can also delete a World not to recreat it with the same name.<br>
 There is a trash button where next to the Version and World list.<br>
 You can delete the data by selecting the Version or World you want to delete and pressing this button.<br>
 <br>
-![delete1]()
-![delete2]()
+![delete1](https://github.com/CivilTT/ServerStarter/blob/master/Images/delete1.png)<br>
+![delete2](https://github.com/CivilTT/ServerStarter/blob/master/Images/delete2.png)
     
 ### Give OP rights
 I think there are many situations where you want to give OP authority to yourself, such as when you want to use any commands.<br>
