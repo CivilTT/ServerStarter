@@ -767,8 +767,8 @@ namespace Server_GUI2
                 logger.Info("Create plugins folder");
                 Directory.CreateDirectory($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\plugins");
             }
-            m_set_window.Spigot_window.Add_data();
             m_set_window.Spigot_window.Remove_data();
+            m_set_window.Spigot_window.Add_data();
         }
 
         private void Delete_folders()
