@@ -366,7 +366,7 @@ namespace Server_GUI2
                     "　　・【JAVA_HOME】 ex) C:\\Program Files\\Java\\jdk-16.0.1\r\n" +
                     "　　・【Path】 ex) C:\\Program Files\\Java\\jdk-16.0.1\\bin", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if(!java_version.Contains("java 16"))
+            else if(!java_version.Contains("java 16") && !java_version.Contains("java 17"))
             {
                 MW.MessageBox.Show(
                     $"このPCに入っているJavaのバージョンは最新バージョンではありません。\n" +

@@ -163,6 +163,7 @@ namespace Server_GUI2
             {
                 logger.Info("ShareWorld doesn't correspond to Spigot Server");
                 MW.MessageBox.Show("SpigotサーバーにShareWorldは対応していません。\nShareWorldを使う場合はバニラサーバーにて起動してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                Pd.Close();
                 logger.Info("Show MainWindow again");
                 Show();
                 return;
