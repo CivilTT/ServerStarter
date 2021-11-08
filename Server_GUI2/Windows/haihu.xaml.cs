@@ -114,14 +114,18 @@ namespace Server_GUI2
         private bool? Check_valid(string file_path)
         {
             string file_extension = Path.GetExtension(file_path);
-            string extract_path = Path.GetDirectoryName(file_path) + @"\" + Path.GetFileNameWithoutExtension(file_path);
+            // 拡張子のないパス
+            string extract_path = file_path;
+
             // そもそもzipやフォルダでないものははじく
-            if (file_extension != ".zip" && file_extension != string.Empty)
+            if (file_extension != ".zip" && !Directory.Exists(file_path))
             {
                 return false;
             }
             else if(file_extension == ".zip")
             {
+                extract_path = Path.GetDirectoryName(file_path) + @"\" + Path.GetFileNameWithoutExtension(file_path);
+
                 // Zipを展開
                 if (Directory.Exists(extract_path))
                 {
@@ -198,8 +202,9 @@ namespace Server_GUI2
                 // xcopyはディレクトリがないと動かないのか？
                 // Worldの名前は先に変えておいても良いが、実行までのどこかのタイミングで変わっていればよい
                 // この修正が終わったら一通りデバッグをして、コマンドラインからの実行の作業に移る
-                Process p = Process.Start("xcopy", $@"{import_path} {MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World} /E /H /I /Y");
-                p.WaitForExit();
+                // Process p = Process.Start("xcopy", $@"{import_path} {MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World} /E /H /I /Y");
+                // p.WaitForExit();
+                Functions.DirectoryCopy(import_path, $@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}", true);
             }
             catch (Exception ex)
             {
