@@ -241,6 +241,11 @@ namespace Server_GUI2
             Pd.Close();
             // pd.Dispose();
 
+            if (!File.Exists($@"{Data_Path}\{Data_list.ReadVersion}\eula.txt"))
+            {
+                start_func.Start_server();
+                start_func.Change_eula();
+            }
             start_func.Start_server();
 
             start_func.Upload_ShareWorld();
@@ -399,9 +404,11 @@ namespace Server_GUI2
                 logger.Info($"The Version {Data_list.ReadVersion} was successfully deleted");
 
 
-                int before_index = Version.SelectedIndex;
-                Version.SelectedIndex = (before_index - 1 >= 0) ? before_index - 1 : 0;
-                
+                int before_index_ver = Version.SelectedIndex;
+                int before_index_wor = World.SelectedIndex;
+                Version.SelectedIndex = (before_index_ver - 1 >= 0) ? before_index_ver - 1 : 0;
+                World.SelectedIndex = (before_index_wor - 1 >= 0) ? before_index_wor - 1 : 0;
+
                 World_reload(null, null);
                 Name_reload(null, null);
             }
@@ -433,15 +440,17 @@ namespace Server_GUI2
                     Directory.Delete($@"{Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}\", true);
                     Directory.Delete($@"{Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}_nether\", true);
                     Directory.Delete($@"{Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}_the_end\", true);
-                    World.Items.Remove($"Spigot_{Data_list.Copy_version}/{Data_list.World}");
                 }
                 else
                 {
                     // 削除するワールドのバージョンをVersion.Textにしていると、上記の1.17.1ではないバージョンのワールドが削除される
                     //  ->copy_versionを使う
                     Directory.Delete($@"{Data_Path}\{Data_list.Copy_version}\{Data_list.World}\", true);
-                    World.Items.Remove($"{Data_list.Copy_version}/{Data_list.World}");
                 }
+
+                World.Items.Remove($"{Data_list.ReadCopy_Version}/{Data_list.World}");
+                Data_list.VerWor_list[Data_list.ReadCopy_Version].Remove(Data_list.World);
+
                 logger.Info($"The World {Data_list.World} was successfully deleted");
 
                 World.SelectedIndex = (before_index - 1 >= 0) ? before_index - 1 : 0;

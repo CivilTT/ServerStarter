@@ -822,18 +822,8 @@ namespace Server_GUI2
                 WorkingDirectory = $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}"
             };
 
-            Process p;
-            if (!File.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\eula.txt"))
-            {
-                p = Process.Start(app);
-                p.WaitForExit();
-
-                Change_eula();
-            }
-
-
             logger.Info($"Start the server of {Data_list.ReadVersion}");
-            p = Process.Start(app);
+            Process p = Process.Start(app);
             p.WaitForExit();
 
             if (p.ExitCode != 0)
@@ -1125,6 +1115,42 @@ namespace Server_GUI2
             };
 
             Process.Start(psi);
+        }
+
+        public static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            // If the destination directory doesn't exist, create it.       
+            Directory.CreateDirectory(destDirName);
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string tempPath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(tempPath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string tempPath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, tempPath, copySubDirs);
+                }
+            }
         }
     }
 }
