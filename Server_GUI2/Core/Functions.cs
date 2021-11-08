@@ -1117,7 +1117,7 @@ namespace Server_GUI2
             Process.Start(psi);
         }
 
-        public static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        public static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs=true)
         {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);

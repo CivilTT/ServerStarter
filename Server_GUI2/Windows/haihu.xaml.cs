@@ -204,7 +204,12 @@ namespace Server_GUI2
                 // この修正が終わったら一通りデバッグをして、コマンドラインからの実行の作業に移る
                 // Process p = Process.Start("xcopy", $@"{import_path} {MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World} /E /H /I /Y");
                 // p.WaitForExit();
-                Functions.DirectoryCopy(import_path, $@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}", true);
+                Functions.DirectoryCopy(import_path, $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}", true);
+                if (Data_list.Import_spigot)
+                {
+                    Spigot_Function spi_func = new Spigot_Function();
+                    spi_func.VtoS();
+                }
             }
             catch (Exception ex)
             {

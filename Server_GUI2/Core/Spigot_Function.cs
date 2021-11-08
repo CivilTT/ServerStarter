@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Forms;
 using MW = ModernWpf;
 
 namespace Server_GUI2
@@ -24,32 +23,17 @@ namespace Server_GUI2
             try
             {
                 //ワールドデータをコピー
+                DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}");
+
                 if (Data_list.CopyVer_IsSpigot)
                 {
                     // Spigot -> Spigot
-                    Process p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World} {MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World} /E /H /I /Y");
-                    p.WaitForExit();
-                    p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}_nether {MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether /E /H /I /Y");
-                    p.WaitForExit();
-                    p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}_the_end {MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end /E /H /I /Y");
-                    p.WaitForExit();
+                    StoS();
                 }
                 else
                 {
                     // Vanila -> Spigot
-                    Process p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\{Data_list.Copy_version}\{Data_list.World} {MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World} /E /H /I /Y");
-                    p.WaitForExit();
-                    Directory.CreateDirectory($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether");
-                    Directory.CreateDirectory($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end");
-                    Directory.Move($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\DIM-1", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether\DIM-1");
-                    Directory.Move($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\DIM1", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end\DIM1");
-                    string[] dims = new string[2] { "nether", "the_end" };
-                    foreach(string dim in dims)
-                    {
-                        File.Copy($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\level.dat", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_{dim}\level.dat");
-                        File.Copy($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\level.dat_old", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_{dim}\level.dat_old");
-                        File.Copy($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\session.lock", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_{dim}\session.lock");
-                    }
+                    VtoS();
                 }
             }
             catch (Exception ex)
@@ -59,6 +43,27 @@ namespace Server_GUI2
                         $"【エラー要因】\n{ex.Message}";
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new WinCommandException($"Failed to switch the server system (Error Message : {ex.Message})");
+            }
+        }
+
+        public void StoS()
+        {
+            DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}_nether", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether");
+            DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}_the_end", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end");
+        }
+
+        public void VtoS()
+        {
+            Directory.CreateDirectory($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether");
+            Directory.CreateDirectory($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end");
+            Directory.Move($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\DIM-1", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether\DIM-1");
+            Directory.Move($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\DIM1", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end\DIM1");
+            string[] dims = new string[2] { "nether", "the_end" };
+            foreach (string dim in dims)
+            {
+                File.Copy($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\level.dat", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_{dim}\level.dat");
+                File.Copy($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\level.dat_old", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_{dim}\level.dat_old");
+                File.Copy($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\session.lock", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_{dim}\session.lock");
             }
         }
 

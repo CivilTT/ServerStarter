@@ -244,15 +244,15 @@ namespace Server_GUI2
             {
                 File.Move($@"{MainWindow.Data_Path}\{ver_folder}\BuildTools.log.txt", @".\log\BuildTools.log.txt");
             }
-            catch (IOException)
-            {
-                File.Delete(@".\log\BuildTools.log.txt");
-                File.Move($@"{MainWindow.Data_Path}\{ver_folder}\BuildTools.log.txt", @".\log\BuildTools.log.txt");
-            }
             catch (DirectoryNotFoundException)
             {
                 Directory.CreateDirectory(@".\log");
                 File.Move($@"{ MainWindow.Data_Path}\{ver_folder}\BuildTools.log.txt", @".\log\BuildTools.log.txt");
+            }
+            catch (System.IO.IOException)
+            {
+                File.Delete(@".\log\BuildTools.log.txt");
+                File.Move($@"{MainWindow.Data_Path}\{ver_folder}\BuildTools.log.txt", @".\log\BuildTools.log.txt");
             }
         }
 
