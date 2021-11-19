@@ -44,14 +44,16 @@ namespace Server_GUI2
 
         private void Set_imported()
         {
-            if (!Directory.Exists($@"{Data_Path}\{Data_list.Copy_version}\{Data_list.World}\datapacks\"))
+            string datapack_path = $@"{Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}\datapacks\";
+
+            if (!Directory.Exists(datapack_path))
             {
                 Imported.Items.Add("(None)");
                 return;
             }
             
-            string[] datapacks_zip = Directory.GetFiles($@"{Data_Path}\{Data_list.Copy_version}\{Data_list.World}\datapacks\");
-            string[] datapacks_dir = Directory.GetDirectories($@"{Data_Path}\{Data_list.Copy_version}\{Data_list.World}\datapacks\");
+            string[] datapacks_zip = Directory.GetFiles(datapack_path);
+            string[] datapacks_dir = Directory.GetDirectories(datapack_path);
 
             foreach (string key in datapacks_zip)
             {

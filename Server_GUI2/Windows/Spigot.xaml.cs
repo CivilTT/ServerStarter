@@ -39,14 +39,16 @@ namespace Server_GUI2
 
         private void Set_imported()
         {
-            if (!Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\plugins\"))
+            string plugin_path = $@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\plugins\";
+
+            if (!Directory.Exists(plugin_path))
             {
                 Imported.Items.Add("(None)");
                 Remove.IsEnabled = false;
                 return;
             }
 
-            string[] plugins = Directory.GetFiles($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\plugins\");
+            string[] plugins = Directory.GetFiles(plugin_path);
 
             foreach (string key in plugins)
             {
