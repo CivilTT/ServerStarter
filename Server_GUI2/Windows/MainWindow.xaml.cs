@@ -120,7 +120,7 @@ namespace Server_GUI2
             {
                 //Versionの選択
                 Version = func.Init_version(Version);
-                World_reload(null, null);
+                World_reload();
                 // if (Version.Text == "【new Version】")
                 // {
                 //     version_main.Visibility = Visibility.Hidden;
@@ -181,13 +181,21 @@ namespace Server_GUI2
 
             start_func.Main = this;
 
-            start_func.Define_OpenWorld(World, gui);
+            bool show = start_func.Define_OpenWorld(World, gui);
+            if(!show && GUI)
+            {
+                Pd.Close();
+                logger.Info("Show MainWindow again");
+                Show();
+                return;
+            }
             Pd.Value = 10;
             Pd.Message = "Define opening World";
 
             //バージョンについて分岐
             if (Data_list.Import_NewVersion)
             {
+                // GUIでは取得していない場合に新規バージョンを追加できないようになっているが、コマンド側から実行された際にエラーを吐くようにしている
                 if (!Set_new_Version)
                 {
                     string message =
@@ -241,6 +249,7 @@ namespace Server_GUI2
             Pd.Close();
             // pd.Dispose();
 
+            // これをStart_server()の中に入れると、新規バージョン導入の際にワールドの設定を反映しないままサーバーが起動してしまう
             if (!File.Exists($@"{Data_Path}\{Data_list.ReadVersion}\eula.txt"))
             {
                 start_func.Start_server();
@@ -285,6 +294,17 @@ namespace Server_GUI2
         {
             // 新バージョンがインストールされ、propertiesに不足項目があったとしても自動補完されるため、More_Settings_buttonを常に表示する仕様に変更
 
+            World_reload();
+
+            // ShareWorldなど、バージョンの変更を反映する必要がある設定が存在するため
+            data.Set_World(World, input_box_world.Text);
+        }
+
+        /// <summary>
+        /// 初期読み込み用
+        /// </summary>
+        private void World_reload()
+        {
             if (Version.Text == "【new Version】" || Version2.Text == "【new Version】")
             {
                 version_hide.Visibility = Visibility.Visible;

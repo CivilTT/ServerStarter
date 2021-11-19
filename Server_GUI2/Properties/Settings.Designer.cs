@@ -58,5 +58,29 @@ namespace Server_GUI2.Properties {
                 this["Shutdown"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string World {
+            get {
+                return ((string)(this["World"]));
+            }
+            set {
+                this["World"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CopyVersion {
+            get {
+                return ((string)(this["CopyVersion"]));
+            }
+            set {
+                this["CopyVersion"] = value;
+            }
+        }
     }
 }

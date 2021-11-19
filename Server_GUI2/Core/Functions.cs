@@ -74,7 +74,11 @@ namespace Server_GUI2
             {
                 Version.Items.Add(kvp.Key);
             }
-            Version.Items.Add("【new Version】");
+
+            if (MainWindow.Set_new_Version)
+            {
+                Version.Items.Add("【new Version】");
+            }
             Version = Check_index(Version, Properties.Settings.Default.Version);
 
             return Version;
@@ -100,7 +104,8 @@ namespace Server_GUI2
                 World.Items.Add("ShareWorld");
             }
             World.Items.Add("【new World】");
-            string index_name = (Data_list.Info[3] == "ShareWorld") ? Data_list.Info[3] : $"{Properties.Settings.Default.Version}/{Data_list.Info[3]}";
+            // string index_name = (Data_list.Info[3] == "ShareWorld") ? Data_list.Info[3] : $"{Properties.Settings.Default.Version}/{Data_list.Info[3]}";
+            string index_name = (Properties.Settings.Default.World == "ShareWorld") ? Properties.Settings.Default.World : $"{Properties.Settings.Default.CopyVersion}/{Properties.Settings.Default.World}";
             World = Check_index(World, index_name);
 
             return World;
@@ -119,7 +124,13 @@ namespace Server_GUI2
             return world_version;
         }
 
-        public void Define_OpenWorld(System.Windows.Controls.ComboBox world, bool GUI)
+        /// <summary>
+        /// ワールド名に問題がないかを確認する
+        /// </summary>
+        /// <param name="world"></param>
+        /// <param name="GUI"></param>
+        /// <returns>問題がない場合にtrueを返し、GUIを再表示する必要がある場合にfalseを返す</returns>
+        public bool Define_OpenWorld(System.Windows.Controls.ComboBox world, bool GUI)
         {
             logger.Info("Define_OpenWorld");
             if (world.SelectedIndex == -1 && GUI)
@@ -131,7 +142,8 @@ namespace Server_GUI2
                         "ワールド名に「(空欄)」、「ShareWorld」、「logs」は指定できません。\r\n" +
                         "これら以外の名称で再登録してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                     
-                    throw new ArgumentException($"User nmae the new world for {Data_list.World}");
+                    logger.Error($"User nmae the new world for {Data_list.World}");
+                    return false;
                 }
                 if (world.Items.Contains(Data_list.World))
                 {
@@ -140,9 +152,12 @@ namespace Server_GUI2
                         $"存在するワールドを新しく起動することはできません。\n" +
                         $"同じ名前でワールドを作り直す場合は、メイン画面にてRecreateにチェックを入れてください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                     
-                    throw new ArgumentException($"'{Data_list.World}' (World) already existed");
+                    logger.Error($"'{Data_list.World}' (World) already existed");
+                    return false;
                 }
             }
+
+            return true;
         }
 
         public void Check_file_directory_SW()
@@ -451,7 +466,7 @@ namespace Server_GUI2
         public bool Check_Vdown()
         {
             // 新規ワールド作成時（開くバージョンと同じワールドの時）の Copy_version="" はコピーの必要性なし
-            if ((Data_list.Version == Data_list.Copy_version && Data_list.Import_spigot == Data_list.CopyVer_IsSpigot) || Data_list.World == "ShareWorld")
+            if (Data_list.Import_NewWorld || Data_list.World == "ShareWorld")
             {
                 return false;
             }

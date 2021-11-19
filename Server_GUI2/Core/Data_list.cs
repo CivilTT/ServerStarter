@@ -6,7 +6,6 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Forms;
 using MW = ModernWpf;
 
 namespace Server_GUI2
@@ -143,6 +142,9 @@ namespace Server_GUI2
         public static string World { get; set; }
         public static bool Avail_sw { get; set; } = true;
         public static List<string> Info { get; set; }
+        /// <summary>
+        /// 実際に格納されているバージョンのフォルダ名をキーとして、バージョンとワールドの一覧を保管している
+        /// </summary>
         public static Dictionary<string, List<string>> VerWor_list { get; set; }
         public static Dictionary<string, string> Env_list { get; set; }
 
@@ -197,13 +199,23 @@ namespace Server_GUI2
                 }
                 World = combo_world.Text.Substring(combo_world.Text.IndexOf("/") + 1);
             }
+            else if(combo_world.Text == "ShareWorld")
+            {
+                Copy_version = Version;
+                CopyVer_IsSpigot = Import_spigot;
+            }
             else if(combo_world.SelectedIndex == -1)
             {
+                // 【new World】の場合に作動
                 // World名に1.17.1/(World)のようにバージョンが入らなかった場合のVdownでのバグを防止している
                 Copy_version = Version;
                 CopyVer_IsSpigot = Import_spigot;
                 World = text_world;
             }
+
+            Properties.Settings.Default.World = World;
+            Properties.Settings.Default.CopyVersion = ReadCopy_Version;
+            Properties.Settings.Default.Save();
         }
 
         public List<string> Set_info(StreamReader sr)
