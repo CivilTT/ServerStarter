@@ -135,7 +135,8 @@ namespace Server_GUI2
             m_World.Text = Data_list.World;
             Json.Content = $@"Get All-VerWor.json at {Directory.GetCurrentDirectory()}\All-VerWor.json";
             Json.IsChecked = Properties.Settings.Default.Output_VW;
-            import_World.IsEnabled = Data_list.Import_NewWorld;
+            // ShareWorldでは常に配布ワールドを導入可能としておく
+            import_World.IsEnabled = (Data_list.World == "ShareWorld") || Data_list.Import_NewWorld;
             Plugins.IsEnabled = Data_list.Import_spigot;
             TF_Spigot.Text = Data_list.Import_spigot ? "Yes" : "No";
             // Toggle_spigot.IsOn = Data_list.Import_spigot;
