@@ -23,7 +23,7 @@ namespace Server_GUI2
             try
             {
                 //ワールドデータをコピー
-                DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}");
+                DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}");
 
                 if (Data_list.CopyVer_IsSpigot)
                 {
@@ -48,22 +48,22 @@ namespace Server_GUI2
 
         public void StoS()
         {
-            DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}_nether", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether");
-            DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}_the_end", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end");
+            DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}_nether", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_nether");
+            DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}_the_end", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_the_end");
         }
 
         public void VtoS()
         {
-            Directory.CreateDirectory($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether");
-            Directory.CreateDirectory($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end");
-            Directory.Move($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\DIM-1", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether\DIM-1");
-            Directory.Move($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\DIM1", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end\DIM1");
+            Directory.CreateDirectory($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_nether");
+            Directory.CreateDirectory($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_the_end");
+            Directory.Move($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\DIM-1", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_nether\DIM-1");
+            Directory.Move($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\DIM1", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_the_end\DIM1");
             string[] dims = new string[2] { "nether", "the_end" };
             foreach (string dim in dims)
             {
-                File.Copy($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\level.dat", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_{dim}\level.dat");
-                File.Copy($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\level.dat_old", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_{dim}\level.dat_old");
-                File.Copy($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}\session.lock", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_{dim}\session.lock");
+                File.Copy($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\level.dat", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_{dim}\level.dat");
+                File.Copy($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\level.dat_old", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_{dim}\level.dat_old");
+                File.Copy($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\session.lock", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_{dim}\session.lock");
             }
         }
 
@@ -81,9 +81,9 @@ namespace Server_GUI2
 
             try
             {
-                Directory.Delete($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}", true);
-                Directory.Delete($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether", true);
-                Directory.Delete($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end", true);
+                Directory.Delete($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}", true);
+                Directory.Delete($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_nether", true);
+                Directory.Delete($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_the_end", true);
             }
             catch (Exception ex)
             {
@@ -100,18 +100,18 @@ namespace Server_GUI2
             int num = 1;
             logger.Info("Reset World before saving World");
             //以前に作成したバックアップがないかを確認
-            while (Directory.Exists($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_old({num})\"))
+            while (Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_old({num})\"))
             {
                 num++;
             }
 
             try
             {
-                Process p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World} {MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_old({num}) / E /H /I /Y");
+                Process p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World} {MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_old({num}) / E /H /I /Y");
                 p.WaitForExit();
-                p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether {MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_nether_old({num}) / E /H /I /Y");
+                p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_nether {MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_nether_old({num}) / E /H /I /Y");
                 p.WaitForExit();
-                p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end {MainWindow.Data_Path}\Spigot_{Data_list.Version}\{Data_list.World}_the_end_old({num}) / E /H /I /Y");
+                p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_the_end {MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_the_end_old({num}) / E /H /I /Y");
                 p.WaitForExit();
             }
             catch (Exception ex)
