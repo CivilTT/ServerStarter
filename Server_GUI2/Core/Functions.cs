@@ -307,7 +307,7 @@ namespace Server_GUI2
             string[] versionUP = new string[]
             {
                 "@echo off",
-                "call Setup_ServerStarter.msi /passive",
+                $"msiexec /i Setup_ServerStarter.msi TARGETDIR=\"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\" /passive /qn /norestart",
                 // 更新後に再起動する
                 $@"if not %errorlevel%==1602 (start Server_GUI2.exe{args_list})",
                 "del Setup_ServerStarter.msi",
@@ -939,6 +939,7 @@ namespace Server_GUI2
             {
                 wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36");
                 jsonStr = wc.DownloadString(url);
+                root = JsonConvert.DeserializeObject(jsonStr);
             }
             catch (Exception ex)
             {
@@ -950,7 +951,6 @@ namespace Server_GUI2
                 return null;
             }
 
-            root = JsonConvert.DeserializeObject(jsonStr);
             // このように宣言と代入を分けておかないとうまくjsonの中身を読み込むことができない
             if (root == null)
                 return null;
