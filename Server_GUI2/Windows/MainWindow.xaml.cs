@@ -12,8 +12,14 @@ using System.Windows.Media;
 using MW = ModernWpf;
 
 
-// Read_json.csに1.18対応の試験的なコードを記載している。正式にリリースされたら不要のため、このファイルの109,111行目と合わせて、削除の必要あり
 
+/// <summary>
+/// バージョンアップの際に行うべきこと
+/// ・Assembly.csのバージョンを変更
+/// ・インストーラーのバージョンを変更
+/// ・それぞれのビルド
+/// ・新たにzip化してアップデート
+/// </summary>
 
 
 namespace Server_GUI2
