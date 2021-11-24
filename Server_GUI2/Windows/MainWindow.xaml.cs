@@ -64,13 +64,16 @@ namespace Server_GUI2
             {
                 var separator = new[] { Environment.NewLine };
                 string error_message = eventargs.ExceptionObject.ToString();
-                string message_box = 
-                    "予期せぬエラーが発生しました。\n" +
-                    "エラー内容を確認し、システムバグが疑われる場合は制作者（CivilTT）にお問い合わせください。\n\n" +
-                    $"【エラー内容】\n{error_message.Split(separator, StringSplitOptions.None)[0]}\n\n" +
-                    $"【ログファイルの場所】\n{Path.GetFullPath(@".\log\Server_Starter.log")}";
-                MW.MessageBox.Show(message_box, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
-                logger.Error(error_message);
+                if (!error_message.Contains("UserSelectException"))
+                {
+                    string message_box = 
+                        "予期せぬエラーが発生しました。\n" +
+                        "エラー内容を確認し、システムバグが疑われる場合は制作者（CivilTT）にお問い合わせください。\n\n" +
+                        $"【エラー内容】\n{error_message.Split(separator, StringSplitOptions.None)[0]}\n\n" +
+                        $"【ログファイルの場所】\n{Path.GetFullPath(@".\log\Server_Starter.log")}";
+                    MW.MessageBox.Show(message_box, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                    logger.Error(error_message);
+                }
             };
 
             logger.Info("The system of Server Starter is started.");
