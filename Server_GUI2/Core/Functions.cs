@@ -307,7 +307,7 @@ namespace Server_GUI2
             string[] versionUP = new string[]
             {
                 "@echo off",
-                $"msiexec /i Setup_ServerStarter.msi TARGETDIR=\"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\" /passive /qn /norestart",
+                $"call msiexec /i Setup_ServerStarter.msi TARGETDIR=\"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\" /passive /li .\\log\\install.log",
                 // 更新後に再起動する
                 $@"if not %errorlevel%==1602 (start Server_GUI2.exe{args_list})",
                 "del Setup_ServerStarter.msi",
