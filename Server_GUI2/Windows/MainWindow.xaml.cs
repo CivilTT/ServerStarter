@@ -238,7 +238,11 @@ namespace Server_GUI2
             }
             Pd.Value = 20;
 
-            start_func.Check_copy_world();
+            //start_func.Check_copy_world();
+            bool world_copy = start_func.Check_Vdown();
+            logger.Info($"Check copy world (Copy is '{world_copy}')");
+            if (world_copy)
+                start_func.Copy_World();
             Pd.Value = 30;
             Pd.Message = "Check copy world";
 
@@ -248,9 +252,12 @@ namespace Server_GUI2
             Pd.Message = "Write Properties for server.properties";
 
             //ShareWorldの存在確認や起動済みのサーバーがないかなどを確認
-            start_func.Check_ShareWorld();
-            Pd.Value = 60;
-            Pd.Message = "Finish the process of ShareWorld";
+            if (Data_list.World == "ShareWorld")
+            {
+                start_func.Check_ShareWorld();
+                Pd.Value = 60;
+                Pd.Message = "Finish the process of ShareWorld";
+            }
 
             start_func.Reset_world_method(Reset_world, Save_world);
             Pd.Value = 70;
@@ -280,7 +287,8 @@ namespace Server_GUI2
             }
             start_func.Start_server();
 
-            start_func.Upload_ShareWorld();
+            if (Data_list.World == "ShareWorld")
+                start_func.Upload_ShareWorld();
 
             start_func.Write_VW();
 

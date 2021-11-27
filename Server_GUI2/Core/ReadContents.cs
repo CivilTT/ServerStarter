@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows;
 using MW = ModernWpf;
 
@@ -292,8 +293,20 @@ namespace Server_GUI2
                 // 1. と .jsonを除いた形
                 string ver_tmp = ver.Substring(2).Replace(".json", "");
                 // version名を小数に変換 (-preに関しては小数第２位にその数字を入れ、ひとつ前のバージョンとするために0.1引く)
-                double pre_num = ver.Contains("-pre") ? double.Parse(ver_tmp.Substring(ver_tmp.Length - 1)) : 0;
-                double ver_num = ver.Contains("-pre") ? double.Parse(ver_tmp.Substring(0, ver_tmp.IndexOf("-pre"))) + pre_num * 0.01 - 0.1 : double.Parse(ver_tmp);
+                double ver_num;
+                if (!ver_tmp.Contains("-"))
+                {
+                    ver_num = double.Parse(ver_tmp);
+                }
+                else
+                {
+                    string pat = @"^\1.\d+(?:\.d)-(.+)\.json$";
+                    Regex r = new Regex(pat, RegexOptions.IgnoreCase);
+                    Match m = r.Match(ver_tmp);
+                    string suffix = m.Groups[1].ToString();
+                    double pre_num = ver.Contains($"-{suffix}") ? double.Parse(ver_tmp.Substring(ver_tmp.Length - 1)) : 0;
+                    ver_num = ver.Contains($"-{suffix}") ? double.Parse(ver_tmp.Substring(0, ver_tmp.IndexOf($"-{suffix}"))) + pre_num * 0.01 - 0.1 : double.Parse(ver_tmp);
+                }
 
                 _vers.Add(ver_num, "Spigot " + ver.Replace(".json", ""));
                 

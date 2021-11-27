@@ -419,34 +419,32 @@ namespace Server_GUI2
             Data_list.Info[1] = version;
         }
 
-        public virtual void Check_copy_world()
+        //public void Check_copy_world()
+        //{
+        //    bool world_copy = Check_Vdown();
+        //    logger.Info($"Check copy world (Copy is '{world_copy}')");
+        //    if (!world_copy)
+        //    {
+        //        return;
+        //    }
+
+        //    Copy_World();
+        //}
+
+        public virtual void Copy_World()
         {
-            bool world_copy = Check_Vdown();
-            logger.Info($"Check copy world (Copy is '{world_copy}')");
-            if (!world_copy)
-            {
-                return;
-            }
             try
             {
                 //ワールドデータをコピー
                 if (Data_list.CopyVer_IsSpigot)
                 {
                     // Spigot -> Vanila
-                    // cp -r source dest
-                    Process p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World} {MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World} /E /H /I /Y");
-                    p.WaitForExit();
-                    File.Delete($@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}\uid.dat");
-                    p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}_nether\DIM-1 {MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}\DIM-1 /E /H /I /Y");
-                    p.WaitForExit();
-                    p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}_the_end\DIM1 {MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}\DIM1 /E /H /I /Y");
-                    p.WaitForExit();
+                    StoV();
                 }
                 else
                 {
                     // Vanila -> Vanila
-                    Process p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\{Data_list.Copy_version}\{Data_list.World} {MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World} /E /H /I /Y");
-                    p.WaitForExit();
+                    VtoV();
                 }
             }
             catch (Exception ex)
@@ -457,6 +455,19 @@ namespace Server_GUI2
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new WinCommandException($"Failed to copy wrold data (Error Message : {ex.Message})");
             }
+        }
+
+        public void StoV()
+        {
+            DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}");
+            File.Delete($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\uid.dat");
+            DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}_nether\DIM-1", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\DIM-1");
+            DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.ReadCopy_Version}\{Data_list.World}_the_end\DIM1", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\DIM1");
+        }
+
+        public void VtoV()
+        {
+            DirectoryCopy($@"{MainWindow.Data_Path}\{Data_list.Copy_version}\{Data_list.World}", $@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}");
         }
 
         /// <summary>
@@ -630,13 +641,8 @@ namespace Server_GUI2
             }
         }
 
-        public void Check_ShareWorld()
+        public virtual void Check_ShareWorld()
         {
-            if (Data_list.World != "ShareWorld")
-            {
-                return;
-            }
-
             Download_ShareWorld();
 
             //異なるバージョンが指定された場合、初めに確認
@@ -856,25 +862,22 @@ namespace Server_GUI2
             }
         }
 
-        public void Upload_ShareWorld()
+        public virtual void Upload_ShareWorld()
         {
-            if (Data_list.World == "ShareWorld")
+            MainWindow.Pd = new ProgressDialog
             {
-                MainWindow.Pd = new ProgressDialog
-                {
-                    Title = "push ShareWorld"
-                };
-                MainWindow.Pd.Show();
+                Title = "push ShareWorld"
+            };
+            MainWindow.Pd.Show();
 
-                //info.txtのなかのserver_openをFalseに戻す
-                MainWindow.Pd.Value = 50;
-                Change_info(4, Opening_Server: false);
+            //info.txtのなかのserver_openをFalseに戻す
+            MainWindow.Pd.Value = 50;
+            Change_info(4, Opening_Server: false);
 
-                //push
-                git.Push();
-                MainWindow.Pd.Close();
-                // MainWindow.pd.Dispose();
-            }
+            //push
+            git.Push();
+            MainWindow.Pd.Close();
+            // MainWindow.pd.Dispose();
         }
 
         public void Check_versionUP()
