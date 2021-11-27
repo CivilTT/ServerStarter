@@ -12,14 +12,8 @@ namespace Server_GUI2
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public override void Check_copy_world()
+        public override void Copy_World()
         {
-            bool world_copy = Check_Vdown();
-            logger.Info($"Check copy world (Copy is '{world_copy}')");
-            if (!world_copy)
-            {
-                return;
-            }
             try
             {
                 //ワールドデータをコピー
@@ -54,8 +48,11 @@ namespace Server_GUI2
 
         public void VtoS()
         {
-            Directory.CreateDirectory($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_nether");
-            Directory.CreateDirectory($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_the_end");
+            if(!Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_nether") && !Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_the_end"))
+            {
+                Directory.CreateDirectory($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_nether");
+                Directory.CreateDirectory($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_the_end");
+            }
             Directory.Move($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\DIM-1", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_nether\DIM-1");
             Directory.Move($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\DIM1", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_the_end\DIM1");
             string[] dims = new string[2] { "nether", "the_end" };
@@ -65,6 +62,20 @@ namespace Server_GUI2
                 File.Copy($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\level.dat_old", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_{dim}\level.dat_old");
                 File.Copy($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\session.lock", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_{dim}\session.lock");
             }
+        }
+
+        public override void Check_ShareWorld()
+        {
+            base.Check_ShareWorld();
+
+            VtoS();
+        }
+
+        public override void Upload_ShareWorld()
+        {
+            StoV();
+            
+            base.Upload_ShareWorld();
         }
 
         public override void Reset_world_method(bool reset_world, bool save_world)
