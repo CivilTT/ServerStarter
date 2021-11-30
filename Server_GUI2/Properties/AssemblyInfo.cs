@@ -51,8 +51,8 @@ using System.Windows;
 // すべての値を指定するか、次を使用してビルド番号とリビジョン番号を既定に設定できます
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.2.1")]
-[assembly: AssemblyFileVersion("1.1.2.1")]
+[assembly: AssemblyVersion("1.1.2.2")]
+[assembly: AssemblyFileVersion("1.1.2.2")]
 
 // log4net を利用するための設定
 //インストーラーを使う関係上、リビルドを行うときにはexeと同じ階層でconfigを読み込むために.\log4net.configにする。（普段は..\..\log4net.config）
