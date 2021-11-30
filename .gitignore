@@ -10,3 +10,5 @@ Server_GUI2/obj/
 Server_GUI2/bin/
 Setup_ServerStarter/
 /get_count.py
+
+.gitconfig
