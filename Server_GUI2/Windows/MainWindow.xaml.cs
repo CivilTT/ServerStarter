@@ -16,8 +16,9 @@ using MW = ModernWpf;
 /// <summary>
 /// バージョンアップの際に行うべきこと
 /// ・Assembly.csのバージョンを変更
+/// ・ビルド
 /// ・インストーラーのバージョンを変更
-/// ・それぞれのビルド
+/// ・ビルド
 /// ・新たにzip化してアップデート
 /// </summary>
 
@@ -233,7 +234,7 @@ namespace Server_GUI2
             //start_func.Check_copy_world();
             bool world_copy = start_func.Check_Vdown();
             logger.Info($"Check copy world (Copy is '{world_copy}')");
-            if (world_copy)
+            if (!world_copy)
                 start_func.Copy_World();
             Pd.Value = 30;
             Pd.Message = "Check copy world";
