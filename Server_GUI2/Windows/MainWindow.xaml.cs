@@ -81,6 +81,7 @@ namespace Server_GUI2
             InitializeComponent();
             GUI = gui;
 
+
             Pd = new ProgressDialog
             {
                 //ダイアログのタイトルを設定
