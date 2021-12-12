@@ -292,31 +292,21 @@ namespace Server_GUI2
 
                 // 1. と .jsonを除いた形
                 string ver_tmp = ver.Substring(2).Replace(".json", "");
-
-                // preなどの文字を抽出
-                string pat = @"^\d+-(.+)\d$";
-                Regex r = new Regex(pat);
-                Match m = r.Match(ver_tmp);
-                string suffix = m.Groups[1].Value;
-
-                // rcとpreを区別する場合は、-0.1をrcに、-0.2をpreに割り当てれば良い
-                double down_num;
-                switch (suffix)
-                {
-                    case "pre":
-                        down_num = 0.2;
-                        break;
-                    case "rc":
-                        down_num = 0.1;
-                        break;
-                    default:
-                        down_num = 0.3;
-                        break;
-                }
-
-                double pre_num = ver.Contains($"-{suffix}") ? double.Parse(ver_tmp.Substring(ver_tmp.Length - 1)) : 0;
                 // version名を小数に変換 (-preに関しては小数第２位にその数字を入れ、ひとつ前のバージョンとするために0.1引く)
-                double ver_num = ver.Contains($"-{suffix}") ? double.Parse(ver_tmp.Substring(0, ver_tmp.IndexOf($"-{suffix}"))) + pre_num * 0.01 - down_num : double.Parse(ver_tmp);
+                double ver_num;
+                if (!ver_tmp.Contains("-"))
+                {
+                    ver_num = double.Parse(ver_tmp);
+                }
+                else
+                {
+                    string pat = @"^\1.\d+(?:\.d)-(.+)\.json$";
+                    Regex r = new Regex(pat, RegexOptions.IgnoreCase);
+                    Match m = r.Match(ver_tmp);
+                    string suffix = m.Groups[1].ToString();
+                    double pre_num = ver.Contains($"-{suffix}") ? double.Parse(ver_tmp.Substring(ver_tmp.Length - 1)) : 0;
+                    ver_num = ver.Contains($"-{suffix}") ? double.Parse(ver_tmp.Substring(0, ver_tmp.IndexOf($"-{suffix}"))) + pre_num * 0.01 - 0.1 : double.Parse(ver_tmp);
+                }
 
                 _vers.Add(ver_num, "Spigot " + ver.Replace(".json", ""));
                 

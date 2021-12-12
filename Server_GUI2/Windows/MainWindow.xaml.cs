@@ -54,7 +54,6 @@ namespace Server_GUI2
 
 
         private readonly Data_list data = new Data_list();
-        private readonly ShareWorld shareworld = new ShareWorld();
         private readonly Spigot_Function spi_func = new Spigot_Function();
         private More_Settings m_set_window = new More_Settings();
 
@@ -66,7 +65,7 @@ namespace Server_GUI2
             {
                 var separator = new[] { Environment.NewLine };
                 string error_message = eventargs.ExceptionObject.ToString();
-                if (!error_message.Contains("UserSelectException") && !error_message.Contains("ServerException"))
+                if (!error_message.Contains("UserSelectException"))
                 {
                     string message_box = 
                         "予期せぬエラーが発生しました。\n" +
@@ -81,7 +80,6 @@ namespace Server_GUI2
             logger.Info("The system of Server Starter is started.");
             InitializeComponent();
             GUI = gui;
-
 
             Pd = new ProgressDialog
             {
@@ -185,6 +183,16 @@ namespace Server_GUI2
             };
             Pd.Show();
 
+            if(Data_list.Import_spigot && Data_list.World == "ShareWorld")
+            {
+                logger.Info("ShareWorld doesn't correspond to Spigot Server");
+                MW.MessageBox.Show("SpigotサーバーにShareWorldは対応していません。\nShareWorldを使う場合はバニラサーバーにて起動してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                Pd.Close();
+                logger.Info("Show MainWindow again");
+                Show();
+                return;
+            }
+
             dynamic start_func;
             if (Data_list.Import_spigot)
             {
@@ -234,7 +242,7 @@ namespace Server_GUI2
             //start_func.Check_copy_world();
             bool world_copy = start_func.Check_Vdown();
             logger.Info($"Check copy world (Copy is '{world_copy}')");
-            if (!world_copy)
+            if (world_copy)
                 start_func.Copy_World();
             Pd.Value = 30;
             Pd.Message = "Check copy world";
@@ -247,8 +255,7 @@ namespace Server_GUI2
             //ShareWorldの存在確認や起動済みのサーバーがないかなどを確認
             if (Data_list.World == "ShareWorld")
             {
-                shareworld.Check_ShareWorld();
-                //start_func.Check_ShareWorld();
+                start_func.Check_ShareWorld();
                 Pd.Value = 60;
                 Pd.Message = "Finish the process of ShareWorld";
             }
@@ -282,8 +289,7 @@ namespace Server_GUI2
             start_func.Start_server();
 
             if (Data_list.World == "ShareWorld")
-                shareworld.Upload_ShareWorld();
-                // start_func.Upload_ShareWorld();
+                start_func.Upload_ShareWorld();
 
             start_func.Write_VW();
 
