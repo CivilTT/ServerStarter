@@ -477,7 +477,7 @@ namespace Server_GUI2
         public bool Check_Vdown()
         {
             // 新規ワールド作成時（開くバージョンと同じワールドの時）の Copy_version="" はコピーの必要性なし
-            if (Data_list.Import_NewWorld || Data_list.World == "ShareWorld")
+            if (Data_list.ReadVersion == Data_list.ReadCopy_Version || Data_list.World == "ShareWorld")
             {
                 return false;
             }
@@ -852,6 +852,13 @@ namespace Server_GUI2
                 string message =
                     "サーバーの実行途中で予期せぬエラーが発生しました。\n\n" +
                     $"【エラーコード】　{p.ExitCode}";
+                if (p.ExitCode == 1)
+                {
+                    message =
+                        "サーバーの実行途中で予期せぬエラーが発生しました。\n" +
+                        "インストールされているJavaのバージョンが古い可能性があります。\n" +
+                        $"【エラーコード】　{p.ExitCode}";
+                }
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 if (first_launch)
                 {
