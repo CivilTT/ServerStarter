@@ -116,6 +116,12 @@
     </Compile>
     <Compile Include="Core\Data_list.cs" />
     <Compile Include="Core\ShareWorld.cs" />
+    <Compile Include="System\ServerProperty.cs" />
+    <Compile Include="System\SetUp.cs" />
+    <Compile Include="System\Util\ReactiveCombobox.cs" />
+    <Compile Include="System\Version.cs" />
+    <Compile Include="System\VersionFactory.cs" />
+    <Compile Include="System\World.cs" />
     <Compile Include="Windows\dp_Settings.xaml.cs">
       <DependentUpon>dp_Settings.xaml</DependentUpon>
     </Compile>
