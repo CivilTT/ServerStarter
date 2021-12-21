@@ -12,7 +12,6 @@ using System.Windows.Media;
 using MW = ModernWpf;
 
 
-
 /// <summary>
 /// バージョンアップの際に行うべきこと
 /// ・Assembly.csのバージョンを変更
@@ -90,6 +89,8 @@ namespace Server_GUI2
             };
             //進行状況ダイアログを表示する
             Pd.Show();
+
+            
 
             func.Check_data_folder();
             Pd.Message = "Check existence of World_Data Folder";
