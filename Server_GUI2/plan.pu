@@ -94,7 +94,7 @@ class Progress{
 }
 Progress ..|> Window
 
-' Ÿ‰ñl‚¦‚é
+' ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½
 class ReactiveCombobox<T>{
   ReactiveCombobox(Combobox combobox,Button removeButton)
   T[] items
@@ -105,7 +105,7 @@ class ReactiveCombobox<T>{
 class VersionFactory{
   {classifier} VersionFactory Instance
   VersionFactory()
-  LoadFromCurrentDirectory() # ServersƒfƒBƒŒƒNƒgƒŠ‚©‚ç‘¶İ‚·‚éƒo[ƒWƒ‡ƒ“‚ğ“Ç‚İæ‚é
+  LoadFromCurrentDirectory() # Serversï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ç‘¶ï¿½İ‚ï¿½ï¿½ï¿½oï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç‚İï¿½ï¿½
   LoadAllVanillaVersions()
   LoadAllSpigotVersions()
   Version Create()
@@ -124,6 +124,9 @@ class Version{
   string name
   string path
   bool exists
+  bool isLatest
+  bool isRelease
+  bool isVanila
   void DownloadVersion()
   ServerProperty serverProperty { get; set; }
   bool gt(Version version)
@@ -132,7 +135,7 @@ class Version{
 class WorldFactory{
   {classifier} VersionFactory Instance
   bool DirectoryExists()
-  LoadFromCurrentDirectory() # ƒ[ƒ‹ƒh‚ÌƒfƒBƒŒƒNƒgƒŠ‚©‚ç‘¶İ‚·‚éƒ[ƒ‹ƒh‚ğ“Ç‚İæ‚é
+  LoadFromCurrentDirectory() # ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½Ìƒfï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ç‘¶ï¿½İ‚ï¿½ï¿½éƒï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½Ç‚İï¿½ï¿½
   void InitializeDirectory()
   World Create()
   void Remove(World world)
@@ -155,7 +158,7 @@ interface World{
   void SetCustomMap()
   void Open()
   void Close()
-  void SaveState() #Ÿ‰ñ‹N“®‚Ì‚½‚ß‚Éƒf[ƒ^‚ğ•Û‘¶
+  void SaveState() #ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½ß‚Éƒfï¿½[ï¿½^ï¿½ï¿½Û‘ï¿½
 }
 Version <.. World
 ServerProperty <.. World
