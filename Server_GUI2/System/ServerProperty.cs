@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Server_GUI2
 {
-    class ServerProperty
+    public class ServerProperty
     {
     }
 }
