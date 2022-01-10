@@ -170,7 +170,10 @@ namespace Server_GUI2
 
         public void Create_bat_start()
         {
-            if (File.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\start.bat"))
+            //if (File.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\start.bat"))
+            // log4j対応のbatをインストールするために緊急でこのようにしている
+            // 本来は特定のバージョンにおいて、batの内容に応じて処理を行うか判断するべき
+            if (false)
             {
                 return;
             }
@@ -507,7 +510,7 @@ namespace Server_GUI2
         public void Check_server_open()
         {
             logger.Info("Check the ShareWorld's info (There are already started Server or not)");
-            if (info2[4] == "True")
+            if (info2[4] == "True" && Data_list.Info[0] != info2[0])
             {
                 MW.MessageBox.Show(
                     $"ShareWorldのサーバーはすでに{info2[0]}によって起動されています。\r\n" +
@@ -1164,7 +1167,7 @@ namespace Server_GUI2
             foreach (FileInfo file in files)
             {
                 string tempPath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(tempPath, false);
+                file.CopyTo(tempPath, true);
             }
 
             // If copying subdirectories, copy them and their contents to new location.
