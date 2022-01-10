@@ -234,7 +234,7 @@ namespace Server_GUI2
                 "git config --global user.name %info[6]%",
                 "git config --global user.email %info[7]%",
                 $@"cd {MainWindow.Data_Path}\{version}",
-                "git clone https://github.com/%info[6]%/ShareWorld --depth 1 --progress"
+                "git clone https://%info[6]%@github.com/%info[6]%/ShareWorld.git --depth 1 --progress"
             };
             try
             {
