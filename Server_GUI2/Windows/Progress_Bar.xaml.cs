@@ -348,7 +348,7 @@ namespace Server_GUI2
         {
             if (form != null)
             {
-                if (override_str)
+                if (override_str && old_message != "")
                 {
                     form.log.Text = form.log.Text.Replace(old_message, _message);
                 }
