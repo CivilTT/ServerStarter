@@ -160,9 +160,20 @@ namespace Server_GUI2
             return true;
         }
 
+        public void Check_file_directory_SW()
+        {
+            //batファイルの変更を反映できるよう毎度作成する
+            logger.Info("Create bat files (pull & push)");
+            git.Create_bat_pull();
+            git.Create_bat_push();
+        }
+
         public void Create_bat_start()
         {
-            if (File.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\start.bat"))
+            //if (File.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\start.bat"))
+            // log4j対応のbatをインストールするために緊急でこのようにしている
+            // 本来は特定のバージョンにおいて、batの内容に応じて処理を行うか判断するべき
+            if (false)
             {
                 return;
             }
@@ -360,7 +371,7 @@ namespace Server_GUI2
                     break;
                 case 4:
                     Change_info4(Opening_Server);
-                    info_path = $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\info.txt";
+                    info_path = $@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\info.txt";
                     break;
             }
 
@@ -388,9 +399,9 @@ namespace Server_GUI2
         {
             //server_openの項目についてFalseをTrueに書き換え
             logger.Info($"Change info about the server_open -> {Opening_Server}");
-            logger.Info($"Change info about the server version -> {Data_list.ReadVersion}");
+            logger.Info($"Change info about the server version -> {Data_list.Version}");
             Data_list.Info[4] = Opening_Server.ToString();
-            Data_list.Info[2] = Data_list.ReadVersion;
+            Data_list.Info[2] = Data_list.Version;
         }
         private void Change_info3()
         {
@@ -469,7 +480,7 @@ namespace Server_GUI2
         public bool Check_Vdown()
         {
             // 新規ワールド作成時（開くバージョンと同じワールドの時）の Copy_version="" はコピーの必要性なし
-            if (Data_list.Import_NewWorld || Data_list.World == "ShareWorld")
+            if (Data_list.ReadVersion == Data_list.ReadCopy_Version || Data_list.World == "ShareWorld")
             {
                 return false;
             }
@@ -494,6 +505,26 @@ namespace Server_GUI2
             }
 
             return true;
+        }
+
+        public void Check_server_open()
+        {
+            logger.Info("Check the ShareWorld's info (There are already started Server or not)");
+            if (info2[4] == "True" && Data_list.Info[0] != info2[0])
+            {
+                MW.MessageBox.Show(
+                    $"ShareWorldのサーバーはすでに{info2[0]}によって起動されています。\r\n" +
+                    $"{info2[0]}のサーバーが閉じたことを確認したうえでサーバーを再起動してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                
+                throw new ServerException("There are already opened server so system is over");
+            }
+            else
+            {
+                Change_info(4, Opening_Server: true);
+
+                //変更内容をpush
+                git.Push();
+            }
         }
 
         public void Wirte_properties()
@@ -529,6 +560,21 @@ namespace Server_GUI2
                         $"【エラー要因】\n{ex.Message}";
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException($"Failed to write server.properties (Error Code : {ex.Message})");
+            }
+        }
+
+        public void Alert_version()
+        {
+            //起動バージョンが前回と違う場合は警告を出す
+            if (info2[2] != Data_list.Version)
+            {
+                logger.Warn("The Version is Different of latest open by ShareWorld.");
+                MessageBoxResult? result = MW.MessageBox.Show($"前回のShareWorldでのサーバー起動バージョンは{info2[2]}です。\r\nバージョン{Data_list.Version}で起動を続けますか？\r\n（「いいえ(N)」を選択した場合はもう一度起動をやり直してください。）", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.No)
+                {
+                    throw new UserSelectException("User chose NO");
+                }
             }
         }
 
@@ -600,18 +646,58 @@ namespace Server_GUI2
 
         public virtual void Check_ShareWorld()
         {
-            //Download_ShareWorld();
+            Download_ShareWorld();
 
-            ////異なるバージョンが指定された場合、初めに確認
-            //Alert_version();
+            //異なるバージョンが指定された場合、初めに確認
+            Alert_version();
 
 
-            ////ShareWorldの処理に必要なbatが存在するか否かを確認
-            //Check_file_directory_SW();
+            //ShareWorldの処理に必要なbatが存在するか否かを確認
+            Check_file_directory_SW();
 
-            ////起動済みサーバーがあるか否かの確認
-            ////Server_bat-files\info.txtの中身にてserver_openの項目がTrueであれば起動を中止し、FalseならばTrueに書き換えたうえで起動前にpushを行う
-            //Check_server_open();
+            //起動済みサーバーがあるか否かの確認
+            //Server_bat-files\info.txtの中身にてserver_openの項目がTrueであれば起動を中止し、FalseならばTrueに書き換えたうえで起動前にpushを行う
+            Check_server_open();
+        }
+
+        private void Download_ShareWorld()
+        {
+            if (!(Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\")))
+            {
+                git.Clone(Data_list.Version);
+            }
+            else
+            {
+                git.Pull(Data_list.Version);
+            }
+            MainWindow.Pd.Value = 50;
+
+
+            //Server_bat-files内のinfo.txtの中身を読み取る(ShareWorld起動時のみ使用するためここに記載している)
+            logger.Info("Read the ShareWorld > Server_bat-files info");
+
+            try
+            {
+                if (File.Exists($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\info.txt"))
+                {
+                    using (StreamReader sr = new StreamReader($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\info.txt", Encoding.GetEncoding("Shift_JIS")))
+                    {
+                        info2 = data.Set_info(sr);
+                    }
+                }
+                else
+                {
+                    info2 = Data_list.Info;
+                }
+            }
+            catch (Exception ex)
+            {
+                string message =
+                        "ShareWorld内のinfo.txtの読み込みに失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new IOException($"Failed to read info.txt in ShareWorld (Error Message : {ex.Message})");
+            }
         }
 
         public virtual void Reset_world_method(bool reset_world, bool save_world)
@@ -646,14 +732,14 @@ namespace Server_GUI2
             int num = 1;
             logger.Info("Reset World before saving World");
             //以前に作成したバックアップがないかを確認
-            while (Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_old({num})\"))
+            while (Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}_old({num})\"))
             {
                 num++;
             }
 
             try
             {
-                Process p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World} {MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}_old({num}) /E /H /I /Y");
+                Process p = Process.Start("xcopy", $@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World} {MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}_old({num}) /E /H /I /Y");
                 p.WaitForExit();
             }
             catch (Exception ex)
@@ -700,10 +786,10 @@ namespace Server_GUI2
                 return;
             }
 
-            if (!Directory.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\plugins"))
+            if (!Directory.Exists($@"{MainWindow.Data_Path}Spigot_{Data_list.Version}\plugins"))
             {
                 logger.Info("Create plugins folder");
-                Directory.CreateDirectory($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\plugins");
+                Directory.CreateDirectory($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\plugins");
             }
             m_set_window.Spigot_window.Remove_data();
             m_set_window.Spigot_window.Add_data();
@@ -716,7 +802,7 @@ namespace Server_GUI2
             logger.Info($"Delete the {Data_list.World} about the directory");
             List<string> stay_folders = new List<string>() { ".git", "Server_bat-files" };
             string[] Folders = Directory.GetDirectories(
-                $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}", "*", SearchOption.TopDirectoryOnly);
+                $@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}", "*", SearchOption.TopDirectoryOnly);
             foreach (string name in Folders)
             {
                 string rename = Path.GetFileName(name);
@@ -724,7 +810,7 @@ namespace Server_GUI2
                 {
                     continue;
                 }
-                Directory.Delete($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\{rename}", true);
+                Directory.Delete($@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}\{rename}", true);
             }
         }
 
@@ -733,10 +819,10 @@ namespace Server_GUI2
             //ファイルの削除
             logger.Info($"Delete the {Data_list.World} about files");
             string[] tmp_stay_files = Directory.GetFiles(
-                $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}", "*.bat", SearchOption.TopDirectoryOnly);
+                $@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}", "*.bat", SearchOption.TopDirectoryOnly);
             List<string> stay_files = new List<string>(tmp_stay_files);
             string[] Files = Directory.GetFiles(
-                $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}", "*", SearchOption.TopDirectoryOnly);
+                $@"{MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World}", "*", SearchOption.TopDirectoryOnly);
             foreach (string name in Files)
             {
                 if (stay_files.Contains(name))
@@ -769,6 +855,13 @@ namespace Server_GUI2
                 string message =
                     "サーバーの実行途中で予期せぬエラーが発生しました。\n\n" +
                     $"【エラーコード】　{p.ExitCode}";
+                if (p.ExitCode == 1)
+                {
+                    message =
+                        "サーバーの実行途中で予期せぬエラーが発生しました。\n" +
+                        "インストールされているJavaのバージョンが古い可能性があります。\n" +
+                        $"【エラーコード】　{p.ExitCode}";
+                }
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 if (first_launch)
                 {
@@ -781,19 +874,19 @@ namespace Server_GUI2
 
         public virtual void Upload_ShareWorld()
         {
-            //MainWindow.Pd = new ProgressDialog
-            //{
-            //    Title = "push ShareWorld"
-            //};
-            //MainWindow.Pd.Show();
+            MainWindow.Pd = new ProgressDialog
+            {
+                Title = "push ShareWorld"
+            };
+            MainWindow.Pd.Show();
 
-            ////info.txtのなかのserver_openをFalseに戻す
-            //MainWindow.Pd.Value = 50;
-            //Change_info(4, Opening_Server: false);
+            //info.txtのなかのserver_openをFalseに戻す
+            MainWindow.Pd.Value = 50;
+            Change_info(4, Opening_Server: false);
 
-            ////push
-            //git.Push();
-            //MainWindow.Pd.Close();
+            //push
+            git.Push();
+            MainWindow.Pd.Close();
             // MainWindow.pd.Dispose();
         }
 
@@ -1074,7 +1167,7 @@ namespace Server_GUI2
             foreach (FileInfo file in files)
             {
                 string tempPath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(tempPath, false);
+                file.CopyTo(tempPath, true);
             }
 
             // If copying subdirectories, copy them and their contents to new location.

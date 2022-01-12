@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Forms;
 using MW = ModernWpf;
 
 namespace Server_GUI2
@@ -12,16 +13,16 @@ namespace Server_GUI2
     public partial class Git
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private static List<string> Log_text { get; set; } = new List<string>();
+        private static List<string> log_text { get; set; } = new List<string>();
 
-        public void Pull()
+        public void Pull(string version)
         {
             //かつて生成していたNOTpauseの名称を変更し、pauseするタイプのbatを削除
             logger.Info("Delete the bat files about pull_NOTpause");
-            if (File.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\pull_NOTpause.bat"))
+            if (File.Exists($@"{MainWindow.Data_Path}\{version}\ShareWorld\pull_NOTpause.bat"))
             {
-                File.Delete($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\pull.bat");
-                File.Move($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\pull_NOTpause.bat", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\pull.bat");
+                File.Delete($@"{MainWindow.Data_Path}\{version}\ShareWorld\pull.bat");
+                File.Move($@"{MainWindow.Data_Path}\{version}\ShareWorld\pull_NOTpause.bat", $@"{MainWindow.Data_Path}\{version}\ShareWorld\pull.bat");
             }
 
             logger.Info("Start the pull ShareWorld");
@@ -38,7 +39,7 @@ namespace Server_GUI2
             //     Error($"Git pull に失敗しました。(エラーコード：{p.ExitCode})");
             // }
 
-            Bat_start($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\pull.bat", "pull");
+            Bat_start($@"{MainWindow.Data_Path}\{version}\ShareWorld\pull.bat", "pull");
 
         }
 
@@ -46,10 +47,10 @@ namespace Server_GUI2
         {
             //かつて生成していたNOTpauseの名称を変更し、pauseするタイプのbatを削除
             logger.Info("Delete the bat files about push_NOTpause");
-            if (File.Exists($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\push_NOTpause.bat"))
+            if (File.Exists($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\push_NOTpause.bat"))
             {
-                File.Delete($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\push.bat");
-                File.Move($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\push_NOTpause.bat", $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\push.bat");
+                File.Delete($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\push.bat");
+                File.Move($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\push_NOTpause.bat", $@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\push.bat");
             }
 
             logger.Info("Start the push ShareWorld");
@@ -64,27 +65,27 @@ namespace Server_GUI2
             //     Error($"Git push に失敗しました。(エラーコード：{p.ExitCode})");
             // }
 
-            Bat_start($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\push.bat", "push");
+            Bat_start($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\push.bat", "push");
 
         }
 
-        public void Clone()
+        public void Clone(string version)
         {
             //clone.batの作成
-            Create_bat_clone();
+            Create_bat_clone(version);
 
             logger.Info("Start the cloning ShareWorld");
             MainWindow.Pd.Message = "\n---Start the cloning ShareWorld---\n";
 
             // ProcessStartInfo info = new ProcessStartInfo();
             // info.FileName = "clone.bat";
-            // info.WorkingDirectory = $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\";
+            // info.WorkingDirectory = $@"{MainWindow.Data_Path}\{version}\";
             // info.Arguments = @" > .\log\clone_log.txt 2>&1";
 
             // Process p = Process.Start(info);
-            // Process p = Process.Start($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\clone.bat");
+            // Process p = Process.Start($@"{MainWindow.Data_Path}\{version}\clone.bat");
 
-            // string command = $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\clone.bat 2>&1 | " + "%{ \"\"\"$_\"\"\" }" + @" | Set-Content -Path .\log\clone_log.txt -PassThru";
+            // string command = $@"{MainWindow.Data_Path}\{version}\clone.bat 2>&1 | " + "%{ \"\"\"$_\"\"\" }" + @" | Set-Content -Path .\log\clone_log.txt -PassThru";
             // Process p = Process.Start("powershell", command);
             // p.WaitForExit();
             // if (p.ExitCode != 0 && p.ExitCode != 1)
@@ -92,10 +93,10 @@ namespace Server_GUI2
             //     Error($"Git clone に失敗しました。(エラーコード：{p.ExitCode})");
             // }
 
-            Bat_start($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\clone.bat", "clone");
+            Bat_start($@"{MainWindow.Data_Path}\{version}\clone.bat", "clone");
 
             logger.Info("Delete clone.bat");
-            File.Delete($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\clone.bat");
+            File.Delete($@"{MainWindow.Data_Path}\{version}\clone.bat");
         }
 
         private void Bat_start(string file_path, string git_type)
@@ -111,7 +112,7 @@ namespace Server_GUI2
             p.OutputDataReceived += p_OutputDataReceived;
             p.ErrorDataReceived += p_OutputDataReceived;
 
-            Log_text = new List<string>();
+            log_text = new List<string>();
             p.Start();
 
             //非同期で出力の読み取りを開始
@@ -137,7 +138,7 @@ namespace Server_GUI2
             //出力された文字列を表示する
             // Console.WriteLine(e.Data);
             MainWindow.Pd.Message = e.Data;
-            Log_text.Add(e.Data);
+            log_text.Add(e.Data);
         }
 
         private void Write_log(string git_type)
@@ -146,7 +147,7 @@ namespace Server_GUI2
             {
                 using (var writer = new StreamWriter($@".\log\{git_type}_log.txt", false))
                 {
-                    foreach (string line in Log_text)
+                    foreach (string line in log_text)
                     {
                         writer.WriteLine(line);
                     }
@@ -160,7 +161,7 @@ namespace Server_GUI2
 
         public void Create_bat_push()
         {
-            logger.Info($@"Create push.bat at {MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\push.bat");
+            logger.Info($@"Create push.bat at {MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\push.bat");
             List<string> push = new List<string>
             {
                 "@echo off",
@@ -174,7 +175,7 @@ namespace Server_GUI2
 
             try
             {
-                using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\push.bat", false))
+                using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\push.bat", false))
                 {
                     foreach (string line in push)
                     {
@@ -194,7 +195,7 @@ namespace Server_GUI2
 
         public void Create_bat_pull()
         {
-            logger.Info($@"Create pull.bat at {MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\pull.bat");
+            logger.Info($@"Create pull.bat at {MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\pull.bat");
             List<string> pull = new List<string>
             {
                 "@echo off",
@@ -205,7 +206,7 @@ namespace Server_GUI2
             };
             try
             {
-                using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ShareWorld\pull.bat", false))
+                using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\pull.bat", false))
                 {
                     foreach (string line in pull)
                     {
@@ -223,21 +224,21 @@ namespace Server_GUI2
             }
         }
 
-        public void Create_bat_clone()
+        public void Create_bat_clone(string version)
         {
-            logger.Info($@"Create clone.bat at {MainWindow.Data_Path}\{Data_list.ReadVersion}\clone.bat");
+            logger.Info($@"Create clone.bat at {MainWindow.Data_Path}\{version}\clone.bat");
             List<string> clone = new List<string>
             {
                 "@echo off",
                 "for /f \"tokens=1,3 delims=>\" %%a in (%~dp0\\..\\info.txt) do (set info[%%a]=%%b)",
                 "git config --global user.name %info[6]%",
                 "git config --global user.email %info[7]%",
-                $@"cd {MainWindow.Data_Path}\{Data_list.ReadVersion}",
-                "git clone https://github.com/%info[6]%/ShareWorld --depth 1 --progress"
+                $@"cd {MainWindow.Data_Path}\{version}",
+                "git clone https://%info[6]%@github.com/%info[6]%/ShareWorld.git --depth 1 --progress"
             };
             try
             {
-                using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\clone.bat", false))
+                using (var writer = new StreamWriter($@"{MainWindow.Data_Path}\{version}\clone.bat", false))
                 {
                     foreach (string line in clone)
                     {

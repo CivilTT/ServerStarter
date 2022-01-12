@@ -1,4 +1,5 @@
 ﻿using log4net;
+using Microsoft.VisualBasic.FileIO;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Diagnostics;
@@ -204,7 +205,9 @@ namespace Server_GUI2
                 // この修正が終わったら一通りデバッグをして、コマンドラインからの実行の作業に移る
                 // Process p = Process.Start("xcopy", $@"{import_path} {MainWindow.Data_Path}\{Data_list.Version}\{Data_list.World} /E /H /I /Y");
                 // p.WaitForExit();
-                Functions.DirectoryCopy(import_path, $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}", true);
+                ReadyImport();
+
+                FileSystem.CopyDirectory(import_path, $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}", true);
                 if (Data_list.Import_spigot)
                 {
                     Spigot_Function spi_func = new Spigot_Function();
@@ -218,6 +221,16 @@ namespace Server_GUI2
                         $"【エラー要因】\n{ex.Message}";
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new WinCommandException($"Failed to import the custom map (Error Message : {ex.Message})");
+            }
+        }
+
+        private void ReadyImport()
+        {
+            foreach(string dire in Directory.GetDirectories($@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\{Data_list.World}\"))
+            {
+                if (Path.GetFileName(dire) == ".git")
+                    continue;
+                FileSystem.DeleteDirectory(dire, DeleteDirectoryOption.DeleteAllContents);
             }
         }
     }
