@@ -21,6 +21,14 @@ using MW = ModernWpf;
 /// ・新たにzip化してアップデート
 /// </summary>
 
+/// <summary>
+/// Mainでの変更をChangeSystemに取り込む方法
+/// ・Current Branchをこのブランチにする
+/// ・mainを右クリックし、「Current Branch にマージ」を選択
+/// ・「main を ChangeSystem にマージしますか？」と聞かれるため「はい」を選択
+/// ・適当なファイルを確認し、読み込まれなくなった場合はVisual Studioを再起動
+/// </summary>
+
 
 namespace Server_GUI2
 {
