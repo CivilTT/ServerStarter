@@ -299,7 +299,10 @@ namespace Server_GUI2
                 foreach (string wor_path in Worlds)
                 {
                     string World_name = Path.GetFileName(wor_path);
-                    if (World_name != "logs" && !(subfolder.Contains("Spigot") && (World_name.Contains("_nether") || World_name.Contains("_the_end") || World_name == "plugins")))
+                    if (World_name != "logs"
+                        && World_name != "libraries"
+                        && World_name != "versions"
+                        && !(subfolder.Contains("Spigot") && (World_name.Contains("_nether") || World_name.Contains("_the_end") || World_name == "plugins")))
                     {
                         World_list.Add(World_name);
                     }
