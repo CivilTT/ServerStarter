@@ -15,7 +15,14 @@ namespace Server_GUI2
 
         public ProgressForm()
         {
+            //
+            // Windows フォーム デザイナ サポートに必要です。
+            //
             InitializeComponent();
+
+            //
+            // TODO: InitializeComponent 呼び出しの後に、コンストラクタ コードを追加してください。
+            //
         }
 
         protected virtual void Dispose(bool disposing)
@@ -24,14 +31,21 @@ namespace Server_GUI2
             {
                 if (disposing)
                 {
-                    // マネージド状態を破棄します (マネージド オブジェクト)
+                    // TODO: マネージド状態を破棄します (マネージド オブジェクト)
                 }
 
-                // アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
-                // 大きなフィールドを null に設定します
+                // TODO: アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
+                // TODO: 大きなフィールドを null に設定します
                 disposedValue = true;
             }
         }
+
+        // // TODO: 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
+        // ~ProgressBar()
+        // {
+        //     // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+        //     Dispose(disposing: false);
+        // }
 
         public void Dispose()
         {
@@ -334,7 +348,7 @@ namespace Server_GUI2
         {
             if (form != null)
             {
-                if (override_str)
+                if (override_str && old_message != "")
                 {
                     form.log.Text = form.log.Text.Replace(old_message, _message);
                 }
