@@ -52,7 +52,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resource\f279e8b23161526e8ba6ae11abbf85b3_xxo.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\f279e8b23161526e8ba6ae11abbf85b3_xxo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -116,6 +116,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\Data_list.cs" />
+    <Compile Include="Core\Server\Vanila.cs" />
     <Compile Include="Windows\dp_Settings.xaml.cs">
       <DependentUpon>dp_Settings.xaml</DependentUpon>
     </Compile>
@@ -193,14 +194,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\main_image.png" />
-    <Resource Include="Resources\trash-alt-regular.svg">
+    <Resource Include="Resources\MainWindow\main_image.png" />
+    <Resource Include="Resources\MainWindow\trash-alt-regular.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <EmbeddedResource Include="Resources\Guide.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resource\f279e8b23161526e8ba6ae11abbf85b3_xxo.ico" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="NATUPNPLib">
@@ -265,7 +263,24 @@
       <Version>1.1.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\f279e8b23161526e8ba6ae11abbf85b3_xxo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SettingMenu\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SettingMenu\database.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SettingMenu\Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SettingMenu\settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SettingMenu\global-network.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<Target Name="AfterResolveReferences">
     <ItemGroup>

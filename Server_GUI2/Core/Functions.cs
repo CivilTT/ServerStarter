@@ -185,6 +185,7 @@ namespace Server_GUI2
                     "@echo off",
                     "cd %~dp0",
                 };
+
                 if (Data_list.Import_spigot)
                 {
                     start.Add($"java -Xmx5G -Xms5G -jar spigot-{Data_list.Version}.jar nogui");

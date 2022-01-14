@@ -131,7 +131,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Image Source="pack://application:,,,/Resources/main_image.png" Grid.Column="1" VerticalAlignment="Top"/>
+        <Image Source="pack://application:,,,/Resources/MainWindow/main_image.png" Grid.Column="1" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32" Foreground="White" Grid.Column="1" Text="Server Starter for Minecraft" FontWeight="Bold"/>
         <TextBlock x:Name="name" HorizontalAlignment="Right" TextWrapping="Wrap" Text="XXXX" VerticalAlignment="Top" Margin="0 30 40 0" FontSize="18" Foreground="White" TextAlignment="Right" FontWeight="Bold"  Grid.Column="1"/>
         <TextBlock x:Name="info_version" HorizontalAlignment="Right" Text="ver 1.X.X.0" VerticalAlignment="Top" FontSize="16" Foreground="White" Margin="0 155 40 0" Grid.Column="1"/>
@@ -144,7 +144,7 @@
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="Version" HorizontalAlignment="Left" Margin="0,0,20,0" DropDownClosed="World_reload" Style="{StaticResource ComboStyle}"/>
                 <Button x:Name="Delete_v" Width="33" Height="33" FontSize="18" Margin="0 0" Padding="3" Click="Delete_version">
-                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/trash-alt-regular.svg"/>
+                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                 </Button>
             </StackPanel>
         </StackPanel>
@@ -153,7 +153,7 @@
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="World" HorizontalAlignment="Left" Margin="0,0,20,0" DropDownClosed="Name_reload" Style="{StaticResource ComboStyle}"/>
                 <Button x:Name="Delete_w" Width="33" Height="33" Padding="3" Click="Delete_world">
-                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/trash-alt-regular.svg"/>
+                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                 </Button>
             </StackPanel>
         </StackPanel>
