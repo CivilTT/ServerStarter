@@ -46,6 +46,18 @@
             </Style.Triggers>
         </Style>
 
+        <Style TargetType="TextBox" x:Key="BoxStyle" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Style.Setters>
+                <Setter Property="Width" Value="145"/>
+                <Setter Property="Height" Value="33"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="BorderBrush" Value="#EBEBEB"/>
+                <Setter Property="Background" Value="#EBEBEB"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style.Setters>
+        </Style>
+
         <Style TargetType="TextBlock" x:Key="BlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="Height" Value="28"/>
             <Setter Property="Margin" Value="10 5"/>
@@ -83,11 +95,13 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
+
         <local:MemoryAll x:Key="Mall"/>
         <local:MemoryAva x:Key="Mava"/>
         
     </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -142,11 +156,34 @@
 
         </Grid>
 
-        <Grid x:Name="ShareWorldContents" Grid.Column="1">
-            <StackPanel>
-                <TextBlock Text="Git" FontSize="40"/>
+        <Grid x:Name="ShareWorldContents" Grid.Column="1" Visibility="Visible">
+            <StackPanel Margin="20 10">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="World Name" FontSize="30"/>
+                    <ComboBox x:Name="SetWorld" Margin="30 7" Width="200"/>
+                </StackPanel>
+                <StackPanel Margin="20 5" Orientation="Horizontal">
+                    <TextBlock Text="このワールドをShareWorldにする" Style="{StaticResource BlockStyle}"/>
+                    <ui:ToggleSwitch OnContent="Yes" OffContent="No" FontSize="20" Margin="30 0"/>
+                </StackPanel>
+                    <!--<TextBlock Text="Git" FontSize="30"/>-->
+                <StackPanel Margin="20 5" Orientation="Horizontal">
+                    <TextBlock Text="Git Account Name" Width="180" Style="{StaticResource BlockStyle}"/>
+                    <TextBox x:Name="gitAccount" Width="250" Text="Example" Style="{StaticResource BoxStyle}"/>
+                </StackPanel>
+                <StackPanel Margin="20 5" Orientation="Horizontal">
+                    <TextBlock Text="Git Account E-mail" Width="180" Style="{StaticResource BlockStyle}"/>
+                    <TextBox x:Name="gitMail" Width="250" Text="Example@mail.com" Style="{StaticResource BoxStyle}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <DataGrid>
+                        <!--// Contents //-->
+                        <!--Version, World, isSW, Account, E-mail-->
+                        <!--新規でSW化するワールドが追加された場合は、レポジトリの新規作成をするか否かを問う-->
+                    </DataGrid>
+                </StackPanel>
                 <TextBlock Text="その他のワールドをSWにするか（リモートレポジトリ作成機能付き）" FontSize="20"/>
-                <TextBlock Text="新VersionでSWが起動した際に以前のSWを消去する（bool）" FontSize="20"/>
+                <CheckBox Content="新VersionでSWが起動した際に以前のSWを消去する" IsChecked="True" FontSize="16"/>
                 <TextBlock Text="Personal Access Tokenのページへのリンク" FontSize="20"/>
             </StackPanel>
         </Grid>

@@ -66,9 +66,12 @@ namespace Server_GUI2
                     ServerContents.Visibility = Visibility.Hidden;
                     break;
                 case 2:
-                    SystemContents.Visibility = Visibility.Hidden;
+                    NetworkContents.Visibility = Visibility.Hidden;
                     break;
                 case 3:
+                    SystemContents.Visibility = Visibility.Hidden;
+                    break;
+                case 4:
                     InformationContents.Visibility = Visibility.Hidden;
                     break;
                 default:
@@ -86,9 +89,12 @@ namespace Server_GUI2
                     ServerContents.Visibility = Visibility.Visible;
                     break;
                 case 2:
-                    SystemContents.Visibility = Visibility.Visible;
+                    NetworkContents.Visibility = Visibility.Visible;
                     break;
                 case 3:
+                    SystemContents.Visibility = Visibility.Visible;
+                    break;
+                case 4:
                     InformationContents.Visibility = Visibility.Visible;
                     break;
                 default:

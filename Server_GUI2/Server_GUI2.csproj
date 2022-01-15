@@ -91,6 +91,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Windows\ViewModels\MainWindowViewModel.cs" />
     <Page Include="Windows\dp_Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -281,6 +282,7 @@
   <ItemGroup>
     <Resource Include="Resources\SettingMenu\global-network.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<Target Name="AfterResolveReferences">
     <ItemGroup>
