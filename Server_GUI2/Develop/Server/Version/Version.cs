@@ -36,28 +36,24 @@ namespace Server_GUI2
         // このバージョンがリリース版かスナップショットか
         public bool isRelease;
 
-        // 最新版か否か
-        public bool isLatest;
-
         // VanilaかSpigotか
-        public bool isVanila;
+        public bool hasSpigot;
 
 
         public ServerProperty ServerProperty { get; set; }
 
-        public Version(string name, string downloadurl, bool isrelease=true, bool islatest=false, bool isvanila=true)
+        public Version(string name, string downloadurl, bool hasspigot, bool isrelease)
         {
             Name = name;
             downloadURL = downloadurl;
             isRelease = isrelease;
-            isLatest = islatest;
-            isVanila = isvanila;
+            hasSpigot = hasspigot;
         }
 
         public void DownloadVersion() { }
 
         // 比較演算子系のオーバーライド
         // 最新、旧版の比較をする
-        public bool gt(Version version) { }
+        //public bool gt(Version version) { }
     }
 }
