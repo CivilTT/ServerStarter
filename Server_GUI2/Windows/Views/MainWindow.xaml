@@ -6,6 +6,7 @@
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:Server_GUI2"
+        xmlns:vm="clr-namespace:Server_GUI2.Windows.ViewModels"
         mc:Ignorable="d"
         ResizeMode="CanMinimize"
         ui:WindowHelper.UseModernWindowStyle="True"
@@ -123,7 +124,11 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-    </Window.Resources>    
+    </Window.Resources>
+
+    <Window.DataContext>
+        <vm:MainWindowVM/>
+    </Window.DataContext>
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -131,10 +136,10 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Image Source="pack://application:,,,/Resources/main_image.png" Grid.Column="1" VerticalAlignment="Top"/>
+        <Image Source="pack://application:,,,/Resources/MainWindow/main_image.png" Grid.Column="1" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="30,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32" Foreground="White" Grid.Column="1" Text="Server Starter for Minecraft" FontWeight="Bold"/>
-        <TextBlock x:Name="name" HorizontalAlignment="Right" TextWrapping="Wrap" Text="XXXX" VerticalAlignment="Top" Margin="0 30 40 0" FontSize="18" Foreground="White" TextAlignment="Right" FontWeight="Bold"  Grid.Column="1"/>
-        <TextBlock x:Name="info_version" HorizontalAlignment="Right" Text="ver 1.X.X.0" VerticalAlignment="Top" FontSize="16" Foreground="White" Margin="0 155 40 0" Grid.Column="1"/>
+        <TextBlock x:Name="name" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding PlayerName}" VerticalAlignment="Top" Margin="0 30 40 0" FontSize="18" Foreground="White" TextAlignment="Right" FontWeight="Bold"  Grid.Column="1"/>
+        <TextBlock x:Name="info_version" HorizontalAlignment="Right" Text="{Binding StarterVersion}" VerticalAlignment="Top" FontSize="16" Foreground="White" Margin="0 155 40 0" Grid.Column="1"/>
 
         <Line Stroke="White" StrokeThickness="2" X1="30" Y1="65" X2="595" Y2="65" Grid.Column="1"/>
 
@@ -143,8 +148,8 @@
             <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="Server Version" VerticalAlignment="Top" Width="140" FontSize="20"/>
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="Version" HorizontalAlignment="Left" Margin="0,0,20,0" DropDownClosed="World_reload" Style="{StaticResource ComboStyle}"/>
-                <Button x:Name="Delete_v" Width="33" Height="33" FontSize="18" Margin="0 0" Padding="3" Click="Delete_version">
-                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/trash-alt-regular.svg"/>
+                <Button x:Name="Delete_v" Width="33" Height="33" FontSize="18" Margin="0 0" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="version">
+                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                 </Button>
             </StackPanel>
         </StackPanel>
@@ -153,7 +158,7 @@
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="World" HorizontalAlignment="Left" Margin="0,0,20,0" DropDownClosed="Name_reload" Style="{StaticResource ComboStyle}"/>
                 <Button x:Name="Delete_w" Width="33" Height="33" Padding="3" Click="Delete_world">
-                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/trash-alt-regular.svg"/>
+                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                 </Button>
             </StackPanel>
         </StackPanel>
@@ -177,7 +182,7 @@
             <TextBox x:Name="input_box_world" Margin="0 10" TextChanged="Check_WorldName" Style="{StaticResource BoxStyle}"/>
         </StackPanel>
 
-        <Button x:Name="Run_button" Content="Run" Click="START_Click" Margin="0,335,30,0" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Style="{StaticResource RunStyle}"/>
+        <Button x:Name="Run_button" Content="Run" Margin="0,335,30,0" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Command="{Binding RunCommand}" Style="{StaticResource RunStyle}"/>
 
         <Line StrokeThickness="0.3" Y1="390" Y2="390" Grid.Column="1" Style="{StaticResource LineStyle}"/>
 
@@ -185,14 +190,14 @@
             <CheckBox x:Name="re_world" Content="Recreate World (When you want to reset the selected world)" FontSize="16" Click="Reset_world_Click"/>
             <CheckBox x:Name="sa_world" Content="Save old World before recreating it (Saving name : ...__old(1))" FontSize="16" Margin="40,0,0,10" Click="Save_world_Click" IsEnabled="False"/>
 
-            <CheckBox x:Name="op" Content="XXXX has op rights in this version's server" FontSize="16" IsChecked="True" Click="Op_Click"/>
+            <CheckBox x:Name="op" Content="{Binding OpConstnts}" FontSize="16" IsChecked="True" Click="Op_Click"/>
             <CheckBox x:Name="shutdown" Content="Shutdown this PC after stopping the server" FontSize="16" Click="Shutdown_Click"/>
         </StackPanel>
         <Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="61" Y1="425" X2="61" Y2="448" Grid.Column="1"/>
         <Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="61" Y1="448" X2="91" Y2="448" Grid.Column="1"/>
 
 
-        <Button x:Name="info" Content="Info" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="60" Margin="30,0,0,10" Grid.Column="1" Click="Info_Click" Style="{StaticResource OtherStyle}"/>
+        <Button x:Name="info" Content="Info" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="60" Margin="30,0,0,10" Grid.Column="1" Command="{Binding SettingCommand}" Style="{StaticResource OtherStyle}"/>
         <StackPanel x:Name="Execute" HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Margin="0,0,0,10" Orientation="Horizontal" Grid.Column="1">
             <Button x:Name="More_Settings_button" Content="More Settings" Click="More_Settings_Click" Style="{StaticResource OtherStyle}"/>
             <Button Content="Close" Margin="10,0,30,0" Click="Close_Click" Style="{StaticResource OtherStyle}"/>

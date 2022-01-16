@@ -11,9 +11,7 @@ namespace Server_GUI2
 {
     class World
     {
-        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        private Version Ver;
+        public Version version;
 
         public string Name;
 
@@ -23,7 +21,7 @@ namespace Server_GUI2
         {
             get
             {
-                return $@"{MainWindow.Data_Path}\{Ver.Name}\{Name}";
+                return $@"{MainWindow.Data_Path}\{version.Name}\{Name}";
             }
         }
 
@@ -38,7 +36,7 @@ namespace Server_GUI2
         public World(string name, Version ver)
         {
             Name = name;
-            Ver = ver;
+            version = ver;
         }
 
         public void ChangeVersion(Version newVer)

@@ -17,6 +17,8 @@ namespace Server_GUI2
         [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
         public static extern bool AttachConsole(int processId);
 
+        private readonly SetUp setUp = new SetUp();
+
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private Dictionary<string, string> prop_dict = new Dictionary<string, string>();
         private string prop_dict_str = null;

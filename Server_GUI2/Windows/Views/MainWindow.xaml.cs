@@ -1,5 +1,6 @@
 ﻿using log4net;
 using Newtonsoft.Json;
+using Server_GUI2.Windows.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -86,6 +87,7 @@ namespace Server_GUI2
 
             logger.Info("The system of Server Starter is started.");
             InitializeComponent();
+            Loaded += MainWindow_Loaded;
             GUI = gui;
 
             Pd = new ProgressDialog
@@ -120,11 +122,11 @@ namespace Server_GUI2
             Pd.Value = 40;
 
             //右上 & opの仕様の変更
-            name.Text = Data_list.Info[0];
+            //name.Text = Data_list.Info[0];
             op.Content = Data_list.Info[0] + " has op rights in this version's server";
-            info_version.Text = $"ver {Data_list.Starter_Version}";
             Get_op = true;
             shutdown.IsChecked = Properties.Settings.Default.Shutdown;
+
             Pd.Message = "Set the value of GUI";
             Pd.Value = 50;
 
@@ -180,6 +182,25 @@ namespace Server_GUI2
             }
             Pd.Value = 100;
             Pd.Close();
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(DataContext is IOperateWindows vm)
+            {
+                vm.Close += () =>
+                {
+                    Close();
+                };
+                vm.Hide += () =>
+                {
+                    Hide();
+                };
+                vm.Show += () =>
+                {
+                    Show();
+                };
+            }
         }
 
         public void Start(bool gui=true)
