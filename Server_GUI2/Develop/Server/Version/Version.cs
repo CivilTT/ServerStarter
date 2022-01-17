@@ -39,15 +39,19 @@ namespace Server_GUI2
         // VanilaかSpigotか
         public bool hasSpigot;
 
+        // 最新バージョンか否か
+        public bool isLatest;
+
 
         public ServerProperty ServerProperty { get; set; }
 
-        public Version(string name, string downloadurl, bool hasspigot, bool isrelease)
+        public Version(string name, string downloadurl, bool hasspigot, bool isrelease, bool islatest)
         {
             Name = name;
             downloadURL = downloadurl;
             isRelease = isrelease;
             hasSpigot = hasspigot;
+            isLatest = islatest;
         }
 
         public void DownloadVersion() { }

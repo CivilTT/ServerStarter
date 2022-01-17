@@ -78,8 +78,11 @@ namespace Server_GUI2
                 string downloadURL = root.versions[i].url;
                 string type = root.versions[i].type;
                 bool hasSpigot = (spigotList != null) && spigotList.Contains(id);
+                Console.WriteLine(hasSpigot.ToString());
+                bool isRelease = type == "release";
+                bool isLatest = id == latestRelease || id == latestSnapShot;
 
-                allVersions.Add(new Version(id, downloadURL, hasSpigot, type == "release"));
+                allVersions.Add(new Version(id, downloadURL, hasSpigot, isRelease, isLatest));
 
                 i++;
             }
@@ -87,9 +90,10 @@ namespace Server_GUI2
             if (latestRelease == latestSnapShot)
             {
                 // 最新バージョンがreleaseの際にはsnapshotも同じため、特例としてリストの先頭に挿入する処理を行う
-                Version _snapshot = allVersions[0];
-                _snapshot.isRelease = false;
-                allVersions.Insert(0, _snapshot);
+                id = root.versions[0].id;
+                string downloadURL = root.versions[0].url;
+                Version _snapshot = new Version(id, downloadURL, false, false, true);
+                allVersions.Insert(1, _snapshot);
             }
         }
 
@@ -118,6 +122,10 @@ namespace Server_GUI2
                 ver = ver.Replace(".json", "");
 
                 vers.Add(ver);
+
+                // 1.9.jsonが対応バージョン一覧の最後に記載されているため
+                if (ver == "1.9")
+                    break;
             }
 
             return vers;

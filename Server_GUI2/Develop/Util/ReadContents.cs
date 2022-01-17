@@ -50,7 +50,8 @@ namespace Server_GUI2.Develop.Util
             dynamic root = null;
             try
             {
-
+                // TODO: Json読み込みの処理を実装する
+                // Jsonの型になるクラスを受けて、それに基づいて解析するべき？
             }
             catch (Exception ex)
             {
