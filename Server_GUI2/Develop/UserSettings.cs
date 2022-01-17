@@ -16,9 +16,9 @@ namespace Server_GUI2
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static UserSettingsJson userSettings;
+        public static UserSettingsJson userSettings = new UserSettingsJson();
 
-        public string JsonPath
+        public static string JsonPath
         {
             get
             {
@@ -55,8 +55,8 @@ namespace Server_GUI2
                 List<string> info = ReadContents.ReadOldInfo(OldInfoPath);
                 ShareWorld sw = new ShareWorld
                 {
-                    gitAccountName = info[-2],
-                    gitAccountMail = info[-1]
+                    gitAccountName = info[5],
+                    gitAccountMail = info[6]
                 };
                 userSettings.playerName = info[0];
                 userSettings.shareworlds = new List<ShareWorld>() { sw };
@@ -87,7 +87,11 @@ namespace Server_GUI2
 
         public static void WriteFile()
         {
-
+            string jsonData = JsonConvert.SerializeObject(userSettings);
+            using (var sw = new StreamWriter(JsonPath, false, Encoding.UTF8))
+            {
+                sw.Write(jsonData);
+            }
         }
     }
 
@@ -104,7 +108,7 @@ namespace Server_GUI2
         //  "Version" : "1.17.1", 
         //  "World" : "ShareWorld"
         // }
-        public Dictionary<string, string> latestRun;
+        public LatestRun latestRun;
 
         [JsonProperty("ShareWorld")]
         // ShareWorld はワールド名、Gitのアカウント名、GitのE-mailアドレスの情報を記録する
@@ -116,5 +120,11 @@ namespace Server_GUI2
         // { "difficulty" : "hard" }
         public Dictionary<string, string> defaultProperties;
 
+    }
+
+    public class LatestRun
+    {
+        public static string Version;
+        public static string World;
     }
 }

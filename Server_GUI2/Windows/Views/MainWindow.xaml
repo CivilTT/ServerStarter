@@ -124,6 +124,8 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <local:InverseBoolConverter x:Key="InverseBool"/>
     </Window.Resources>
 
     <Window.DataContext>
@@ -149,6 +151,7 @@
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="Version" HorizontalAlignment="Left" Margin="0,0,20,0" DropDownClosed="World_reload" Style="{StaticResource ComboStyle}"/>
                 <Button x:Name="Delete_v" Width="33" Height="33" FontSize="18" Margin="0 0" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="version">
+                    <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                 </Button>
             </StackPanel>
@@ -167,13 +170,13 @@
             <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="Server Version" VerticalAlignment="Top" Width="140" FontSize="20"/>
             <ComboBox x:Name="Version2" HorizontalAlignment="Left" Margin="0,0,20,0" VerticalAlignment="Top" DropDownClosed="World_reload" ItemsSource="{Binding Items, ElementName=Version}" Style="{StaticResource ComboStyle}"/>
             <!--<TextBox x:Name="input_box_version" HorizontalAlignment="Left" Height="33" Text="{Binding ID, Source={StaticResource version}, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="145" FontSize="18"/>-->
-            <ComboBox x:Name="new_Version" HorizontalAlignment="Left" Margin="0 10 0 0" VerticalAlignment="Top" Width="253" DropDownClosed="World_reload" Style="{StaticResource ComboStyle}"/>
+            <ComboBox x:Name="new_Version" HorizontalAlignment="Left" Margin="0 10 0 0" VerticalAlignment="Top" Width="253" DropDownClosed="World_reload" SelectedIndex="{Binding VerIndex}" ItemsSource="{Binding Versions}" Style="{StaticResource ComboStyle}"/>
             
             <!--<CheckBox x:Name="release" Content="Show Release" FontSize="16" Click="Version_Click" IsChecked="True"/>
             <CheckBox x:Name="snapshot" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="Show Snapshot" FontSize="16" Click="Version_Click"/>-->
             <StackPanel Orientation="Horizontal" Margin="0 5">
-                <ui:ToggleSwitch x:Name="toggleVersions" Header="Show Versions" OffContent="Release" OnContent="All" FontSize="18" Width="140" Toggled="VersionToggle"/>
-                <ui:ToggleSwitch x:Name="Toggle_spigot" Header="Import Spigot" OffContent="No" OnContent="Yes" FontSize="18" Toggled="TF_spigot"/>
+                <ui:ToggleSwitch x:Name="toggleVersions" Header="Show Versions" OffContent="Release" OnContent="All" FontSize="18" Width="140" IsEnabled="{Binding ShowSpigot, Converter={StaticResource InverseBool}}" IsOn="{Binding ShowAll}"/>
+                <ui:ToggleSwitch x:Name="Toggle_spigot" Header="Import Spigot" OffContent="No" OnContent="Yes" FontSize="18" IsOn="{Binding ShowSpigot}"/>
             </StackPanel>
         </StackPanel>
         <StackPanel x:Name="world_hide" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="30,200" Orientation="Vertical" Grid.Column="1">
@@ -190,7 +193,7 @@
             <CheckBox x:Name="re_world" Content="Recreate World (When you want to reset the selected world)" FontSize="16" Click="Reset_world_Click"/>
             <CheckBox x:Name="sa_world" Content="Save old World before recreating it (Saving name : ...__old(1))" FontSize="16" Margin="40,0,0,10" Click="Save_world_Click" IsEnabled="False"/>
 
-            <CheckBox x:Name="op" Content="{Binding OpConstnts}" FontSize="16" IsChecked="True" Click="Op_Click"/>
+            <CheckBox x:Name="op" Content="{Binding OpContents}" FontSize="16" IsChecked="True" Click="Op_Click"/>
             <CheckBox x:Name="shutdown" Content="Shutdown this PC after stopping the server" FontSize="16" Click="Shutdown_Click"/>
         </StackPanel>
         <Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="61" Y1="425" X2="61" Y2="448" Grid.Column="1"/>

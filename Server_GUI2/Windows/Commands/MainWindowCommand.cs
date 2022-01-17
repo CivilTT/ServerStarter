@@ -27,7 +27,7 @@ namespace Server_GUI2.Windows.Commands
 
         public void Execute(object parameter)
         {
-            System.Windows.MessageBox.Show("TEST");
+            System.Windows.MessageBox.Show(_vm.ShowAll.ToString());
             //Server.Run(_vm.RunWorld);
         }
     }
@@ -89,5 +89,4 @@ namespace Server_GUI2.Windows.Commands
             }
         }
     }
-
 }
