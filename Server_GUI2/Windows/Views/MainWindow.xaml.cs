@@ -4,11 +4,13 @@ using Server_GUI2.Windows.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 using MW = ModernWpf;
 
@@ -123,7 +125,7 @@ namespace Server_GUI2
 
             //右上 & opの仕様の変更
             //name.Text = Data_list.Info[0];
-            op.Content = Data_list.Info[0] + " has op rights in this version's server";
+            // op.Content = Data_list.Info[0] + " has op rights in this version's server";
             Get_op = true;
             shutdown.IsChecked = Properties.Settings.Default.Shutdown;
 
@@ -142,12 +144,12 @@ namespace Server_GUI2
 
             //追加バージョンの読み込み
             logger.Info("Read the new Versions");
-            release_versions = jsonReader.Import_version("release");
-            All_versions = jsonReader.Import_version("all");
-            spigot_versions = htmlReader.Get_SpigotVers();
+            //release_versions = jsonReader.Import_version("release");
+            //All_versions = jsonReader.Import_version("all");
+            //spigot_versions = htmlReader.Get_SpigotVers();
             
-            new_Version = func.Init_new_Versions(new_Version, release_versions);
-            new_Version.SelectedIndex = 0;
+            // new_Version = func.Init_new_Versions(new_Version, release_versions);
+            // new_Version.SelectedIndex = 0;
             Pd.Message = "Read the new Versions";
             Pd.Value = 80;
 
@@ -724,6 +726,28 @@ namespace Server_GUI2
     {
         [JsonProperty("name")]
         public string Name { get; set; }
+    }
+
+    public class InverseBoolConverter : IValueConverter
+    {
+        // 2.Convertメソッドを実装
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            // 流れてきた値がboolじゃない時は不正値として変換
+            // お好みで例外を投げても良い
+            if (!(value is bool b)) { return DependencyProperty.UnsetValue; }
+
+            // 流れてきたbool値を変換してreturnする
+            return !b;
+        }
+
+        // 3.ConvertBackメソッドを実装
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            // ただの反転なのでBinding元に書き戻すときも全く同様の処理で良い
+            if (!(value is bool b)) { return DependencyProperty.UnsetValue; }
+            return !b;
+        }
     }
 
 }

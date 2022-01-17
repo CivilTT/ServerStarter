@@ -273,7 +273,9 @@
     <Resource Include="Resources\f279e8b23161526e8ba6ae11abbf85b3_xxo.ico" />
     <Resource Include="Resources\Guide.txt" />
     <Resource Include="Resources\MainWindow\main_image.png" />
-    <Content Include="Resources\MainWindow\trash-alt-regular.svg" />
+    <Resource Include="Resources\MainWindow\trash-alt-regular.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\main_image2.png" />
     <Resource Include="Resources\main_image3.png" />
     <Resource Include="Resources\main_image4.png" />
