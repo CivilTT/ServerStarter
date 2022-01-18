@@ -68,7 +68,7 @@ namespace Server_GUI2
 
         public System.Windows.Controls.ComboBox Init_version(System.Windows.Controls.ComboBox Version)
         {
-            logger.Info("Read the local Versions");
+            logger.Info("Read the local NewVersions");
 
             foreach (KeyValuePair<string, List<string>> kvp in Data_list.VerWor_list)
             {

@@ -66,7 +66,7 @@ namespace Server_GUI2.Properties {
         ///
         ///Option :
         ///	-o	Give the execution user op permission when the server starts
-        ///	-a	Get All_VerWor.json which record All Versions and Worlds
+        ///	-a	Get All_VerWor.json which record All NewVersions and Worlds
         ///
         ///	/?	You can get this information
         ///	/start	Server Starter launch with the GUI window.

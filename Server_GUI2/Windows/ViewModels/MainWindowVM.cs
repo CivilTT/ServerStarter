@@ -11,17 +11,15 @@ namespace Server_GUI2.Windows.ViewModels
 {
     class MainWindowVM : INotifyPropertyChanged, IOperateWindows
     {
+        // あえて直接呼び出さないことで、Load処理の前にallVersionsなどが呼ばれることを防止している
+        private static readonly VersionFactory verFactory = SetUp.verFactory;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // Window操作系
         public Action Close { get; set; }
         public Action Show { get; set; }
         public Action Hide { get; set; }
-
-        public string StrVersion;
-        public string StrWorld;
-        private Version SelectedVersion;
-        public World SelectedWorld;
 
 
         // 一般
@@ -30,20 +28,10 @@ namespace Server_GUI2.Windows.ViewModels
         public string OpContents { get { return $"{PlayerName} has op rights in this version's server"; } }
 
 
-        // Versionの表示に関連
-        //private int _verIndex = 0;
-        //public int VerIndex
-        //{
-        //    get
-        //    {
-        //        return _verIndex;
-        //    }
-        //    set
-        //    {
-        //        _verIndex = value;
-        //    }
-        //}
-
+        // 新規Versionの表示に関連
+        /// <summary>
+        /// ToggleSwitchのOnOffを保持
+        /// </summary>
         private bool _showAll = false;
         public bool ShowAll
         {
@@ -54,8 +42,8 @@ namespace Server_GUI2.Windows.ViewModels
             set 
             {
                 _showAll = value;
-                Versions = ShowVersions;
-                //VerIndex = 0;
+                NewVersions = ShowNewVersions;
+                SelectedNewVersion = ShowNewVersions[0];
             } 
         }
         private bool _showSpigot = false;
@@ -68,62 +56,107 @@ namespace Server_GUI2.Windows.ViewModels
             set
             {
                 _showSpigot = value;
-                Versions = ShowVersions;
-                //VerIndex = 0;
-
-                // TODO: Spigotにした際にReleaseのToggleSwitchを使用不可にしたい
-                // ToggleSwitchを回すとComboboxの表示が何もなくなってしまう問題を解決したい（これはSelectedIndexを０に設定できれば解決）
+                ReverseShowSpigot = !value;
+                NewVersions = ShowNewVersions;
+                SelectedNewVersion = ShowNewVersions[0];
             }
         }
-        private List<string> ShowVersions
+        private bool _reverseShowSpigot = true;
+        public bool ReverseShowSpigot
+        {
+            get 
+            {
+                return _reverseShowSpigot; 
+            }
+            set
+            {
+                _reverseShowSpigot = value;
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("ReverseShowSpigot"));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Comboboxに表示するバージョンの一覧を保持
+        /// </summary>
+        private List<string> ShowNewVersions
         {
             get
             {
                 List<Version> _vers = new List<Version>();
                 if (ShowSpigot)
                 {
-                    _vers = VersionFactory.allVersions.FindAll(x => x.hasSpigot);
+                    _vers = verFactory.allVersions.FindAll(x => x.hasSpigot);
                     return _vers.ConvertAll(x => $"Spigot {x.Name}");
                 }
 
                 if (ShowAll)
                 {
-                    _vers = VersionFactory.allVersions;
+                    _vers = verFactory.allVersions;
                 }
                 else
                 {
-                    _vers = VersionFactory.allVersions.FindAll(x => x.isRelease);
+                    _vers = verFactory.allVersions.FindAll(x => x.isRelease);
 
                     // SnapShotの最新版を表示
-                    _vers.Insert(1, VersionFactory.allVersions.Find(x => !x.isRelease && x.isLatest));
+                    _vers.Insert(1, verFactory.allVersions.Find(x => !x.isRelease && x.isLatest));
                 }
 
                 return _vers.ConvertAll(x => VanilaVerConverter(x));
             }
         }
-        public List<string> Versions
+        public List<string> NewVersions
         {
             get
             {
-                return ShowVersions;
+                return ShowNewVersions;
             }
             set
             {
                 if (PropertyChanged != null)
                 {
-                    PropertyChanged(this, new PropertyChangedEventArgs("Versions"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("NewVersions"));
                 }
             }
         }
-        public static string VanilaVerConverter(Version x)
+
+        /// <summary>
+        /// 選択されているバージョンを文字列で保持
+        /// </summary>
+        private string _selectedNewVersion = VanilaVerConverter(verFactory.allVersions[0]);
+        public string SelectedNewVersion
+        {
+            get
+            {
+                return _selectedNewVersion;
+            }
+            set
+            {
+                _selectedNewVersion = value;
+
+                // ToggleSwitchが回された後に最初に表示する項目をShow○○から制御するため必要
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedNewVersion"));
+                }
+            }
+        }
+
+        /// <summary>
+        /// 型VersionをComboboxで表示する文字列に変換する
+        /// </summary>
+        private static string VanilaVerConverter(Version x)
         {
             if (x.isRelease && x.isLatest)
             {
-                return $"【Latest Release】 {x.Name}";
+                return $"【LatestRelease】 {x.Name}";
             }
             else if (!x.isRelease && x.isLatest)
             {
-                return $"【Latest Snapshot】 {x.Name}";
+                return $"【LatestSnapshot】 {x.Name}";
             }
             else if (x.isRelease)
             {
@@ -136,7 +169,72 @@ namespace Server_GUI2.Windows.ViewModels
         }
 
 
+        // 既存Versionの表示に関連
+        /// <summary>
+        /// Comboboxに表示するバージョンの一覧を保持
+        /// </summary>
+        private List<string> ShowExistsVersions
+        {
+            get
+            {
+                List<string> _vers = verFactory.installedVersions.ConvertAll(x => ExistsVerCounter(x));
+                _vers.Add("【new Versions】");
+                return _vers;
+            }
+        }
+        public List<string> ExistsVersions
+        {
+            get
+            {
+                return ShowExistsVersions;
+            }
+            set
+            {
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("ExistsVersions"));
+                }
+            }
+        }
+        public static string ExistsVerCounter(Version x)
+        {
+            if (x.isVanila)
+            {
+                return x.Name;
+            }
+            else
+            {
+                return $"Spigot {x.Name}";
+            }
+        }
+
+
+        /// <summary>
+        /// 選択されているバージョンを文字列で保持
+        /// </summary>
+        /// TODO: 前回起動時のVersionをどのように取得するか
+        /// 直接UserSettingsを読み込むか、VersionsにBeforeRun(bool)を設けるか
+        /// SelectedExistsVersionが特に処理せずに表示するだけなら、ただの{ get; set; }でもよいかも
+        private string _selectedExistsVersion;
+        public string SelectedExistsVersion
+        {
+            get
+            {
+                return _selectedExistsVersion;
+            }
+            set
+            {
+                _selectedExistsVersion = value;
+
+                // この項目は外部からプログラムで制御することがないため、PropertyChangedを実装しない
+            }
+        }
+
+
         // Worldの表示に関連
+        private string _selectedWorld;
+        public string SelectedWorld;
+
 
 
         // ボタンなどに呼応した処理

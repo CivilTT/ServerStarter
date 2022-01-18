@@ -34,10 +34,10 @@ namespace Server_GUI2
             }
         }
 
-        //public UserSettings()
-        //{
-        //    ReadFile();
-        //}
+        public UserSettings()
+        {
+            ReadFile();
+        }
 
         public void ReadFile()
         {
