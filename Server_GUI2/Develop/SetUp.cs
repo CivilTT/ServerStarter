@@ -16,29 +16,12 @@ namespace Server_GUI2
         public static UserSettings userSet = new UserSettings();
 
 
-        public SetUp()
-        {
-            verFactory.LoadAllVersions();
-            userSet.ReadFile();
-        }
-
         public void ChangeSpecification()
         {
             // 仕様変更が必要な場合に使う
         }
 
         public void ShowProgressBar()
-        {
-
-        }
-
-        /// <summary>
-        /// 外部ファイルを読み込む
-        /// 
-        /// ※　全て事前に読み込んでおくことで、ViewModel内やその後の処理で、外部ファイルの情報を使いやすくする
-        /// ※　すなわち、ここで読み込まなくても良い
-        /// </summary>
-        private void ReadOuterContents()
         {
 
         }
