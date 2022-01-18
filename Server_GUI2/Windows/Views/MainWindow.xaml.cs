@@ -143,21 +143,21 @@ namespace Server_GUI2
             Pd.Value = 70;
 
             //追加バージョンの読み込み
-            logger.Info("Read the new Versions");
+            logger.Info("Read the new NewVersions");
             //release_versions = jsonReader.Import_version("release");
             //All_versions = jsonReader.Import_version("all");
             //spigot_versions = htmlReader.Get_SpigotVers();
             
             // new_Version = func.Init_new_Versions(new_Version, release_versions);
             // new_Version.SelectedIndex = 0;
-            Pd.Message = "Read the new Versions";
+            Pd.Message = "Read the new NewVersions";
             Pd.Value = 80;
 
             if (GUI)
             {
                 //Versionの選択
-                Version = func.Init_version(Version);
-                World_reload();
+                //Version = func.Init_version(Version);
+                //World_reload();
                 // if (Version.Text == "【new Version】")
                 // {
                 //     version_main.Visibility = Visibility.Hidden;
@@ -166,7 +166,7 @@ namespace Server_GUI2
                 //     Version2.SelectedIndex = Version2.Items.IndexOf("【new Version】");
                 // }
                 // data.Set_Version(Version, new_Version.Text);
-                Pd.Message = "Read the local Versions";
+                Pd.Message = "Read the local NewVersions";
                 Pd.Value = 90;
 
                 //Worldの選択

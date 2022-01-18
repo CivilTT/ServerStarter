@@ -32,11 +32,14 @@ namespace Server_GUI2
         }
 
         public string downloadURL;
+
+        // このバージョンはVanilaか
+        public bool isVanila = true;
         
         // このバージョンがリリース版かスナップショットか
         public bool isRelease;
 
-        // VanilaかSpigotか
+        // Spigotとしてこのバージョンはありうるのか（ローカルにあるか否かは関係ない）
         public bool hasSpigot;
 
         // 最新バージョンか否か

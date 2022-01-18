@@ -23,9 +23,11 @@ namespace Server_GUI2
 
         public static VersionFactory _instance = new VersionFactory();
 
-        public static List<Version> allVersions = new List<Version>();
+        public List<Version> allVersions = new List<Version>();
 
-        public Version activeVer = null;
+        public List<Version> installedVersions = new List<Version>();
+
+        public static Version activeVer = null;
 
 
         public static VersionFactory GetInstance()
@@ -35,10 +37,9 @@ namespace Server_GUI2
 
         public VersionFactory()
         {
-            //TODO: initialization
+            LoadAllVersions();
+            LoadImported();
         }
-
-        //public void LoadFromCurrentDirectory() { }
 
         /// <summary>
         /// マイクラのバージョン一覧を取得
@@ -46,7 +47,7 @@ namespace Server_GUI2
         /// <returns>一覧のリストを返す。取得に失敗した場合はnullを返す</returns>
         public void LoadAllVersions()
         {
-            logger.Info($"Import new Version List");
+            logger.Info("Import new Version List");
 
             string url = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
             string errorMessage =
@@ -55,6 +56,8 @@ namespace Server_GUI2
             dynamic root = ReadContents.ReadJson(url, errorMessage);
             if (root == null)
             {
+                logger.Info("Missing Versions List");
+
                 // TODO: version_manifest_v2.jsonを保持しておき、インターネットから読み込めないときにはこれを利用する
                 // これもないときにはServerStarterは起動できないこととする（そもそもインターネットに接続していない状態でサーバーを立てたいか？）
                 return;
@@ -65,12 +68,9 @@ namespace Server_GUI2
             string latestRelease = root.latest.release;
             string latestSnapShot = root.latest.snapshot;
 
-            //List<string> list_versions = new List<string>() { $"【latest_release】 {root.latest.release}", $"【latest_snapshot】 {root.latest.snapshot}" };
-
             string id = "";
             int i = 0;
 
-            //ここでrelease、snapshotのみかすべてまとめて取得するのかを決める
             // バージョン1.2.5以前はマルチサーバーが存在しない
             while (id != "1.2.5")
             {
@@ -78,7 +78,6 @@ namespace Server_GUI2
                 string downloadURL = root.versions[i].url;
                 string type = root.versions[i].type;
                 bool hasSpigot = (spigotList != null) && spigotList.Contains(id);
-                Console.WriteLine(hasSpigot.ToString());
                 bool isRelease = type == "release";
                 bool isLatest = id == latestRelease || id == latestSnapShot;
 
@@ -87,16 +86,15 @@ namespace Server_GUI2
                 i++;
             }
 
+            // 最新バージョンがreleaseの際にはsnapshotも同じため、特例としてリストの先頭に挿入する処理を行う
             if (latestRelease == latestSnapShot)
             {
-                // 最新バージョンがreleaseの際にはsnapshotも同じため、特例としてリストの先頭に挿入する処理を行う
                 id = root.versions[0].id;
                 string downloadURL = root.versions[0].url;
                 Version _snapshot = new Version(id, downloadURL, false, false, true);
                 allVersions.Insert(1, _snapshot);
             }
         }
-
         private List<string> GetSpigotVersions()
         {
             string url = "https://hub.spigotmc.org/versions/";
@@ -131,73 +129,32 @@ namespace Server_GUI2
             return vers;
         }
 
-        ///// <summary>
-        ///// Spigotのバージョン一覧を取得
-        ///// </summary>
-        ///// <returns>一覧のリストを返す。取得に失敗した場合はnullを返す</returns>
-        //public List<Version> LoadAllSpigotVersions()
-        //{
-        //    string url = "https://hub.spigotmc.org/versions/";
-        //    string message =
-        //        "Spigotのバージョン一覧の取得に失敗しました。\n" +
-        //        "新しいバージョンのサーバーの導入はできません";
-        //    IHtmlDocument doc = ReadContents.ReadHtml(url, message);
-        //    if (doc == null)
-        //    {
-        //        return null;
-        //    }
+        /// <summary>
+        /// すでにインストールされているバージョンの一覧を取得
+        /// </summary>
+        public void LoadImported()
+        {
+            logger.Info("Getting local Versions");
 
-        //    var table = doc.QuerySelectorAll("body > pre > a");
+            foreach (string dirName in Directory.GetDirectories(SetUp.DataPath, "*", SearchOption.TopDirectoryOnly))
+            {
+                string verName = Path.GetFileName(dirName);
 
-        //    SortedList<double, string> _vers = new SortedList<double, string>();
-        //    foreach (var htmlDatas in table)
-        //    {
-        //        string ver = htmlDatas.InnerHtml;
-        //        if (ver.Substring(0, 2) != "1.")
-        //            continue;
+                bool isSpigot = verName.Contains("Spigot_");
+                verName = isSpigot ? verName.Substring(7) : verName;
 
-        //        // 1. と .jsonを除いた形
-        //        string ver_tmp = ver.Substring(2).Replace(".json", "");
+                // newしないと参照渡しになってしまうため
+                Version _ver = allVersions.Find(x => x.Name == verName);
+                Version ver = new Version(_ver.Name, _ver.downloadURL, _ver.hasSpigot, _ver.isRelease, _ver.isLatest);
 
-        //        // preなどの文字を抽出
-        //        string pat = @"^\d+-(.+)\d$";
-        //        Regex r = new Regex(pat);
-        //        Match m = r.Match(ver_tmp);
-        //        string suffix = m.Groups[1].Value;
+                if (ver != null)
+                {
+                    ver.isVanila = !isSpigot;
+                    installedVersions.Add(ver);
+                }
+            }
+        }
 
-        //        // rcとpreを区別する場合は、-0.1をrcに、-0.2をpreに割り当てれば良い
-        //        double down_num;
-        //        switch (suffix)
-        //        {
-        //            case "pre":
-        //                down_num = 0.2;
-        //                break;
-        //            case "rc":
-        //                down_num = 0.1;
-        //                break;
-        //            default:
-        //                down_num = 0.3;
-        //                break;
-        //        }
-
-        //        double pre_num = ver.Contains($"-{suffix}") ? double.Parse(ver_tmp.Substring(ver_tmp.Length - 1)) : 0;
-        //        // version名を小数に変換 (-preに関しては小数第２位にその数字を入れ、ひとつ前のバージョンとするために0.1引く)
-        //        double ver_num = ver.Contains($"-{suffix}") ? double.Parse(ver_tmp.Substring(0, ver_tmp.IndexOf($"-{suffix}"))) + pre_num * 0.01 - down_num : double.Parse(ver_tmp);
-
-        //        _vers.Add(ver_num, "Spigot " + ver.Replace(".json", ""));
-
-        //        // 1.9.jsonが対応バージョン一覧の最後に記載されているため
-        //        if (ver == "1.9.json")
-        //            break;
-        //    }
-
-        //    List<string> vers = new List<string>(_vers.Values);
-        //    // 最新バージョンが一番上にくるようにする
-        //    vers.Reverse();
-
-        //    return null;
-        //    //return vers;
-        //}
 
         /// <summary>
         /// バージョンの新規作成

@@ -105,7 +105,7 @@ class ReactiveCombobox<T>{
 class VersionFactory{
   {classifier} VersionFactory Instance
   VersionFactory()
-  LoadFromCurrentDirectory() # Servers�f�B���N�g�����瑶�݂���o�[�W������ǂݎ��
+  LoadImported() # Servers�f�B���N�g�����瑶�݂���o�[�W������ǂݎ��
   LoadAllVanillaVersions()
   LoadAllSpigotVersions()
   Version Create()
