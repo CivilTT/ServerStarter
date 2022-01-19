@@ -48,10 +48,11 @@ namespace Server_GUI2
 
         public ServerProperty ServerProperty { get; set; }
 
-        public Version(string name, string downloadurl, bool hasspigot, bool isrelease, bool islatest)
+        public Version(string name, string downloadurl, bool hasspigot, bool isrelease, bool islatest, bool isvanila = true)
         {
             Name = name;
             downloadURL = downloadurl;
+            isVanila = isvanila;
             isRelease = isrelease;
             hasSpigot = hasspigot;
             isLatest = islatest;

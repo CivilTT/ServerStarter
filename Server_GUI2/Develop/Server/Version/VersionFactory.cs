@@ -140,16 +140,15 @@ namespace Server_GUI2
             {
                 string verName = Path.GetFileName(dirName);
 
-                bool isSpigot = verName.Contains("Spigot_");
+                bool isSpigot = verName.Contains("Spigot");
                 verName = isSpigot ? verName.Substring(7) : verName;
 
                 // newしないと参照渡しになってしまうため
                 Version _ver = allVersions.Find(x => x.Name == verName);
-                Version ver = new Version(_ver.Name, _ver.downloadURL, _ver.hasSpigot, _ver.isRelease, _ver.isLatest);
 
-                if (ver != null)
+                if (_ver != null)
                 {
-                    ver.isVanila = !isSpigot;
+                    Version ver = new Version(_ver.Name, _ver.downloadURL, _ver.hasSpigot, _ver.isRelease, _ver.isLatest, !isSpigot);
                     installedVersions.Add(ver);
                 }
             }

@@ -56,26 +56,10 @@ namespace Server_GUI2.Windows.ViewModels
             set
             {
                 _showSpigot = value;
-                ReverseShowSpigot = !value;
                 NewVersions = ShowNewVersions;
                 SelectedNewVersion = ShowNewVersions[0];
-            }
-        }
-        private bool _reverseShowSpigot = true;
-        public bool ReverseShowSpigot
-        {
-            get 
-            {
-                return _reverseShowSpigot; 
-            }
-            set
-            {
-                _reverseShowSpigot = value;
 
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("ReverseShowSpigot"));
-                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowSpigot"));
             }
         }
 
@@ -116,10 +100,7 @@ namespace Server_GUI2.Windows.ViewModels
             }
             set
             {
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("NewVersions"));
-                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NewVersions"));
             }
         }
 
@@ -138,10 +119,7 @@ namespace Server_GUI2.Windows.ViewModels
                 _selectedNewVersion = value;
 
                 // ToggleSwitchが回された後に最初に表示する項目をShow○○から制御するため必要
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("SelectedNewVersion"));
-                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedNewVersion"));
             }
         }
 
@@ -169,6 +147,7 @@ namespace Server_GUI2.Windows.ViewModels
         }
 
 
+
         // 既存Versionの表示に関連
         /// <summary>
         /// Comboboxに表示するバージョンの一覧を保持
@@ -177,8 +156,8 @@ namespace Server_GUI2.Windows.ViewModels
         {
             get
             {
-                List<string> _vers = verFactory.installedVersions.ConvertAll(x => ExistsVerCounter(x));
-                _vers.Add("【new Versions】");
+                List<string> _vers = verFactory.installedVersions.ConvertAll(x => ExistsVerConverter(x));
+                _vers.Add("【new Version】");
                 return _vers;
             }
         }
@@ -190,13 +169,10 @@ namespace Server_GUI2.Windows.ViewModels
             }
             set
             {
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("ExistsVersions"));
-                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ExistsVersions"));
             }
         }
-        public static string ExistsVerCounter(Version x)
+        public static string ExistsVerConverter(Version x)
         {
             if (x.isVanila)
             {
@@ -208,18 +184,30 @@ namespace Server_GUI2.Windows.ViewModels
             }
         }
 
-
         /// <summary>
         /// 選択されているバージョンを文字列で保持
         /// </summary>
-        /// TODO: 前回起動時のVersionをどのように取得するか
-        /// 直接UserSettingsを読み込むか、VersionsにBeforeRun(bool)を設けるか
-        /// SelectedExistsVersionが特に処理せずに表示するだけなら、ただの{ get; set; }でもよいかも
+        private string InitSelectedExistsVersion
+        {
+            get
+            {
+                LatestRun latestRun = UserSettings.userSettings.latestRun;
+
+                if (latestRun != null && latestRun.VersionName != "" && ExistsVersions.Contains(latestRun.VersionName))
+                {
+                    return latestRun.VersionName;
+                }
+
+                return ExistsVersions[0];
+            }
+        }
         private string _selectedExistsVersion;
         public string SelectedExistsVersion
         {
             get
             {
+                if (_selectedExistsVersion == null)
+                    _selectedExistsVersion = InitSelectedExistsVersion;
                 return _selectedExistsVersion;
             }
             set
@@ -227,11 +215,42 @@ namespace Server_GUI2.Windows.ViewModels
                 _selectedExistsVersion = value;
 
                 // この項目は外部からプログラムで制御することがないため、PropertyChangedを実装しない
+
+                // Selectedが変わった段階でnew Versionsの候補を出すか否かを更新する
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowNewVers"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ReverseShowNewVers"));
+            }
+        }
+
+        /// <summary>
+        /// New VersionsのComboboxなどを表示するか
+        /// </summary>
+        public bool ShowNewVers
+        {
+            get
+            {
+                // 【new Version】が選択されているか
+                return SelectedExistsVersion == ExistsVersions[ExistsVersions.Count - 1];
+            }
+        }
+        public bool ReverseShowNewVers
+        {
+            get
+            {
+                return !ShowNewVers;
             }
         }
 
 
         // Worldの表示に関連
+        // TODO: ワールドの表示処理を実装する
+        //private List<string> _Worlds
+        //{
+        //    get
+        //    {
+
+        //    }
+        //}
         private string _selectedWorld;
         public string SelectedWorld;
 
@@ -241,12 +260,14 @@ namespace Server_GUI2.Windows.ViewModels
         public RunCommand RunCommand { get; private set; }
         public SettingCommand SettingCommand { get; private set; }
         public DeleteCommand DeleteCommand { get; private set; }
+        public CloseCommand CloseCommand { get; private set; }
 
         public MainWindowVM()
         {
             RunCommand = new RunCommand(this);
             SettingCommand = new SettingCommand(this);
             DeleteCommand = new DeleteCommand(this);
+            CloseCommand = new CloseCommand(this);
         }
     }
 

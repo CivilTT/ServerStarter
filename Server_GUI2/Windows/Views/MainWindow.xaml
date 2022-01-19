@@ -126,12 +126,13 @@
         </Style>
 
         <local:InverseBoolConverter x:Key="InverseBool"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
     </Window.Resources>
 
     <Window.DataContext>
         <vm:MainWindowVM/>
     </Window.DataContext>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
@@ -146,12 +147,11 @@
         <Line Stroke="White" StrokeThickness="2" X1="30" Y1="65" X2="595" Y2="65" Grid.Column="1"/>
 
 
-        <StackPanel x:Name="version_main" HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Margin="30,200" Orientation="Vertical"  Grid.Column="1">
+        <!--<StackPanel x:Name="version_main" HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Margin="30,200" Orientation="Vertical"  Grid.Column="1">
             <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="Server Version" VerticalAlignment="Top" Width="140" FontSize="20"/>
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="Version" HorizontalAlignment="Left" Margin="0,0,20,0" DropDownClosed="World_reload" ItemsSource="{Binding ExistsVersions}" Style="{StaticResource ComboStyle}"/>
                 <Button x:Name="Delete_v" Width="33" Height="33" FontSize="18" Margin="0 0" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="version">
-                    <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                 </Button>
             </StackPanel>
@@ -164,24 +164,34 @@
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                 </Button>
             </StackPanel>
-        </StackPanel>
-        
-        <StackPanel x:Name="version_hide" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,200" Width="253" Orientation="Vertical" Grid.Column="1">
+        </StackPanel>-->
+
+        <StackPanel x:Name="version_hide" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,200" Width="253" Orientation="Vertical" Grid.Column="1">
             <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="Server Version" VerticalAlignment="Top" Width="140" FontSize="20"/>
-            <ComboBox x:Name="Version2" HorizontalAlignment="Left" Margin="0,0,20,0" VerticalAlignment="Top" DropDownClosed="World_reload" ItemsSource="{Binding ExistsVersions}" Style="{StaticResource ComboStyle}"/>
-            <!--<TextBox x:Name="input_box_version" HorizontalAlignment="Left" Height="33" Text="{Binding ID, Source={StaticResource version}, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="145" FontSize="18"/>-->
-            <ComboBox x:Name="new_Version" HorizontalAlignment="Left" Margin="0 10 0 0" VerticalAlignment="Top" Width="253" DropDownClosed="World_reload" SelectedItem="{Binding SelectedNewVersion, Mode=TwoWay}" ItemsSource="{Binding NewVersions}" Style="{StaticResource ComboStyle}"/>
-            
-            <!--<CheckBox x:Name="release" Content="Show Release" FontSize="16" Click="Version_Click" IsChecked="True"/>
-            <CheckBox x:Name="snapshot" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="Show Snapshot" FontSize="16" Click="Version_Click"/>-->
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="Version2" HorizontalAlignment="Left" Margin="0,0,20,0" VerticalAlignment="Top" SelectedItem="{Binding SelectedExistsVersion}" ItemsSource="{Binding ExistsVersions}" Style="{StaticResource ComboStyle}"/>
+                <Button Width="33" Height="33" FontSize="18" Padding="3" Visibility="{Binding ReverseShowNewVers, Converter={StaticResource BoolToVisible}}" Command="{Binding DeleteCommand}" CommandParameter="version">
+                    <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                </Button>
+            </StackPanel>
+            <ComboBox x:Name="new_Version" HorizontalAlignment="Left" Margin="0 10 0 0" VerticalAlignment="Top" Width="253" Visibility="{Binding ShowNewVers, Converter={StaticResource BoolToVisible}}" SelectedItem="{Binding SelectedNewVersion, Mode=TwoWay}" ItemsSource="{Binding NewVersions}" Style="{StaticResource ComboStyle}"/>
             <StackPanel Orientation="Horizontal" Margin="0 5">
-                <ui:ToggleSwitch x:Name="toggleVersions" Header="Show Versions" OffContent="Release" OnContent="All" FontSize="18" Width="140" IsEnabled="{Binding ReverseShowSpigot}" IsOn="{Binding ShowAll}"/>
-                <ui:ToggleSwitch x:Name="Toggle_spigot" Header="Import Spigot" OffContent="No" OnContent="Yes" FontSize="18" IsOn="{Binding ShowSpigot}"/>
+                <ui:ToggleSwitch x:Name="toggleVersions" Header="Show Versions" OffContent="Release" OnContent="All" FontSize="18" Width="140" Visibility="{Binding ShowNewVers, Converter={StaticResource BoolToVisible}}" IsEnabled="{Binding ShowSpigot, Converter={StaticResource InverseBool}}" IsOn="{Binding ShowAll}"/>
+                <ui:ToggleSwitch x:Name="Toggle_spigot" Header="Import Spigot" OffContent="No" OnContent="Yes" FontSize="18" Visibility="{Binding ShowNewVers, Converter={StaticResource BoolToVisible}}" IsOn="{Binding ShowSpigot}"/>
             </StackPanel>
         </StackPanel>
-        <StackPanel x:Name="world_hide" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="30,200" Orientation="Vertical" Grid.Column="1">
+        
+        <StackPanel x:Name="world_hide" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="30,200" Orientation="Vertical" Grid.Column="1">
             <TextBlock Height="33" Text="World Name" FontSize="20" TextAlignment="Left"/>
-            <ComboBox x:Name="World2" DropDownClosed="Name_reload" ItemsSource="{Binding Items, ElementName=World}" Style="{StaticResource ComboStyle}"/>
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="World2" Margin="0,0,20,0"  ItemsSource="{Binding Items, ElementName=World}" Style="{StaticResource ComboStyle}"/>
+                <Button Width="33" Height="33" FontSize="18" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="world">
+                    <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                </Button>
+            </StackPanel>
+
             <TextBox x:Name="input_box_world" Margin="0 10" TextChanged="Check_WorldName" Style="{StaticResource BoxStyle}"/>
         </StackPanel>
 
@@ -203,7 +213,7 @@
         <Button x:Name="info" Content="Info" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="60" Margin="30,0,0,10" Grid.Column="1" Command="{Binding SettingCommand}" Style="{StaticResource OtherStyle}"/>
         <StackPanel x:Name="Execute" HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Margin="0,0,0,10" Orientation="Horizontal" Grid.Column="1">
             <Button x:Name="More_Settings_button" Content="More Settings" Click="More_Settings_Click" Style="{StaticResource OtherStyle}"/>
-            <Button Content="Close" Margin="10,0,30,0" Click="Close_Click" Style="{StaticResource OtherStyle}"/>
+            <Button Content="Close" Margin="10,0,30,0" Command="{Binding CloseCommand}" Style="{StaticResource OtherStyle}"/>
         </StackPanel>
     </Grid>
 </Window>

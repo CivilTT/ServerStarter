@@ -45,13 +45,19 @@ namespace Server_GUI2.Develop.Util
         /// ローカルにあるJsonファイルを読み込む
         /// </summary>
         /// <returns>The deserialized object from the JSON string.</returns>
-        public static dynamic ReadlocalJson(string path, string errorMessage)
+        public static dynamic ReadlocalJson<T>(string path, string errorMessage)
         {
             dynamic root = null;
             try
             {
-                // TODO: Json読み込みの処理を実装する
-                // Jsonの型になるクラスを受けて、それに基づいて解析するべき？
+                string jsonStr = null;
+
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    jsonStr = sr.ReadToEnd();
+                }
+
+                root = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(jsonStr);
             }
             catch (Exception ex)
             {
@@ -61,6 +67,29 @@ namespace Server_GUI2.Develop.Util
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
+            return root;
+        }
+        public static dynamic ReadlocalJson(string path, string errorMessage)
+        {
+            dynamic root = null;
+            try
+            {
+                string jsonStr = null;
+
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    jsonStr = sr.ReadToEnd();
+                }
+
+                root = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonStr);
+            }
+            catch (Exception ex)
+            {
+                string message =
+                        errorMessage + "\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
 
             return root;
         }
