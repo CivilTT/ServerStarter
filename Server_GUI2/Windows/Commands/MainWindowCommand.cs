@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Server_GUI2.Windows.Commands
@@ -87,6 +88,45 @@ namespace Server_GUI2.Windows.Commands
                 default:
                     break;
             }
+        }
+    }
+
+    class CloseCommand : ICommand
+    {
+        private MainWindowVM _vm;
+
+        public event EventHandler CanExecuteChanged;
+
+        public CloseCommand(MainWindowVM vm)
+        {
+            _vm = vm;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object parameter)
+        {
+            SetLatestRun();
+
+            _vm.Close();
+
+            Application.Current.Shutdown();
+        }
+
+        private void SetLatestRun()
+        {
+            List<string> vers = _vm.ExistsVersions;
+            string existsVer = _vm.SelectedExistsVersion;
+            string newVer = _vm.SelectedNewVersion;
+            string ver = (existsVer == vers[vers.Count - 1]) ? newVer : existsVer;
+
+            LatestRun latestRun = new LatestRun()
+
+            UserSettings.userSettings.latestRun = latestRun;
+            UserSettings.WriteFile();
         }
     }
 }

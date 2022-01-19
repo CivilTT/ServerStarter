@@ -47,7 +47,11 @@ namespace Server_GUI2
             if (File.Exists(JsonPath))
             {
                 logger.Info("Read the local info data");
-                ReadContents.ReadlocalJson(JsonPath, errorMessage);
+                userSettings = ReadContents.ReadlocalJson<UserSettingsJson>(JsonPath, errorMessage);
+                if (userSettings.jsonVersion != UserSettingsJson.LatestJsonVer)
+                {
+                    // TODO: jsonの中身を変更した場合にはここにバージョン変換の実装を書く
+                }
             }
             else if (File.Exists(OldInfoPath))
             {
@@ -73,7 +77,8 @@ namespace Server_GUI2
         /// </summary>
         private void ShowBuilder()
         {
-
+            // TODO: 個人設定入力用UIの表示を行う
+            // 現状のInfo_builderも変更する
         }
 
         ///// <summary>
@@ -87,7 +92,7 @@ namespace Server_GUI2
 
         public static void WriteFile()
         {
-            string jsonData = JsonConvert.SerializeObject(userSettings);
+            string jsonData = JsonConvert.SerializeObject(userSettings, Formatting.Indented);
             using (var sw = new StreamWriter(JsonPath, false, Encoding.UTF8))
             {
                 sw.Write(jsonData);
@@ -97,6 +102,11 @@ namespace Server_GUI2
 
     public class UserSettingsJson
     {
+        public static int LatestJsonVer = 1;
+
+        [JsonProperty("JsonVersion")]
+        public int jsonVersion = LatestJsonVer;
+
         [JsonProperty("PlayerName")]
         public string playerName;
 
@@ -124,7 +134,15 @@ namespace Server_GUI2
 
     public class LatestRun
     {
-        public static string Version;
-        public static string World;
+        public string VersionName;
+        public string VersionType;
+        public string WorldName;
+
+        public LatestRun(Version version, World world)
+        {
+            VersionName = version.Name;
+            VersionType = version.isVanila ? "vanila" : "spigot";
+            WorldName = world.Name;
+        }
     }
 }
