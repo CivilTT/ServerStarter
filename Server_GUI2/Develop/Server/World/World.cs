@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Server_GUI2
 {
-    class World
+    public class World
     {
         public Version version;
 

@@ -171,8 +171,8 @@ namespace Server_GUI2
 
                 //Worldの選択
                 data.Set_SW();
-                World = func.Init_world(World);
-                Name_reload(null, null);
+                //World = func.Init_world(World);
+                //Name_reload(null, null);
                 // data.Set_World(World);
                 // if (World.Text == "【new World】")
                 // {
@@ -237,14 +237,14 @@ namespace Server_GUI2
 
             start_func.Main = this;
 
-            bool show = start_func.Define_OpenWorld(World, gui);
-            if(!show && GUI)
-            {
-                Pd.Close();
-                logger.Info("Show MainWindow again");
-                Show();
-                return;
-            }
+            //bool show = start_func.Define_OpenWorld(World, gui);
+            //if(!show && GUI)
+            //{
+            //    Pd.Close();
+            //    logger.Info("Show MainWindow again");
+            //    Show();
+            //    return;
+            //}
             Pd.Value = 10;
             Pd.Message = "Define opening World";
 
@@ -354,78 +354,78 @@ namespace Server_GUI2
             logger.Info("This System is successfully over");
         }
 
-        private void World_reload(object sender, EventArgs e)
-        {
-            // 新バージョンがインストールされ、propertiesに不足項目があったとしても自動補完されるため、More_Settings_buttonを常に表示する仕様に変更
+        //private void World_reload(object sender, EventArgs e)
+        //{
+        //    // 新バージョンがインストールされ、propertiesに不足項目があったとしても自動補完されるため、More_Settings_buttonを常に表示する仕様に変更
 
-            World_reload();
+        //    World_reload();
 
-            // ShareWorldなど、バージョンの変更を反映する必要がある設定が存在するため
-            data.Set_World(World, input_box_world.Text);
-        }
+        //    // ShareWorldなど、バージョンの変更を反映する必要がある設定が存在するため
+        //    data.Set_World(World, input_box_world.Text);
+        //}
 
         /// <summary>
         /// 初期読み込み用
         /// </summary>
-        private void World_reload()
-        {
-            if (Version.Text == "【new Version】" || Version2.Text == "【new Version】")
-            {
-                version_hide.Visibility = Visibility.Visible;
-                Version2.SelectedIndex = Version2.Items.IndexOf("【new Version】");
-                //new Versionでないほうの表示項目は仮置きしておき、選択された際に決定する
-                Version.SelectedIndex = -1;
-                version_main.Visibility = Visibility.Hidden;
-            }
-            else if (Version.SelectedIndex == -1)
-            {
-                version_main.Visibility = Visibility.Visible;
-                Version.SelectedIndex = Version2.SelectedIndex;
-                version_hide.Visibility = Visibility.Hidden;
-            }
+        //private void World_reload()
+        //{
+        //    if (Version.Text == "【new Version】" || Version2.Text == "【new Version】")
+        //    {
+        //        version_hide.Visibility = Visibility.Visible;
+        //        Version2.SelectedIndex = Version2.Items.IndexOf("【new Version】");
+        //        //new Versionでないほうの表示項目は仮置きしておき、選択された際に決定する
+        //        Version.SelectedIndex = -1;
+        //        version_main.Visibility = Visibility.Hidden;
+        //    }
+        //    else if (Version.SelectedIndex == -1)
+        //    {
+        //        version_main.Visibility = Visibility.Visible;
+        //        Version.SelectedIndex = Version2.SelectedIndex;
+        //        version_hide.Visibility = Visibility.Hidden;
+        //    }
 
-            if (world_hide.Visibility == Visibility.Visible)
-            {
-                World2.SelectedIndex = World2.Items.IndexOf("【new World】");
-            }
+        //    if (world_hide.Visibility == Visibility.Visible)
+        //    {
+        //        World2.SelectedIndex = World2.Items.IndexOf("【new World】");
+        //    }
 
-            data.Set_Version(Version, new_Version.Text);
-            m_set_window = new More_Settings();
-            m_set_window.Read_properties();
-        }
+        //    data.Set_Version(Version, new_Version.Text);
+        //    m_set_window = new More_Settings();
+        //    m_set_window.Read_properties();
+        //}
 
-        private void Name_reload(object sender, EventArgs e)
-        {
-            if (World.Text == "【new World】")
-            {
-                world_hide.Visibility = Visibility.Visible;
-                World2.SelectedIndex = World2.Items.IndexOf("【new World】");
-                //new Worldでないほうの表示項目は仮置きしておき、選択された際に決定する
-                World.SelectedIndex = -1;
-                world_main.Visibility = Visibility.Hidden;
-            }
-            else if (World2.Text != "【new World】")
-            {
-                world_hide.Visibility = Visibility.Hidden;
-                world_main.Visibility = Visibility.Visible;
-                //new Worldを介した操作に限定
-                if (World.SelectedIndex == -1)
-                {
-                    //仮置きの内容をWorld2で選択されたものに決定
-                    World.SelectedIndex = World.Items.IndexOf(World2.Text);
-                }
+        //private void Name_reload(object sender, EventArgs e)
+        //{
+        //    if (World.Text == "【new World】")
+        //    {
+        //        world_hide.Visibility = Visibility.Visible;
+        //        World2.SelectedIndex = World2.Items.IndexOf("【new World】");
+        //        //new Worldでないほうの表示項目は仮置きしておき、選択された際に決定する
+        //        World.SelectedIndex = -1;
+        //        world_main.Visibility = Visibility.Hidden;
+        //    }
+        //    else if (World2.Text != "【new World】")
+        //    {
+        //        world_hide.Visibility = Visibility.Hidden;
+        //        world_main.Visibility = Visibility.Visible;
+        //        //new Worldを介した操作に限定
+        //        if (World.SelectedIndex == -1)
+        //        {
+        //            //仮置きの内容をWorld2で選択されたものに決定
+        //            World.SelectedIndex = World.Items.IndexOf(World2.Text);
+        //        }
 
-                // ワールド名を新規でないものにする場合はRUNボタンなどを有効に戻す
-                if (!Run_button.IsEnabled)
-                {
-                    Run_button.IsEnabled = true;
-                    More_Settings_button.IsEnabled = true;
-                    input_box_world.Text = "input_name";
-                }
-            }
+        //        // ワールド名を新規でないものにする場合はRUNボタンなどを有効に戻す
+        //        if (!Run_button.IsEnabled)
+        //        {
+        //            Run_button.IsEnabled = true;
+        //            More_Settings_button.IsEnabled = true;
+        //            input_box_world.Text = "input_name";
+        //        }
+        //    }
 
-            data.Set_World(World, input_box_world.Text);
-        }
+        //    data.Set_World(World, input_box_world.Text);
+        //}
 
         // private void Version_Click(object sender, RoutedEventArgs e)
         // {
@@ -472,74 +472,74 @@ namespace Server_GUI2
             new_Version.SelectedIndex = (new_Version.Items.IndexOf(selected_item) == -1) ? 0 : new_Version.Items.IndexOf(selected_item);
         }
 
-        private void Delete_version(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult? result = MW.MessageBox.Show($"このバージョンを削除しますか？\r\n「{Data_list.ReadVersion}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-            logger.Warn("Warning the delete Version data");
-            if (result == MessageBoxResult.OK)
-            {
-                Directory.Delete($@"{Data_Path}\{Data_list.ReadVersion}\", true);
-                Version.Items.Remove(Data_list.ReadVersion);
+        //private void Delete_version(object sender, RoutedEventArgs e)
+        //{
+        //    MessageBoxResult? result = MW.MessageBox.Show($"このバージョンを削除しますか？\r\n「{Data_list.ReadVersion}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+        //    logger.Warn("Warning the delete Version data");
+        //    if (result == MessageBoxResult.OK)
+        //    {
+        //        Directory.Delete($@"{Data_Path}\{Data_list.ReadVersion}\", true);
+        //        Version.Items.Remove(Data_list.ReadVersion);
 
-                // 削除したバージョンのワールドも表示（＆内部データ）から消す
-                Data_list.VerWor_list[Data_list.ReadVersion].ForEach(t => World.Items.Remove($"{Data_list.ReadVersion}/{t}"));
-                Data_list.VerWor_list.Remove(Data_list.ReadVersion);
+        //        // 削除したバージョンのワールドも表示（＆内部データ）から消す
+        //        Data_list.VerWor_list[Data_list.ReadVersion].ForEach(t => World.Items.Remove($"{Data_list.ReadVersion}/{t}"));
+        //        Data_list.VerWor_list.Remove(Data_list.ReadVersion);
 
-                logger.Info($"The Version {Data_list.ReadVersion} was successfully deleted");
+        //        logger.Info($"The Version {Data_list.ReadVersion} was successfully deleted");
 
 
-                int before_index_ver = Version.SelectedIndex;
-                int before_index_wor = World.SelectedIndex;
-                Version.SelectedIndex = (before_index_ver - 1 >= 0) ? before_index_ver - 1 : 0;
-                World.SelectedIndex = (before_index_wor - 1 >= 0) ? before_index_wor - 1 : 0;
+        //        int before_index_ver = Version.SelectedIndex;
+        //        int before_index_wor = World.SelectedIndex;
+        //        Version.SelectedIndex = (before_index_ver - 1 >= 0) ? before_index_ver - 1 : 0;
+        //        World.SelectedIndex = (before_index_wor - 1 >= 0) ? before_index_wor - 1 : 0;
 
-                World_reload(null, null);
-                Name_reload(null, null);
-            }
-        }
+        //        World_reload(null, null);
+        //        Name_reload(null, null);
+        //    }
+        //}
 
-        private void Delete_world(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult? result;
-            if (Data_list.World == "ShareWorld")
-            {
-                logger.Warn("Warning the delete ShareWorld");
-                result = MW.MessageBox.Show("ShareWorldの内容を変更する場合は削除する必要はなく、メイン画面のRecreateにチェックを入れてください。\r\nこれを理解したうえで削除しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if(result == MessageBoxResult.No)
-                {
-                    return;
-                }
-            }
-            else
-            {
-                logger.Warn("Warning the delete World data");
-                result = MW.MessageBox.Show($"このワールドを削除しますか？\r\n「{Data_list.World}」は完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-            }
+        //private void Delete_world(object sender, RoutedEventArgs e)
+        //{
+        //    MessageBoxResult? result;
+        //    if (Data_list.World == "ShareWorld")
+        //    {
+        //        logger.Warn("Warning the delete ShareWorld");
+        //        result = MW.MessageBox.Show("ShareWorldの内容を変更する場合は削除する必要はなく、メイン画面のRecreateにチェックを入れてください。\r\nこれを理解したうえで削除しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        //        if(result == MessageBoxResult.No)
+        //        {
+        //            return;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        logger.Warn("Warning the delete World data");
+        //        result = MW.MessageBox.Show($"このワールドを削除しますか？\r\n「{Data_list.World}」は完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+        //    }
 
-            if (result == MessageBoxResult.OK)
-            {
-                int before_index = World.SelectedIndex;
-                if (Data_list.CopyVer_IsSpigot)
-                {
-                    Directory.Delete($@"{Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}\", true);
-                    Directory.Delete($@"{Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}_nether\", true);
-                    Directory.Delete($@"{Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}_the_end\", true);
-                }
-                else
-                {
-                    // 削除するワールドのバージョンをVersion.Textにしていると、上記の1.17.1ではないバージョンのワールドが削除される
-                    //  ->copy_versionを使う
-                    Directory.Delete($@"{Data_Path}\{Data_list.Copy_version}\{Data_list.World}\", true);
-                }
+        //    if (result == MessageBoxResult.OK)
+        //    {
+        //        int before_index = World.SelectedIndex;
+        //        if (Data_list.CopyVer_IsSpigot)
+        //        {
+        //            Directory.Delete($@"{Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}\", true);
+        //            Directory.Delete($@"{Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}_nether\", true);
+        //            Directory.Delete($@"{Data_Path}\Spigot_{Data_list.Copy_version}\{Data_list.World}_the_end\", true);
+        //        }
+        //        else
+        //        {
+        //            // 削除するワールドのバージョンをVersion.Textにしていると、上記の1.17.1ではないバージョンのワールドが削除される
+        //            //  ->copy_versionを使う
+        //            Directory.Delete($@"{Data_Path}\{Data_list.Copy_version}\{Data_list.World}\", true);
+        //        }
 
-                World.Items.Remove($"{Data_list.ReadCopy_Version}/{Data_list.World}");
-                Data_list.VerWor_list[Data_list.ReadCopy_Version].Remove(Data_list.World);
+        //        World.Items.Remove($"{Data_list.ReadCopy_Version}/{Data_list.World}");
+        //        Data_list.VerWor_list[Data_list.ReadCopy_Version].Remove(Data_list.World);
 
-                logger.Info($"The World {Data_list.World} was successfully deleted");
+        //        logger.Info($"The World {Data_list.World} was successfully deleted");
 
-                World.SelectedIndex = (before_index - 1 >= 0) ? before_index - 1 : 0;
-            }
-        }
+        //        World.SelectedIndex = (before_index - 1 >= 0) ? before_index - 1 : 0;
+        //    }
+        //}
 
         private void Check_WorldName(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
