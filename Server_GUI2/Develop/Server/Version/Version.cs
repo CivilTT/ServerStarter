@@ -62,6 +62,8 @@ namespace Server_GUI2
 
         public virtual void SetNewVersion()
         {
+            Exists = true;
+
             logger.Info("There are already new version, or not");
             if (Exists)
             {
@@ -81,8 +83,16 @@ namespace Server_GUI2
             }
         }
 
-        public virtual void Remove() {
+        public void Remove()
+        {
             Exists = false;
+
+            MessageBoxResult? result = MW.MessageBox.Show($"このバージョンを削除しますか？\r\n「{Data_list.ReadVersion}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            logger.Warn("Warning the delete Version data");
+            if (result == MessageBoxResult.OK)
+            {
+                Directory.Delete(Path, true);
+            }
         }
 
         // 比較可能にする
@@ -192,6 +202,66 @@ namespace Server_GUI2
         public SpigotVersion(string name, string downloadURL) : base(name)
         {
             DownloadURL = downloadURL;
+        }
+
+        public override void SetNewVersion()
+        {
+            base.SetNewVersion();
+
+            logger.Info("Import Spigot Server");
+            Directory.CreateDirectory(Path);
+
+            try
+            {
+                wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36");
+                wc.DownloadFile("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar", $@"{Path}\BuildTools.jar");
+                wc.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string message =
+                        "Spigot サーバーのビルドファイルのダウンロードに失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})");
+            }
+
+            Create_bat(ver_folder);
+            Process p = Process.Start($@"{Path}\build.bat");
+            p.WaitForExit();
+
+            if (p.ExitCode != 0)
+            {
+                spi_func.Delete_dir(ver_folder);
+                Move_log(ver_folder);
+                Directory.Delete($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\", true);
+
+                string message;
+                switch (p.ExitCode)
+                {
+                    case 1:
+                        message = $"バージョン{Data_list.Version}はインポート可能なSpigotサーバーとして見つけられませんでした。";
+                        break;
+                    default:
+                        message = $"Spigotサーバーのビルドに失敗しました（エラーコード：{p.ExitCode}）";
+                        break;
+                }
+
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})");
+            }
+
+            // 余計なファイルの削除
+            spi_func.Delete_dir(ver_folder);
+            Move_log(ver_folder);
+
+            //一度実行し、eula.txtなどの必要ファイルを書き出す
+            Start();
+            MainWindow.Pd.Value = 15;
+            MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
+
+            //eulaの書き換え
+            Change_eula();
         }
     }
 }
