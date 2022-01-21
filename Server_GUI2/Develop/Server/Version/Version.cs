@@ -107,17 +107,21 @@ namespace Server_GUI2
         // このバージョンがリリース版かスナップショットか
         public bool IsRelease;
 
+        // このバージョンが最新版か
+        public bool IsLatest;
+
         // Spigotとしてこのバージョンはありうるのか（ローカルにあるか否かは関係ない）
         public bool HasSpigot;
 
         // server.jarのダウンロードurl
         private string DownloadURL;
 
-        public VanillaVersion(string name, string downloadURL, bool isRelease, bool hasSpigot): base(name)
+        public VanillaVersion(string name, string downloadURL, bool isRelease, bool hasSpigot ,bool isLatest = false): base(name)
         {
             IsRelease = isRelease;
             HasSpigot = hasSpigot;
             DownloadURL = downloadURL;
+            IsLatest = isLatest;
         }
 
 
