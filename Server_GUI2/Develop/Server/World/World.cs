@@ -33,7 +33,7 @@ namespace Server_GUI2
             }
         }
 
-        public World(string name, Version ver)
+        protected World(string name, Version ver)
         {
             Name = name;
             version = ver;
@@ -58,6 +58,14 @@ namespace Server_GUI2
         {
 
         }
-
     }
+
+    class VanillaWorld: World
+    { }
+
+    class SpigotWorld : World
+    { }
+  
+    class ShareWorld<T> : World where T : World
+    { }
 }
