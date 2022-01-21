@@ -3,9 +3,9 @@ using AngleSharp.Html.Parser;
 using log4net;
 using Server_GUI2.Develop.Util;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel
 using System.IO;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -26,10 +26,9 @@ namespace Server_GUI2
         private static VersionFactory _instance = new VersionFactory();
 
         // TODO: vanilla only/ release only / spigot only はViewModelのほうでリアルタイムフィルタ使って実装 https://blog.okazuki.jp/entry/2013/12/07/000341
-        public ObservableCollection<Version> allVersions = new ObservableCollection<Version>();
+        public ObservableCollection<Version> Versions { get; private set; }
 
-        public static Version activeVer = null;
-
+        public static Version SelectedVersion { get; set; }
 
         public static VersionFactory GetInstance()
         {
@@ -38,31 +37,38 @@ namespace Server_GUI2
 
         private VersionFactory()
         {
-            LoadAllVersions();
-            // LoadImported();
+            var versions = new List<Version>();
+
+            // spigotのサーバーインスタンスを追加
+            List<string> spigotList = GetSpigotVersionList(versions);
+
+            // vanillaのサーバーインスタンスを追加
+            LoadAllVersions(versions, spigotList);
+
+            // サーバーをソート
+            versions.Sort();
+            Versions = new ObservableCollection<Version>(versions);
         }
 
 
         /// <summary>
         /// マイクラのバージョン一覧を取得
         /// </summary>
-        public void LoadAllVersions()
+        public void LoadAllVersions(List<Version> versions, List<string> spigotList)
         {
             logger.Info("Import new Version List");
 
             // jsonを取得
-            VanillaVersonsJson vanillaversions = GetVanillaVersionJson();
+            VanillaVersonsJson vanillaVersions = GetVanillaVersionJson();
 
-            if (vanillaversions == null)
+            if (vanillaVersions == null)
             {
                 logger.Info("Missing Versions List");
                 return;
             }
 
-            List<string> spigotList = GetSpigotVersionList();
-
-            string latestRelease = vanillaversions.latest.release;
-            string latestSnapShot = vanillaversions.latest.snapshot;
+            string latestRelease = vanillaVersions.latest.release;
+            string latestSnapShot = vanillaVersions.latest.snapshot;
 
             string id = "";
             int i = 0;
@@ -70,7 +76,7 @@ namespace Server_GUI2
             // バージョン1.2.5以前はマルチサーバーが存在しない
             while (id != "1.2.5")
             {
-                VanillaVersonJson version = vanillaversions.versions[i];
+                VanillaVersonJson version = vanillaVersions.versions[i];
                 id = version.id;
                 string downloadURL = version.url;
                 string type = version.type;
@@ -78,13 +84,10 @@ namespace Server_GUI2
                 bool isRelease = type == "release";
                 // bool isLatest = id == latestRelease || id == latestSnapShot;
 
-                allVersions.Add(new VanillaVersion(id, downloadURL, isRelease, hasSpigot));
+                versions.Add(new VanillaVersion(id, downloadURL, isRelease, hasSpigot));
 
                 i++;
             }
-
-            // バージョン順にソート
-            allVersions.Sort();
 
             // 最新バージョンがreleaseの際にはsnapshotも同じため、特例としてリストの先頭に挿入する処理を行う
             // TODO: 謎処理 hasSpigotはtrueか？
@@ -127,7 +130,7 @@ namespace Server_GUI2
             return versions;
         }
 
-        private List<string> GetSpigotVersionList()
+        private List<string> GetSpigotVersionList(List<Version> versions)
         {
             string url = "https://hub.spigotmc.org/versions/";
             string message =
@@ -187,23 +190,28 @@ namespace Server_GUI2
         //     }
         // }
 
-    /// <summary>
-    /// バージョンの新規作成
-    /// </summary>
-    /// <returns>作成したバージョンの情報</returns>
-    //public Version Create(bool isVanila=true)
-    //{
-    //    if(isVanila)
-    //    {
-    //        //pass
-    //    }
-    //    else
-    //    {
+        /// <summary>
+        /// バージョンの新規作成
+        /// </summary>
+        /// <returns>作成したバージョンの情報</returns>
+        //public Version Create(bool isVanila=true)
+        //{
+        //    if(isVanila)
+        //    {
+        //        //pass
+        //    }
+        //    else
+        //    {
 
-    //    }
-    //}
+        //    }
+        //}
 
-    public void Remove(Version version) { }
+        /// <summary>
+        /// バージョンの削除(紐づけられたディレクトリを削除し、インスタンスは削除しない)
+        /// </summary>
+        public void Remove(Version version) {
+            version.Remove();
+        }
 
         //public string[] getVersionNames() { }
         //Version[] existingVersions
