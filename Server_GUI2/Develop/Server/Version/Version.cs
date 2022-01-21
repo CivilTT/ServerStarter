@@ -24,15 +24,22 @@ namespace Server_GUI2
 
         public virtual string Path { get; }
 
-        // TODO: Existsは毎回取得ではなくフィールドとして持ちたい。Existsに変更があった際に NotifyPropertyChanged() を実行する。
-        public bool Exists
-        {
+        private bool _Exists;
+        public bool Exists {
             get
             {
-                return Directory.Exists(Path);
+                return _Exists;
             }
+            set
+            {
+                if (_Exists != value )
+                {
+                    _Exists = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        
         }
-
 
         //public string downloadURL;
 
@@ -49,6 +56,7 @@ namespace Server_GUI2
         protected Version(string name)
         {
             Name = name;
+            Exists = Directory.Exists(Path);
         }
 
         // プロパティの変更をVersionFactoryのObserbableCollectionに通知するためのイベント発火メソッド
@@ -63,7 +71,7 @@ namespace Server_GUI2
         public virtual void SetNewVersion()
         {
             logger.Info("There are already new version, or not");
-            if (Directory.Exists(Path))
+            if (Exists)
             {
                 logger.Info("There are already new version");
                 return;
@@ -80,7 +88,9 @@ namespace Server_GUI2
                 throw new ArgumentException("Did not select opening version");
             }
         }
-        public virtual void Remove() { }
+        public virtual void Remove() {
+            Exists = false;
+        }
 
         // 比較可能にする
         public virtual int CompareTo(Version obj)
