@@ -156,6 +156,10 @@ namespace Server_GUI2
 
                 vers.Add(ver);
 
+                // versionを生成してリストに追加
+                // TODO: SpigotVersionの引数downloadURLの削除
+                versions.Add(new SpigotVersion(ver));
+
                 // 1.9.jsonが対応バージョン一覧の最後に記載されているため
                 if (ver == "1.9")
                     break;
