@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-
+using System.ComponentModel;
 using log4net;
 using System.Windows;
 using MW = ModernWpf;
@@ -13,13 +13,18 @@ using System.Net;
 
 namespace Server_GUI2
 {
-    public class Version:IComparable<Version>
+    public class Version:IComparable<Version>, INotifyPropertyChanged
     {
         public ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static WebClient wc = new WebClient();
 
         public string Name;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public virtual string Path { get; }
+
+        // TODO: Existsは毎回取得ではなくフィールドとして持ちたい。Existsに変更があった際に NotifyPropertyChanged() を実行する。
         public bool Exists
         {
             get
@@ -44,6 +49,15 @@ namespace Server_GUI2
         protected Version(string name)
         {
             Name = name;
+        }
+
+        // プロパティの変更をVersionFactoryのObserbableCollectionに通知するためのイベント発火メソッド
+        private void NotifyPropertyChanged(String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         public virtual void SetNewVersion()
