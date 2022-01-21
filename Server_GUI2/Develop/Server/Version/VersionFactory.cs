@@ -166,44 +166,44 @@ namespace Server_GUI2
         /// バージョンのリストに含まれないが、すでにインストールされているバージョンがあった場合にそのリストに追加(オフライン時等)
         /// manifest.jsonがない場合はそもそも実行しないので必要なし。
         /// </summary>
-        // private List<Version> CheckImported(List<Version> versions)
-        // {
-        // logger.Info("Getting local Versions");
-        // 
-        //     foreach (string dirName in Directory.GetDirectories(SetUp.DataPath, "*", SearchOption.TopDirectoryOnly))
-        //     {
-        // string verName = Path.GetFileName(dirName);
-        // 
-        // bool isSpigot = verName.Contains("Spigot");
-        // verName = isSpigot ? verName.Substring(7) : verName;
-        // 
-        // newしないと参照渡しになってしまうため
-        // Version _ver = versions.Find(x => x.Name == verName);
-        // 
-        //         if (_ver != null)
-        //         {
-        // Version ver = new Version(_ver.Name, _ver.downloadURL, _ver.hasSpigot, _ver.isRelease, _ver.isLatest, !isSpigot);
-        // installedVersions.Add(ver);
-        //     }
-        // }
+        //private List<Version> CheckImported(List<Version> versions)
+        //{
+        //    logger.Info("Getting local Versions");
 
-    /// <summary>
-    /// バージョンの新規作成
-    /// </summary>
-    /// <returns>作成したバージョンの情報</returns>
-    //public Version Create(bool isVanila=true)
-    //{
-    //    if(isVanila)
-    //    {
-    //        //pass
-    //    }
-    //    else
-    //    {
+        //    foreach (string dirName in Directory.GetDirectories(SetUp.DataPath, "*", SearchOption.TopDirectoryOnly))
+        //    {
+        //        string verName = Path.GetFileName(dirName);
 
-    //    }
-    //}
+        //        bool isSpigot = verName.Contains("Spigot");
+        //        verName = isSpigot ? verName.Substring(7) : verName;
 
-    public void Remove(Version version) { }
+        //        newしないと参照渡しになってしまうため
+        //        Version _ver = versions.Find(x => x.Name == verName);
+
+        //        if (_ver != null)
+        //        {
+        //            Version ver = new Version(_ver.Name, _ver.downloadURL, _ver.hasSpigot, _ver.isRelease, _ver.isLatest, !isSpigot);
+        //            installedVersions.Add(ver);
+        //        }
+        //    }
+
+            /// <summary>
+            /// バージョンの新規作成
+            /// </summary>
+            /// <returns>作成したバージョンの情報</returns>
+            //public Version Create(bool isVanila=true)
+            //{
+            //    if(isVanila)
+            //    {
+            //        //pass
+            //    }
+            //    else
+            //    {
+
+            //    }
+            //}
+
+            public void Remove(Version version) { }
 
         //public string[] getVersionNames() { }
         //Version[] existingVersions
