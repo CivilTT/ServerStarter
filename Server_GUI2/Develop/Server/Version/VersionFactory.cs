@@ -4,6 +4,7 @@ using log4net;
 using Server_GUI2.Develop.Util;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -24,7 +25,8 @@ namespace Server_GUI2
 
         private static VersionFactory _instance = new VersionFactory();
 
-        public List<Version> allVersions = new List<Version>();
+        // TODO: vanilla only/ release only / spigot only はViewModelのほうでリアルタイムフィルタ使って実装 https://blog.okazuki.jp/entry/2013/12/07/000341
+        public ObservableCollection<Version> allVersions = new ObservableCollection<Version>();
 
         public static Version activeVer = null;
 
@@ -40,34 +42,6 @@ namespace Server_GUI2
             // LoadImported();
         }
 
-        public List<Version> ExistingVersions
-        {
-            get
-            {
-                return allVersions.Where(version => version.Exists).ToList();
-            }
-        }
-        public List<Version> SpigptVersions
-        {
-            get
-            {
-                return allVersions.Where(version => version is SpigotVersion).ToList();
-            }
-        }
-        public List<Version> VanillaAllVersions
-        {
-            get
-            {
-                return allVersions.Where(version => version is VanillaVersion).ToList();
-            }
-        }
-        public List<Version> VanillaReleaseVersions
-        {
-            get
-            {
-                return allVersions.Where(version => version is VanillaVersion &&  (version as VanillaVersion).IsRelease ).ToList();
-            }
-        }
 
         /// <summary>
         /// マイクラのバージョン一覧を取得
