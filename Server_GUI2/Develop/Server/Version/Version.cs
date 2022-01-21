@@ -10,6 +10,7 @@ using log4net;
 using System.Windows;
 using MW = ModernWpf;
 using System.Net;
+using System.Diagnostics;
 
 namespace Server_GUI2
 {
@@ -226,7 +227,7 @@ namespace Server_GUI2
                 throw new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})");
             }
 
-            Create_bat(ver_folder);
+            CreateBat();
             Process p = Process.Start($@"{Path}\build.bat");
             p.WaitForExit();
 
@@ -262,6 +263,11 @@ namespace Server_GUI2
 
             //eulaの書き換え
             Change_eula();
+        }
+
+        private void CreateBat()
+        {
+            // TODO: buildBatの生成
         }
     }
 }
