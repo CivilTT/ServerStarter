@@ -82,9 +82,9 @@ namespace Server_GUI2
                 string type = version.type;
                 bool hasSpigot = (spigotList?.Contains(id)) ?? false;
                 bool isRelease = type == "release";
-                // bool isLatest = id == latestRelease || id == latestSnapShot;
+                bool isLatest = id == latestRelease || id == latestSnapShot;
 
-                versions.Add(new VanillaVersion(id, downloadURL, isRelease, hasSpigot));
+                versions.Add(new VanillaVersion(id, downloadURL, isRelease, hasSpigot, isLatest));
 
                 i++;
             }
