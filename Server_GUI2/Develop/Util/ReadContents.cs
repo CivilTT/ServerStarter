@@ -12,12 +12,35 @@ using MW = ModernWpf;
 
 namespace Server_GUI2.Develop.Util
 {
-    class ReadContents
+    static class ReadContents
     {
-        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        // private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         static readonly WebClient wc = new WebClient();
 
+        /// <summary>
+        /// インターネット上のJsonを読み込む
+        /// </summary>
+        /// <returns>The deserialized object from the JSON string.</returns>
+        public static dynamic ReadJson<T>(string url, string errorMessage)
+        {
+            dynamic root = null;
+            try
+            {
+                string jsonStr = wc.DownloadString(url);
+                root = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(jsonStr);
+            }
+            catch (Exception ex)
+            {
+                string message =
+                        errorMessage + "\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            return root;
+        }
+        
         /// <summary>
         /// インターネット上のJsonを読み込む
         /// </summary>
