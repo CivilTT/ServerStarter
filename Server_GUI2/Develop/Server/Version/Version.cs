@@ -24,32 +24,32 @@ namespace Server_GUI2
 
         public virtual string Path { get; }
 
-        // TODO: Existsは毎回取得ではなくフィールドとして持ちたい。Existsに変更があった際に NotifyPropertyChanged() を実行する。
-        public bool Exists
-        {
+        private bool _Exists;
+        public bool Exists {
             get
             {
-                return Directory.Exists(Path);
+                return _Exists;
             }
+            set
+            {
+                if (_Exists != value )
+                {
+                    _Exists = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        
         }
-
-
-        //public string downloadURL;
-
-        // このバージョンはVanilaか
-        // public bool isVanila = true;
-
-
-        // 最新バージョンか否か
-        // public bool isLatest;
-
 
         public ServerProperty ServerProperty { get; set; }
 
         protected Version(string name)
         {
             Name = name;
+            Exists = Directory.Exists(Path);
         }
+
+        public virtual void Start() { }
 
         // プロパティの変更をVersionFactoryのObserbableCollectionに通知するためのイベント発火メソッド
         private void NotifyPropertyChanged(String propertyName = "")
@@ -63,7 +63,7 @@ namespace Server_GUI2
         public virtual void SetNewVersion()
         {
             logger.Info("There are already new version, or not");
-            if (Directory.Exists(Path))
+            if (Exists)
             {
                 logger.Info("There are already new version");
                 return;
@@ -80,7 +80,10 @@ namespace Server_GUI2
                 throw new ArgumentException("Did not select opening version");
             }
         }
-        public virtual void Remove() { }
+
+        public virtual void Remove() {
+            Exists = false;
+        }
 
         // 比較可能にする
         public virtual int CompareTo(Version obj)
@@ -101,9 +104,11 @@ namespace Server_GUI2
         }
 
 
-
         // このバージョンがリリース版かスナップショットか
         public bool IsRelease;
+
+        // このバージョンが最新版か
+        public bool IsLatest;
 
         // Spigotとしてこのバージョンはありうるのか（ローカルにあるか否かは関係ない）
         public bool HasSpigot;
@@ -111,12 +116,14 @@ namespace Server_GUI2
         // server.jarのダウンロードurl
         private string DownloadURL;
 
-        public VanillaVersion(string name, string downloadURL, bool isRelease, bool hasSpigot): base(name)
+        public VanillaVersion(string name, string downloadURL, bool isRelease, bool hasSpigot ,bool isLatest = false): base(name)
         {
             IsRelease = isRelease;
             HasSpigot = hasSpigot;
             DownloadURL = downloadURL;
+            IsLatest = isLatest;
         }
+
 
         public override void SetNewVersion()
         {
@@ -160,11 +167,12 @@ namespace Server_GUI2
             }
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Start_server(true);
+            Start();
+            MainWindow.Pd.Value = 15;
+            MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
 
             //eulaの書き換え
             Change_eula();
-
         }
     }
 
