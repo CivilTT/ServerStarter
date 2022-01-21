@@ -15,3 +15,4 @@ C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTest
 C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.csproj.CopyComplete
 C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.dll
 C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.pdb
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.csproj.AssemblyReference.cache

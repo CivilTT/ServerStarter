@@ -10,7 +10,7 @@ using log4net;
 
 namespace Server_GUI2
 {
-    public class Version
+    public class Version:IComparable<Version>
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -31,37 +31,56 @@ namespace Server_GUI2
             }
         }
 
-        public string downloadURL;
+        //public string downloadURL;
 
         // このバージョンはVanilaか
-        public bool isVanila = true;
-        
-        // このバージョンがリリース版かスナップショットか
-        public bool isRelease;
+        // public bool isVanila = true;
 
-        // Spigotとしてこのバージョンはありうるのか（ローカルにあるか否かは関係ない）
-        public bool hasSpigot;
 
         // 最新バージョンか否か
-        public bool isLatest;
+        // public bool isLatest;
 
 
         public ServerProperty ServerProperty { get; set; }
 
-        public Version(string name, string downloadurl, bool hasspigot, bool isrelease, bool islatest, bool isvanila = true)
+        protected Version(string name)
         {
             Name = name;
-            downloadURL = downloadurl;
-            isVanila = isvanila;
-            isRelease = isrelease;
-            hasSpigot = hasspigot;
-            isLatest = islatest;
         }
 
-        public void DownloadVersion() { }
+        public virtual void DownloadVersion() { }
+        public virtual void Remove() { }
 
-        // 比較演算子系のオーバーライド
-        // 最新、旧版の比較をする
-        //public bool gt(Version version) { }
+        // 比較可能にする
+        public virtual int CompareTo(Version obj)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class VanillaVersion: Version
+    {
+        // このバージョンがリリース版かスナップショットか
+        public bool IsRelease;
+
+        // Spigotとしてこのバージョンはありうるのか（ローカルにあるか否かは関係ない）
+        public bool HasSpigot;
+
+        private string DownloadURL;
+        public VanillaVersion(string name, string downloadURL, bool isRelease, bool hasSpigot): base(name)
+        {
+            IsRelease = isRelease;
+            HasSpigot = hasSpigot;
+            DownloadURL = downloadURL;
+        }
+    }
+
+    public class SpigotVersion: Version
+    { 
+        private string DownloadURL;
+        public SpigotVersion(string name, string downloadURL) : base(name)
+        {
+            DownloadURL = downloadURL;
+        }
     }
 }
