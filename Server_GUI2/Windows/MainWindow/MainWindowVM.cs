@@ -73,20 +73,20 @@ namespace Server_GUI2.Windows.ViewModels
                 List<Version> _vers = new List<Version>();
                 if (ShowSpigot)
                 {
-                    _vers = verFactory.allVersions.FindAll(x => x.hasSpigot);
+                    _vers = verFactory.Versions.FindAll(x => x.hasSpigot);
                     return _vers.ConvertAll(x => $"Spigot {x.Name}");
                 }
 
                 if (ShowAll)
                 {
-                    _vers = verFactory.allVersions;
+                    _vers = verFactory.Versions;
                 }
                 else
                 {
-                    _vers = verFactory.allVersions.FindAll(x => x.isRelease);
+                    _vers = verFactory.Versions.FindAll(x => x.isRelease);
 
                     // SnapShotの最新版を表示
-                    _vers.Insert(1, verFactory.allVersions.Find(x => !x.isRelease && x.isLatest));
+                    _vers.Insert(1, verFactory.Versions.Find(x => !x.isRelease && x.isLatest));
                 }
 
                 return _vers.ConvertAll(x => VanilaVerConverter(x));
@@ -107,7 +107,7 @@ namespace Server_GUI2.Windows.ViewModels
         /// <summary>
         /// 選択されているバージョンを文字列で保持
         /// </summary>
-        private string _selectedNewVersion = VanilaVerConverter(verFactory.allVersions[0]);
+        private string _selectedNewVersion = VanilaVerConverter(verFactory.Versions[0]);
         public string SelectedNewVersion
         {
             get
