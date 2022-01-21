@@ -7,6 +7,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+// TODO: VersionとServerの役割
+// Version は1.x.xディレクトリの存在とserver.jar, start.batの存在を保証する
+// Server はeura.txt等サーバー起動時に必要なデータの存在を保証する
+
 namespace Server_GUI2
 {
     public class World
@@ -61,11 +65,17 @@ namespace Server_GUI2
     }
 
     class VanillaWorld: World
-    { }
+    {}
 
     class SpigotWorld : World
     { }
   
     class ShareWorld<T> : World where T : World
-    { }
+    {
+        private T World;
+        public ShareWorld(T wrold)
+        {
+            World
+        }
+    }
 }
