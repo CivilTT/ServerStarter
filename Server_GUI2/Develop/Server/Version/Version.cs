@@ -41,16 +41,6 @@ namespace Server_GUI2
         
         }
 
-        //public string downloadURL;
-
-        // このバージョンはVanilaか
-        // public bool isVanila = true;
-
-
-        // 最新バージョンか否か
-        // public bool isLatest;
-
-
         public ServerProperty ServerProperty { get; set; }
 
         protected Version(string name)
@@ -58,6 +48,8 @@ namespace Server_GUI2
             Name = name;
             Exists = Directory.Exists(Path);
         }
+
+        public virtual void Start() { }
 
         // プロパティの変更をVersionFactoryのObserbableCollectionに通知するためのイベント発火メソッド
         private void NotifyPropertyChanged(String propertyName = "")
@@ -88,6 +80,7 @@ namespace Server_GUI2
                 throw new ArgumentException("Did not select opening version");
             }
         }
+
         public virtual void Remove() {
             Exists = false;
         }
@@ -111,7 +104,6 @@ namespace Server_GUI2
         }
 
 
-
         // このバージョンがリリース版かスナップショットか
         public bool IsRelease;
 
@@ -127,6 +119,7 @@ namespace Server_GUI2
             HasSpigot = hasSpigot;
             DownloadURL = downloadURL;
         }
+
 
         public override void SetNewVersion()
         {
@@ -170,13 +163,12 @@ namespace Server_GUI2
             }
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Start_server(true);
+            Start();
             MainWindow.Pd.Value = 15;
             MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
 
             //eulaの書き換え
             Change_eula();
-
         }
     }
 
