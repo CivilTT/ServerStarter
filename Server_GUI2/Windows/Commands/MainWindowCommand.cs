@@ -123,7 +123,7 @@ namespace Server_GUI2.Windows.Commands
             string newVer = _vm.SelectedNewVersion;
             string ver = (existsVer == vers[vers.Count - 1]) ? newVer : existsVer;
 
-            LatestRun latestRun = new LatestRun()
+            LatestRun latestRun = new LatestRun();
 
             UserSettings.userSettings.latestRun = latestRun;
             UserSettings.WriteFile();
