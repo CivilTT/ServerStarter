@@ -22,7 +22,16 @@ namespace Server_GUI2.Develop.Util
         /// インターネット上のJsonを読み込む
         /// </summary>
         /// <returns>The deserialized object from the JSON string.</returns>
-        public static dynamic ReadJson<T>(string url, string errorMessage)
+        /// <returns>The deserialized object from the JSON string.</returns>
+        public static dynamic ReadJson<T>(string url,string errorMessage)
+        {
+            return ReadJson<T>(url, true, errorMessage);
+        }
+        public static dynamic ReadJson<T>(string url)
+        {
+            return ReadJson<T>(url, false, "");
+        }
+        private  static dynamic ReadJson<T>(string url, bool showErorMessage,  string errorMessage)
         {
             dynamic root = null;
             try
@@ -32,10 +41,13 @@ namespace Server_GUI2.Develop.Util
             }
             catch (Exception ex)
             {
-                string message =
-                        errorMessage + "\n\n" +
-                        $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (showErorMessage)
+                {
+                    string message =
+                            errorMessage + "\n\n" +
+                            $"【エラー要因】\n{ex.Message}";
+                    MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
 
             return root;
