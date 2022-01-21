@@ -76,21 +76,16 @@ namespace Server_GUI2
         {
             logger.Info("Import new Version List");
 
-            string url = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
-            string errorMessage =
-                    "Minecraftのバージョン一覧の取得に失敗しました。\n" +
-                    "新しいバージョンのサーバーの導入はできません";
-            dynamic root = ReadContents.ReadJson<VanillaVersonsJson>(url, errorMessage);
-            if (root == null)
+            // jsonを取得
+            VanillaVersonsJson vanillaversions = GetVanillaVersionJson();
+
+            if (vanillaversions == null)
             {
                 logger.Info("Missing Versions List");
-                // TODO: version_manifest_v2.jsonを保持しておき、インターネットから読み込めないときにはこれを利用する
-                // これもないときにはServerStarterは起動できないこととする（そもそもインターネットに接続していない状態でサーバーを立てたいか？）
                 return;
             }
 
-            List<string> spigotList = GetSpigotVersions();
-            VanillaVersonsJson vanillaversions = root;
+            List<string> spigotList = GetSpigotVersionList();
 
             string latestRelease = vanillaversions.latest.release;
             string latestSnapShot = vanillaversions.latest.snapshot;
@@ -114,19 +109,51 @@ namespace Server_GUI2
                 i++;
             }
 
+            // バージョン順にソート
+            allVersions.Sort();
+
             // 最新バージョンがreleaseの際にはsnapshotも同じため、特例としてリストの先頭に挿入する処理を行う
             // TODO: 謎処理 hasSpigotはtrueか？
-            if (latestRelease == latestSnapShot)
-            {
-                VanillaVersonJson version = vanillaversions.versions[0];
-                id = version.id;
-                string downloadURL = version.url;
-                Version _snapshot = new VanillaVersion(id, downloadURL, false, true);
-                allVersions.Insert(1, _snapshot);
-            }
+            //if (latestRelease == latestSnapShot)
+            //{
+            //VanillaVersonJson version = vanillaversions.versions[0];
+            //id = version.id;
+            //string downloadURL = version.url;
+            //Version _snapshot = new VanillaVersion(id, downloadURL, false, true);
+            //allVersions.Insert(1, _snapshot);
+            //}
         }
 
-        private List<string> GetSpigotVersions()
+        /// <summary>
+        /// version_manifest_v2.jsonを取得
+        /// </summary>
+        // version_manifest_v2.jsonを保持し、インターネットから読み込めないときにはこれを利用する
+        private VanillaVersonsJson GetVanillaVersionJson()
+        {
+            string url = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
+            VanillaVersonsJson versions = ReadContents.ReadJson<VanillaVersonsJson>(url);
+
+            if (versions != null)
+            {
+                using (var sw = new StreamWriter($@"{Directory.GetCurrentDirectory()}\version_manifest_v2.json", false, Encoding.UTF8))
+                {
+                    sw.Write(JsonConvert.SerializeObject(versions));
+                }
+            } else
+            {
+                using (var reader = new StreamReader($@"{Directory.GetCurrentDirectory()}\version_manifest_v2.json"))
+                {
+                    // TODO: 保存されたversion_manifest_v2.jsonがないときServerStarterは起動できないこととする（そもそもインターネットに接続していない状態でサーバーを立てたいか？）
+                    string errorMessage =
+                       "Minecraftのバージョン一覧の取得に失敗しました。\n" +
+                       "新しいバージョンのサーバーの導入はできません";
+                    versions = ReadContents.ReadlocalJson<VanillaVersonsJson>(reader.ReadToEnd(), errorMessage);
+                }
+            }
+            return versions;
+        }
+
+        private List<string> GetSpigotVersionList()
         {
             string url = "https://hub.spigotmc.org/versions/";
             string message =
@@ -185,8 +212,6 @@ namespace Server_GUI2
         // installedVersions.Add(ver);
         //     }
         // }
-    }
-
 
     /// <summary>
     /// バージョンの新規作成
@@ -207,9 +232,6 @@ namespace Server_GUI2
     public void Remove(Version version) { }
 
         //public string[] getVersionNames() { }
-
-        
-
         //Version[] existingVersions
         //Version[] allVanillaVersions
         //Version[] allSpigotVersions
