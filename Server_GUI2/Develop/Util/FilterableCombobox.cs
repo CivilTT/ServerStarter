@@ -31,13 +31,16 @@ namespace Server_GUI2
             Filter = func;
         }
 
-        public void RemoveSelected()
+        // 現在選択中の要素をComboboxから取り除きreturnする
+        public Type PopSelected()
         {
+            var selected = SelectedItem;
             // remove selected item from Combobox
-            Items.Remove(SelectedItem);
+            Items.Remove(selected);
             Reflesh();
             // set Combobox unselected
             Combobox.SelectedIndex = -1;
+            return selected;
         }
         private void Reflesh()
         {

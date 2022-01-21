@@ -1,0 +1,17 @@
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\ja\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\ja\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\ja\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\UnitTestProject1.dll
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\UnitTestProject1.pdb
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.csprojAssemblyReference.cache
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.csproj.CoreCompileInputs.cache
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.csproj.CopyComplete
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.dll
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.pdb
