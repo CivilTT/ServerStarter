@@ -8,11 +8,13 @@ namespace Server_GUI2
 {
     class Server
     {
-        private World world;
+        private World World;
+        private Server Version;
 
-        public Server(World _world)
+        public Server(World world,Server version)
         {
-            world = _world;
+            World = world;
+            Version = version;
         }
 
         public static void Run()
