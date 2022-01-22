@@ -153,16 +153,19 @@ namespace Server_GUI2
             {
                 // バージョンごとに引数を変更する
                 // バージョンによってはファイルを新しく用意する必要あり
-                // TODO: IndexOfが欲しい
-                if (1.17 - 1.18)
+                // TODO: バージョンの値によって分類する
+                //if (1.17 - 1.18)
+                if(false)
                 {
                     return " -Dlog4j2.formatMsgNoLookups=true";
                 }
-                else if (1.12 - 1.16.5)
+                //else if (1.12 - 1.16.5)
+                else if (false)
                 {
                     return " -Dlog4j.configurationFile=log4j2_112-116.xml";
                 }
-                else if (1.7 - 1.12)
+                //else if (1.7 - 1.12)
+                else if (false)
                 {
                     return " -Dlog4j.configurationFile=log4j2_17-111.xml";
                 }
@@ -241,7 +244,7 @@ namespace Server_GUI2
             //MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
 
             //eulaの書き換え
-            Change_eula();
+            Server.AgreeEula();
         }
     }
 
@@ -313,7 +316,7 @@ namespace Server_GUI2
             //MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
 
             //eulaの書き換え
-            Change_eula();
+            Server.AgreeEula();
         }
 
         private void CreateBat()

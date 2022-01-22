@@ -74,11 +74,11 @@ namespace Server_GUI2
 
     }
 
-    class VanillaWorld: World
-    {}
+    //class VanillaWorld: World
+    //{}
 
-    class SpigotWorld : World
-    {}
+    //class SpigotWorld : World
+    //{}
   
     class ShareWorld<T> : World
     {
