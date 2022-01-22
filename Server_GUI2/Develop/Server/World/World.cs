@@ -1,6 +1,7 @@
 ﻿using log4net;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -15,67 +16,104 @@ namespace Server_GUI2
 {
     public class World
     {
-        public Version version;
+        public Version Version;
 
         public string Name;
 
-        public string CustomSource;
+        public bool Exists;
 
-        public string Path
+        private ObservableCollection<Datapack> Datapacks;
+
+        public virtual string Path
         {
             get
             {
-                return $@"{MainWindow.Data_Path}\{version.Name}\{Name}";
+                return $@"{MainWindow.Data_Path}\{Version.Name}\{Name}";
             }
         }
 
-        public bool Exists
+        /// <summary>
+        /// generate World from other World instance
+        /// </summary>
+        /// <param name="world"></param>
+        /// <returns></returns>
+        protected static World ConvertFrom(World world, Version version)
         {
-            get
-            {
-                return Directory.Exists(Path);
-            }
+            throw new NotImplementedException();
         }
 
-        protected World(string name, Version ver)
+        protected World(string name, Version version)
         {
             Name = name;
-            version = ver;
+            Version = version;
+            Exists = Directory.Exists(Path);
         }
 
-        public void ChangeVersion(Version newVer)
+        /// <summary>
+        /// ServerPropertyにlevel-name等を記入
+        /// </summary>
+        /// <param name="serverProperty"></param>
+        public void writeProperty(ServerProperty serverProperty)
+        {
+            
+        }
+
+        public virtual void Recreate()
         {
 
         }
 
-        public void Recreate()
+        public virtual void Remove()
         {
 
         }
 
-        public void Remove()
+        public virtual void SetCustomMap(string path)
         {
 
         }
 
-        public void SetCustomMap()
-        {
-
-        }
     }
 
     class VanillaWorld: World
     {}
 
     class SpigotWorld : World
-    { }
+    {}
   
     class ShareWorld<T> : World where T : World
     {
+        string GitAccount;
+        string GitRepository;
         private T World;
-        public ShareWorld(T wrold)
+        public ShareWorld(T world,string gitAccount, string gitRepository)
         {
-            World
+            World = world;
+            GitAccount = gitAccount;
+            GitRepository = gitRepository;
+        }
+
+        public override string Path
+        {
+            get
+            {
+                return $@"{MainWindow.Data_Path}\{Version.Name}\{Name}\world";
+            }
+        }
+
+
+        private void Pull()
+        { }
+
+        private void Push()
+        { }
+
+        private string GitURL
+        {
+            get
+            {
+                return $@"https://{GitAccount}@github.com/{GitAccount}/{GitRepository}";
+            }
         }
     }
 }
