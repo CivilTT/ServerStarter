@@ -8,5 +8,6 @@ namespace Server_GUI2
 {
     public class ServerProperty
     {
+        public string LevelName;
     }
 }
