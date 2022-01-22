@@ -15,7 +15,7 @@ namespace Server_GUI2
             world = _world;
         }
 
-        public static void Run(World world)
+        public static void Run()
         {
             throw new NotImplementedException();
         }
