@@ -28,7 +28,9 @@ namespace Server_GUI2
         // TODO: vanilla only/ release only / spigot only はViewModelのほうでリアルタイムフィルタ使って実装 https://blog.okazuki.jp/entry/2013/12/07/000341
         public ObservableCollection<Version> Versions { get; private set; }
 
-        public static Version SelectedVersion { get; set; }
+        public Version SelectedVersion { get; set; }
+
+        private Dictionary<string,Version> = new Dictionary<string, Version>();
 
         public static VersionFactory GetInstance()
         {
@@ -48,6 +50,11 @@ namespace Server_GUI2
             // サーバーをソート
             versions.Sort();
             Versions = new ObservableCollection<Version>(versions);
+        }
+
+        public Version GetVersionFromName(string name)
+        {
+
         }
 
 
