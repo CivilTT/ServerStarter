@@ -15,19 +15,22 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace Server_GUI2
 {
-    public class Version:IComparable<Version>, INotifyPropertyChanged
+    public class Version : IComparable<Version>, INotifyPropertyChanged
     {
         public ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static WebClient wc = new WebClient();
 
         public string Name;
+        public virtual string JarName { get; }
+        public virtual string Log4jArgument { get { return ""; } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public virtual string Path { get; }
 
         private bool _Exists;
-        public bool Exists {
+        public bool Exists 
+        {
             get
             {
                 return _Exists;
@@ -40,7 +43,6 @@ namespace Server_GUI2
                     NotifyPropertyChanged();
                 }
             }
-        
         }
 
         public ServerProperty ServerProperty { get; set; }
@@ -51,17 +53,38 @@ namespace Server_GUI2
             Exists = Directory.Exists(Path);
         }
 
-        public virtual void Start()
+        public void Start()
         {
-            // 必要ファイルの必要性を保証
-
-
-
+            CreateStartBat();
 
             Server.Run();
         }
 
-        // プロパティの変更をVersionFactoryのObserbableCollectionに通知するためのイベント発火メソッド
+        private void CreateStartBat()
+        {
+            logger.Info("Generate start.bat");
+            try
+            {
+                using (var writer = new StreamWriter($@"{Path}\start.bat", false))
+                {
+                    writer.WriteLine("@echo off");
+                    writer.WriteLine("cd %~dp0");
+                    writer.WriteLine($"java -Xmx5G -Xms5G{Log4jArgument} -jar {JarName} nogui");
+                }
+            }
+            catch (Exception ex)
+            {
+                string message =
+                    "サーバーの実行ファイル(start.bat)の作成に失敗しました。\n\n" +
+                    $"【エラー要因】\n{ex.Message}";
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new IOException($"Failed to write start.bat (Error Message : {ex.Message})");
+            }
+        }
+
+        /// <summary>
+        /// プロパティの変更をVersionFactoryのObserbableCollectionに通知するためのイベント発火メソッド
+        /// </summary>
         private void NotifyPropertyChanged(string propertyName = "")
         {
             if (PropertyChanged != null)
@@ -70,6 +93,9 @@ namespace Server_GUI2
             }
         }
 
+        /// <summary>
+        /// 新しいバージョンの導入を行う
+        /// </summary>
         public virtual void SetNewVersion()
         {
             Exists = true;
@@ -115,14 +141,33 @@ namespace Server_GUI2
 
     public class VanillaVersion: Version
     {
-        public override string Path
+        public override string Path { get { return $@"{MainWindow.Data_Path}\{Name}\"; } }
+        public override string JarName { get { return "server.jar"; } }
+        public override string Log4jArgument
         {
             get
             {
-                return $@"{MainWindow.Data_Path}\{Name}\";
+                // バージョンごとに引数を変更する
+                // バージョンによってはファイルを新しく用意する必要あり
+                // TODO: IndexOfが欲しい
+                if (1.17 - 1.18)
+                {
+                    return " -Dlog4j2.formatMsgNoLookups=true";
+                }
+                else if (1.12 - 1.16.5)
+                {
+                    return " -Dlog4j.configurationFile=log4j2_112-116.xml";
+                }
+                else if (1.7 - 1.12)
+                {
+                    return " -Dlog4j.configurationFile=log4j2_17-111.xml";
+                }
+                else
+                {
+                    return "";
+                }
             }
         }
-
 
         // このバージョンがリリース版かスナップショットか
         public bool IsRelease;
@@ -198,13 +243,9 @@ namespace Server_GUI2
 
     public class SpigotVersion: Version
     {
-        public override string Path
-        {
-            get
-            {
-                return $@"{MainWindow.Data_Path}\Spigot_{Name}\";
-            }
-        }
+        public override string Path { get { return $@"{MainWindow.Data_Path}\Spigot_{Name}\"; } }
+
+        public override string JarName { get { return $"spigot-{Name}.jar"; } }
 
         public SpigotVersion(string name) : base(name)
         {
