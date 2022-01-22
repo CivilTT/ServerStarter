@@ -35,7 +35,6 @@ namespace Server_GUI2
         /// <summary>
         /// generate World from other World instance
         /// </summary>
-        /// <param name="world"></param>
         /// <returns></returns>
         protected static World ConvertFrom(World world, Version version)
         {
@@ -53,7 +52,7 @@ namespace Server_GUI2
         /// ServerPropertyにlevel-name等を記入
         /// </summary>
         /// <param name="serverProperty"></param>
-        public void writeProperty(ServerProperty serverProperty)
+        public void WriteProperty(ServerProperty serverProperty)
         {
             
         }
@@ -81,16 +80,18 @@ namespace Server_GUI2
     class SpigotWorld : World
     {}
   
-    class ShareWorld<T> : World where T : World
+    class ShareWorld<T> : World
     {
         string GitAccount;
         string GitRepository;
-        private T World;
-        public ShareWorld(T world,string gitAccount, string gitRepository)
+
+        World World;
+        Git Git;
+
+        public ShareWorld(string name, Version version, World world, Git git) : base(name, version)
         {
             World = world;
-            GitAccount = gitAccount;
-            GitRepository = gitRepository;
+            Git = git;
         }
 
         public override string Path

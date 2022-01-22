@@ -53,6 +53,10 @@ namespace Server_GUI2
             Exists = Directory.Exists(Path);
         }
 
+        /// <summary>
+        /// サーバーを起動する際にはこれを呼び出す
+        /// Server.Run()を直接呼び出すとbatファイルの生成ができない
+        /// </summary>
         public void Start()
         {
             CreateStartBat();
