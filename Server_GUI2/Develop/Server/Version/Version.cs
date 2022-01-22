@@ -11,6 +11,7 @@ using System.Windows;
 using MW = ModernWpf;
 using System.Net;
 using System.Diagnostics;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Server_GUI2
 {
@@ -50,10 +51,18 @@ namespace Server_GUI2
             Exists = Directory.Exists(Path);
         }
 
-        public virtual void Start() { }
+        public virtual void Start()
+        {
+            // 必要ファイルの必要性を保証
+
+
+
+
+            Server.Run();
+        }
 
         // プロパティの変更をVersionFactoryのObserbableCollectionに通知するためのイベント発火メソッド
-        private void NotifyPropertyChanged(String propertyName = "")
+        private void NotifyPropertyChanged(string propertyName = "")
         {
             if (PropertyChanged != null)
             {
@@ -73,7 +82,7 @@ namespace Server_GUI2
             }
 
             logger.Info("Download server.jar");
-            if (Data_list.Version == "")
+            if (Name == "")
             {
                 MessageBoxResult? result = MW.MessageBox.Show("導入するサーバーのバージョンが選択されていません。\r\nサーバーのバージョンを選択をした上で再度「Run」を押してください。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 if (result == MessageBoxResult.OK)
@@ -92,7 +101,7 @@ namespace Server_GUI2
             logger.Warn("Warning the delete Version data");
             if (result == MessageBoxResult.OK)
             {
-                Directory.Delete(Path, true);
+                FileSystem.DeleteDirectory(Path, DeleteDirectoryOption.DeleteAllContents);
             }
         }
 
@@ -155,7 +164,7 @@ namespace Server_GUI2
             {
                 string message =
                         "Vanila サーバーのダウンロードに失敗しました。\n" +
-                        $"{Data_list.Version}はマルチサーバーが存在しない可能性があります。\n\n" +
+                        $"{Name}はマルチサーバーが存在しない可能性があります。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new DownloadException($"Failed to get url to download server.jar (Error Message : {ex.Message})");
@@ -179,8 +188,8 @@ namespace Server_GUI2
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
             Start();
-            MainWindow.Pd.Value = 15;
-            MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
+            //MainWindow.Pd.Value = 15;
+            //MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
 
             //eulaの書き換え
             Change_eula();
@@ -197,12 +206,9 @@ namespace Server_GUI2
             }
         }
 
-        // builderのダウンロードurl
-        private string DownloadURL;
-
-        public SpigotVersion(string name, string downloadURL) : base(name)
+        public SpigotVersion(string name) : base(name)
         {
-            DownloadURL = downloadURL;
+            // Initialize
         }
 
         public override void SetNewVersion()
@@ -231,20 +237,24 @@ namespace Server_GUI2
             Process p = Process.Start($@"{Path}\build.bat");
             p.WaitForExit();
 
+            // 余計なファイルの削除
+            DeleteInnerDirectory(Path, DeleteDirectoryOption.DeleteAllContents);
+            MoveLogFile();
+
             if (p.ExitCode != 0)
             {
-                spi_func.Delete_dir(ver_folder);
-                Move_log(ver_folder);
-                Directory.Delete($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\", true);
+                FileSystem.DeleteDirectory(Path, DeleteDirectoryOption.DeleteAllContents);
 
                 string message;
                 switch (p.ExitCode)
                 {
                     case 1:
-                        message = $"バージョン{Data_list.Version}はインポート可能なSpigotサーバーとして見つけられませんでした。";
+                        message = $"バージョン{Name}はインポート可能なSpigotサーバーとして見つけられませんでした。";
                         break;
                     default:
-                        message = $"Spigotサーバーのビルドに失敗しました（エラーコード：{p.ExitCode}）";
+                        message = 
+                            $"Spigotサーバーのビルドに失敗しました\n" +
+                            $"（エラーコード：{p.ExitCode}）";
                         break;
                 }
 
@@ -252,14 +262,10 @@ namespace Server_GUI2
                 throw new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})");
             }
 
-            // 余計なファイルの削除
-            spi_func.Delete_dir(ver_folder);
-            Move_log(ver_folder);
-
             //一度実行し、eula.txtなどの必要ファイルを書き出す
             Start();
-            MainWindow.Pd.Value = 15;
-            MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
+            //MainWindow.Pd.Value = 15;
+            //MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
 
             //eulaの書き換え
             Change_eula();
@@ -267,7 +273,60 @@ namespace Server_GUI2
 
         private void CreateBat()
         {
-            // TODO: buildBatの生成
+            logger.Info("Generate build.bat");
+            List<string> build = new List<string>
+            {
+                "@echo off",
+                "cd %~dp0",
+                $"java -jar BuildTools.jar --rev {Name}"
+            };
+
+            try
+            {
+                using (var writer = new StreamWriter($@"{Path}\build.bat", false))
+                {
+                    foreach (string line in build)
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string message =
+                        "Spigotサーバーをビルドするための必要ファイルの作成に失敗しました。\n\n" +
+                        $"【エラー要因】\n{ex.Message}";
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new IOException($"Failed to write build.bat (Error Message : {ex.Message})");
+            }
+        }
+
+        /// <summary>
+        /// pathで指定したフォルダ内のディレクトリを全て削除する
+        /// </summary>
+        private void DeleteInnerDirectory(string path, DeleteDirectoryOption deleteDirectoryOption)
+        {
+            foreach (string dirPath in Directory.GetDirectories(path))
+            {
+                FileSystem.DeleteDirectory(dirPath, deleteDirectoryOption);
+                logger.Info($"Delete Directory at {dirPath}");
+            }
+        }
+
+        /// <summary>
+        /// buildで出力されるlogファイルをlogフォルダに移動する
+        /// </summary>
+        private void MoveLogFile()
+        {
+            Directory.CreateDirectory("log");
+            if (File.Exists(@".\log\BuildTools.log.txt"))
+            {
+                // ファイルがすでに存在すると移動できないため、削除したうえで、再度移動させる
+                File.Delete(@".\log\BuildTools.log.txt");
+            }
+
+            File.Move($@"{Path}\BuildTools.log.txt", @".\log\BuildTools.log.txt");
+
         }
     }
 }
