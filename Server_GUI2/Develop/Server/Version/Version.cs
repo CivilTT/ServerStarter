@@ -158,7 +158,7 @@ namespace Server_GUI2
                 {
                     return " -Dlog4j.configurationFile=log4j2_112-116.xml";
                 }
-                else if (1.7 - 1.12)
+                else if (1.7 - 1.11.2)
                 {
                     return " -Dlog4j.configurationFile=log4j2_17-111.xml";
                 }
