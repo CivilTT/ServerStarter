@@ -10,17 +10,19 @@ namespace Server_GUI2.Develop.Server.World
     class BeforeWorld
     {
         Version Version { get; }
+        ServerProperty ServerProperty { get; }
     }
 
     class AfterWorld
     {
+        WorldWriter Writer;
+        ServerProperty ServerProperty { get; }
         /// <summary>
         /// ワールド変換(v2v s2s etc...)をコンストラクタに組み込む。
         /// </summary>
-        /// <param name="beforeWorld"></param>
-        protected AfterWorld(BeforeWorld beforeWorld)
+        protected AfterWorld(BeforeWorld beforeWorld, WorldWriter writer)
         {
-
+            Writer = writer;
         }
     }
 
@@ -38,11 +40,12 @@ namespace Server_GUI2.Develop.Server.World
     class WorldWriter
     {
         protected string Path { get; }
+        protected Version Version;
         protected AfterWorld AfterWorld { get; }
 
-        protected WorldWriter(AfterWorld afterWorld)
+        protected WorldWriter(Version version)
         {
-            AfterWorld = afterWorld;
+            Version = version;
         }
 
         /// <summary>
@@ -58,15 +61,17 @@ namespace Server_GUI2.Develop.Server.World
         public static void Test()
         {
             var reader = new WorldReader();
-            new LocalWorldWriter( new VanillaAfterWorld(reader.Read()));
+            new VanillaAfterWorld(reader.Read(), new LocalWorldWriter());
         }
     }
 
 
     class NewBeforeWorld : BeforeWorld
     { }
+    class CustomMapBeforeWorld : BeforeWorld
+    { }
 
-    class VanillaBeforeWorld: BeforeWorld
+    class VanillaBeforeWorld : BeforeWorld
     { }
 
     class SpigotBeforeWorld : BeforeWorld
@@ -75,10 +80,18 @@ namespace Server_GUI2.Develop.Server.World
 
 
     class VanillaAfterWorld : AfterWorld
-    { }
+    {
+        protected VanillaAfterWorld(BeforeWorld beforeWorld, WorldWriter writer): base(beforeWorld, writer)
+        {
+        }
+    }
 
     class SpigotAfterWorld : AfterWorld
-    { }
+    {
+        protected VanillaAfterWorld(BeforeWorld beforeWorld, WorldWriter writer) : base(beforeWorld, writer)
+        {
+        }
+    }
 
 
 
