@@ -103,7 +103,6 @@ namespace Server_GUI2
             }
 
             // 最新バージョンがreleaseの際にはsnapshotも同じため、特例としてリストの先頭に挿入する処理を行う
-            // TODO: 謎処理 hasSpigotはtrueか？
             //if (latestRelease == latestSnapShot)
             //{
             //VanillaVersonJson version = vanillaversions.versions[0];
