@@ -22,5 +22,10 @@ namespace Server_GUI2
             throw new NotImplementedException();
         }
 
+        public static void AgreeEula()
+        {
+
+        }
+
     }
 }

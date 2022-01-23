@@ -1,35 +1,51 @@
-﻿using System;
+﻿using log4net;
+using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Server_GUI2
 {
     public class Datapack
     {
+        public ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         protected World World;
         public string Name { get; private set; }
 
-        public string Path
-        {
-            get
-            {
-                return $@"{World.Path}\datapacks\{Name}";
-            } 
-        }
+        protected bool IsZip;
 
-        protected Datapack(World world)
+        public string Path { get { return $@"{World.Path}\datapacks\{Name}"; } }
+
+
+        protected Datapack(World world, string name)
         {
             World = world;
+            Name = name;
         }
 
-        public virtual void remove(){ }
+        /// <summary>
+        /// 削除の必要性があるかどうか
+        /// TODO: Viewを更新するためにEventを作成する
+        /// </summary>
+        public bool RemoveDp;
+
+        protected virtual void Remove() { }
 
         /// <summary>
         /// RUN時に実行。ワールドデータ内にデータパックがあることを保証する
         /// </summary>
-        public virtual void ready() { }
+        public virtual void Ready()
+        {
+            if (RemoveDp)
+                Remove();
+        }
     }
 
     /// <summary>
@@ -37,32 +53,48 @@ namespace Server_GUI2
     /// </summary>
     public class ExistDatapack : Datapack
     {
+        public ExistDatapack(World world, string name) : base(world, name)
+        {
+            
+        }
+
         /// <summary>
         /// TODO: ディレクトリからデータパックを削除
         /// </summary>
-        public override void remove()
+        protected override void Remove()
         {
+            logger.Info("Remove the datapack");
+            if (Directory.Exists(Path))
+            {
+                FileSystem.DeleteDirectory(Path, DeleteDirectoryOption.DeleteAllContents);
+            }
+            else
+            {
+                File.Delete(Path);
+            }
         }
     }
 
     /// <summary>
     /// 展開して移動する必要があるデータパック
+    /// 移動先に移動するデータパックが存在していないことを前提とする
     /// </summary>
     public class ImportDatapack : Datapack
     {
-        private string SourcePath;
-
-        private bool IsZip;
-
+        private readonly string SourcePath;
+        
         /// <summary>
         /// 与えられたパスが有効なデータパックの場合インスタンスを生成する
         /// でなければnullを返す。
         /// </summary>
-        public ImportDatapack TryGenInstance(World world, string sourcePath, bool isZip)
+        public static ImportDatapack TryGenInstance(World world, string sourcePath, bool isZip)
         {
-            if ( isZip ? IsValidZip(sourcePath) : IsValidDirectory(sourcePath) )
+            // フォルダ名を取得する
+            string name = System.IO.Path.GetFileNameWithoutExtension(sourcePath);
+
+            if ( isZip ? IsValidZip(sourcePath, name) : IsValidDirectory(sourcePath, name) )
             {
-                return new ImportDatapack(world,sourcePath,isZip);
+                return new ImportDatapack(world, name, sourcePath, isZip);
             }
             else
             {
@@ -70,39 +102,85 @@ namespace Server_GUI2
             }
         }
 
-        private ImportDatapack(World world, string sourcePath, bool isZip) :base(world)
+        private ImportDatapack(World world, string name, string sourcePath, bool isZip) :base(world, name)
         {
             SourcePath = sourcePath;
             IsZip = isZip;
         }
 
         /// <summary>
-        /// TODO: フォルダがデータパックとして有効かどうかを検証する
+        /// フォルダがデータパックとして有効かどうかを検証する
         /// </summary>
         /// <returns></returns>
-        static private bool IsValidDirectory(string path)
+        static private bool IsValidDirectory(string sourcePath, string name)
         {
-            return false;
+            // フォルダの直下(or一つ下)に pack.mcmeta & dataフォルダ が存在しているかを確認する
+            string dirPath = Directory.Exists($@"{sourcePath}\{name}") ? $@"{sourcePath}\{name}" : sourcePath;
+
+            return Directory.Exists($@"{dirPath}\data") && File.Exists($@"{dirPath}\pack.mcmeta");
         }
 
         /// <summary>
-        /// TODO: Zipがデータパックとして有効かどうかを検証する
+        /// Zipがデータパックとして有効かどうかを検証する
         /// </summary>
         /// <returns></returns>
-        static private bool IsValidZip(string path)
+        static private bool IsValidZip(string sourcePath, string name)
         {
-            return false;
+            bool result;
+            using (ZipArchive zipArchive = ZipFile.OpenRead(sourcePath))
+            {
+                // フォルダの直下(or一つ下)に pack.mcmeta & dataフォルダ が存在しているかを確認する
+                string dirPath = (zipArchive.GetEntry(name) == null) ? $@"{name}/" : "";
+
+                ZipArchiveEntry metaEntry = zipArchive.GetEntry($"{dirPath}pack.mcmeta");
+                ZipArchiveEntry dataEntry = zipArchive.GetEntry($"{dirPath}data/");
+
+                result = metaEntry != null && dataEntry != null;
+            }
+
+            return result;
+        }
+
+        private void Import()
+        {
+            if (IsZip)
+            {
+                string zipPath = $"{Path}.zip";
+
+                File.Move(SourcePath, zipPath);
+
+                ZipFile.ExtractToDirectory(zipPath, Path);
+
+                File.Delete(zipPath);
+            }
+            else
+            {
+                FileSystem.CopyDirectory(SourcePath, Path);
+            }
+
+            // data, pack.mcmetaが一層深くなっているときは、それを上げる処理をする
+            if (Directory.Exists($@"{Path}\{Name}"))
+            {
+                Directory.Move($@"{Path}\{Name}\data", $@"{Path}\data");
+                File.Move($@"{Path}\{Name}\pack.mcmeta", $@"{Path}\pack.mcmeta");
+                Directory.Delete($@"{Path}\{Name}");
+            }
         }
 
         /// <summary>
         /// ディレクトリからデータパックを削除(何もしない)
         /// </summary>
-        public override void remove() { }
+        protected override void Remove() { }
 
         /// <summary>
         /// TODO: ワールドデータ内にデータパックを移動して展開
         /// </summary>
-        public override void ready() { }
+        public override void Ready()
+        {
+            base.Ready();
+
+            Import();
+        }
 
     }
 }
