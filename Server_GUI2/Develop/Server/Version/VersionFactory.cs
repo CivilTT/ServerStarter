@@ -37,15 +37,17 @@ namespace Server_GUI2
             return _instance;
         }
 
+        private Dictionary<string, int> versionIndexMap = new Dictionary<string, int>();
+
         private VersionFactory()
         {
             var versions = new List<Version>();
 
             // spigotのサーバーインスタンスを追加
-            List<string> spigotList = GetSpigotVersionList(versions);
+            List<string> spigotList = GetSpigotVersionList(ref versions);
 
             // vanillaのサーバーインスタンスを追加
-            LoadAllVersions(versions, spigotList);
+            LoadVanillaVersions(ref versions, spigotList);
 
             // サーバーをソート
             versions.Sort();
@@ -57,11 +59,15 @@ namespace Server_GUI2
             return VersionMap[name];
         }
 
+        public int GetVersionIndex(Version version)
+        {
+            return versionIndexMap[version.Name];
+        }
 
         /// <summary>
         /// マイクラのバージョン一覧を取得
         /// </summary>
-        public void LoadAllVersions(List<Version> versions, List<string> spigotList)
+        public void LoadVanillaVersions(ref List<Version> versions, List<string> spigotList)
         {
             logger.Info("Import new Vanilla Version List");
 
@@ -90,9 +96,9 @@ namespace Server_GUI2
                 bool hasSpigot = (spigotList?.Contains(id)) ?? false;
                 bool isRelease = type == "release";
                 bool isLatest = id == latestRelease || id == latestSnapShot;
-
-                versions.Add(new VanillaVersion(id, downloadURL, isRelease, hasSpigot, isLatest));
-
+                var versionInstance = new VanillaVersion(id, downloadURL, isRelease, hasSpigot, isLatest);
+                versions.Add(versionInstance);
+                versionIndexMap[id] = i;
                 i++;
             }
 
@@ -137,7 +143,7 @@ namespace Server_GUI2
             return versions;
         }
 
-        private List<string> GetSpigotVersionList(List<Version> versions)
+        private List<string> GetSpigotVersionList(ref List<Version> versions)
         {
             logger.Info("Import new Vanilla Version List");
 
