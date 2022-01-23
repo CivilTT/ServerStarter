@@ -12,7 +12,7 @@ namespace Server_GUI2
         public static string StarterVersion { get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); } }
         public static string DataPath { get { return @".\World_Data"; } }
 
-        public static VersionFactory verFactory = new VersionFactory();
+        public static VersionFactory verFactory = VersionFactory.GetInstance();
         public static UserSettings userSet = new UserSettings();
 
 

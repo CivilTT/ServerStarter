@@ -22,7 +22,6 @@ namespace Server_GUI2.Develop.Util
         /// インターネット上のJsonを読み込む
         /// </summary>
         /// <returns>The deserialized object from the JSON string.</returns>
-        /// <returns>The deserialized object from the JSON string.</returns>
         public static dynamic ReadJson<T>(string url,string errorMessage)
         {
             return ReadJson<T>(url, true, errorMessage);
