@@ -48,6 +48,11 @@ namespace Server_GUI2
             Exists = Directory.Exists(Path);
         }
 
+        public static World TryGetInstance(string name, Version version)
+        {
+            return new World(name, version);
+        }
+
         /// <summary>
         /// ServerPropertyにlevel-name等を記入
         /// </summary>
@@ -74,11 +79,11 @@ namespace Server_GUI2
 
     }
 
-    class VanillaWorld: World
-    {}
+    //class VanillaWorld: World
+    //{}
 
-    class SpigotWorld : World
-    {}
+    //class SpigotWorld : World
+    //{}
   
     class ShareWorld<T> : World
     {

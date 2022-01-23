@@ -30,7 +30,7 @@ namespace Server_GUI2
 
         public Version SelectedVersion { get; set; }
 
-        private Dictionary<string,Version> = new Dictionary<string, Version>();
+        private readonly Dictionary<string, Version> VersionMap = new Dictionary<string, Version>();
 
         public static VersionFactory GetInstance()
         {
@@ -54,7 +54,7 @@ namespace Server_GUI2
 
         public Version GetVersionFromName(string name)
         {
-
+            return VersionMap[name];
         }
 
 
@@ -63,7 +63,7 @@ namespace Server_GUI2
         /// </summary>
         public void LoadAllVersions(List<Version> versions, List<string> spigotList)
         {
-            logger.Info("Import new Version List");
+            logger.Info("Import new Vanilla Version List");
 
             // jsonを取得
             VanillaVersonsJson vanillaVersions = GetVanillaVersionJson();
@@ -139,6 +139,8 @@ namespace Server_GUI2
 
         private List<string> GetSpigotVersionList(List<Version> versions)
         {
+            logger.Info("Import new Vanilla Version List");
+
             string url = "https://hub.spigotmc.org/versions/";
             string message =
                 "Spigotのバージョン一覧の取得に失敗しました。\n" +
@@ -146,7 +148,7 @@ namespace Server_GUI2
             IHtmlDocument doc = ReadContents.ReadHtml(url, message);
             if (doc == null)
             {
-                return null;
+                return new List<string>();
             }
 
             var table = doc.QuerySelectorAll("body > pre > a");
