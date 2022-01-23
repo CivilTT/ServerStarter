@@ -1,120 +1,181 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-//namespace Server_GUI2.Develop.Server.World
-//{
+namespace Server_GUI2.Develop.Server.World
+{
+    abstract class PreWorld{
+        public WorldReader WorldReader { get; private set; }
 
-//    class BeforeWorld
-//    {
-//        Version Version { get; }
-//    }
+        public String Path { get; }
 
-//    class AfterWorld
-//    {
-//        /// <summary>
-//        /// ワールド変換(v2v s2s etc...)をコンストラクタに組み込む。
-//        /// </summary>
-//        /// <param name="beforeWorld"></param>
-//        protected AfterWorld(BeforeWorld beforeWorld)
-//        {
+        /// <summary>
+        /// 
+        /// 指定されたパスに指定されたバージョンでワールドデータを用意する
+        /// 配布ワールド、データパックは導入済みの状態にする
+        /// 
+        /// WorldReader内部からのReadToを使う
+        /// 
+        /// </summary>
+        public abstract void ConvertTo(Version version, string name);
 
-//        }
-//    }
+        protected PreWorld(WorldReader worldReader)
+        {
+            WorldReader = worldReader;
+        }
+    }
 
-//    class WorldReader
-//    {
-//        protected BeforeWorld BeforeWorld;
+    class RunWorld
+    {
+        protected RunWorld(PreWorld preWorld, WorldWriter worldWriter, Version version)
+        {
+            preWorld.ConvertTo(version, worldWriter.Path);
+        }
+    }
 
-//        /// <summary>
-//        /// git pullなりしてワールドデータを用意する
-//        /// </summary>
-//        public virtual BeforeWorld Read(){}
-//    }
+    class WorldReader
+    {
+        public PreWorld PreWorld { get; set; }
 
-
-//    class WorldWriter
-//    {
-//        protected string Path { get; }
-//        protected AfterWorld AfterWorld { get; }
-
-//        protected WorldWriter(AfterWorld afterWorld)
-//        {
-//            AfterWorld = afterWorld;
-//        }
-
-//        /// <summary>
-//        /// git pushなりしてワールドデータを書き出す
-//        /// </summary>
-//        public virtual void Write() { }
-
-//    }
+        /// <summary>
+        /// 
+        /// 指定されたパスにワールドデータを用意するだけ
+        /// バージョン変更やSpigot-Vanilla変換はしない
+        /// 
+        /// </summary>
+        public virtual void ReadTo(string path) { }
+    }
 
 
-//    class Use
-//    {
-//        public static void Test()
-//        {
-//            var reader = new WorldReader();
-//            new LocalWorldWriter( new VanillaAfterWorld(reader.Read()));
-//        }
-//    }
+    class WorldWriter
+    {
+        public string Path { get; }
+        protected RunWorld RunWorld { get; }
+
+        protected WorldWriter(RunWorld runWorld)
+        {
+            RunWorld = runWorld;
+        }
+
+        public virtual void Write() { }
+
+    }
 
 
-//    class NewBeforeWorld : BeforeWorld
-//    { }
+    class Use
+    {
+        public static void Test()
+        {
 
-//    class VanillaBeforeWorld: BeforeWorld
-//    { }
+            var ver = new Version();
 
-//    class SpigotBeforeWorld : BeforeWorld
-//    { }
-
-
-
-//    class VanillaAfterWorld : AfterWorld
-//    { }
-
-//    class SpigotAfterWorld : AfterWorld
-//    { }
+            new VanillaRunWorld(new VanillaPreWorld(new GitWorldReader()),new GitWorldWriter(ver));
+        }
+    }
 
 
+    class NewPreWorld : PreWorld
+    {
+        public NewPreWorld(WorldReader worldReader) : base(worldReader) { }
+
+        public override void ConvertTo(Version version, string path)
+        {
+            WorldReader.ReadTo(path);
+        }
+    }
 
 
-//    class NewWorldReader : WorldReader {
-//        public NewWorldReader()
-//        {
-//            BeforeWorld = new NewBeforeWorld();
-//        }
-//    }
-
-//    class LocalWorldReader : WorldReader
-//    {
-//        public LocalWorldReader(BeforeWorld beforeWorld)
-//        {
-//            BeforeWorld = beforeWorld;
-//        }
-//    }
-//    class GitWorldReader : WorldReader {
-//        public GitWorldReader(BeforeWorld beforeWorld)
-//        {
-//            BeforeWorld = beforeWorld;
-//        }
-//    }
+    class CustomPreWorld : PreWorld
+    { }
 
 
+    class VanillaPreWorld : PreWorld
+    {
+        public VanillaPreWorld(WorldReader worldReader):base(worldReader){ }
+
+        public override void ConvertTo(Version version, string path)
+        {
+            // check Version
+
+            WorldReader.ReadTo(path);
+
+            switch (version)
+            {
+                case VanillaVersion v:
+                    // v2v
+                    // move Vanilla data
+                    break;
+                case SpigotVersion v:
+                    // v2s
+                    // convert Spigot to Vanilla
+                    break;
+                default:
+                    throw new ArgumentException("未知のVersionであるため変換できません");
+            }
+        }
+    }
 
 
-//    class LocalWorldWriter : WorldWriter{ }
+    class SpigotPreWorld : PreWorld
+    {}
+
+
+    class VanillaRunWorld : RunWorld
+    {
+        public VanillaRunWorld(PreWorld preWorld, WorldWriter worldWriter, Version version):base(preWorld, worldWriter, version)
+        {
+        }
+    }
+
+    class SpigotRunWorld : RunWorld
+    {
+        public SpigotRunWorld(PreWorld preWorld, WorldWriter worldWriter, Version version) : base(preWorld, worldWriter, version)
+        {
+        }
+    }
 
 
 
-//    class GitWorldWriter : WorldWriter
-//    {
-        
-//    }
+
+    class NewWorldReader : WorldReader
+    {
+        // 新規ワールドを返す
+        public override PreWorld Read()
+        {
+            return new NewPreWorld();
+        }
+
+    }
+
+    class LocalWorldReader : WorldReader
+    {
+        public override PreWorld Read()
+        {
+            return new VanillaPreWorld();
+        }
+    }
+
+    class GitWorldReader : WorldReader
+    {
+        public GitWorldReader(PreWorld beforeWorld)
+        {
+            PreWorld = beforeWorld;
+        }
+    }
 
 
-//}
+
+
+    class LocalWorldWriter : WorldWriter { }
+
+
+
+    class GitWorldWriter : WorldWriter
+    {
+
+    }
+
+
+}

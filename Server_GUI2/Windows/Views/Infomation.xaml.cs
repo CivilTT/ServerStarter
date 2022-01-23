@@ -50,7 +50,7 @@ namespace Server_GUI2
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return $"{Data_list.Env_list["Memory_All"]} KB  ({Math.Round(double.Parse(Data_list.Env_list["Memory_All"]) / (1000 * 1000), 1)} GB)";
+            return $"{Data_list.Env_list["Memory_All"]} KB  ({Math.Round(double.Parse(Data_list.Env_list["Memory_All"]) /// (1000 * 1000), 1)} GB)";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -63,7 +63,7 @@ namespace Server_GUI2
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return $"{Data_list.Env_list["Memory_Ava"]} KB  ({Math.Round(double.Parse(Data_list.Env_list["Memory_Ava"]) / (1000 * 1000), 1)} GB)";
+            return $"{Data_list.Env_list["Memory_Ava"]} KB  ({Math.Round(double.Parse(Data_list.Env_list["Memory_Ava"]) /// (1000 * 1000), 1)} GB)";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
