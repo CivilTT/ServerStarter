@@ -48,6 +48,11 @@ namespace Server_GUI2
             Exists = Directory.Exists(Path);
         }
 
+        public static World TryGetInstance(string name, Version version)
+        {
+            return new World(name, version);
+        }
+
         /// <summary>
         /// ServerPropertyにlevel-name等を記入
         /// </summary>

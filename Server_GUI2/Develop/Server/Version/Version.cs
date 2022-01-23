@@ -53,6 +53,11 @@ namespace Server_GUI2
             Exists = Directory.Exists(Path);
         }
 
+        public static Version TryGetInstance(string name)
+        {
+            return new Version(name);
+        }
+
         /// <summary>
         /// サーバーを起動する際にはこれを呼び出す
         /// Server.Run()を直接呼び出すとbatファイルの生成ができない
@@ -66,11 +71,24 @@ namespace Server_GUI2
 
         private void CreateStartBat()
         {
+            string batPath = $@"{Path}\start.bat";
+            string header = "@REM 1";
+            if (File.Exists(batPath))
+            {
+                using (var reader = new StreamReader(batPath))
+                {
+                    // バッチファイルが最新版か
+                    if (reader.ReadLine() == header)
+                        return;
+                }
+            }
+
             logger.Info("Generate start.bat");
             try
             {
-                using (var writer = new StreamWriter($@"{Path}\start.bat", false))
+                using (var writer = new StreamWriter(batPath, false))
                 {
+                    writer.WriteLine(header);
                     writer.WriteLine("@echo off");
                     writer.WriteLine("cd %~dp0");
                     writer.WriteLine($"java -Xmx5G -Xms5G{Log4jArgument} -jar {JarName} nogui");
@@ -281,7 +299,7 @@ namespace Server_GUI2
                 throw new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})");
             }
 
-            CreateBat();
+            CreateBuildBat();
             Process p = Process.Start($@"{Path}\build.bat");
             p.WaitForExit();
 
@@ -319,24 +337,17 @@ namespace Server_GUI2
             Server.AgreeEula();
         }
 
-        private void CreateBat()
+        private void CreateBuildBat()
         {
             logger.Info("Generate build.bat");
-            List<string> build = new List<string>
-            {
-                "@echo off",
-                "cd %~dp0",
-                $"java -jar BuildTools.jar --rev {Name}"
-            };
-
             try
             {
                 using (var writer = new StreamWriter($@"{Path}\build.bat", false))
                 {
-                    foreach (string line in build)
-                    {
-                        writer.WriteLine(line);
-                    }
+                    writer.WriteLine("@echo off");
+                    writer.WriteLine("cd %~dp0");
+                    writer.WriteLine($"java -jar BuildTools.jar --rev {Name}");
+                    writer.WriteLine("del /f \"%~dp0%~nx0\"");
                 }
             }
             catch (Exception ex)
