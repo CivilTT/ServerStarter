@@ -172,6 +172,9 @@ namespace Server_GUI2.Develop.Server.World
 
 
 
+    class GitWorldWriter : WorldWriter
+    {
+
     class GitWorldWriter : WorldWriter { }
 
 

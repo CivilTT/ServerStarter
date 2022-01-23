@@ -21,7 +21,6 @@ namespace Server_GUI2
     public class VersionFactory
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly WebClient wc = new WebClient();
 
         private static VersionFactory _instance = new VersionFactory();
 

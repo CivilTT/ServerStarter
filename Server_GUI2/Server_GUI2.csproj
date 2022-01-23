@@ -91,10 +91,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Develop\Server\World\GitOperate.cs" />
     <Compile Include="Develop\Server\World\WorldDev.cs" />
     <Compile Include="Develop\Server\World\Datapack.cs" />
     <Compile Include="Develop\Server\World\ShareWorld.cs" />
     <Compile Include="Develop\UserSettings.cs" />
+    <Compile Include="Develop\Util\Git.cs" />
     <Compile Include="Develop\Util\ReadContents.cs" />
     <Compile Include="Windows\MainWindow\MainWindowCommand.cs" />
     <Compile Include="Windows\GeneralVM.cs" />
