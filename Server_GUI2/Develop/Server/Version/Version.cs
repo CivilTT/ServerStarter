@@ -154,10 +154,9 @@ namespace Server_GUI2
         }
 
         // 比較可能にする
-        public virtual int CompareTo(Version obj)
+        public int CompareTo(Version ver)
         {
-            // TODO: Versionの比較について実装する
-            throw new NotImplementedException();
+            return VersionFactory.GetInstance().GetVersionIndex(ver) - VersionFactory.GetInstance().GetVersionIndex(this);
         }
     }
 
