@@ -27,5 +27,10 @@ namespace Server_GUI2
 
         }
 
+        private bool CheckEula()
+        {
+            return true;
+        }
+
     }
 }
