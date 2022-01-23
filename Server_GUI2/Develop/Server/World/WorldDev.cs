@@ -60,7 +60,6 @@ namespace Server_GUI2.Develop.Server.World
         }
 
         public virtual void Write() { }
-
     }
 
 
@@ -68,10 +67,12 @@ namespace Server_GUI2.Develop.Server.World
     {
         public static void Test()
         {
-
             var ver = new Version();
+            new VanillaRunWorld(new VanillaPreWorld(new GitWorldReader(git)),new GitWorldWriter(git,ver));
 
-            new VanillaRunWorld(new VanillaPreWorld(new GitWorldReader()),new GitWorldWriter(ver));
+            new GitWorldReader(git);
+            new LocalWorldReader(path);
+            new NewWorldReader();
         }
     }
 
@@ -146,7 +147,6 @@ namespace Server_GUI2.Develop.Server.World
         {
             return new NewPreWorld();
         }
-
     }
 
     class LocalWorldReader : WorldReader
@@ -172,10 +172,7 @@ namespace Server_GUI2.Develop.Server.World
 
 
 
-    class GitWorldWriter : WorldWriter
-    {
-
-    }
+    class GitWorldWriter : WorldWriter { }
 
 
 }
