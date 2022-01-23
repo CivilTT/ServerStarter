@@ -87,8 +87,11 @@ namespace Server_GUI2
         /// 与えられたパスが有効なデータパックの場合インスタンスを生成する
         /// でなければnullを返す。
         /// </summary>
-        public static ImportDatapack TryGenInstance(World world, string name, string sourcePath, bool isZip)
+        public static ImportDatapack TryGenInstance(World world, string sourcePath, bool isZip)
         {
+            // フォルダ名を取得する
+            string name = System.IO.Path.GetFileNameWithoutExtension(sourcePath);
+
             if ( isZip ? IsValidZip(sourcePath, name) : IsValidDirectory(sourcePath, name) )
             {
                 return new ImportDatapack(world, name, sourcePath, isZip);
@@ -123,16 +126,19 @@ namespace Server_GUI2
         /// <returns></returns>
         static private bool IsValidZip(string sourcePath, string name)
         {
-            // Zipの中身を読み込む
-            ZipArchive zipArchive = ZipFile.OpenRead(sourcePath);
+            bool result;
+            using (ZipArchive zipArchive = ZipFile.OpenRead(sourcePath))
+            {
+                // フォルダの直下(or一つ下)に pack.mcmeta & dataフォルダ が存在しているかを確認する
+                string dirPath = (zipArchive.GetEntry(name) == null) ? $@"{name}/" : "";
 
-            // フォルダの直下(or一つ下)に pack.mcmeta & dataフォルダ が存在しているかを確認する
-            string dirPath = (zipArchive.GetEntry(name) != null) ? $@"{name}/" : "";
+                ZipArchiveEntry metaEntry = zipArchive.GetEntry($"{dirPath}pack.mcmeta");
+                ZipArchiveEntry dataEntry = zipArchive.GetEntry($"{dirPath}data/");
 
-            ZipArchiveEntry metaEntry = zipArchive.GetEntry($"{dirPath}pack.mcmeta");
-            ZipArchiveEntry dataEntry = zipArchive.GetEntry($"{dirPath}data");
+                result = metaEntry != null && dataEntry != null;
+            }
 
-            return metaEntry != null && dataEntry != null;
+            return result;
         }
 
         private void Import()
@@ -152,7 +158,13 @@ namespace Server_GUI2
                 FileSystem.CopyDirectory(SourcePath, Path);
             }
 
-            // TODO: data, pack.mcmetaが一層深くなっているときは、それを上げる処理をする
+            // data, pack.mcmetaが一層深くなっているときは、それを上げる処理をする
+            if (Directory.Exists($@"{Path}\{Name}"))
+            {
+                Directory.Move($@"{Path}\{Name}\data", $@"{Path}\data");
+                File.Move($@"{Path}\{Name}\pack.mcmeta", $@"{Path}\pack.mcmeta");
+                Directory.Delete($@"{Path}\{Name}");
+            }
         }
 
         /// <summary>
