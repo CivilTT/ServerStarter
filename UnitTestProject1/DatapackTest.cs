@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Server_GUI2;
 
+
 namespace UnitTestProject1
 {
     [TestClass]
@@ -11,11 +12,10 @@ namespace UnitTestProject1
         {
             Version version = Version.TryGetInstance("1.16.5");
             World world = World.TryGetInstance("TestWorld", version);
-            ImportDatapack datapack = ImportDatapack.TryGenInstance(world, "BoostMinecart", @"D:\Games\Minecraft\Datapacks\boost_minecart", false);
+            ImportDatapack datapack = ImportDatapack.TryGenInstance(world, @"D:\Games\Minecraft\Datapacks\boost_minecart.zip", true);
             if (datapack == null)
             {
-                System.Console.WriteLine("Invalid Datapack");
-                return;
+                throw new System.Exception("Invalid Datapack");
             }
             datapack.Ready();
         }
