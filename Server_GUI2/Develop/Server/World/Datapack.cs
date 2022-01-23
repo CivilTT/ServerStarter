@@ -21,13 +21,8 @@ namespace Server_GUI2
 
         protected bool IsZip;
 
-        public string Path
-        {
-            get
-            {
-                return $@"{World.Path}\datapacks\{Name}";
-            }
-        }
+        public string Path { get { return $@"{World.Path}\datapacks\{Name}"; } }
+
 
         protected Datapack(World world, string name)
         {
@@ -82,6 +77,7 @@ namespace Server_GUI2
 
     /// <summary>
     /// 展開して移動する必要があるデータパック
+    /// 移動先に移動するデータパックが存在していないことを前提とする
     /// </summary>
     public class ImportDatapack : Datapack
     {
@@ -155,6 +151,8 @@ namespace Server_GUI2
             {
                 FileSystem.CopyDirectory(SourcePath, Path);
             }
+
+            // TODO: data, pack.mcmetaが一層深くなっているときは、それを上げる処理をする
         }
 
         /// <summary>

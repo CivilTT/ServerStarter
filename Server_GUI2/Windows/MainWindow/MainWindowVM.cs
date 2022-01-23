@@ -1,4 +1,5 @@
 ﻿using Server_GUI2.Windows.Commands;
+using Server_GUI2;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Windows.Data;
 
 namespace Server_GUI2.Windows.ViewModels
 {
@@ -66,32 +68,51 @@ namespace Server_GUI2.Windows.ViewModels
         /// <summary>
         /// Comboboxに表示するバージョンの一覧を保持
         /// </summary>
-        private List<string> ShowNewVersions
-        {
-            get
-            {
-                List<Version> _vers = new List<Version>();
-                if (ShowSpigot)
-                {
-                    _vers = verFactory.Versions.FindAll(x => x.hasSpigot);
-                    return _vers.ConvertAll(x => $"Spigot {x.Name}");
-                }
+        private List<string> ShowNewVersions;
+        //{
+        //    get
+        //    {
+        //        //List<Version> _vers = new List<Version>();
+        //        //if (ShowSpigot)
+        //        //{
+        //        //    _vers = verFactory.Versions.FindAll(x => x.hasSpigot);
+        //        //    return _vers.ConvertAll(x => $"Spigot {x.Name}");
+        //        //}
 
-                if (ShowAll)
-                {
-                    _vers = verFactory.Versions;
-                }
-                else
-                {
-                    _vers = verFactory.Versions.FindAll(x => x.isRelease);
+        //        //if (ShowAll)
+        //        //{
+        //        //    _vers = verFactory.Versions;
+        //        //}
+        //        //else
+        //        //{
+        //        //    _vers = verFactory.Versions.FindAll(x => x.isRelease);
 
-                    // SnapShotの最新版を表示
-                    _vers.Insert(1, verFactory.Versions.Find(x => !x.isRelease && x.isLatest));
-                }
+        //        //    // SnapShotの最新版を表示
+        //        //    _vers.Insert(1, verFactory.Versions.Find(x => !x.isRelease && x.isLatest));
+        //        //}
 
-                return _vers.ConvertAll(x => VanilaVerConverter(x));
-            }
-        }
+        //        //return _vers.ConvertAll(x => VanillaVerConverter(x));
+
+        //        // TODO: Live Shaping によるVersionのフィルタリング実装
+        //        view = new CollectionViewSource()
+        //        {
+        //            Source = verFactory.Versions
+        //        };
+        //        view.Filter += new FilterEventHandler(test);
+        //        //view.SortDescriptions.Add(new SortDescription("Salary", ListSortDirection.Descending));
+        //        //return verFactory.Versions.Select(x => x is VanillaVersion);
+        //    }
+        //}
+
+        //private void test(object sender, FilterEventArgs e)
+        //{
+        //    Version version = e.Item as Version;
+
+        //    e.Accepted = version is VanillaVersion;
+        //}
+        //public CollectionViewSource view;
+
+
         public List<string> NewVersions
         {
             get
@@ -107,7 +128,7 @@ namespace Server_GUI2.Windows.ViewModels
         /// <summary>
         /// 選択されているバージョンを文字列で保持
         /// </summary>
-        private string _selectedNewVersion = VanilaVerConverter(verFactory.Versions[0]);
+        private string _selectedNewVersion = VanillaVerConverter(verFactory.Versions[0]);
         public string SelectedNewVersion
         {
             get
@@ -126,24 +147,36 @@ namespace Server_GUI2.Windows.ViewModels
         /// <summary>
         /// 型VersionをComboboxで表示する文字列に変換する
         /// </summary>
-        private static string VanilaVerConverter(Version x)
+        private static string VanillaVerConverter(Version x)
         {
-            if (x.isRelease && x.isLatest)
+            return null;
+
+            // TODO: VanillaとSpigotの表示名Convert処理を記載
+            if(x is VanillaVersion)
             {
-                return $"【LatestRelease】 {x.Name}";
+
             }
-            else if (!x.isRelease && x.isLatest)
+            else if (x is SpigotVersion)
             {
-                return $"【LatestSnapshot】 {x.Name}";
+
             }
-            else if (x.isRelease)
-            {
-                return $"release {x.Name}";
-            }
-            else
-            {
-                return $"snapshot {x.Name}";
-            }
+
+            //if (x.isRelease && x.isLatest)
+            //{
+            //    return $"【LatestRelease】 {x.Name}";
+            //}
+            //else if (!x.isRelease && x.isLatest)
+            //{
+            //    return $"【LatestSnapshot】 {x.Name}";
+            //}
+            //else if (x.isRelease)
+            //{
+            //    return $"release {x.Name}";
+            //}
+            //else
+            //{
+            //    return $"snapshot {x.Name}";
+            //}
         }
 
 
@@ -156,7 +189,8 @@ namespace Server_GUI2.Windows.ViewModels
         {
             get
             {
-                List<string> _vers = verFactory.installedVersions.ConvertAll(x => ExistsVerConverter(x));
+                // この部分はバージョンの表示を一つにすれば不要になる？
+                List<string> _vers = new List<string>();
                 _vers.Add("【new Version】");
                 return _vers;
             }
@@ -174,7 +208,7 @@ namespace Server_GUI2.Windows.ViewModels
         }
         public static string ExistsVerConverter(Version x)
         {
-            if (x.isVanila)
+            if (x is VanillaVersion)
             {
                 return x.Name;
             }

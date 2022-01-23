@@ -141,7 +141,7 @@ namespace Server_GUI2
         public LatestRun(Version version, World world)
         {
             VersionName = version.Name;
-            VersionType = version.isVanila ? "vanila" : "spigot";
+            VersionType = version is VanillaVersion ? "vanila" : "spigot";
             WorldName = world.Name;
         }
     }
