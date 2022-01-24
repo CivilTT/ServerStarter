@@ -25,10 +25,10 @@ namespace UnitTestProject1
 
             //var list = versionFactory.Versions.Select(x => x is VanillaVersion);
 
-            //foreach (var item in list)
-            //{
-            //    Console.WriteLine(item.);
-            //}
+            foreach (var item in a)
+            {
+                Console.WriteLine(item.Name);
+            }
 
         }
 
