@@ -123,12 +123,12 @@ namespace Server_GUI2
         [JsonProperty("ShareWorld")]
         // ShareWorld はワールド名、Gitのアカウント名、GitのE-mailアドレスの情報を記録する
         // ShareWorldという名前でなくても共有ワールド化できるようにする
-        public List<ShareWorld> shareworlds;
+        public List<ShareWorld> shareworlds = new List<ShareWorld>();
 
         [JsonProperty("DefaultProperty")]
         // あくまでデフォルトはシステムで保持しておき、それから変更したものを通常設定としたい場合の部分のみこれで保持する
         // { "difficulty" : "hard" }
-        public Dictionary<string, string> defaultProperties;
+        public Dictionary<string, string> defaultProperties = new Dictionary<string, string>();
 
     }
 
