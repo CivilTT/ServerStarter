@@ -22,10 +22,32 @@ namespace Server_GUI2
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static VersionFactory Instance { get { return new VersionFactory(); } }
+        public readonly static VersionFactory Instance = new VersionFactory();
 
         // TODO: vanilla only/ release only / spigot only はViewModelのほうでリアルタイムフィルタ使って実装 https://blog.okazuki.jp/entry/2013/12/07/000341
-        public ObservableCollection<Version> Versions { get; private set; }
+        private ObservableCollection<Version> _versions = null;
+
+        public ObservableCollection<Version> Versions
+        {
+            get
+            {
+                if (_versions != null)
+                {
+                    return _versions;
+                }
+                var versions = new List<Version>();
+
+                // spigotのサーバーインスタンスを追加
+                List<string> spigotList = GetSpigotVersionList(ref versions);
+
+                // vanillaのサーバーインスタンスを追加
+                LoadVanillaVersions(ref versions, spigotList);
+
+                // サーバーをソート
+                versions.Sort();
+                return new ObservableCollection<Version>(versions);
+            }
+        }
 
         public Version SelectedVersion { get; set; }
 
@@ -34,19 +56,7 @@ namespace Server_GUI2
         private Dictionary<string, int> versionIndexMap = new Dictionary<string, int>();
 
         private VersionFactory()
-        {
-            var versions = new List<Version>();
-
-            // spigotのサーバーインスタンスを追加
-            List<string> spigotList = GetSpigotVersionList(ref versions);
-
-            // vanillaのサーバーインスタンスを追加
-            LoadVanillaVersions(ref versions, spigotList);
-
-            // サーバーをソート
-            versions.Sort();
-            Versions = new ObservableCollection<Version>(versions);
-        }
+        { }
 
         public Version GetVersionFromName(string name)
         {
@@ -122,7 +132,8 @@ namespace Server_GUI2
                 {
                     sw.Write(JsonConvert.SerializeObject(versions));
                 }
-            } else
+            }
+            else
             {
                 using (var reader = new StreamReader($@"{Directory.GetCurrentDirectory()}\version_manifest_v2.json"))
                 {
@@ -221,7 +232,8 @@ namespace Server_GUI2
         /// <summary>
         /// バージョンの削除(紐づけられたディレクトリを削除し、インスタンスは削除しない)
         /// </summary>
-        public void Remove(Version version) {
+        public void Remove(Version version)
+        {
             version.Remove();
         }
 
@@ -256,7 +268,7 @@ namespace Server_GUI2
 
         [JsonProperty("url")]
         public string url;
-        
+
         [JsonProperty("type")]
         public string type;
     }
