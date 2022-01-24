@@ -33,7 +33,7 @@ namespace Server_GUI2.Develop.Util
 
     class GitRepository
     {
-        public GitBranch GetBranch() { }
+        //public GitBranch GetBranch() { }
     }
 
     class GitBranch
