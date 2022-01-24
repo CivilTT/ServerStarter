@@ -34,17 +34,23 @@ namespace Server_GUI2
         /// 削除の必要性があるかどうか
         /// TODO: Viewを更新するためにEventを作成する
         /// </summary>
-        public bool RemoveDp;
+        public bool IsRemove;
 
         protected virtual void Remove() { }
 
+        protected virtual void Import() { } 
+
         /// <summary>
-        /// RUN時に実行。ワールドデータ内にデータパックがあることを保証する
+        /// RUN時に実行。
+        /// ワールドデータ内にデータパックがあることを保証する
+        /// データパック導入に関する一連の処理を行う
         /// </summary>
-        public virtual void Ready()
+        public void Ready()
         {
-            if (RemoveDp)
+            if (IsRemove)
                 Remove();
+
+            Import();
         }
     }
 
@@ -57,6 +63,12 @@ namespace Server_GUI2
         {
             
         }
+
+        /// <summary>
+        /// データパックを新規導入(何もしない)
+        /// </summary>
+        protected override void Import() { }
+
 
         /// <summary>
         /// TODO: ディレクトリからデータパックを削除
@@ -141,7 +153,7 @@ namespace Server_GUI2
             return result;
         }
 
-        private void Import()
+        protected override void Import()
         {
             if (IsZip)
             {
@@ -171,16 +183,5 @@ namespace Server_GUI2
         /// ディレクトリからデータパックを削除(何もしない)
         /// </summary>
         protected override void Remove() { }
-
-        /// <summary>
-        /// TODO: ワールドデータ内にデータパックを移動して展開
-        /// </summary>
-        public override void Ready()
-        {
-            base.Ready();
-
-            Import();
-        }
-
     }
 }
