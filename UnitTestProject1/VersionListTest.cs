@@ -14,7 +14,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void GetVersionList()
         {
-            VersionFactory versionFactory = VersionFactory.Instance;
+            var a = VersionFactory.Instance.Versions;
 
             //CollectionViewSource view = new CollectionViewSource()
             //{
