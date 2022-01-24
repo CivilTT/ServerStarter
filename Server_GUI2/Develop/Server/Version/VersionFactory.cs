@@ -70,7 +70,7 @@ namespace Server_GUI2
 
         public int GetVersionIndex(Version version)
         {
-            Console.WriteLine("***" + version.Name + versionIndexMap.ContainsKey(version.Name).ToString());
+            //Console.WriteLine("***" + version.Name + versionIndexMap.ContainsKey(version.Name).ToString());
             return versionIndexMap[version.Name];
         }
 
