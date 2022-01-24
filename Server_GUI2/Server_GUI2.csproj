@@ -91,6 +91,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Develop\Server\Version\Plugin.cs" />
     <Compile Include="Develop\Server\World\GitOperate.cs" />
     <Compile Include="Develop\Server\World\WorldDev.cs" />
     <Compile Include="Develop\Server\World\Datapack.cs" />
