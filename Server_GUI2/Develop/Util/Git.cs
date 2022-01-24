@@ -25,7 +25,7 @@
 //    {
 //        public static string ExecuteThrow(string path, string arguments, Exception exception)
 //        {
-//            var (code, output) = Execute(path,arguments);
+//            var (code, output) = Execute(path, arguments);
 
 //            if (code != 0)
 //            {
@@ -46,7 +46,7 @@
 //            {
 //                StartInfo = new ProcessStartInfo("git")
 //                {
-//                    Arguments = $"-C \"{path}\" "+arguments,
+//                    Arguments = $"-C \"{path}\" " + arguments,
 //                    UseShellExecute = false,
 //                    RedirectStandardOutput = true,
 //                    StandardOutputEncoding = Encoding.UTF8
@@ -68,7 +68,7 @@
 //        /// </summary>
 //        public bool IsGitRepository()
 //        {
-//            var (code,output) = GitCommand.Execute(path,"rev-parse --show-toplevel");
+//            var (code, output) = GitCommand.Execute(path, "rev-parse --show-toplevel");
 //            return code == 0 && Path.GetFullPath(output).Equals(Path.GetFullPath(path));
 //        }
 
@@ -77,7 +77,7 @@
 //        /// </summary>
 //        public string GetCurrentBranch()
 //        {
-//            var output = GitCommand.ExecuteThrow(path,"symbolic-ref --short HEAD",new GitException("cannot get current branch name."));
+//            var output = GitCommand.ExecuteThrow(path, "symbolic-ref --short HEAD", new GitException("cannot get current branch name."));
 //            return output.Substring(0, output.Length - 1); // 末尾の\nを削除
 //        }
 
@@ -100,7 +100,7 @@
 //            Push();
 //        }
 
-//        public void Push(string localBranch,string remoteBranch)
+//        public void Push(string localBranch, string remoteBranch)
 //        {
 //            GitCommand.ExecuteThrow(path, $"push {branch.Repository.Url} \"{branch.LocalBranchName}:{branch.Name}\"", new GitException($"failed to add branch {branch}"));
 //        }
@@ -121,7 +121,7 @@
 //    {
 //        public string Account { get; private set; }
 //        public string RepoName { get; private set; }
-//        public Dictionary<string,GitRemoteBranch> ExistsBranchMap { get; private set; }
+//        public Dictionary<string, GitRemoteBranch> ExistsBranchMap { get; private set; }
 //        public string Url
 //        {
 //            get
@@ -172,7 +172,7 @@
 //            }
 //        }
 
-//        public GitRemoteBranch(GitRemoteRepository repository,string name)
+//        public GitRemoteBranch(GitRemoteRepository repository, string name)
 //        {
 //            Repository = repository;
 //            Name = name;
