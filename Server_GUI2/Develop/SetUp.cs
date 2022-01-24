@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -10,7 +11,8 @@ namespace Server_GUI2
     class SetUp
     {
         public static string StarterVersion { get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); } }
-        public static string DataPath { get { return @".\World_Data"; } }
+        public static string CurrentDirectory { get { return "."; } }
+        public static string DataPath { get { return Path.Combine(CurrentDirectory, "World_Data"); } }
 
         public static VersionFactory verFactory = VersionFactory.Instance;
         public static UserSettings userSet = new UserSettings();
