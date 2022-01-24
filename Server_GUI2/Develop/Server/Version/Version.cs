@@ -156,7 +156,7 @@ namespace Server_GUI2
         // 比較可能にする
         public int CompareTo(Version ver)
         {
-            return VersionFactory.GetInstance().GetVersionIndex(ver) - VersionFactory.GetInstance().GetVersionIndex(this);
+            return VersionFactory.Instance.GetVersionIndex(ver) - VersionFactory.Instance.GetVersionIndex(this);
         }
     }
 
