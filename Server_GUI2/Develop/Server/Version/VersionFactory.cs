@@ -22,7 +22,7 @@ namespace Server_GUI2
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static VersionFactory Instance { get { return new VersionFactory(); } }
+        public readonly static VersionFactory Instance  = new VersionFactory();
 
         // TODO: vanilla only/ release only / spigot only はViewModelのほうでリアルタイムフィルタ使って実装 https://blog.okazuki.jp/entry/2013/12/07/000341
         private ObservableCollection<Version> _versions = null;
@@ -43,6 +43,9 @@ namespace Server_GUI2
                 // vanillaのサーバーインスタンスを追加
                 LoadVanillaVersions(ref versions, spigotList);
 
+                // spigotのみのサーバー名を比較可能にする
+                AddSpigotOnlyVersionToVersionIndexMap();
+
                 // サーバーをソート
                 versions.Sort();
                 return new ObservableCollection<Version>(versions);
@@ -51,12 +54,14 @@ namespace Server_GUI2
 
         public Version SelectedVersion { get; set; }
 
-        private readonly Dictionary<string, Version> VersionMap = new Dictionary<string, Version>();
+        private Dictionary<string, Version> VersionMap = new Dictionary<string, Version>();
 
-        private Dictionary<string, int> versionIndexMap = new Dictionary<string, int>();
+        private Dictionary<string, int> versionIndexMap;
 
         private VersionFactory()
-        {}
+        {
+            versionIndexMap = new Dictionary<string, int>();
+        }
 
         public Version GetVersionFromName(string name)
         {
@@ -65,6 +70,7 @@ namespace Server_GUI2
 
         public int GetVersionIndex(Version version)
         {
+            Console.WriteLine("***" + version.Name + versionIndexMap.ContainsKey(version.Name).ToString());
             return versionIndexMap[version.Name];
         }
 
@@ -115,6 +121,11 @@ namespace Server_GUI2
             //Version _snapshot = new VanillaVersion(id, downloadURL, false, true);
             //allVersions.Insert(1, _snapshot);
             //}
+        }
+
+        private void AddSpigotOnlyVersionToVersionIndexMap()
+        {
+            versionIndexMap["1.14-pre5"] = versionIndexMap["1.14 Pre-Release 5"];
         }
 
         /// <summary>
@@ -257,8 +268,8 @@ namespace Server_GUI2
 
         [JsonProperty("versions")]
         public List<VanillaVersonJson> versions;
-
     }
+
     public class VanillaVersonJson
     {
         [JsonProperty("id")]
