@@ -25,7 +25,29 @@ namespace Server_GUI2
         public static VersionFactory Instance { get { return new VersionFactory(); } }
 
         // TODO: vanilla only/ release only / spigot only はViewModelのほうでリアルタイムフィルタ使って実装 https://blog.okazuki.jp/entry/2013/12/07/000341
-        public ObservableCollection<Version> Versions { get; private set; }
+        private ObservableCollection<Version> _versions = null;
+        
+        public ObservableCollection<Version> Versions
+        {
+            get
+            {
+                if ( _versions != null)
+                {
+                    return _versions;
+                }
+                var versions = new List<Version>();
+
+                // spigotのサーバーインスタンスを追加
+                List<string> spigotList = GetSpigotVersionList(ref versions);
+
+                // vanillaのサーバーインスタンスを追加
+                LoadVanillaVersions(ref versions, spigotList);
+
+                // サーバーをソート
+                versions.Sort();
+                return new ObservableCollection<Version>(versions);
+            }
+        }
 
         public Version SelectedVersion { get; set; }
 
@@ -34,19 +56,7 @@ namespace Server_GUI2
         private Dictionary<string, int> versionIndexMap = new Dictionary<string, int>();
 
         private VersionFactory()
-        {
-            var versions = new List<Version>();
-
-            // spigotのサーバーインスタンスを追加
-            List<string> spigotList = GetSpigotVersionList(ref versions);
-
-            // vanillaのサーバーインスタンスを追加
-            LoadVanillaVersions(ref versions, spigotList);
-
-            // サーバーをソート
-            versions.Sort();
-            Versions = new ObservableCollection<Version>(versions);
-        }
+        {}
 
         public Version GetVersionFromName(string name)
         {
