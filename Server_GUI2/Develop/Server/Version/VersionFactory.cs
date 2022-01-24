@@ -22,7 +22,7 @@ namespace Server_GUI2
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static VersionFactory _instance = new VersionFactory();
+        public static VersionFactory Instance { get { return new VersionFactory(); } }
 
         // TODO: vanilla only/ release only / spigot only はViewModelのほうでリアルタイムフィルタ使って実装 https://blog.okazuki.jp/entry/2013/12/07/000341
         public ObservableCollection<Version> Versions { get; private set; }
@@ -30,11 +30,6 @@ namespace Server_GUI2
         public Version SelectedVersion { get; set; }
 
         private readonly Dictionary<string, Version> VersionMap = new Dictionary<string, Version>();
-
-        public static VersionFactory GetInstance()
-        {
-            return _instance;
-        }
 
         private Dictionary<string, int> versionIndexMap = new Dictionary<string, int>();
 
