@@ -10,9 +10,13 @@ C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTest
 C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
 C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
 C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
-C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.csprojAssemblyReference.cache
 C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.csproj.CoreCompileInputs.cache
 C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.csproj.CopyComplete
 C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.dll
 C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.pdb
 C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\obj\Debug\UnitTestProject1.csproj.AssemblyReference.cache
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\log4net.config
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Server_GUI2.exe
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Interop.NATUPNPLib.dll
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Server_GUI2.pdb
+C:\Users\shiyu\OneDrive\ドキュメント\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\Server_GUI2.exe.config
