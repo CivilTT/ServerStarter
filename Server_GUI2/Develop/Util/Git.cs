@@ -344,6 +344,10 @@ namespace Server_GUI2.Develop.Util
         {
             var output = GitCommand.ExecuteThrow($"ls-remote --heads {Expression}", new GitException($"failed to get branch list from {Expression}"),null);
             var branchMap = new Dictionary<string, GitRemoteBranch>();
+            if (output.Length == 0)
+            {
+                return branchMap;
+            }
             var lines = output.Substring(0, output.Length - 1).Split('\n');
             foreach (var i in lines)
             {
