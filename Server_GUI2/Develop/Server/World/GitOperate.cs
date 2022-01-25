@@ -23,9 +23,7 @@ namespace Server_GUI2.Develop.Server.World
             // git branch -m "#main"
             local.Init("#main");
             // git commit --allow-empty -m "empty"
-            local.Commit("empty");
-            local.Commit("empty");
-            local.Commit("empty");
+            local.Commit("first commit");
         }
 
         /// <summary>
