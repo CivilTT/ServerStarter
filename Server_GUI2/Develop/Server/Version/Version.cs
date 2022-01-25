@@ -162,7 +162,7 @@ namespace Server_GUI2
 
     public class VanillaVersion: Version
     {
-        public override string Path { get { return $@"{MainWindow.Data_Path}\{Name}\"; } }
+        public override string Path { get { return $@"{SetUp.DataPath}\{Name}\"; } }
         public override string JarName { get { return "server.jar"; } }
         public override string Log4jArgument
         {

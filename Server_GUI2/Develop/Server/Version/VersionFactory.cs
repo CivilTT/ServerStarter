@@ -48,6 +48,7 @@ namespace Server_GUI2
 
                 // サーバーをソート
                 versions.Sort();
+                versions.Reverse();
                 return new ObservableCollection<Version>(versions);
             }
         }
