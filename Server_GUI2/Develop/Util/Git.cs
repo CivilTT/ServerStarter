@@ -23,12 +23,13 @@ namespace Server_GUI2.Develop.Util
 
     class GitCommand
     {
-        public static string ExecuteThrow(string path, string arguments, Exception exception)
+        public static string ExecuteThrow(string arguments, Exception exception,string directory)
         {
-            var (code, output) = Execute(path, arguments);
+            var (code, output) = Execute(arguments, directory);
 
             if (code != 0)
             {
+                Console.WriteLine("FAIL");
                 Console.WriteLine(code);
                 Console.WriteLine(output);
                 throw exception;
@@ -39,14 +40,15 @@ namespace Server_GUI2.Develop.Util
             }
         }
 
-        public static (int, string) Execute(string path, string arguments)
+        public static (int, string) Execute(string arguments, string directory)
         {
-            Console.WriteLine($"-C \"{path}\" " + arguments);
+            Console.WriteLine(directory == null ? arguments : $"-C \"{directory}\" {arguments}");
+            // TODO: directory引数で実行ディレクトリを変更
             var process = new Process()
             {
                 StartInfo = new ProcessStartInfo("git")
                 {
-                    Arguments = $"-C \"{path}\" " + arguments,
+                    Arguments = directory == null ? arguments : $"-C \"{directory}\" {arguments}",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     StandardOutputEncoding = Encoding.UTF8
@@ -60,69 +62,265 @@ namespace Server_GUI2.Develop.Util
         }
     }
 
+    public class GitLocalBranch
+    {
+        public readonly GitLocal Local;
+        public string Name { get; private set; }
+        public GitLocalBranch(GitLocal local, string name)
+        {
+            Local = local;
+            Name = name;
+        }
 
+        public void Rename(string name)
+        {
+            GitCommand.ExecuteThrow($"branch -m {Name} {name}", new GitException($"cannot change branch name. {Name} -> {name}"), Local.Path);
+            Name = name;
+        }
+
+        public void Remove()
+        {
+            GitCommand.ExecuteThrow($"branch -d {Name}", new GitException($"cannot remove branch. {Name}"), Local.Path);
+        }
+
+        public void Checkout()
+        {
+            GitCommand.ExecuteThrow($"checkout {Name}", new GitException($"cannot checkout branch {Name}."), Local.Path);
+        }
+
+        /// <summary>
+        /// トラック中のリモートブランチにpush
+        /// </summary>
+        public void Push()
+        {
+            GitCommand.ExecuteThrow($"push ", new GitException($"cannot push branch {Name}."), Local.Path);
+        }
+
+        /// <summary>
+        /// 特定のリモートブランチにpush
+        /// </summary>
+        public void Push(GitRemoteBranch remoteBranch)
+        {
+            remoteBranch.Remote.AssertRelated(Local);
+            GitCommand.ExecuteThrow($"push \"{remoteBranch.Remote.Expression}\" \"{Name}:{remoteBranch.Name}\"", new GitException($"cannot push branch {Name}."), Local.Path);
+        }
+
+        /// <summary>
+        /// 同名のリモートブランチにpush
+        /// </summary>
+        public void Push(GitRemote remote)
+        {
+            remote.AssertRelated(Local);
+            GitCommand.ExecuteThrow($"push \"{remote.Expression}\" \"{Name}\"", new GitException($"cannot push branch {Name}."), Local.Path);
+        }
+
+        /// <summary>
+        /// 特定のリモートブランチにpushしtrack
+        /// </summary>
+        public void PushTrack(GitRemoteBranch remoteBranch)
+        {
+            remoteBranch.Remote.AssertRelated(Local);
+            GitCommand.ExecuteThrow($"push -u \"{remoteBranch.Remote.Expression}\" \"{Name}:{remoteBranch.Name}\"", new GitException($"cannot push branch {Name}."), Local.Path);
+        }
+
+        /// <summary>
+        /// 同名のリモートブランチにpushしtrack
+        /// </summary>
+        public void PushTrack(GitRemote remote)
+        {
+            remote.AssertRelated(Local);
+            GitCommand.ExecuteThrow($"push -u \"{remote.Expression}\" \"{Name}\"", new GitException($"cannot push branch {Name}."), Local.Path);
+        }
+
+        /// <summary>
+        /// trackしているリモートブランチからPull
+        /// </summary>
+        public void Pull()
+        {
+            GitCommand.ExecuteThrow($"pull", new GitException($"cannot pull branch {Name}."), Local.Path);
+        }
+    }
     public class GitLocal
     {
         /// <summary>
         /// 与えられたパスがGitRepositoryのトップレベルかどうかを確認する
         /// </summary>
-        public bool IsGitRepository()
+        public static bool IsGitLocal(string path)
         {
-            var (code, output) = GitCommand.Execute(path, "rev-parse --show-toplevel");
-            return code == 0 && Path.GetFullPath(output).Equals(Path.GetFullPath(path));
+            var (code, output) = GitCommand.Execute("rev-parse --show-toplevel", path);
+            return code == 0 && System.IO.Path.GetFullPath(output).Equals(System.IO.Path.GetFullPath(path));
         }
 
-        /// <summary>
-        /// 現在のローカルブランチ名を取得する
-        /// </summary>
-        public string GetCurrentBranch()
+        public static GitLocal InitGitLocal(string path)
         {
-            var output = GitCommand.ExecuteThrow(path, "symbolic-ref --short HEAD", new GitException("cannot get current branch name."));
-            return output.Substring(0, output.Length - 1); // 末尾の\nを削除
+            GitCommand.ExecuteThrow("init", new GitException("cannot initialize local repository."), path);
+            return new GitLocal(path);
         }
 
-        private string path;
-        private GitRemoteBranch branch;
+        public string Path { get; }
 
         public GitLocal(string path)
         {
-            this.path = path;
+            Path = path;
         }
 
-        public void Init()
+        public bool IsGitLocal()
         {
-            GitCommand.ExecuteThrow(path, $"init", new GitException($"failed to init {path}"));
+            return IsGitLocal(Path);
         }
 
-        public void CommitPush(string commitMessage)
+        /// <summary>
+        /// 現在のローカルブランチを取得する
+        /// </summary>
+        public GitLocalBranch GetCurrentBranch()
         {
-            CommitAll(commitMessage);
-            Push();
+            var output = GitCommand.ExecuteThrow("symbolic-ref --short HEAD", new GitException("cannot get current branch name."), Path);
+            return new GitLocalBranch(this, output.Substring(0, output.Length - 1)); // 末尾の\nを削除
         }
 
-        public void Push(string localBranch, string remoteBranch)
+        public Dictionary<string, GitLocalBranch> GetBranchs()
         {
-            GitCommand.ExecuteThrow(path, $"push {branch.Repository.Url} \"{branch.LocalBranchName}:{branch.Name}\"", new GitException($"failed to add branch {branch}"));
+            var output = GitCommand.ExecuteThrow($"branch", new GitException($"failed to get branch list from {Path}"),Path);
+            var branchMap = new Dictionary<string, GitLocalBranch>();
+            var lines = output.Substring(0, output.Length - 1).Split('\n'); //出力を行に分解  e.g."* master"
+            foreach (var i in lines)
+            {
+                var branchName = i.Substring(2);
+                branchMap[branchName] = new GitLocalBranch(this, branchName);
+            }
+            return branchMap;
         }
 
-        public void CommitAll(string message)
+        /// <summary>
+        /// ローカルブランチを存在確認なしに返す
+        /// </summary>
+        public GitLocalBranch GetBranch(string name)
         {
-            GitCommand.ExecuteThrow(path, $"add -A", new GitException($"failed to add {path}"));
-            GitCommand.ExecuteThrow(path, $"commit  -m \"{message}\"", new GitException($"failed to commit {path}"));
+            return new GitLocalBranch(this, name);
         }
 
-        public void Pull()
+        public GitLocalBranch CreateBranch(string name)
         {
-            GitCommand.ExecuteThrow(path, $"pull {branch.Repository.Url} \"{branch.Name}:{branch.LocalBranchName}\"", new GitException($"failed to get branch pull from {branch}"));
+            GitCommand.ExecuteThrow($"branch \"{name}\"", new GitException($"failed to create branch {name}"), Path);
+            return new GitLocalBranch(this, name);
+        }
+
+        public GitLocalBranch CreateTrackBranch(string name,GitRemoteBranch track)
+        {
+            GitCommand.ExecuteThrow($"branch \"{name}\" --track \"{track.Remote.Expression}/{track.Name}\"", new GitException($"failed to create branch {name}"), Path);
+            return new GitLocalBranch(this, name);
+        }
+
+        public void AddAll()
+        { 
+            GitCommand.ExecuteThrow($"add -A", new GitException($"failed to add files"), Path);
+        }
+        
+        public void Commit(string message)
+        {
+            GitCommand.ExecuteThrow($"commit --allow-empty -m \"{message}\"", new GitException($"failed to commit"), Path);
+        }
+
+        public GitNamedRemote AddRemote(GitRemote remote,string name)
+        {
+            GitCommand.ExecuteThrow($"remote add \"{name}\" \"{remote.Expression}\"", new GitException($"failed to add remote repository :{remote.Expression} {Path}"), Path);
+            return new GitNamedRemote(this,name);
+        }
+
+        public void Init(string branchName)
+        {
+            GitCommand.ExecuteThrow($"init", new GitException($"failed to init {Path}"), Path);
+            GitCommand.ExecuteThrow($"branch -m \"{branchName}\"", new GitException($"failed to change branch name to {branchName}"), Path);
+        }
+        public void Fetch(GitRemoteBranch remoteBranch)
+        {
+            GitCommand.ExecuteThrow($"fetch \"{remoteBranch.Remote.Expression}\" \"{remoteBranch.Name}\"", new GitException($"failed to fetch {remoteBranch.Remote.Expression}/{remoteBranch.Name} to {Path}"), Path);
+        }
+
+        public List<GitNamedRemote> GetRemotes()
+        {
+            var remotes = new List<GitNamedRemote>();
+            var output = GitCommand.ExecuteThrow($"remote", new GitException($"failed to get remotelist of {Path}"), Path);
+            return output.Substring(0, output.Length - 1).Split('\n').Select(name => new GitNamedRemote(this,name)).ToList();
         }
     }
 
-    public class GitRemoteRepository
+    public class GitRemoteBranch
+    {
+        public readonly IGitRemote Remote;
+        public readonly string Name;
+        public GitRemoteBranch(IGitRemote remote, string name)
+        {
+            Remote = remote;
+            Name = name;
+        }
+    }
+
+    public interface IGitRemote
+    {
+        string Expression { get; }
+        bool IsMyBranch(GitRemoteBranch branch);
+        void AssertRelated(GitLocal local);
+
+        GitRemoteBranch CreateBranch(string name);
+    }
+
+    public class GitNamedRemote: IGitRemote
+    {
+        public readonly GitLocal Local;
+        public readonly string Name;
+        public GitNamedRemote(GitLocal local, string name)
+        {
+            Local = local;
+            Name = name;
+        }
+
+        public string Expression
+        {
+            get
+            {
+                return Name;
+            }
+        }
+
+        public void AssertRelated(GitLocal local)
+        {
+            if (! IsRelated(local))
+            {
+                throw new GitException($"remote repository {Name} is not related to local repository {local.Path}.");
+            }
+        }
+
+        public GitRemoteBranch CreateBranch(string name)
+        {
+            return new GitRemoteBranch(this, name);
+        }
+
+        public bool IsMyBranch(GitRemoteBranch branch)
+        {
+            return branch.Remote == this;
+        }
+
+        public bool IsRelated(GitLocal local)
+        {
+            return Local == local;
+        }
+
+        /// <summary>
+        /// Localとの紐づけを解除する リモートリポジトリは削除しない
+        /// </summary>
+        public void Remove()
+        {
+            GitCommand.ExecuteThrow($"remote rm \"{Name}\"", new GitException($"failed to remove remote repository"), Local.Path);
+        }
+    }
+    public class GitRemote : IGitRemote
     {
         public string Account { get; private set; }
         public string RepoName { get; private set; }
-        public Dictionary<string, GitRemoteBranch> ExistsBranchMap { get; private set; }
-        public string Url
+
+
+        public string Expression
         {
             get
             {
@@ -130,56 +328,35 @@ namespace Server_GUI2.Develop.Util
             }
         }
 
-        public GitRemoteRepository(string account, string repoName)
+        public GitRemote(string account, string repoName)
         {
             Account = account;
             RepoName = repoName;
-            GetExistsBranchs();
         }
 
-        private void GetExistsBranchs()
+        public GitRemoteBranch CreateBranch(string name)
         {
-            var output = GitCommand.ExecuteThrow("/", $"ls-remote --heads {Url}", new GitException($"failed to get branch list from {Url}"));
+            return new GitRemoteBranch(this, name);
+        }
 
+        public Dictionary<string, GitRemoteBranch> GetBranchs()
+        {
+            var output = GitCommand.ExecuteThrow($"ls-remote --heads {Expression}", new GitException($"failed to get branch list from {Expression}"),null);
+            var branchMap = new Dictionary<string, GitRemoteBranch>();
             var lines = output.Substring(0, output.Length - 1).Split('\n');
             foreach (var i in lines)
             {
-                if (i.Length == 0)
-                {
-                    continue;
-                }
                 var branchName = i.Substring(52);
-                ExistsBranchMap[branchName] = new GitRemoteBranch(this, branchName);
+                branchMap[branchName] = new GitRemoteBranch(this, branchName);
             }
+            return branchMap;
         }
 
-        public GitRemoteBranch NewBranch(string branchName)
+        public bool IsMyBranch(GitRemoteBranch branch)
         {
-
+            return branch.Remote == this;
         }
-    }
-
-    public class GitRemoteBranch
-    {
-        public GitRemoteRepository Repository { get; private set; }
-        public string Name { get; private set; }
-
-        public string LocalBranchName
-        {
-            get
-            {
-                return $"{this.Repository.Account}.{this.Repository.RepoName}.{this.Name}";
-            }
-        }
-
-        public GitRemoteBranch(GitRemoteRepository repository, string name)
-        {
-            Repository = repository;
-            Name = name;
-        }
-        public override string ToString()
-        {
-            return $"<GitRemoteBranch {Repository.Url} {Name} >";
-        }
+        public void AssertRelated(GitLocal local)
+        {}
     }
 }
