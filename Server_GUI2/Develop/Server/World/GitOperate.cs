@@ -9,7 +9,7 @@ using Server_GUI2.Develop.Util;
 
 namespace Server_GUI2.Develop.Server.World
 {
-    public class GitStateReader
+    public class GitWorldRepository
     {
         GitLocalBranch LocalBranch;
         GitNamedRemote Remote;
@@ -31,7 +31,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 新規リポジトリ
         /// </summary>
-        public static GitStateReader AddRepository(GitLocal local, GitRemote remote)
+        public static GitWorldRepository AddRepository(GitLocal local, GitRemote remote)
         {
             var id = $"{remote.Account}.{remote.RepoName}";
             // 新たにrepositoryを紐づける際に起動
@@ -82,7 +82,7 @@ namespace Server_GUI2.Develop.Server.World
                 branch = local.CreateTrackBranch(id, remoteBranch);
                 // git checkout {account}.{repository}
             }
-            return new GitStateReader(branch, namedRemote);
+            return new GitWorldRepository(branch, namedRemote);
         }
 
         public static void GetAllGitWorlds(GitLocal local)
@@ -98,14 +98,14 @@ namespace Server_GUI2.Develop.Server.World
             foreach (var remote in remotes)
             {
                 Console.WriteLine(remote.Name);
-                new GitStateReader(branchs[remote.Name],remote);
+                new GitWorldRepository(branchs[remote.Name],remote);
             }
         }
 
         /// <summary>
         /// リモートリポジトリの #state ブランチを確認する
         /// </summary>
-        public GitStateReader(GitLocalBranch localBranch, GitNamedRemote remote)
+        public GitWorldRepository(GitLocalBranch localBranch, GitNamedRemote remote)
         {
             LocalBranch = localBranch;
             Remote = remote;
