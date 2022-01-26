@@ -14,14 +14,14 @@ namespace Server_GUI2.Develop.Server.World
 
         public string SourcePath { get; private set; }
 
-        public string Name { get { return System.IO.Path.GetFileNameWithoutExtension(SourcePath); } }
+        public string Name { get { return Path.GetFileNameWithoutExtension(SourcePath); } }
 
         protected bool IsZip;
 
         public static CustomMap TryGetInstance(string sourcePath, bool isZip)
         {
             // フォルダ名を取得する
-            string name = System.IO.Path.GetFileNameWithoutExtension(sourcePath);
+            string name = Path.GetFileNameWithoutExtension(sourcePath);
 
             if (isZip ? IsValidZip(sourcePath, name) : IsValidDirectory(sourcePath, name))
             {
