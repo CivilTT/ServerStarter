@@ -10,6 +10,7 @@ namespace Server_GUI2.Develop.Server.World
         public ServerProperty serverProperty { get; set; }
         public WorldReader WorldReader { get; }
         public ObservableCollection<Datapack> Datapacks = new ObservableCollection<Datapack>();
+        public ObservableCollection<Datapack> Pligins = new ObservableCollection<Datapack>();
 
         public World(WorldReader worldReader)
         {
@@ -41,7 +42,6 @@ namespace Server_GUI2.Develop.Server.World
             {
                // TODO: バージョンが下がる場合は確認画面を表示
             }
-
             // ワールドデータを指定パスに展開
             WorldReader.ReadTo(worldPath);
             // データパックの追加と削除
