@@ -1,24 +1,29 @@
-﻿//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using Server_GUI2.Develop.Util;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Server_GUI2;
+using System;
+using System.IO;
+using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Develop.Util;
 
-//namespace UnitTestProject1
-//{
-//    [TestClass]
-//    public class GitTest
-//    {
-//        [TestMethod]
-//        public void TestMethod1()
-//        {
-//            var repo = new GitRemoteRepository("txkodo", "GitTest");
-//            var branchs = repo.ExistsBranch();
+namespace UnitTestProject1
+{
+    [TestClass]
+    public class GitTest
+    {
+        [TestMethod]
+        public void GitTestMethod()
+        {
+            var path = Environment.GetEnvironmentVariable("SERVER_STERTER_TEST");
 
-//            var branch = branchs[1];
+            var gitpath = Path.Combine(path, "git_state");
 
-//            var local = new GitLocal(@"C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\Git\ServerSterterTest", branch);
+            var local = new GitLocal(gitpath);
+            var remote = new GitRemote("txkodo", "GitTest");
+            var reader = GitWorldRepository.AddRepository(local, remote);
 
-//            local.InitIfIsNotRepository();
+            var remote2 = new GitRemote("txkodo", "GitTest2");
 
-//            local.Pull();
-//        }
-//    }
-//}
+            var reader2 = GitWorldRepository.AddRepository(local, remote2);
+        }
+    }
+}
