@@ -55,13 +55,13 @@ namespace Server_GUI2
 
         public Version SelectedVersion { get; set; }
 
-        private Dictionary<string, Version> VersionMap = new Dictionary<string, Version>();
+        private readonly Dictionary<string, Version> VersionMap = new Dictionary<string, Version>();
 
-        private Dictionary<string, int> versionIndexMap;
+        private readonly Dictionary<string, int> VersionIndexMap;
 
         private VersionFactory()
         {
-            versionIndexMap = new Dictionary<string, int>();
+            VersionIndexMap = new Dictionary<string, int>();
         }
 
         public Version GetVersionFromName(string name)
@@ -71,8 +71,13 @@ namespace Server_GUI2
 
         public int GetVersionIndex(Version version)
         {
-            //Console.WriteLine("***" + version.Name + versionIndexMap.ContainsKey(version.Name).ToString());
-            return versionIndexMap[version.Name];
+            //Console.WriteLine("***" + version.Name + VersionIndexMap.ContainsKey(version.Name).ToString());
+            return VersionIndexMap[version.Name];
+        }
+
+        public int GetVersionIndex(string versionName)
+        {
+            return VersionIndexMap[versionName];
         }
 
         /// <summary>
@@ -109,24 +114,17 @@ namespace Server_GUI2
                 bool isLatest = id == latestRelease || id == latestSnapShot;
                 var versionInstance = new VanillaVersion(id, downloadURL, isRelease, hasSpigot, isLatest);
                 versions.Add(versionInstance);
-                versionIndexMap[id] = i;
+                VersionIndexMap[id] = i;
                 i++;
             }
-
-            // 最新バージョンがreleaseの際にはsnapshotも同じため、特例としてリストの先頭に挿入する処理を行う
-            //if (latestRelease == latestSnapShot)
-            //{
-            //VanillaVersonJson version = vanillaversions.versions[0];
-            //id = version.id;
-            //string downloadURL = version.url;
-            //Version _snapshot = new VanillaVersion(id, downloadURL, false, true);
-            //allVersions.Insert(1, _snapshot);
-            //}
         }
 
+        /// <summary>
+        /// SpigotとVanilaでバージョンの表記が違う場合に書き足していく
+        /// </summary>
         private void AddSpigotOnlyVersionToVersionIndexMap()
         {
-            versionIndexMap["1.14-pre5"] = versionIndexMap["1.14 Pre-Release 5"];
+            VersionIndexMap["1.14-pre5"] = VersionIndexMap["1.14 Pre-Release 5"];
         }
 
         /// <summary>
