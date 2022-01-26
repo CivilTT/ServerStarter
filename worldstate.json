@@ -1,11 +1,11 @@
 {
-	"shareworld0": {
+	"{branch0}": {
 		"type": "New"
 	},
-	"shareworld1": {
+	"{branch1}": {
 		"type": "Vanilla",
 		"version": "1.18.1",
-		"used": true,
+		"using": true,
 		"datapacks": [],
 		"properties": {
 			"{key}": "{value}"
