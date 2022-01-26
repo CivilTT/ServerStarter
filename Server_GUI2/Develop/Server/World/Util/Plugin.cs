@@ -18,10 +18,9 @@ namespace Server_GUI2.Develop.Server
         public string Name { get; private set; }
 
 
-        public Plugin(string name, Version version)
+        public Plugin(string name)
         {
             Name = name;
-            Version = version;
         }
 
         /// <summary>
@@ -46,7 +45,7 @@ namespace Server_GUI2.Develop.Server
     
     class ExistPlugin : Plugin
     {
-        public ExistPlugin(string name, Version version) : base(name, version)
+        public ExistPlugin(string name) : base(name)
         {
 
         }
@@ -61,7 +60,7 @@ namespace Server_GUI2.Develop.Server
     {
         private readonly string SourcePath;
 
-        public ImportPlugin(string name, Version version, string sourcePath) : base(name, version)
+        public ImportPlugin(string name, string sourcePath) : base(name)
         {
             SourcePath = sourcePath;
         }
