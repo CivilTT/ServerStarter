@@ -1,9 +1,16 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.ObjectModel;
 
 namespace Server_GUI2.Develop.Server.World
 {
+    /// <summary>
+    /// ワールドの保存先(ローカルフォルダ,Gitリポジトリ,Gdrive等)
+    /// </summary>
+    public interface WorldSaveLocation
+    {
+        WorldWriter GetWorldWriter(Version version);
+    }
+
     public class World
     {
         public bool Recreate { get; set; }
@@ -11,19 +18,24 @@ namespace Server_GUI2.Develop.Server.World
         public WorldReader WorldReader { get; }
         public ObservableCollection<Datapack> Datapacks = new ObservableCollection<Datapack>();
 
-//        public String Path { get; }
-
-        public void Run(string worldPath,Version version)
+        /// <summary>
+        /// ワールドデータを必要に応じてDL,移動し
+        /// 与えられたバージョン用に変換する
+        /// </summary>
+        public WorldWriter Preprocess(Version version, WorldSaveLocation saveLocation)
         {
-            var preWorld = GetPreWorld(worldPath);
-            var runWorld = preWorld.ConvertTo(version);
+            var writer = saveLocation.GetWorldWriter(version);
+            var worldConverter = GetWorldConverter(writer.Path);
+            worldConverter.ConvertTo(version);
+            writer.Preprocess();
+            return writer;
         }
 
         /// <summary>
         /// Run後に実行
         /// ディレクトリの内容に応じて(Spigot|Vanilla|New)PreWorldインスタンスを返す
         /// </summary>
-        public PreWorld GetPreWorld(string worldPath)
+        private WorldConverter GetWorldConverter(string worldPath)
         {
             // ワールドデータを指定パスに展開
             WorldReader.ReadTo(worldPath);
@@ -39,10 +51,10 @@ namespace Server_GUI2.Develop.Server.World
                 // 必要に応じてカスタムワールドを導入する
                 if (CustomMap != null)
                 {
-                    CustomMap.Ready(worldPath);
+                    CustomMap.Import(worldPath);
                 }
             }
-            return GenPreWorld(worldPath);
+            return GenWorldConverter(worldPath);
         }
 
         /// <summary>
@@ -55,7 +67,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// TOOD: ワールドデータの形式に応じてPreWorldインスタンスを返却
         /// </summary>
-        private static PreWorld GenPreWorld(string worldPath)
+        private static WorldConverter GenWorldConverter(string worldPath)
         {
             // world がない -> NewPreWorld
             if ( !Directory.Exists(Path.Combine(worldPath, "world")))
@@ -72,7 +84,7 @@ namespace Server_GUI2.Develop.Server.World
         }
     }
 
-    public abstract class PreWorld
+    public abstract class WorldConverter
     {
         public string Path { get; }
 
@@ -84,20 +96,11 @@ namespace Server_GUI2.Develop.Server.World
         /// WorldReader内部からのReadToを使う
         /// 
         /// </summary>
-        public abstract RunWorld ConvertTo(Version version);
+        public abstract void ConvertTo(Version version);
 
-        protected PreWorld(string path)
+        protected WorldConverter(string path)
         {
             Path = path;
-        }
-    }
-
-    public class RunWorld
-    {
-        Version Version;
-        protected RunWorld(Version version)
-        {
-            Version = version;
         }
     }
 
@@ -116,39 +119,37 @@ namespace Server_GUI2.Develop.Server.World
         }
     }
 
-//    class Use
-//    {
-//        public static void Test()
-//        {
-//            var ver = new Version();
-//            new VanillaRunWorld(new VanillaPreWorld(new GitWorldReader(git)),new GitWorldWriter(git,ver));
+    //    class Use
+    //    {
+    //        public static void Test()
+    //        {
+    //            var ver = new Version();
+    //            new VanillaRunWorld(new VanillaPreWorld(new GitWorldReader(git)),new GitWorldWriter(git,ver));
 
-    class WorldWriter
+    public class WorldWriter
     {
         public string Path { get; }
-        protected RunWorld RunWorld { get; }
-
-        protected WorldWriter(RunWorld runWorld)
-        {
-            RunWorld = runWorld;
-        }
-
-        public virtual void Write() { }
+        protected WorldWriter() { }
+        /// <summary>
+        /// gitの使用中フラグ
+        /// </summary>
+        public virtual void Preprocess() { }
+        public virtual void Postprocess() { }
     }
 
-    class NewPreWorld : PreWorld
+    class NewWorldConverter : WorldConverter
     {
-        public NewPreWorld(string path) : base(path) { }
+        public NewWorldConverter(string path) : base(path) { }
 
         public override void ConvertTo(Version version)
         {
         }
     }
 
-    class VanillaPreWorld : PreWorld
+    class VanillaWorldConverter : WorldConverter
     {
         VanillaVersion Version;
-        public VanillaPreWorld(VanillaVersion version, string path) : base(path)
+        public VanillaWorldConverter(VanillaVersion version, string path) : base(path)
         {
             Version = version;
         }
@@ -188,10 +189,10 @@ namespace Server_GUI2.Develop.Server.World
 //        }
 //    }
 
-    class SpigotPreWorld : PreWorld
+    class SpigotWorldConverter : WorldConverter
     {
         SpigotVersion Version;
-        public SpigotPreWorld(SpigotVersion version,string path) : base(path)
+        public SpigotWorldConverter(SpigotVersion version,string path) : base(path)
         {
             Version = version;
         }
@@ -215,28 +216,10 @@ namespace Server_GUI2.Develop.Server.World
         }
     }
 
-
-    class VanillaRunWorld : RunWorld
-    {
-        public VanillaRunWorld(PreWorld preWorld, WorldWriter worldWriter, Version version) : base(preWorld, worldWriter, version)
-        {
-        }
-    }
-
-    class SpigotRunWorld : RunWorld
-    {
-        public SpigotRunWorld(PreWorld preWorld, WorldWriter worldWriter, Version version) : base(preWorld, worldWriter, version)
-        {
-        }
-    }
-
-
-
-
     class NewWorldReader : WorldReader
     {
         // 新規ワールドを返す
-        public override PreWorld Read()
+        public override WorldConverter Read()
         {
             return new NewPreWorld();
         }
@@ -244,7 +227,7 @@ namespace Server_GUI2.Develop.Server.World
 
     class LocalWorldReader : WorldReader
     {
-        public override PreWorld Read()
+        public override WorldConverter Read()
         {
             return new VanillaPreWorld();
         }
@@ -252,7 +235,7 @@ namespace Server_GUI2.Develop.Server.World
 
     class GitWorldReader : WorldReader
     {
-        public GitWorldReader(PreWorld beforeWorld)
+        public GitWorldReader(WorldConverter beforeWorld)
         {
             PreWorld = beforeWorld;
         }
@@ -269,6 +252,5 @@ namespace Server_GUI2.Develop.Server.World
     //    {
 
     //    class GitWorldWriter : WorldWriter { }
-
 
 }

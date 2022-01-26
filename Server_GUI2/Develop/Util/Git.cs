@@ -266,6 +266,9 @@ namespace Server_GUI2.Develop.Util
         GitRemoteBranch CreateBranch(string name);
     }
 
+    /// <summary>
+    /// ローカルリポジトリに紐づいたリモートリポジトリエイリアス( origin的な奴 )
+    /// </summary>
     public class GitNamedRemote: IGitRemote
     {
         public readonly GitLocal Local;
@@ -284,6 +287,9 @@ namespace Server_GUI2.Develop.Util
             }
         }
 
+        /// <summary>
+        /// 自分が引数のローカルリポジトリのエイリアスかどうかを確認し違ったらエラー
+        /// </summary>
         public void AssertRelated(GitLocal local)
         {
             if (! IsRelated(local))
