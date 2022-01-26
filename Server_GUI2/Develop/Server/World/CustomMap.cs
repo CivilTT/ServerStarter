@@ -14,8 +14,6 @@ namespace Server_GUI2.Develop.Server.World
 
         public string SourcePath { get; private set; }
 
-        public string Path { get { return $@"{Version.Path}\{Name}"; } }
-
         public string Name { get { return System.IO.Path.GetFileNameWithoutExtension(SourcePath); } }
 
         protected bool IsZip;
@@ -80,28 +78,28 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// TODO: パスのディレクトリにワールドを展開/移動する。ディレクトリは上書きではなくマージする。
         /// </summary>
-        public void Import()
+        public void Import(string path)
         {
             if (IsZip)
             {
-                string zipPath = $"{Path}.zip";
+                string zipPath = $"{path}.zip";
 
                 File.Move(SourcePath, zipPath);
 
-                ZipFile.ExtractToDirectory(zipPath, Path);
+                ZipFile.ExtractToDirectory(zipPath, path);
 
                 File.Delete(zipPath);
             }
             else
             {
-                FileSystem.CopyDirectory(SourcePath, Path);
+                FileSystem.CopyDirectory(SourcePath, path);
             }
 
             // 一層深くなっているときは、それを上げる処理をする
-            if (Directory.Exists($@"{Path}\{Name}"))
+            if (Directory.Exists($@"{path}\{Name}"))
             {
                 // TODO: この処理が本当に動くのか要検証
-                FileSystem.MoveDirectory($@"{Path}\{Name}", Path);
+                FileSystem.MoveDirectory($@"{path}\{Name}", path);
             }
         }
     }
