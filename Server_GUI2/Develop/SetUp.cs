@@ -14,7 +14,6 @@ namespace Server_GUI2
         public static string CurrentDirectory { get { return "."; } }
         public static string DataPath { get { return Path.Combine(CurrentDirectory, "World_Data"); } }
 
-        public static VersionFactory verFactory = VersionFactory.Instance;
         public static UserSettings userSet = new UserSettings();
 
 
