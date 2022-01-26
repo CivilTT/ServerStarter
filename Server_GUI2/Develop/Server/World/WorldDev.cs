@@ -7,7 +7,7 @@ namespace Server_GUI2.Develop.Server.World
     public class World
     {
         public bool Recreate { get; set; }
-        public CustomWorld CustomWorld { get; set; }
+        public CustomMap CustomMap{ get; set; }
         public WorldReader WorldReader { get; }
         public ObservableCollection<Datapack> Datapacks = new ObservableCollection<Datapack>();
 
@@ -37,9 +37,9 @@ namespace Server_GUI2.Develop.Server.World
             {
                 RecreateWorld(worldPath);
                 // 必要に応じてカスタムワールドを導入する
-                if (CustomWorld != null)
+                if (CustomMap != null)
                 {
-                    CustomWorld.Ready(worldPath);
+                    CustomMap.Ready(worldPath);
                 }
             }
             return GenPreWorld(worldPath);
