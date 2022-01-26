@@ -20,7 +20,7 @@ namespace Server_GUI2.Develop.Server.World
 
         /// <summary>
         /// Run後に実行
-        /// TODO: ディレクトリの内容に応じて(Spigot|Vanilla|New)PreWorldインスタンスを返す
+        /// ディレクトリの内容に応じて(Spigot|Vanilla|New)PreWorldインスタンスを返す
         /// </summary>
         public PreWorld GetPreWorld(string worldPath)
         {
@@ -52,7 +52,7 @@ namespace Server_GUI2.Develop.Server.World
         }
 
         /// <summary>
-        /// ワールドデータの形式に応じてPreWorldインスタンスを返却
+        /// TOOD: ワールドデータの形式に応じてPreWorldインスタンスを返却
         /// </summary>
         private static PreWorld GenPreWorld(string worldPath)
         {
