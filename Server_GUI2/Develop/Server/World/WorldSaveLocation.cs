@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Server_GUI2.Develop.Server.World
 {
-    class Class1
+    class WorldSaveLocation
     {
+
     }
 }
