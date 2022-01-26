@@ -16,17 +16,12 @@ namespace Server_GUI2
     {
         public ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        protected World World;
         public string Name { get; private set; }
 
         protected bool IsZip;
 
-        public string Path { get { return $@"{World.Path}\datapacks\{Name}"; } }
-
-
-        protected Datapack(World world, string name)
+        protected Datapack(string name)
         {
-            World = world;
             Name = name;
         }
 
@@ -34,23 +29,28 @@ namespace Server_GUI2
         /// 削除の必要性があるかどうか
         /// TODO: Viewを更新するためにEventを作成する
         /// </summary>
-        public bool IsRemove;
+        public bool NeedToRemove;
 
-        protected virtual void Remove() { }
+        protected virtual void Remove(string path) { }
 
-        protected virtual void Import() { } 
+        protected virtual void Import(string path) { } 
 
         /// <summary>
         /// RUN時に実行。
         /// ワールドデータ内にデータパックがあることを保証する
         /// データパック導入に関する一連の処理を行う
         /// </summary>
-        public void Ready()
+        public void Ready(string path)
         {
-            if (IsRemove)
-                Remove();
+            if (NeedToRemove)
+            {
+                Remove(path);
+            }
+            else
+            {
+                Import(path);
+            }
 
-            Import();
         }
     }
 
@@ -59,7 +59,7 @@ namespace Server_GUI2
     /// </summary>
     public class ExistDatapack : Datapack
     {
-        public ExistDatapack(World world, string name) : base(world, name)
+        public ExistDatapack(string name) : base(name)
         {
             
         }
@@ -67,22 +67,22 @@ namespace Server_GUI2
         /// <summary>
         /// データパックを新規導入(何もしない)
         /// </summary>
-        protected override void Import() { }
+        protected override void Import(string path ) { }
 
 
         /// <summary>
         /// TODO: ディレクトリからデータパックを削除
         /// </summary>
-        protected override void Remove()
+        protected override void Remove(string path)
         {
             logger.Info("Remove the datapack");
-            if (Directory.Exists(Path))
+            if (Directory.Exists(path))
             {
-                FileSystem.DeleteDirectory(Path, DeleteDirectoryOption.DeleteAllContents);
+                FileSystem.DeleteDirectory(path, DeleteDirectoryOption.DeleteAllContents);
             }
             else
             {
-                File.Delete(Path);
+                File.Delete(path);
             }
         }
     }
@@ -99,14 +99,14 @@ namespace Server_GUI2
         /// 与えられたパスが有効なデータパックの場合インスタンスを生成する
         /// でなければnullを返す。
         /// </summary>
-        public static ImportDatapack TryGenInstance(World world, string sourcePath, bool isZip)
+        public static ImportDatapack TryGenInstance(string sourcePath, bool isZip)
         {
             // フォルダ名を取得する
             string name = System.IO.Path.GetFileNameWithoutExtension(sourcePath);
 
             if ( isZip ? IsValidZip(sourcePath, name) : IsValidDirectory(sourcePath, name) )
             {
-                return new ImportDatapack(world, name, sourcePath, isZip);
+                return new ImportDatapack(name, sourcePath, isZip);
             }
             else
             {
@@ -114,7 +114,7 @@ namespace Server_GUI2
             }
         }
 
-        private ImportDatapack(World world, string name, string sourcePath, bool isZip) :base(world, name)
+        private ImportDatapack(string name, string sourcePath, bool isZip) :base(name)
         {
             SourcePath = sourcePath;
             IsZip = isZip;
@@ -153,35 +153,35 @@ namespace Server_GUI2
             return result;
         }
 
-        protected override void Import()
+        protected override void Import(string path)
         {
             if (IsZip)
             {
-                string zipPath = $"{Path}.zip";
+                string zipPath = $"{path}.zip";
 
                 File.Move(SourcePath, zipPath);
 
-                ZipFile.ExtractToDirectory(zipPath, Path);
+                ZipFile.ExtractToDirectory(zipPath, path);
 
                 File.Delete(zipPath);
             }
             else
             {
-                FileSystem.CopyDirectory(SourcePath, Path);
+                FileSystem.CopyDirectory(SourcePath, path);
             }
 
             // data, pack.mcmetaが一層深くなっているときは、それを上げる処理をする
-            if (Directory.Exists($@"{Path}\{Name}"))
+            if (Directory.Exists($@"{path}\{Name}"))
             {
-                Directory.Move($@"{Path}\{Name}\data", $@"{Path}\data");
-                File.Move($@"{Path}\{Name}\pack.mcmeta", $@"{Path}\pack.mcmeta");
-                Directory.Delete($@"{Path}\{Name}");
+                Directory.Move($@"{path}\{Name}\data", $@"{path}\data");
+                File.Move($@"{path}\{Name}\pack.mcmeta", $@"{path}\pack.mcmeta");
+                Directory.Delete($@"{path}\{Name}");
             }
         }
 
         /// <summary>
         /// ディレクトリからデータパックを削除(何もしない)
         /// </summary>
-        protected override void Remove() { }
+        protected override void Remove(string path) { }
     }
 }

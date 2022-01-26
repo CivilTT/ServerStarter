@@ -17,7 +17,7 @@ namespace Server_GUI2
 {
     public class Version : IComparable<Version>, INotifyPropertyChanged
     {
-        public ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        protected ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static WebClient wc = new WebClient();
 
         public string Name;

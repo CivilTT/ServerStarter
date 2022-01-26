@@ -1,0 +1,17 @@
+{
+	"{branch0}": {
+		"type": "New"
+	},
+	"{branch1}": {
+		"type": "Vanilla",
+		"version": "1.18.1",
+		"using": true,
+		"datapacks": [],
+		"properties": {
+			"{key}": "{value}"
+		},
+		"ops": {},
+		"banned-ips": [],
+		"banned-players": []
+	}
+}
