@@ -92,7 +92,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Develop\Server\Version\Plugin.cs" />
-    <Compile Include="Develop\Server\World\CustomWorld.cs" />
+    <Compile Include="Develop\Server\World\CustomMap.cs" />
     <Compile Include="Develop\Server\World\Model.cs" />
     <Compile Include="Develop\Server\World\GitOperate.cs" />
     <Compile Include="Develop\Server\World\WorldDev.cs" />
