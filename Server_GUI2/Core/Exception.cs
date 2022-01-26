@@ -1,9 +1,31 @@
 ﻿using log4net;
 using System;
 using System.Reflection;
+using MW = ModernWpf;
 
 namespace Server_GUI2
 {
+    class ServerStarterException<T> : Exception where T : Exception 
+    {
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public T Exception;
+
+        public ServerStarterException(T exception) : base(exception.Message)
+        {
+            logger.Error(exception.Message);
+            Console.WriteLine(App.end_str);
+            Exception = exception;
+        }
+
+        public static void ShowError<Ex>(string showMessage, Ex ex) where Ex : Exception
+        {
+            MW.MessageBox.Show(showMessage, "Server Starter", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+
+            throw new ServerStarterException<Ex>(ex);
+        }
+    }
+
     class DowngradeException : Exception
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -12,6 +34,7 @@ namespace Server_GUI2
         {
             logger.Info(message);
             Console.WriteLine(App.end_str);
+            //ServerStarterException<IOException>.ShowError("", new IOException(""));
         }
     }
 
