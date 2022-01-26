@@ -17,7 +17,6 @@ namespace Server_GUI2.Develop.Server
 
         public string Name { get; private set; }
 
-        public string Path { get { return $@"{Version.Path}\plugins\{Name}.jar"; } }
 
         public Plugin(string name, Version version)
         {
@@ -31,16 +30,16 @@ namespace Server_GUI2.Develop.Server
         /// </summary>
         public bool IsRemove;
 
-        protected virtual void Remove() { }
+        protected virtual void Remove(string path) { }
 
-        protected virtual void Import() { }
+        protected virtual void Import(string path) { }
 
-        public void Ready()
+        public void Ready(string path)
         {
             if (IsRemove)
-                Remove();
+                Remove(path);
 
-            Import();
+            Import(path);
         }
 
     }
@@ -52,9 +51,9 @@ namespace Server_GUI2.Develop.Server
 
         }
 
-        protected override void Remove()
+        protected override void Remove(string path)
         {
-            File.Delete(Path);
+            File.Delete(path);
         }
     }
 
@@ -67,9 +66,9 @@ namespace Server_GUI2.Develop.Server
             SourcePath = sourcePath;
         }
 
-        protected override void Import()
+        protected override void Import(string path)
         {
-            File.Move(SourcePath, Path);
+            File.Move(SourcePath, path);
         }
     }
 }

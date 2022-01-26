@@ -102,7 +102,7 @@ namespace Server_GUI2
         public static ImportDatapack TryGenInstance(string sourcePath, bool isZip)
         {
             // フォルダ名を取得する
-            string name = System.IO.Path.GetFileNameWithoutExtension(sourcePath);
+            string name = Path.GetFileNameWithoutExtension(sourcePath);
 
             if ( isZip ? IsValidZip(sourcePath, name) : IsValidDirectory(sourcePath, name) )
             {
