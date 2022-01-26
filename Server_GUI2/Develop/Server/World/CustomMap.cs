@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Server_GUI2.Develop.Server.World
 {
-    class CustomMap
+    public class CustomMap
     {
         protected ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
