@@ -92,13 +92,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Develop\Server\Version\Plugin.cs" />
+    <Compile Include="Develop\Server\World\WorldWriter.cs" />
+    <Compile Include="Develop\Server\World\WorldConverter.cs" />
+    <Compile Include="Develop\Server\World\WorldReader.cs" />
     <Compile Include="Develop\Server\World\WorldSaveLocation.cs" />
-    <Compile Include="Develop\Server\World\CustomMap.cs" />
-    <Compile Include="Develop\Server\World\Model.cs" />
-    <Compile Include="Develop\Server\World\GitOperate.cs" />
-    <Compile Include="Develop\Server\World\WorldDev.cs" />
-    <Compile Include="Develop\Server\World\Datapack.cs" />
-    <Compile Include="Develop\Server\World\ShareWorld.cs" />
+    <Compile Include="Develop\Server\World\Util\CustomMap.cs" />
+    <Compile Include="Develop\Server\World\Util\GitOperate.cs" />
+    <Compile Include="Develop\Server\World\World.cs" />
+    <Compile Include="Develop\Server\World\Util\Datapack.cs" />
+    <Compile Include="Develop\Server\World\Util\ShareWorld.cs" />
     <Compile Include="Develop\UserSettings.cs" />
     <Compile Include="Develop\Util\Git.cs" />
     <Compile Include="Develop\Util\ReadContents.cs" />
@@ -136,7 +138,7 @@
     <Compile Include="Develop\Util\FilterableCombobox.cs" />
     <Compile Include="Develop\Server\Version\Version.cs" />
     <Compile Include="Develop\Server\Version\VersionFactory.cs" />
-    <Compile Include="Develop\Server\World\World.cs" />
+    <Compile Include="Develop\Server\World\World_OLD.cs" />
     <Compile Include="Develop\Server\World\WorldFactory.cs" />
     <Compile Include="Windows\Views\dp_Settings.xaml.cs">
       <DependentUpon>dp_Settings.xaml</DependentUpon>
