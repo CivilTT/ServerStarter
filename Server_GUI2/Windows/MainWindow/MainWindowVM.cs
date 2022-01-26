@@ -14,7 +14,7 @@ namespace Server_GUI2.Windows.ViewModels
     class MainWindowVM : INotifyPropertyChanged, IOperateWindows
     {
         // あえて直接呼び出さないことで、Load処理の前にallVersionsなどが呼ばれることを防止している
-        private static readonly VersionFactory verFactory = SetUp.verFactory;
+        private static readonly VersionFactory verFactory = VersionFactory.Instance;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
