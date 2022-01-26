@@ -1,7 +1,8 @@
 ﻿using System.IO;
 using System.Collections.ObjectModel;
+using Server_GUI2.Develop.Server.World;
 
-namespace Server_GUI2.Develop.Server.World
+namespace Server_GUI2
 {
     public class World
     {
