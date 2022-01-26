@@ -7,7 +7,7 @@ namespace Server_GUI2.Develop.Server.World
     {
         public bool Recreate { get; set; }
         public CustomMap CustomMap { get; set; }
-        public ServerProperty serverProperty { get; set; }
+        public ServerProperty serverProperty { get; }
         public WorldReader WorldReader { get; }
         public ObservableCollection<Datapack> Datapacks = new ObservableCollection<Datapack>();
         public ObservableCollection<Datapack> Pligins = new ObservableCollection<Datapack>();
@@ -18,6 +18,8 @@ namespace Server_GUI2.Develop.Server.World
         }
 
         /// <summary>
+        /// RUNするときはこれ呼べばOK
+        /// 戻り値のWorldWriter.Postprocessをサーバー終了後に呼ぶこと。
         /// ワールドデータを必要に応じてDL,移動し
         /// 与えられたバージョン用に変換する
         /// </summary>
@@ -26,7 +28,7 @@ namespace Server_GUI2.Develop.Server.World
             // ワールド書き込み/アップロード用インスタンス
             var writer = saveLocation.GetWorldWriter(version);
             // ワールドデータを指定位置に展開
-            ConverteWorld(writer.Path, version);
+            ConvertWorld(writer.Path, version);
             // ワールド書き込みの前処理(Gitに使用中フラグを立てる等)
             writer.Preprocess();
             return writer;
@@ -36,7 +38,7 @@ namespace Server_GUI2.Develop.Server.World
         /// Run後に実行
         /// ディレクトリの内容に応じて(Spigot|Vanilla|New)PreWorldインスタンスを返す
         /// </summary>
-        private void ConverteWorld(string worldPath,Version version)
+        private void ConvertWorld(string worldPath,Version version)
         {
             if (!Recreate && WorldReader.Version != null && WorldReader.Version > version)
             {
