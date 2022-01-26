@@ -6,7 +6,8 @@ namespace Server_GUI2.Develop.Server.World
     public class World
     {
         public bool Recreate { get; set; }
-        public CustomMap CustomMap{ get; set; }
+        public CustomMap CustomMap { get; set; }
+        public ServerProperty serverProperty { get; set; }
         public WorldReader WorldReader { get; }
         public ObservableCollection<Datapack> Datapacks = new ObservableCollection<Datapack>();
 
