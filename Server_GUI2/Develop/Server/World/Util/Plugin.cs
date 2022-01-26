@@ -13,8 +13,6 @@ namespace Server_GUI2.Develop.Server
     {
         public ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private Version Version;
-
         public string Name { get; private set; }
 
 
