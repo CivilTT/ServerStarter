@@ -1,125 +1,90 @@
-﻿using log4net;
-using System;
-using System.Collections.Generic;
+﻿using System.IO;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-// TODO: VersionとServerの役割
-// Version は1.x.xディレクトリの存在とserver.jar, start.batの存在を保証する
-// Server はeura.txt等サーバー起動時に必要なデータの存在を保証する
-
-namespace Server_GUI2
+namespace Server_GUI2.Develop.Server.World
 {
     public class World
     {
-        public Version Version;
+        public bool Recreate { get; set; }
+        public CustomMap CustomMap{ get; set; }
+        public WorldReader WorldReader { get; }
+        public ObservableCollection<Datapack> Datapacks = new ObservableCollection<Datapack>();
 
-        public string Name;
-
-        public bool Exists;
-
-        private ObservableCollection<Datapack> Datapacks;
-
-        public virtual string Path
+        public World(WorldReader worldReader)
         {
-            get
-            {
-                return $@"{MainWindow.Data_Path}\{Version.Name}\{Name}";
-            }
+            WorldReader = worldReader;
         }
 
         /// <summary>
-        /// generate World from other World instance
+        /// ワールドデータを必要に応じてDL,移動し
+        /// 与えられたバージョン用に変換する
         /// </summary>
-        /// <returns></returns>
-        protected static World ConvertFrom(World world, Version version)
+        public WorldWriter Preprocess(Version version, WorldSaveLocation saveLocation)
         {
-            throw new NotImplementedException();
-        }
-
-        protected World(string name, Version version)
-        {
-            Name = name;
-            Version = version;
-            Exists = Directory.Exists(Path);
-        }
-
-        public static World TryGetInstance(string name, Version version)
-        {
-            return new World(name, version);
+            // ワールド書き込み/アップロード用インスタンス
+            var writer = saveLocation.GetWorldWriter(version);
+            // ワールドデータを指定位置に展開
+            ConverteWorld(writer.Path, version);
+            // ワールド書き込みの前処理(Gitに使用中フラグを立てる等)
+            writer.Preprocess();
+            return writer;
         }
 
         /// <summary>
-        /// ServerPropertyにlevel-name等を記入
+        /// Run後に実行
+        /// ディレクトリの内容に応じて(Spigot|Vanilla|New)PreWorldインスタンスを返す
         /// </summary>
-        /// <param name="serverProperty"></param>
-        public void WriteProperty(ServerProperty serverProperty)
+        private void ConverteWorld(string worldPath,Version version)
         {
-            
-        }
-
-        public virtual void Recreate()
-        {
-
-        }
-
-        public virtual void Remove()
-        {
-
-        }
-
-        public virtual void SetCustomMap(string path)
-        {
-
-        }
-
-    }
-
-    //class VanillaWorld: World
-    //{}
-
-    //class SpigotWorld : World
-    //{}
-  
-    class ShareWorld<T> : World
-    {
-        string GitAccount;
-        string GitRepository;
-
-        World World;
-        Git Git;
-
-        public ShareWorld(string name, Version version, World world, Git git) : base(name, version)
-        {
-            World = world;
-            Git = git;
-        }
-
-        public override string Path
-        {
-            get
+            if (!Recreate && WorldReader.Version != null && WorldReader.Version > version)
             {
-                return $@"{MainWindow.Data_Path}\{Version.Name}\{Name}\world";
+               // TODO: バージョンが下がる場合は確認画面を表示
             }
+
+            // ワールドデータを指定パスに展開
+            WorldReader.ReadTo(worldPath);
+            // データパックの追加と削除
+            for (var i = 0; i < Datapacks.Count; i++)
+            {
+                Datapacks[i].Ready(worldPath);
+            }
+            // 必要に応じてワールドを再生成
+            if (Recreate)
+            {
+                RecreateWorld(worldPath);
+                // 必要に応じてカスタムワールドを導入する
+                if (CustomMap != null)
+                {
+                    CustomMap.Import(worldPath);
+                }
+            }
+            GenWorldConverter(worldPath).ConvertTo(version);
         }
 
-
-        private void Pull()
-        { }
-
-        private void Push()
-        { }
-
-        private string GitURL
+        /// <summary>
+        /// TODO: ワールドデータをリセット(データパックはそのまま)
+        /// </summary>
+        private static void RecreateWorld(string worldPath)
         {
-            get
+        }
+
+        /// <summary>
+        /// TOOD: ワールドデータの形式に応じてPreWorldインスタンスを返却
+        /// </summary>
+        private static WorldConverter GenWorldConverter(string worldPath)
+        {
+            // world がない -> NewPreWorld
+            if ( !Directory.Exists(Path.Combine(worldPath, "world")))
             {
-                return $@"https://{GitAccount}@github.com/{GitAccount}/{GitRepository}";
+                return new NewWorldConverter(worldPath);
             }
+            // world-nether がない -> VanillaPreWorld
+            if ( !Directory.Exists(Path.Combine(worldPath, "world-nether")))
+            {
+                return new VanillaWorldConverter(worldPath);
+            }
+            // その他 -> SpligotPreWorld
+            return new SpigotWorldConverter(worldPath);
         }
     }
 }
