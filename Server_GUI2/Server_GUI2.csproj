@@ -91,6 +91,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Develop\Server\StartServer.cs" />
     <Compile Include="Develop\Server\World\Util\Plugin.cs" />
     <Compile Include="Develop\Server\World\WorldWriter.cs" />
     <Compile Include="Develop\Server\World\WorldConverter.cs" />
