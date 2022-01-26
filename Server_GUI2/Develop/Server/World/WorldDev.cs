@@ -3,14 +3,6 @@ using System.Collections.ObjectModel;
 
 namespace Server_GUI2.Develop.Server.World
 {
-    /// <summary>
-    /// ワールドの保存先(ローカルフォルダ,Gitリポジトリ,Gdrive等)
-    /// </summary>
-    public interface WorldSaveLocation
-    {
-        WorldWriter GetWorldWriter(Version version);
-    }
-
     public class World
     {
         public bool Recreate { get; set; }
@@ -18,15 +10,22 @@ namespace Server_GUI2.Develop.Server.World
         public WorldReader WorldReader { get; }
         public ObservableCollection<Datapack> Datapacks = new ObservableCollection<Datapack>();
 
+        public World(WorldReader worldReader)
+        {
+            WorldReader = worldReader;
+        }
+
         /// <summary>
         /// ワールドデータを必要に応じてDL,移動し
         /// 与えられたバージョン用に変換する
         /// </summary>
         public WorldWriter Preprocess(Version version, WorldSaveLocation saveLocation)
         {
+            // ワールド書き込み/アップロード用インスタンス
             var writer = saveLocation.GetWorldWriter(version);
-            var worldConverter = GetWorldConverter(writer.Path);
-            worldConverter.ConvertTo(version);
+            // ワールドデータを指定位置に展開
+            ConverteWorld(writer.Path, version);
+            // ワールド書き込みの前処理(Gitに使用中フラグを立てる等)
             writer.Preprocess();
             return writer;
         }
@@ -35,8 +34,13 @@ namespace Server_GUI2.Develop.Server.World
         /// Run後に実行
         /// ディレクトリの内容に応じて(Spigot|Vanilla|New)PreWorldインスタンスを返す
         /// </summary>
-        private WorldConverter GetWorldConverter(string worldPath)
+        private void ConverteWorld(string worldPath,Version version)
         {
+            if (!Recreate && WorldReader.Version != null && WorldReader.Version > version)
+            {
+               // TODO: バージョンが下がる場合は確認画面を表示
+            }
+
             // ワールドデータを指定パスに展開
             WorldReader.ReadTo(worldPath);
             // データパックの追加と削除
@@ -54,7 +58,7 @@ namespace Server_GUI2.Develop.Server.World
                     CustomMap.Import(worldPath);
                 }
             }
-            return GenWorldConverter(worldPath);
+            GenWorldConverter(worldPath).ConvertTo(version);
         }
 
         /// <summary>
@@ -72,15 +76,15 @@ namespace Server_GUI2.Develop.Server.World
             // world がない -> NewPreWorld
             if ( !Directory.Exists(Path.Combine(worldPath, "world")))
             {
-                return new NewPreWorld();
+                return new NewWorldConverter(worldPath);
             }
             // world-nether がない -> VanillaPreWorld
             if ( !Directory.Exists(Path.Combine(worldPath, "world-nether")))
             {
-                return new VanillaPreWorld();
+                return new VanillaWorldConverter(worldPath);
             }
             // その他 -> SpligotPreWorld
-            return new SpigotPreWorld();
+            return new SpigotWorldConverter(worldPath);
         }
     }
 
@@ -106,6 +110,7 @@ namespace Server_GUI2.Develop.Server.World
 
     public class WorldReader
     {
+        public Version Version { get; }
         /// <summary>
         /// 
         /// 指定されたパスにワールドデータを用意するだけ
@@ -148,11 +153,7 @@ namespace Server_GUI2.Develop.Server.World
 
     class VanillaWorldConverter : WorldConverter
     {
-        VanillaVersion Version;
-        public VanillaWorldConverter(VanillaVersion version, string path) : base(path)
-        {
-            Version = version;
-        }
+        public VanillaWorldConverter(string path) : base(path) { }
 
         public override void ConvertTo(Version version)
         {
@@ -191,11 +192,7 @@ namespace Server_GUI2.Develop.Server.World
 
     class SpigotWorldConverter : WorldConverter
     {
-        SpigotVersion Version;
-        public SpigotWorldConverter(SpigotVersion version,string path) : base(path)
-        {
-            Version = version;
-        }
+        public SpigotWorldConverter(string path) : base(path) { }
 
         public override void ConvertTo(Version version)
         {
@@ -246,11 +243,5 @@ namespace Server_GUI2.Develop.Server.World
 
     class LocalWorldWriter : WorldWriter { }
 
-
-
-    //    class GitWorldWriter : WorldWriter
-    //    {
-
-    //    class GitWorldWriter : WorldWriter { }
-
+    class GitWorldWriter : WorldWriter { }
 }

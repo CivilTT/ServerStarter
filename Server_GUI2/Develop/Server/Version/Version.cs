@@ -157,6 +157,30 @@ namespace Server_GUI2
         public int CompareTo(Version ver)
         {
             return VersionFactory.Instance.GetVersionIndex(ver) - VersionFactory.Instance.GetVersionIndex(this);
+        }    
+        
+        // Define the is greater than operator.
+        public static bool operator >(Version operand1, Version operand2)
+        {
+            return operand1.CompareTo(operand2) > 0;
+        }
+
+        // Define the is less than operator.
+        public static bool operator <(Version operand1, Version operand2)
+        {
+            return operand1.CompareTo(operand2) < 0;
+        }
+
+        // Define the is greater than or equal to operator.
+        public static bool operator >=(Version operand1, Version operand2)
+        {
+            return operand1.CompareTo(operand2) >= 0;
+        }
+
+        // Define the is less than or equal to operator.
+        public static bool operator <=(Version operand1, Version operand2)
+        {
+            return operand1.CompareTo(operand2) <= 0;
         }
     }
 
