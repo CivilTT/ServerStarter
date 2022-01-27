@@ -92,11 +92,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Develop\Server\StartServer.cs" />
+    <Compile Include="Develop\Server\Storage\StorageFactory.cs" />
     <Compile Include="Develop\Server\World\Util\Plugin.cs" />
     <Compile Include="Develop\Server\World\WorldWriter.cs" />
     <Compile Include="Develop\Server\World\WorldConverter.cs" />
     <Compile Include="Develop\Server\World\WorldReader.cs" />
-    <Compile Include="Develop\Server\World\WorldSaveLocation.cs" />
+    <Compile Include="Develop\Server\Storage\Storage.cs" />
     <Compile Include="Develop\Server\World\Util\CustomMap.cs" />
     <Compile Include="Develop\Server\World\Util\GitOperate.cs" />
     <Compile Include="Develop\Server\World\World.cs" />
@@ -297,9 +298,7 @@
     <Resource Include="Resources\SettingMenu\Icon.png" />
     <Resource Include="Resources\SettingMenu\settings.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Develop\Server\Storage\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<Target Name="AfterResolveReferences">
     <ItemGroup>
