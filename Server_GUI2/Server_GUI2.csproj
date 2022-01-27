@@ -297,6 +297,9 @@
     <Resource Include="Resources\SettingMenu\Icon.png" />
     <Resource Include="Resources\SettingMenu\settings.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Develop\Server\Storage\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<Target Name="AfterResolveReferences">
     <ItemGroup>
