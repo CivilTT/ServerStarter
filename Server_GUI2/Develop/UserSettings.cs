@@ -1,6 +1,7 @@
 ﻿using log4net;
 using Newtonsoft.Json;
 using Server_GUI2.Develop.Server;
+using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Server_GUI2
 {
@@ -142,7 +144,7 @@ namespace Server_GUI2
         {
             VersionName = version.Name;
             VersionType = version is VanillaVersion ? "vanila" : "spigot";
-            WorldName = world.Name;
+            // TODO: WorldName = world.Name;
         }
     }
 }
