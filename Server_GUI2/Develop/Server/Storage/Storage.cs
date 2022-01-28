@@ -37,6 +37,7 @@ namespace Server_GUI2.Develop.Server.Storage
         public override List<World.World> GetWorlds()
         {
             // TODO: ローカルフォルダ内を走査してワールド一覧を返す
+            return new List<World.World>();
         }
     }
 
@@ -65,8 +66,10 @@ namespace Server_GUI2.Develop.Server.Storage
 
         public override List<World.World> GetWorlds()
         {
-            Repository.GetGitWorlds()
+            //Repository.GetGitWorlds();
             // TODO: Gitの#stateブランチからworldstate.jsonを取得してワールド一覧のリストを返す
+            return new List<World.World>();
+
         }
 
         /// <summary>

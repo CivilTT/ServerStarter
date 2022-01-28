@@ -134,7 +134,7 @@ namespace Server_GUI2.Develop.Server.Storage
     }
 }
 
-public class WorldStateJson
-{
-    [JsonProperty("broadcast-rcon-to-ops")]
-}
+//public class WorldStateJson
+//{
+//    [JsonProperty("broadcast-rcon-to-ops")]
+//}
