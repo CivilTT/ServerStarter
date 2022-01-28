@@ -20,8 +20,9 @@ namespace Server_GUI2
         /// <summary>
         /// server.jarを実際に起動する
         /// </summary>
-        public static void Start(string path, string jarName, string log4jArgument)
+        public static void Start(string path, string jarName, string log4jArgument, ServerProperty property)
         {
+            // TODO: ServerPropertyの書き出し
             Path = path;
             JarName = jarName;
             Log4jArgument = log4jArgument;

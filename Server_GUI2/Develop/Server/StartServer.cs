@@ -24,7 +24,16 @@ namespace Server_GUI2
             var ( path, jarName ) = Version.ReadyVersion();
 
             // サーバー実行
-            world.WrapRunAction(() => Server.Start(path, jarName, Version.Log4jArgument), Version, storage);
+            world.WrapRunAction(
+                () => Server.Start(
+                    path,
+                    jarName,
+                    Version.Log4jArgument,
+                    world.serverProperty
+                    ),
+                Version,
+                storage
+                );
         }
     }
 }
