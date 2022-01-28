@@ -1,33 +1,42 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.ObjectModel;
-using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Develop.Server.Storage;
 
-namespace Server_GUI2
+namespace Server_GUI2.Develop.Server.World
 {
     public class World
     {
         public bool Recreate { get; set; }
         public CustomMap CustomMap { get; set; }
         public ServerProperty serverProperty { get; }
+        public Version Version { get; }
+
         public WorldReader WorldReader { get; }
         public ObservableCollection<Datapack> Datapacks = new ObservableCollection<Datapack>();
         public ObservableCollection<Datapack> Pligins = new ObservableCollection<Datapack>();
 
-        public World(WorldReader worldReader)
+        public World(WorldReader worldReader, Version version)
         {
+            Version = version;
             WorldReader = worldReader;
         }
 
         /// <summary>
-        /// RUNするときはこれ呼べばOK
-        /// 戻り値のWorldWriter.Postprocessをサーバー終了後に呼ぶこと。
-        /// ワールドデータを必要に応じてDL,移動し
-        /// 与えられたバージョン用に変換する
+        /// ワールドデータを読み込むー＞与えられた関数を実行ー＞ワールドデータを書き出す
+        /// RUNするときはサーバー起動関数を引数に与えること
         /// </summary>
-        public WorldWriter Preprocess(Version version, WorldSaveLocation saveLocation)
+        public void WrapRunAction( Action func, Version version, Storage.Storage stoarge)
+        {
+            var writer = Preprocess(version,stoarge);
+            func();
+            writer.Postprocess();
+        }
+
+        private WorldWriter Preprocess(Version version, Storage.Storage stoarge)
         {
             // ワールド書き込み/アップロード用インスタンス
-            var writer = saveLocation.GetWorldWriter(version);
+            var writer = stoarge.GetWorldWriter(version);
             // ワールドデータを指定位置に展開
             ConvertWorld(writer.Path, version);
             // ワールド書き込みの前処理(Gitに使用中フラグを立てる等)
@@ -41,7 +50,7 @@ namespace Server_GUI2
         /// </summary>
         private void ConvertWorld(string worldPath,Version version)
         {
-            if (!Recreate && WorldReader.Version != null && WorldReader.Version > version)
+            if (!Recreate && Version != null && Version > version)
             {
                // TODO: バージョンが下がる場合は確認画面を表示
             }

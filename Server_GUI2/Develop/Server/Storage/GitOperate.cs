@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Server_GUI2;
 using Server_GUI2.Develop.Util;
+using Newtonsoft.Json;
 
-namespace Server_GUI2.Develop.Server.World
+namespace Server_GUI2.Develop.Server.Storage
 {
-    public class GitWorldRepository
+    public class GitStorageRepository
     {
         GitLocalBranch LocalBranch;
         GitNamedRemote Remote;
@@ -17,7 +18,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 最初のリポジトリ
         /// </summary>
-        public static void Init(GitLocal local)
+        private static void Init(GitLocal local)
         {
             // git init
             // git branch -m "#main"
@@ -29,7 +30,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 新規リポジトリ
         /// </summary>
-        public static GitWorldRepository AddRepository(GitLocal local, GitRemote remote)
+        public static GitStorageRepository AddRepository(GitLocal local, GitRemote remote)
         {
             var id = $"{remote.Account}.{remote.RepoName}";
             // 新たにrepositoryを紐づける際に起動
@@ -80,14 +81,16 @@ namespace Server_GUI2.Develop.Server.World
                 branch = local.CreateTrackBranch(id, remoteBranch);
                 // git checkout {account}.{repository}
             }
-            return new GitWorldRepository(branch, namedRemote);
+            return new GitStorageRepository(branch, namedRemote);
         }
 
-        public static void GetAllGitWorlds(GitLocal local)
+        public static List<GitStorageRepository> GetAllGitRepositories(GitLocal local)
         {
+            var repos = new List<GitStorageRepository>();
+
             if ( ! local.IsGitLocal())
             {
-                return;
+                return repos;
             }
             // cd/git_worldstate
             // 紐づけられたリポジトリを取得
@@ -95,27 +98,24 @@ namespace Server_GUI2.Develop.Server.World
             var branchs = local.GetBranchs();
             foreach (var remote in remotes)
             {
-                Console.WriteLine(remote.Name);
-                new GitWorldRepository(branchs[remote.Name],remote);
+                repos.Add(new GitStorageRepository(branchs[remote.Name],remote));
             }
+            return repos;
         }
 
-        /// <summary>
-        /// リモートリポジトリの #state ブランチを確認する
-        /// </summary>
-        public GitWorldRepository(GitLocalBranch localBranch, GitNamedRemote remote)
+        public GitStorageRepository(GitLocalBranch localBranch, GitNamedRemote remote)
         {
             LocalBranch = localBranch;
             Remote = remote;
         }
-        public void GetGitWorlds()
+        public void GetGitWorldstate()
         {
             // cd/git_worldstate
             // git checkout {account}.{repository}
             LocalBranch.Checkout();
             // git pull {account}.{repository}
             LocalBranch.Pull();
-            // TODO: worldstate.json を開きリモートワールド情報からGitWorldReaderインスタンスを生成しWorldFactory.Instance.Wordlsに追加
+            // TODO: worldstate.json を開きリモートワールド情報からWorldインスタンスを生成し返却
             var jsonPath = Path.Combine(LocalBranch.Local.Path, "worldstate.json");
             File.ReadAllText(jsonPath);
         }
@@ -132,4 +132,9 @@ namespace Server_GUI2.Develop.Server.World
             // TODO: WorldFactory.Instance.Wordlsから該当リポジトリに紐づいたワールドをワールドデータとともに削除
         }
     }
+}
+
+public class WorldStateJson
+{
+    [JsonProperty("broadcast-rcon-to-ops")]
 }

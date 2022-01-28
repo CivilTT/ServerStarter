@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Server_GUI2.Develop.Server.World;
 
 namespace Server_GUI2
 {
@@ -14,18 +15,16 @@ namespace Server_GUI2
         /// <summary>
         /// Runボタンが押された時に呼ばれる処理
         /// </summary>
-        public static void Run(Version version, World world, Develop.Server.World.WorldSaveLocation location)
+        public static void Run(Version version, World world, Develop.Server.Storage.Storage storage)
         {
             Version = version;
             World = world;
 
-            Version.SetNewVersion();
+            // versionの導入
+            var ( path, jarName ) = Version.ReadyVersion();
 
-            Develop.Server.World.WorldWriter worldWriter = World.Preprocess(Version, location);
-
-            Server.Start(Version.Path, Version.JarName, Version.Log4jArgument);
-
-            worldWriter.Postprocess();
+            // サーバー実行
+            world.WrapRunAction(() => Server.Start(path, jarName, Version.Log4jArgument), Version, storage);
         }
     }
 }

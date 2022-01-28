@@ -99,7 +99,7 @@
     <Compile Include="Develop\Server\World\WorldReader.cs" />
     <Compile Include="Develop\Server\Storage\Storage.cs" />
     <Compile Include="Develop\Server\World\Util\CustomMap.cs" />
-    <Compile Include="Develop\Server\World\Util\GitOperate.cs" />
+    <Compile Include="Develop\Server\Storage\GitOperate.cs" />
     <Compile Include="Develop\Server\World\World.cs" />
     <Compile Include="Develop\Server\World\Util\Datapack.cs" />
     <Compile Include="Develop\Server\World\Util\ShareWorld.cs" />
@@ -137,7 +137,6 @@
     <Compile Include="Develop\Server\Core\Server.cs" />
     <Compile Include="Develop\Server\Core\ServerProperty.cs" />
     <Compile Include="Develop\SetUp.cs" />
-    <Compile Include="Develop\Util\FilterableCombobox.cs" />
     <Compile Include="Develop\Server\Version\Version.cs" />
     <Compile Include="Develop\Server\Version\VersionFactory.cs" />
     <Compile Include="Develop\Server\World\World_OLD.cs" />

@@ -23,12 +23,12 @@ namespace Server_GUI2
         protected VersionFactory VerFactory = VersionFactory.Instance;
 
         public string Name;
-        public virtual string JarName { get; }
+        protected virtual string JarName { get; }
         public virtual string Log4jArgument { get { return ""; } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public virtual string Path { get; }
+        protected virtual string Path { get; }
 
         private bool _Exists;
         public bool Exists 
@@ -46,8 +46,6 @@ namespace Server_GUI2
                 }
             }
         }
-
-        public ServerProperty ServerProperty { get; set; }
 
         protected Version(string name)
         {
@@ -72,9 +70,20 @@ namespace Server_GUI2
         }
 
         /// <summary>
+        /// サーバー起動前に実行
+        /// 必要があれば新しいバージョンの導入を行い、versionのパスと.jarの名称を返す
+        /// </summary>
+        public (string, string) ReadyVersion()
+        {
+            if (!Exists)
+                SetNewVersion();
+            return (Path,JarName);
+        }
+
+        /// <summary>
         /// 新しいバージョンの導入を行う
         /// </summary>
-        public virtual void SetNewVersion()
+        protected virtual void SetNewVersion()
         {
             Exists = true;
 
@@ -146,8 +155,8 @@ namespace Server_GUI2
 
     public class VanillaVersion: Version
     {
-        public override string Path { get { return $@"{SetUp.DataPath}\{Name}\"; } }
-        public override string JarName { get { return "server.jar"; } }
+        protected override string Path { get { return $@"{SetUp.DataPath}\{Name}\"; } }
+        protected override string JarName { get { return "server.jar"; } }
         public override string Log4jArgument
         {
             get
@@ -201,7 +210,7 @@ namespace Server_GUI2
         }
 
 
-        public override void SetNewVersion()
+        protected override void SetNewVersion()
         {
             base.SetNewVersion();
 
@@ -249,16 +258,16 @@ namespace Server_GUI2
 
     public class SpigotVersion: Version
     {
-        public override string Path { get { return $@"{MainWindow.Data_Path}\Spigot_{Name}\"; } }
+        protected override string Path { get { return $@"{MainWindow.Data_Path}\Spigot_{Name}\"; } }
 
-        public override string JarName { get { return $"spigot-{Name}.jar"; } }
+        protected override string JarName { get { return $"spigot-{Name}.jar"; } }
 
         public SpigotVersion(string name) : base(name)
         {
             // Initialize
         }
 
-        public override void SetNewVersion()
+        protected override void SetNewVersion()
         {
             base.SetNewVersion();
 
