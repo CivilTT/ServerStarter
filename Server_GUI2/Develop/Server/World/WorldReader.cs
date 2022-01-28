@@ -9,13 +9,9 @@ namespace Server_GUI2.Develop.Server.World
 
     public class WorldReader
     {
-        public Version Version { get; }
         /// <summary>
-        /// 
         /// 指定されたパスにワールドデータを用意するだけ
         /// バージョン変更やSpigot-Vanilla変換はしない
-        /// 
-        /// 
         /// </summary>
         public virtual void ReadTo(string path)
         {

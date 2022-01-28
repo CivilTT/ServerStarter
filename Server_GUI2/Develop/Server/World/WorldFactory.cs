@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server_GUI2
+namespace Server_GUI2.Develop.Server.World
 {
     class WorldFactory
     {
+        public static WorldFactory Instance = new WorldFactory();
+        public ObservableCollection<World> Worlds { get; } = new ObservableCollection<World>();
+
         // TODO: ワールド一覧の作成
         // ローカルのディレクトリからワールド一覧を表示
         // 登録されているgitアカウントすべてからブランチ名一覧を取得して表示

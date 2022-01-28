@@ -14,7 +14,8 @@ namespace Server_GUI2.Develop.Server.Storage
         public ObservableCollection<Storage> Storages { get; } = new ObservableCollection<Storage>();
         private StorageFactory()
         {
-
+            Storages.Add(new LocalStorage());
+            GitStorage.GetStorages().ForEach(x => Storages.Add(x));
         }
     }
 }
