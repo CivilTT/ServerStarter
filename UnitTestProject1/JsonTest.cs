@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Server_GUI2;
+using Server_GUI2.Develop.Server.Storage;
 using Newtonsoft.Json;
 
 namespace UnitTestProject1
@@ -15,14 +15,11 @@ namespace UnitTestProject1
         [TestMethod]
         public void GitTestMethod()
         {
-            var property = new ServerProperty();
-            property.Difficulty = "hard";
-            Console.WriteLine(property.ExportProperty(true));
-            //Console.WriteLine(JsonConvert.SerializeObject(
-            //    property,
-            //    Formatting.None,
-            //    new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Include }
-            //    ));
+            var json = "{\"{ branch0}\": {\"type\": \"new\"},\"{branch1}\": {\"type\": \"vanilla\",\"version\": \"1.18.1\",\"using\": false,\"datapacks\": [],\"properties\": {\"{key}\": \"{value}\"},\"ops\": {},\"banned-ips\": [],\"banned-players\": []}}";
+
+            var w = JsonConvert.DeserializeObject<Dictionary<string, WorldState>>(json, new JsonWorldStateConverter());
+            var x = JsonConvert.SerializeObject(w,Formatting.Indented, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore});
+            Console.WriteLine(x);
         }
     }
 }
