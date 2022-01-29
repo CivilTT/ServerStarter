@@ -64,7 +64,7 @@
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Padding" Value="0"/>
         </Style>
-        
+
         <Style TargetType="TextBox">
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="Height" Value="28"/>
@@ -99,20 +99,21 @@
 
         <local:MemoryAll x:Key="Mall"/>
         <local:MemoryAva x:Key="Mava"/>
-        
+
     </Window.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="239*"/>
+            <ColumnDefinition Width="33*"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid Style="{StaticResource SideMenu}">
             <StackPanel>
                 <TextBlock Text="Setting Menu" FontSize="24" TextAlignment="Center" Margin="0 10"/>
                 <ListView x:Name="SideMenuLV" Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseLeftButtonUp="ShowMenuContents">
-                    
+
                     <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="pack://application:,,,/Resources/SettingMenu/folder.png" Width="30" Margin="10 0"/>
@@ -151,12 +152,12 @@
                 </ListView>
 
             </StackPanel>
-            
+
             <Button Content="OK" Click="Close_Click" Style="{StaticResource RunStyle}"/>
 
         </Grid>
 
-        <Grid x:Name="ShareWorldContents" Grid.Column="1" Visibility="Visible">
+        <Grid x:Name="ShareWorldContents" Grid.Column="1" Visibility="Visible" Grid.ColumnSpan="2">
             <StackPanel Margin="20 10">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="World Name" FontSize="30"/>
@@ -166,7 +167,7 @@
                     <TextBlock Text="このワールドをShareWorldにする" Style="{StaticResource BlockStyle}"/>
                     <ui:ToggleSwitch OnContent="Yes" OffContent="No" FontSize="20" Margin="30 0"/>
                 </StackPanel>
-                    <!--<TextBlock Text="Git" FontSize="30"/>-->
+                <!--<TextBlock Text="Git" FontSize="30"/>-->
                 <StackPanel Margin="20 5" Orientation="Horizontal">
                     <TextBlock Text="Git Account Name" Width="180" Style="{StaticResource BlockStyle}"/>
                     <TextBox x:Name="gitAccount" Width="250" Text="Example" Style="{StaticResource BoxStyle}"/>
@@ -188,21 +189,21 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="ServerContents" Grid.Column="1" Visibility="Hidden">
+        <Grid x:Name="ServerContents" Grid.Column="1" Visibility="Hidden" Grid.ColumnSpan="2">
             <StackPanel>
                 <TextBlock Text="Javaのバージョン" FontSize="40"/>
                 <TextBlock Text="デフォルトserver properties" FontSize="20"/>
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="NetworkContents" Grid.Column="1" Visibility="Hidden">
+        <Grid x:Name="NetworkContents" Grid.Column="1" Visibility="Hidden" Grid.ColumnSpan="2">
             <StackPanel>
                 <TextBlock Text="UPnP（ポート自動開放）の設定" FontSize="40"/>
                 <TextBlock Text="開放するポート番号" FontSize="20"/>
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="SystemContents" Grid.Column="1" Visibility="Hidden">
+        <Grid x:Name="SystemContents" Grid.Column="1" Visibility="Hidden" Grid.ColumnSpan="2">
             <StackPanel>
                 <TextBlock Text="User Name" FontSize="40"/>
                 <TextBlock Text="Language (English, 日本語, 融合（現状と同じ）)" FontSize="20"/>
@@ -210,10 +211,10 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="InformationContents" Grid.Column="1" Visibility="Hidden">
-            
+        <Grid x:Name="InformationContents" Grid.Column="1" Visibility="Hidden" Grid.ColumnSpan="2">
+
         </Grid>
-        
+
         <!--<Grid.RowDefinitions>
             <RowDefinition Height="370"/>
             <RowDefinition Height="235"/>
