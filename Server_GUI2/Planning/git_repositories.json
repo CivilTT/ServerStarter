@@ -1,0 +1,8 @@
+{
+	"{account}.{repository}": {
+		"{branch}": {
+			"version": "1.18.1",
+			"using": false
+		}
+	}
+}
