@@ -5,15 +5,9 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server_GUI2", "Server_GUI2\Server_GUI2.csproj", "{9F7D16A4-7F4B-419B-B296-C9B63D81A53A}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup_ServerStarter", "Setup_ServerStarter\Setup_ServerStarter.vdproj", "{5D8AA016-F3C2-4B80-8168-2BA1C3258EB1}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Server Starter", "Setup_ServerStarter\Setup_ServerStarter.vdproj", "{5D8AA016-F3C2-4B80-8168-2BA1C3258EB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{3B11D7B1-A8AB-4C64-B83F-C6DCBAE6A07E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "other", "other", "{EA081C9C-D1D9-4FC7-BF61-5AADBFBD636C}"
-	ProjectSection(SolutionItems) = preProject
-		git_repositories.json = git_repositories.json
-		worldstate.json = worldstate.json
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
