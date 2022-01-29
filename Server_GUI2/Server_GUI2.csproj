@@ -111,19 +111,19 @@
     <Compile Include="Windows\MainWindow\MainWindowCommand.cs" />
     <Compile Include="Windows\GeneralVM.cs" />
     <Compile Include="Windows\MainWindow\MainWindowVM.cs" />
-    <Page Include="Windows\Views\dp_Settings.xaml">
+    <Page Include="Windows\MoreSettings\Datapack\dp_Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Views\haihu.xaml">
+    <Page Include="Windows\MoreSettings\CustomMap\haihu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Views\Infomation.xaml">
+    <Page Include="Windows\Info\Infomation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Views\info_builder.xaml">
+    <Page Include="Windows\InfoBuilder\info_builder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -143,49 +143,49 @@
     <Compile Include="Develop\Server\Version\VersionFactory.cs" />
     <Compile Include="Develop\Server\World\World_OLD.cs" />
     <Compile Include="Develop\Server\World\WorldFactory.cs" />
-    <Compile Include="Windows\Views\dp_Settings.xaml.cs">
+    <Compile Include="Windows\MoreSettings\Datapack\dp_Settings.xaml.cs">
       <DependentUpon>dp_Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\Exception.cs" />
     <Compile Include="Core\Functions.cs" />
     <Compile Include="Core\Git.cs" />
-    <Compile Include="Windows\Views\haihu.xaml.cs">
+    <Compile Include="Windows\MoreSettings\CustomMap\haihu.xaml.cs">
       <DependentUpon>haihu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Views\Infomation.xaml.cs">
+    <Compile Include="Windows\Info\Infomation.xaml.cs">
       <DependentUpon>Infomation.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Views\Progress_Bar.xaml.cs">
+    <Compile Include="Windows\ProgressBar\Progress_Bar.xaml.cs">
       <DependentUpon>Progress_Bar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Views\Spigot.xaml.cs">
+    <Compile Include="Windows\MoreSettings\Plugin\Spigot.xaml.cs">
       <DependentUpon>Spigot.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\Spigot_Function.cs" />
     <Compile Include="Core\UPnP.cs" />
     <Compile Include="Core\ReadContents.cs" />
-    <Compile Include="Windows\Views\info_builder.xaml.cs">
+    <Compile Include="Windows\InfoBuilder\info_builder.xaml.cs">
       <DependentUpon>info_builder.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\Views\More_Settings.xaml">
+    <Page Include="Windows\MoreSettings\More_Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Views\Progress_Bar.xaml">
+    <Page Include="Windows\ProgressBar\Progress_Bar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Views\Spigot.xaml">
+    <Page Include="Windows\MoreSettings\Plugin\Spigot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Windows\Views\More_Settings.xaml.cs">
+    <Compile Include="Windows\MoreSettings\More_Settings.xaml.cs">
       <DependentUpon>More_Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
