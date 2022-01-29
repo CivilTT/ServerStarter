@@ -69,7 +69,6 @@ namespace Server_GUI2.Develop.Server.Storage
             //Repository.GetGitWorlds();
             // TODO: Gitの#stateブランチからworldstate.jsonを取得してワールド一覧のリストを返す
             return new List<World.World>();
-
         }
 
         /// <summary>

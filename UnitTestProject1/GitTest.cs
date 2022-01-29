@@ -14,17 +14,17 @@ namespace UnitTestProject1
         [TestMethod]
         public void GitTestMethod()
         {
-            var path = Environment.GetEnvironmentVariable("SERVER_STERTER_TEST");
+            //var path = Environment.GetEnvironmentVariable("SERVER_STERTER_TEST");
 
-            var gitpath = Path.Combine(path, "git_state");
+            //var gitpath = Path.Combine(path, "git_state");
 
-            var local = new GitLocal(gitpath);
-            var remote = new GitRemote("txkodo", "GitTest");
-            var reader = GitStorageRepository.AddRepository(local, remote);
+            //var local = new GitLocal(gitpath);
+            //var remote = new GitRemote("txkodo", "GitTest");
+            //var reader = GitStorageRepository.AddRepository(local, remote);
 
-            var remote2 = new GitRemote("txkodo", "GitTest2");
+            //var remote2 = new GitRemote("txkodo", "GitTest2");
 
-            var reader2 = GitStorageRepository.AddRepository(local, remote2);
+            //var reader2 = GitStorageRepository.AddRepository(local, remote2);
         }
     }
 }
