@@ -8,19 +8,18 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="Infomation" Height="640" Width="550" WindowStartupLocation="CenterScreen">
+        Title="Infomation" Height="500" Width="750" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="Button" x:Key="RunStyle" BasedOn="{StaticResource {x:Type Button}}">
             <Style.Setters>
-                <Setter Property="Width" Value="130"/>
+                <Setter Property="Width" Value="140"/>
                 <Setter Property="Height" Value="35"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+                <Setter Property="Margin" Value="0 10"/>
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Padding" Value="0 0 0 0"/>
-                <Setter Property="Margin" Value="0 0 20 10"/>
-                <Setter Property="HorizontalAlignment" Value="Right"/>
-                <Setter Property="VerticalAlignment" Value="Bottom"/>
-                <Setter Property="Grid.Row" Value="1"/>
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="Background" Value="#7CBB00"/>
                 <Setter Property="Template">
@@ -46,12 +45,26 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style TargetType="TextBox" x:Key="BoxStyle" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Style.Setters>
+                <Setter Property="Width" Value="145"/>
+                <Setter Property="Height" Value="33"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="BorderBrush" Value="#EBEBEB"/>
+                <Setter Property="Background" Value="#EBEBEB"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style.Setters>
+        </Style>
+
         <Style TargetType="TextBlock" x:Key="BlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="Height" Value="28"/>
             <Setter Property="Margin" Value="10 5"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Padding" Value="0"/>
         </Style>
+        
         <Style TargetType="TextBox">
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="Height" Value="28"/>
@@ -71,15 +84,141 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style TargetType="Grid" x:Key="SideMenu">
+            <Style.Triggers>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Dark">
+                    <Setter Property="Background" Value="DimGray"/>
+                </Trigger>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Light">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
         <local:MemoryAll x:Key="Mall"/>
         <local:MemoryAva x:Key="Mava"/>
+        
     </Window.Resources>
+    
     <Grid>
-        <Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Style="{StaticResource SideMenu}">
+            <StackPanel>
+                <TextBlock Text="Setting Menu" FontSize="24" TextAlignment="Center" Margin="0 10"/>
+                <ListView x:Name="SideMenuLV" Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseLeftButtonUp="ShowMenuContents">
+                    
+                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="pack://application:,,,/Resources/SettingMenu/folder.png" Width="30" Margin="10 0"/>
+                            <TextBlock Text="ShareWorld" Margin="10 0" Style="{StaticResource BlockStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="pack://application:,,,/Resources/SettingMenu/database.png" Width="30" Margin="10 0"/>
+                            <TextBlock Text="Server" Margin="10 0" Style="{StaticResource BlockStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="pack://application:,,,/Resources/SettingMenu/global-network.png" Width="30" Margin="10 0"/>
+                            <TextBlock Text="Network" Margin="10 0" Style="{StaticResource BlockStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="pack://application:,,,/Resources/SettingMenu/settings.png" Width="30" Margin="10 0"/>
+                            <TextBlock Text="System" Margin="10 0" Style="{StaticResource BlockStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="pack://application:,,,/Resources/SettingMenu/Icon.png" Width="30" Margin="10 0"/>
+                            <TextBlock Text="Infomation" Margin="10 0" Style="{StaticResource BlockStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                </ListView>
+
+            </StackPanel>
+            
+            <Button Content="OK" Click="Close_Click" Style="{StaticResource RunStyle}"/>
+
+        </Grid>
+
+        <Grid x:Name="ShareWorldContents" Grid.Column="1" Visibility="Visible">
+            <StackPanel Margin="20 10">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="World Name" FontSize="30"/>
+                    <ComboBox x:Name="SetWorld" Margin="30 7" Width="200"/>
+                </StackPanel>
+                <StackPanel Margin="20 5" Orientation="Horizontal">
+                    <TextBlock Text="このワールドをShareWorldにする" Style="{StaticResource BlockStyle}"/>
+                    <ui:ToggleSwitch OnContent="Yes" OffContent="No" FontSize="20" Margin="30 0"/>
+                </StackPanel>
+                    <!--<TextBlock Text="Git" FontSize="30"/>-->
+                <StackPanel Margin="20 5" Orientation="Horizontal">
+                    <TextBlock Text="Git Account Name" Width="180" Style="{StaticResource BlockStyle}"/>
+                    <TextBox x:Name="gitAccount" Width="250" Text="Example" Style="{StaticResource BoxStyle}"/>
+                </StackPanel>
+                <StackPanel Margin="20 5" Orientation="Horizontal">
+                    <TextBlock Text="Git Account E-mail" Width="180" Style="{StaticResource BlockStyle}"/>
+                    <TextBox x:Name="gitMail" Width="250" Text="Example@mail.com" Style="{StaticResource BoxStyle}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <DataGrid>
+                        <!--// Contents //-->
+                        <!--Version, World, isSW, Account, E-mail-->
+                        <!--新規でSW化するワールドが追加された場合は、レポジトリの新規作成をするか否かを問う-->
+                    </DataGrid>
+                </StackPanel>
+                <TextBlock Text="その他のワールドをSWにするか（リモートレポジトリ作成機能付き）" FontSize="20"/>
+                <CheckBox Content="新VersionでSWが起動した際に以前のSWを消去する" IsChecked="True" FontSize="16"/>
+                <TextBlock Text="Personal Access Tokenのページへのリンク" FontSize="20"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="ServerContents" Grid.Column="1" Visibility="Hidden">
+            <StackPanel>
+                <TextBlock Text="Javaのバージョン" FontSize="40"/>
+                <TextBlock Text="デフォルトserver properties" FontSize="20"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="NetworkContents" Grid.Column="1" Visibility="Hidden">
+            <StackPanel>
+                <TextBlock Text="UPnP（ポート自動開放）の設定" FontSize="40"/>
+                <TextBlock Text="開放するポート番号" FontSize="20"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="SystemContents" Grid.Column="1" Visibility="Hidden">
+            <StackPanel>
+                <TextBlock Text="User Name" FontSize="40"/>
+                <TextBlock Text="Language (English, 日本語, 融合（現状と同じ）)" FontSize="20"/>
+                <TextBlock Text="テーマカラー" FontSize="20"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="InformationContents" Grid.Column="1" Visibility="Hidden">
+            
+        </Grid>
+        
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="370"/>
             <RowDefinition Height="235"/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="System Environment" FontSize="24" FontWeight="Bold" Margin="15" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"/>
+        </Grid.RowDefinitions>-->
+        <!--<TextBlock Text="System Environment" FontSize="24" FontWeight="Bold" Margin="15" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"/>
         <StackPanel Margin="20 60 0 0" Width="190" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0">
             <TextBlock Text="OS" Style="{StaticResource BlockStyle}"/>
             <TextBlock Text="CPU" Style="{StaticResource BlockStyle}"/>
@@ -113,8 +252,12 @@
             <TextBox Text="{Binding StarterVersion, Mode=OneWay}"/>
             <TextBox Text="CivilTT" Hyperlink.Click="Author_Click"/>
             <TextBox Text="txkodo"/>
-        </StackPanel>
+        </StackPanel>-->
 
-        <Button Content="OK" Click="OK_Click" Style="{StaticResource RunStyle}"/>
+        <!--<Button Content="System" Click="System_Click" Style="{StaticResource MenuButton}"/>-->
+
+
+
+        <!--<Button Content="OK" Click="OK_Click" Style="{StaticResource RunStyle}"/>-->
     </Grid>
 </Window>

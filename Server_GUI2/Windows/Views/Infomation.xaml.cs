@@ -23,9 +23,14 @@ namespace Server_GUI2
     {
         public string TmpMemory { get { return "test"; } }
 
+        private int OldSelectedIndex;
+
         public Infomation()
         {
             InitializeComponent();
+
+            // 初期設定
+            SideMenuLV.SelectedIndex = 0;
 
             DataContext = new
             {
@@ -43,6 +48,65 @@ namespace Server_GUI2
         private void Author_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("https://twitter.com/CivilT_T");
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ShowMenuContents(object sender, MouseButtonEventArgs e)
+        {
+            switch (OldSelectedIndex)
+            {
+                case 0:
+                    ShareWorldContents.Visibility = Visibility.Hidden;
+                    break;
+                case 1:
+                    ServerContents.Visibility = Visibility.Hidden;
+                    break;
+                case 2:
+                    NetworkContents.Visibility = Visibility.Hidden;
+                    break;
+                case 3:
+                    SystemContents.Visibility = Visibility.Hidden;
+                    break;
+                case 4:
+                    InformationContents.Visibility = Visibility.Hidden;
+                    break;
+                default:
+                    ShareWorldContents.Visibility = Visibility.Hidden;
+                    break;
+            }
+
+            int NewselectedIndex = (sender as ListView).SelectedIndex;
+            switch (NewselectedIndex)
+            {
+                case 0:
+                    ShareWorldContents.Visibility = Visibility.Visible;
+                    break;
+                case 1:
+                    ServerContents.Visibility = Visibility.Visible;
+                    break;
+                case 2:
+                    NetworkContents.Visibility = Visibility.Visible;
+                    break;
+                case 3:
+                    SystemContents.Visibility = Visibility.Visible;
+                    break;
+                case 4:
+                    InformationContents.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    break;
+            }
+
+            OldSelectedIndex = NewselectedIndex;
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 
