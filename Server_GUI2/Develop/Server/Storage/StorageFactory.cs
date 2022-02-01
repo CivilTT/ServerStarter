@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace Server_GUI2.Develop.Server.Storage
 {
-    class StorageFactory
+    public class StorageFactory
     {
-        public StorageFactory Instance { get; } = new StorageFactory();
+        public static StorageFactory Instance { get; } = new StorageFactory();
 
         public ObservableCollection<Storage> Storages { get; } = new ObservableCollection<Storage>();
         private StorageFactory()
         {
-            Storages.Add(new LocalStorage());
             GitStorage.GetStorages().ForEach(x => Storages.Add(x));
         }
     }

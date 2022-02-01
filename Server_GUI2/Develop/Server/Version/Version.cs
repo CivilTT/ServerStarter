@@ -23,6 +23,7 @@ namespace Server_GUI2
         protected VersionFactory VerFactory = VersionFactory.Instance;
 
         public string Name;
+
         protected virtual string JarName { get; }
         public virtual string Log4jArgument { get { return ""; } }
 
@@ -125,7 +126,7 @@ namespace Server_GUI2
         // 比較可能にする
         public int CompareTo(Version ver)
         {
-            return VersionFactory.Instance.GetVersionIndex(ver) - VersionFactory.Instance.GetVersionIndex(this);
+            return VersionFactory.GetIndex(ver.Name) - VersionFactory.GetIndex(this.Name);
         }    
         
         // Define the is greater than operator.
@@ -163,12 +164,12 @@ namespace Server_GUI2
             {
                 // バージョンごとに引数を変更する
                 // TODO: バージョンによってはファイルを新しく用意する必要あり
-                int versionIndex = VerFactory.GetVersionIndex(Name);
+                int versionIndex = VersionFactory.GetIndex(Name);
 
-                int index18 = VerFactory.GetVersionIndex("1.18.1");
-                int index16 = VerFactory.GetVersionIndex("1.16.5");
-                int index11 = VerFactory.GetVersionIndex("1.11.2");
-                int index6 = VerFactory.GetVersionIndex("1.6.4");
+                int index18 = VersionFactory.GetIndex("1.18.1");
+                int index16 = VersionFactory.GetIndex("1.16.5");
+                int index11 = VersionFactory.GetIndex("1.11.2");
+                int index6 = VersionFactory.GetIndex("1.6.4");
 
                 if (index16 < versionIndex && versionIndex < index18)
                 {

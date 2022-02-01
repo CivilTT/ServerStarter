@@ -58,6 +58,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatapackTest.cs" />
     <Compile Include="GitTest.cs" />
+    <Compile Include="StorageTest.cs" />
+    <Compile Include="WorldTest.cs" />
     <Compile Include="VersionListTest.cs" />
   </ItemGroup>
   <ItemGroup>

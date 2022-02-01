@@ -80,7 +80,7 @@ namespace Server_GUI2
         }
 
         [JsonIgnore]
-        public SortedDictionary<string, string> StringOption { get; } =
+        private SortedDictionary<string, string> StringOption { get; } =
             new SortedDictionary<string, string>()
             {
                 {"view-distance","10"},
@@ -110,7 +110,7 @@ namespace Server_GUI2
             };
 
         [JsonIgnore]
-        public SortedDictionary<string, bool> BoolOption { get; } = new SortedDictionary<string, bool>()
+        private SortedDictionary<string, bool> BoolOption { get; } = new SortedDictionary<string, bool>()
         {
             {"broadcast-rcon-to-ops",true},
             {"enable-jmx-monitoring",false},

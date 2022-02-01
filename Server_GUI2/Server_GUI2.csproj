@@ -92,6 +92,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Develop\Server\StartServer.cs" />
+    <Compile Include="Develop\Server\Storage\RemoteWorld.cs" />
     <Compile Include="Develop\Server\Storage\WorldState.cs" />
     <Compile Include="Develop\Server\Storage\StorageFactory.cs" />
     <Compile Include="Develop\Server\World\Util\Plugin.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Develop\Util\JsonItemConverter.cs" />
     <Compile Include="Develop\Util\Git.cs" />
     <Compile Include="Develop\Util\ReadContents.cs" />
+    <Compile Include="Planning\World\World.cs" />
     <Compile Include="Windows\MainWindow\MainWindowCommand.cs" />
     <Compile Include="Windows\GeneralVM.cs" />
     <Compile Include="Windows\MainWindow\MainWindowVM.cs" />
