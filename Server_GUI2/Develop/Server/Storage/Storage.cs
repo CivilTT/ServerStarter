@@ -10,12 +10,12 @@ using Server_GUI2.Develop.Util;
 namespace Server_GUI2.Develop.Server.Storage
 {
     /// <summary>
-    /// ワールドの保存先(ローカルフォルダ,Gitリポジトリ,Gdrive等)
+    /// ワールドの保存先(Gitリポジトリ,Gdrive等)
     /// </summary>
     public abstract class Storage
     {
         public abstract WorldWriter GetWorldWriter(Version version);
-        public abstract List<World.World> GetWorlds();
+        public abstract List<LocalWorld> GetWorlds();
 
         public Storage()
         {
@@ -25,26 +25,9 @@ namespace Server_GUI2.Develop.Server.Storage
     }
 
     /// <summary>
-    /// 保存先ローカルフォルダをあらわす　インスタンスは常に一つ
-    /// </summary>
-    class LocalStorage: Storage
-    {
-        public override WorldWriter GetWorldWriter(Version version)
-        {
-            return new LocalWorldWriter();
-        }
-
-        public override List<World.World> GetWorlds()
-        {
-            // TODO: ローカルフォルダ内を走査してワールド一覧を返す
-            return new List<World.World>();
-        }
-    }
-
-    /// <summary>
     /// gitリモートリポジトリをあらわす　インスタンスはリポジトリの数によって変わる
     /// </summary>
-    class GitStorage: Storage
+    public class GitStorage: Storage
     {
         public static List<GitStorage> GetStorages()
         {
@@ -64,11 +47,11 @@ namespace Server_GUI2.Develop.Server.Storage
             return new GitWorldWriter();
         }
 
-        public override List<World.World> GetWorlds()
+        public override List<LocalWorld> GetWorlds()
         {
             //Repository.GetGitWorlds();
             // TODO: Gitの#stateブランチからworldstate.jsonを取得してワールド一覧のリストを返す
-            return new List<World.World>();
+            return new List<LocalWorld>();
         }
 
         /// <summary>

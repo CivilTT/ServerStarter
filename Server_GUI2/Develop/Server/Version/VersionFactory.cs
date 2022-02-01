@@ -20,64 +20,45 @@ namespace Server_GUI2
 {
     public class VersionFactory
     {
-        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static Dictionary<string, int> VersionIndex = new Dictionary<string, int>();
+        public static int GetIndex(string name)
+        {
+            return VersionIndex[name];
+        }
 
         public readonly static VersionFactory Instance  = new VersionFactory();
 
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         // TODO: vanilla only/ release only / spigot only はViewModelのほうでリアルタイムフィルタ使って実装 https://blog.okazuki.jp/entry/2013/12/07/000341
-        private ObservableCollection<Version> _versions = null;
-        
-        public ObservableCollection<Version> Versions
-        {
-            get
-            {
-                if ( _versions != null)
-                {
-                    return _versions;
-                }
-                var versions = new List<Version>();
-
-                // spigotのサーバーインスタンスを追加
-                List<string> spigotList = GetSpigotVersionList(ref versions);
-
-                // vanillaのサーバーインスタンスを追加
-                LoadVanillaVersions(ref versions, spigotList);
-
-                // spigotのみのサーバー名を比較可能にする
-                AddSpigotOnlyVersionToVersionIndexMap();
-
-                // サーバーをソート
-                versions.Sort();
-                versions.Reverse();
-                return new ObservableCollection<Version>(versions);
-            }
-        }
+        public ObservableCollection<Version> Versions { get; private set; }
 
         public Version SelectedVersion { get; set; }
 
         private readonly Dictionary<string, Version> VersionMap = new Dictionary<string, Version>();
 
-        private readonly Dictionary<string, int> VersionIndexMap;
-
         private VersionFactory()
         {
-            VersionIndexMap = new Dictionary<string, int>();
+            var versions = new List<Version>();
+
+            // spigotのサーバーインスタンスを追加
+            List<string> spigotList = GetSpigotVersionList(ref versions);
+
+            // vanillaのサーバーインスタンスを追加
+            LoadVanillaVersions(ref versions, spigotList);
+
+            // spigotのみのバージョンのインデックスを互換なvanillaのバージョンのものと同じにする
+            AddSpigotOnlyVersionToVersionIndex(spigotList);
+
+            // サーバーをソート
+            versions.Sort();
+            versions.Reverse();
+            Versions = new ObservableCollection<Version>(versions);
         }
 
         public Version GetVersionFromName(string name)
         {
             return VersionMap[name];
-        }
-
-        public int GetVersionIndex(Version version)
-        {
-            //Console.WriteLine("***" + version.Name + VersionIndexMap.ContainsKey(version.Name).ToString());
-            return VersionIndexMap[version.Name];
-        }
-
-        public int GetVersionIndex(string versionName)
-        {
-            return VersionIndexMap[versionName];
         }
 
         /// <summary>
@@ -112,9 +93,10 @@ namespace Server_GUI2
                 bool hasSpigot = (spigotList?.Contains(id)) ?? false;
                 bool isRelease = type == "release";
                 bool isLatest = id == latestRelease || id == latestSnapShot;
-                var versionInstance = new VanillaVersion(id, downloadURL, isRelease, hasSpigot, isLatest);
+                var versionInstance = new VanillaVersion(id,downloadURL, isRelease, hasSpigot, isLatest);
                 versions.Add(versionInstance);
-                VersionIndexMap[id] = i;
+                VersionMap[id] = versionInstance;
+                VersionIndex[id] = i;
                 i++;
             }
         }
@@ -122,9 +104,13 @@ namespace Server_GUI2
         /// <summary>
         /// SpigotとVanilaでバージョンの表記が違う場合に書き足していく
         /// </summary>
-        private void AddSpigotOnlyVersionToVersionIndexMap()
+        private void AddSpigotOnlyVersionToVersionIndex(List<string > spigotList)
         {
-            VersionIndexMap["1.14-pre5"] = VersionIndexMap["1.14 Pre-Release 5"];
+            foreach (var i in spigotList)
+            {
+                var name = i == "1.14-pre5" ? "1.14 Pre-Release 5" : i;
+                VersionIndex[i + "--spigot"] = VersionIndex[name];
+            }
         }
 
         /// <summary>
@@ -142,7 +128,8 @@ namespace Server_GUI2
                 {
                     sw.Write(JsonConvert.SerializeObject(versions));
                 }
-            } else
+            }
+            else
             {
                 using (var reader = new StreamReader($@"{Directory.GetCurrentDirectory()}\version_manifest_v2.json"))
                 {
@@ -175,21 +162,24 @@ namespace Server_GUI2
 
             foreach (var htmlDatas in table)
             {
-                string ver = htmlDatas.InnerHtml;
-                if (ver.Substring(0, 2) != "1.")
+                string verName = htmlDatas.InnerHtml;
+                if (verName.Substring(0, 2) != "1.")
                     continue;
 
-                // .jsonを除いた形
-                ver = ver.Replace(".json", "");
+                // 1.x.x--spigot
+                verName = verName.Replace(".json", "");
 
-                vers.Add(ver);
+                vers.Add(verName);
 
                 // versionを生成してリストに追加
                 // TODO: SpigotVersionの引数downloadURLの削除
-                versions.Add(new SpigotVersion(ver));
+                var versionInstance = new SpigotVersion(verName + "--spigot");
+                versions.Add(versionInstance);
+
+                VersionMap[verName + "--spigot"] = versionInstance;
 
                 // 1.9.jsonが対応バージョン一覧の最後に記載されているため
-                if (ver == "1.9")
+                if (verName == "1.9")
                     break;
             }
 

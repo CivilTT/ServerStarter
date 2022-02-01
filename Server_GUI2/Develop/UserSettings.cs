@@ -140,7 +140,7 @@ namespace Server_GUI2
         public string VersionType;
         public string WorldName;
 
-        public LatestRun(Version version, World world)
+        public LatestRun(Version version, LocalWorld world)
         {
             VersionName = version.Name;
             VersionType = version is VanillaVersion ? "vanila" : "spigot";

@@ -1,9 +1,10 @@
 {
-	"{branch0}": {
-		"type": "New"
+	"{uuid-0}": {
+		"type": "new"
 	},
-	"{branch1}": {
-		"type": "Vanilla",
+	"{uuid-1}": {
+		"type": "vanilla",
+		"name": "shareworld_1",
 		"version": "1.18.1",
 		"using": true,
 		"datapacks": [],
