@@ -101,7 +101,7 @@
                 <Setter Property="BorderThickness" Value="0"/>
             </Style.Setters>
         </Style>
-        <Style TargetType="TextBlock" x:Key="BlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Style TargetType="TextBlock" x:Key="PropertyIndex" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Style.Setters>
                 <Setter Property="Height" Value="33"/>
                 <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -139,12 +139,12 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Width="230" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <TextBlock Text="MAIN Settings" HorizontalAlignment="Left" Height="33" Margin="25,10,0,0" FontSize="24" FontWeight="Bold"/>
-                        <TextBlock Text="difficulty" Style="{StaticResource BlockStyle}"/>
-                        <TextBlock Text="hardcore" Style="{StaticResource BlockStyle}"/>
-                        <TextBlock Text="gamemode" Style="{StaticResource BlockStyle}"/>
-                        <TextBlock Text="force-gamemode" Style="{StaticResource BlockStyle}"/>
-                        <TextBlock Text="white-list" Style="{StaticResource BlockStyle}"/>
-                        <TextBlock Text="enforce-whitelist" Style="{StaticResource BlockStyle}"/>
+                        <TextBlock Text="difficulty" Style="{StaticResource PropertyIndex}"/>
+                        <TextBlock Text="hardcore" Style="{StaticResource PropertyIndex}"/>
+                        <TextBlock Text="gamemode" Style="{StaticResource PropertyIndex}"/>
+                        <TextBlock Text="force-gamemode" Style="{StaticResource PropertyIndex}"/>
+                        <TextBlock Text="white-list" Style="{StaticResource PropertyIndex}"/>
+                        <TextBlock Text="enforce-whitelist" Style="{StaticResource PropertyIndex}"/>
                         <TextBlock Text="OTHER Settings" HorizontalAlignment="Left" Height="33" Margin="25,30,0,0" FontSize="24" FontWeight="Bold"/>
                         <ComboBox x:Name="true_false" Margin="35,20,0,0" Width="180" DropDownClosed="TF_reload" Style="{StaticResource ComboStyle}"/>
                         <ComboBox x:Name="input_text" Margin="35,20,0,0" Width="180" DropDownClosed="IT_reload" Style="{StaticResource ComboStyle}"/>
