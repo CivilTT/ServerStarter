@@ -1,0 +1,98 @@
+﻿<Window x:Class="Server_GUI2.Windows.MoreSettings.WorldSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:local="clr-namespace:Server_GUI2.Windows.MoreSettings"
+        mc:Ignorable="d"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Title="WorldSettings" Height="550" Width="600" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="Grid" x:Key="SideMenu">
+            <Setter Property="Grid.Row" Value="1"/>
+            <Setter Property="Grid.Column" Value="0"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="BlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Margin" Value="10 5"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+        <Style TargetType="Line" x:Key="LineStyle">
+            <Style.Setters>
+                <Setter Property="X1" Value="30"/>
+                <Setter Property="X2" Value="550"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Dark">
+                    <Setter Property="Stroke" Value="White"/>
+                </Trigger>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Light">
+                    <Setter Property="Stroke" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.RowSpan="1" Grid.ColumnSpan="2">
+            <TextBlock HorizontalAlignment="Left" Margin="30,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32" Text="World Setting" FontWeight="Bold" Width="224"/>
+
+            <Line StrokeThickness="0.3" Y1="70" Y2="70" Grid.Column="1" Style="{StaticResource LineStyle}"/>
+
+        </Grid>
+
+
+
+        <Grid Style="{StaticResource SideMenu}">
+            <StackPanel>
+                <ListView x:Name="SideMenuLV" Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseLeftButtonUp="ShowMenuContents">
+
+                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Properties" Margin="10 0" Style="{StaticResource BlockStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="ShareWorld" Margin="10 0" Style="{StaticResource BlockStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Datapacks" Margin="10 0" Style="{StaticResource BlockStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Plugins" Margin="10 0" Style="{StaticResource BlockStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Custom Map" Margin="10 0" Style="{StaticResource BlockStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                </ListView>
+
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+
+</Window>
