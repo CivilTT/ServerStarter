@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Server_GUI2.Develop.Server.LocalWorld
+namespace Server_GUI2.Develop.Server.World
 {
     class WorldCollection
     {
@@ -19,7 +19,7 @@ namespace Server_GUI2.Develop.Server.LocalWorld
         /// データ整合性のためリスト変換はしない。
         /// インデックスアクセスはプロパティ化して常に更新が反映されるようにする。
         /// </summary>
-        public ObservableCollection<LocalWorld> Worlds { get; } = new ObservableCollection<LocalWorld>();
+        public ObservableCollection<WorldWrapper> WorldWrappers { get; } = new ObservableCollection<WorldWrapper>();
         private WorldCollection(string path)
         {
             // ローカルとリモートの接続情報
@@ -33,11 +33,15 @@ namespace Server_GUI2.Develop.Server.LocalWorld
                     var version = VersionFactory.Instance.GetVersionFromName(verDir.Name);
                     foreach (var worldDir in verDir.EnumerateDirectories())
                     {
-                        //ログフォルダは無視
+                        // ログフォルダは無視
                         if (worldDir.Name == "logs")
                             continue;
-                        // 接続済みローカルはRemoteWorld化して扱う
-                        Worlds.Add(new LocalWorld(worldDir.Name, version));
+
+                        // TODO: 接続済みローカルはLinkedRemoteWorldWrapperとして扱う
+                        if (linkJson.ContainsKey($"{verDir.Name}/{worldDir.Name}"))
+                            continue;
+
+                        WorldWrappers.Add(new UnLinkedLocalWorldWrapper(new LocalWorld(worldDir.FullName)));
                     }
                 }
                 catch (KeyNotFoundException)
@@ -46,8 +50,6 @@ namespace Server_GUI2.Develop.Server.LocalWorld
                     continue;
                 }
             }
-            // [new world]を追加
-            Worlds.Add(new LocalWorld("new world"));
         }
 
         /// <summary>

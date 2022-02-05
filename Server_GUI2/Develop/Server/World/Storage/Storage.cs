@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
 
-namespace Server_GUI2.Develop.Server.Storage
+namespace Server_GUI2.Develop.Server.World
 {
     /// <summary>
     /// ワールドの保存先(Gitリポジトリ,Gdrive等)
@@ -20,7 +20,7 @@ namespace Server_GUI2.Develop.Server.Storage
     }
 
     /// <summary>
-    /// gitリモートリポジトリをあらわす　インスタンスはリポジトリの数によって変わる
+    /// gitリモートリポジトリをあらわす　インスタンス数はリポジトリの数によって変わる
     /// </summary>
     public class GitStorage: Storage
     {
@@ -65,7 +65,10 @@ namespace Server_GUI2.Develop.Server.Storage
             {
                 if ( usedNames.Contains(worldState.Key) )
                 {
-                    var remoteWorld = new RemoteWorld(this,worldState.Key,worldState.Value);
+                    var type = worldState.Value.Type == "vanilla" ? ServerType.Vanilla : ServerType.Spigot;
+                    var property = worldState.Value.ServerProperty;
+                    var datapacks = new DatapackCollection(worldState.Value.Datapacks);
+                    var remoteWorld = new GitRemoteWorld(type, property, datapacks);
                     Worlds.Add(remoteWorld);
                 }
                 else

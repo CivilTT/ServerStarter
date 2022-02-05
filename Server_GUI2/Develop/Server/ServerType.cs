@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Server_GUI2.Develop.Server
 {
-    enum ServerType
+    public enum ServerType
     {
         Vanilla,
         Spigot

@@ -91,23 +91,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Develop\Server\LocalWorld\WorldWrapper.cs" />
-    <Compile Include="Develop\Server\LocalWorld\WorldCollection.cs" />
+    <Compile Include="Develop\Server\World\WorldWrapper.cs" />
+    <Compile Include="Develop\Server\World\WorldCollection.cs" />
     <Compile Include="Develop\Server\ServerType.cs" />
-    <Compile Include="Develop\Server\LocalWorld\LocalWorld.cs" />
+    <Compile Include="Develop\Server\World\World.cs" />
     <Compile Include="Develop\Server\StartServer.cs" />
     <Compile Include="Develop\Server\Storage\RemoteWorld.cs" />
-    <Compile Include="Develop\Server\Storage\WorldState.cs" />
-    <Compile Include="Develop\Server\Storage\StorageFactory.cs" />
-    <Compile Include="Develop\Server\World\WorldLink.cs" />
+    <Compile Include="Develop\Server\World\Storage\WorldState.cs" />
+    <Compile Include="Develop\Server\World\Storage\StorageCollection.cs" />
     <Compile Include="Develop\Server\World\Util\Plugin.cs" />
-    <Compile Include="Develop\Server\World\WorldWriter.cs" />
-    <Compile Include="Develop\Server\World\WorldConverter.cs" />
-    <Compile Include="Develop\Server\World\WorldReader.cs" />
-    <Compile Include="Develop\Server\Storage\Storage.cs" />
+    <Compile Include="Develop\Server\World\Storage\Storage.cs" />
     <Compile Include="Develop\Server\World\Util\CustomMap.cs" />
-    <Compile Include="Develop\Server\Storage\GitOperate.cs" />
-    <Compile Include="Develop\Server\World\World.cs" />
+    <Compile Include="Develop\Server\World\Storage\GitOperate.cs" />
     <Compile Include="Develop\Server\World\Util\Datapack.cs" />
     <Compile Include="Develop\Server\World\Util\ShareWorld.cs" />
     <Compile Include="Develop\UserSettings.cs" />
@@ -149,8 +144,6 @@
     <Compile Include="Develop\SetUp.cs" />
     <Compile Include="Develop\Server\Version\Version.cs" />
     <Compile Include="Develop\Server\Version\VersionFactory.cs" />
-    <Compile Include="Develop\Server\World\World_OLD.cs" />
-    <Compile Include="Develop\Server\World\WorldFactory.cs" />
     <Compile Include="Windows\MoreSettings\Datapack\dp_Settings.xaml.cs">
       <DependentUpon>dp_Settings.xaml</DependentUpon>
     </Compile>
