@@ -96,7 +96,6 @@
     <Compile Include="Develop\Server\ServerType.cs" />
     <Compile Include="Develop\Server\World\World.cs" />
     <Compile Include="Develop\Server\StartServer.cs" />
-    <Compile Include="Develop\Server\Storage\RemoteWorld.cs" />
     <Compile Include="Develop\Server\World\Storage\WorldState.cs" />
     <Compile Include="Develop\Server\World\Storage\StorageCollection.cs" />
     <Compile Include="Develop\Server\World\Util\Plugin.cs" />
