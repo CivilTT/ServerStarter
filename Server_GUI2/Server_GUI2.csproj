@@ -163,6 +163,9 @@
     <Compile Include="Windows\Info\Infomation.xaml.cs">
       <DependentUpon>Infomation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\MoreSettings\WorldSettings.xaml.cs">
+      <DependentUpon>WorldSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ProgressBar\Progress_Bar.xaml.cs">
       <DependentUpon>Progress_Bar.xaml</DependentUpon>
     </Compile>
@@ -180,6 +183,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Windows\MoreSettings\More_Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MoreSettings\WorldSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
