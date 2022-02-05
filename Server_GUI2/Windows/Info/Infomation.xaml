@@ -105,8 +105,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="239*"/>
-            <ColumnDefinition Width="33*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <Grid Style="{StaticResource SideMenu}">
@@ -157,7 +156,7 @@
 
         </Grid>
 
-        <Grid x:Name="ShareWorldContents" Grid.Column="1" Visibility="Visible" Grid.ColumnSpan="2">
+        <Grid x:Name="ShareWorldContents" Grid.Column="1" Visibility="Visible">
             <StackPanel Margin="20 10">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="World Name" FontSize="30"/>
@@ -189,21 +188,21 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="ServerContents" Grid.Column="1" Visibility="Hidden" Grid.ColumnSpan="2">
+        <Grid x:Name="ServerContents" Grid.Column="1" Visibility="Hidden">
             <StackPanel>
                 <TextBlock Text="Javaのバージョン" FontSize="40"/>
                 <TextBlock Text="デフォルトserver properties" FontSize="20"/>
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="NetworkContents" Grid.Column="1" Visibility="Hidden" Grid.ColumnSpan="2">
+        <Grid x:Name="NetworkContents" Grid.Column="1" Visibility="Hidden">
             <StackPanel>
                 <TextBlock Text="UPnP（ポート自動開放）の設定" FontSize="40"/>
                 <TextBlock Text="開放するポート番号" FontSize="20"/>
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="SystemContents" Grid.Column="1" Visibility="Hidden" Grid.ColumnSpan="2">
+        <Grid x:Name="SystemContents" Grid.Column="1" Visibility="Hidden">
             <StackPanel>
                 <TextBlock Text="User Name" FontSize="40"/>
                 <TextBlock Text="Language (English, 日本語, 融合（現状と同じ）)" FontSize="20"/>
@@ -211,9 +210,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="InformationContents" Grid.Column="1" Visibility="Hidden" Grid.ColumnSpan="2">
-
-        </Grid>
+        <Grid x:Name="InformationContents" Grid.Column="1" Visibility="Hidden"/>
 
         <!--<Grid.RowDefinitions>
             <RowDefinition Height="370"/>
