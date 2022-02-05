@@ -1,5 +1,4 @@
-﻿using Server_GUI2.Windows.Commands;
-using Server_GUI2;
+﻿using Server_GUI2;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,8 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
+using Server_GUI2.Windows.ViewModels;
 
-namespace Server_GUI2.Windows.ViewModels
+namespace Server_GUI2.Windows.MainWindow
 {
     class MainWindowVM : INotifyPropertyChanged, IOperateWindows
     {

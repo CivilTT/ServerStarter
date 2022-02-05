@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Server_GUI2.Windows.Commands
+namespace Server_GUI2.Windows.MainWindow
 {
     class RunCommand : ICommand
     {
