@@ -30,9 +30,6 @@ namespace Server_GUI2.Develop.Util
 
             if (code != 0)
             {
-                Console.WriteLine("FAIL");
-                Console.WriteLine(code);
-                Console.WriteLine(output);
                 throw exception;
             }
             else
@@ -43,7 +40,6 @@ namespace Server_GUI2.Develop.Util
 
         public static (int, string) Execute(string arguments, string directory)
         {
-            Console.WriteLine(directory == null ? arguments : $"-C \"{directory}\" {arguments}");
             // TODO: directory引数で実行ディレクトリを変更
             var process = new Process()
             {
@@ -225,7 +221,7 @@ namespace Server_GUI2.Develop.Util
         public GitNamedRemote AddRemote(GitRemote remote,string name)
         {
             GitCommand.ExecuteThrow($"remote add \"{name}\" \"{remote.Expression}\"", new GitException($"failed to add remote repository :{remote.Expression} {Path}"), Path);
-            return new GitNamedRemote(this,name);
+            return new GitNamedRemote(this,remote,name);
         }
 
         public void Init(string branchName)
@@ -241,8 +237,21 @@ namespace Server_GUI2.Develop.Util
         public List<GitNamedRemote> GetRemotes()
         {
             var remotes = new List<GitNamedRemote>();
-            var output = GitCommand.ExecuteThrow($"remote", new GitException($"failed to get remotelist of {Path}"), Path);
-            return output.Substring(0, output.Length - 1).Split('\n').Select(name => new GitNamedRemote(this,name)).ToList();
+            var output = GitCommand.ExecuteThrow($"remote -v", new GitException($"failed to get remotelist of {Path}"), Path);
+
+
+            GitNamedRemote GetNamedRemote(string str)
+            {
+                var strs = str.Split();
+                var urls = strs[1].Split('/').ToList();
+                var accountName = urls[urls.Count - 2];
+                var repositoryName = urls[urls.Count - 1].Substring(0,urls[urls.Count - 1].Length - 4);
+                return new GitNamedRemote(this, new GitRemote(accountName, repositoryName),strs[0]);
+            }
+
+            var remoteData = output.Substring(0, output.Length - 1).Split('\n').Where( ( _,i ) => i % 2 == 0 );
+
+            return remoteData.Select(name => GetNamedRemote(name)).ToList();
         }
     }
 
@@ -272,10 +281,12 @@ namespace Server_GUI2.Develop.Util
     public class GitNamedRemote: IGitRemote
     {
         public readonly GitLocal Local;
+        public readonly GitRemote Remote;
         public readonly string Name;
-        public GitNamedRemote(GitLocal local, string name)
+        public GitNamedRemote(GitLocal local, GitRemote remote, string name)
         {
             Local = local;
+            Remote = remote;
             Name = name;
         }
 

@@ -1,6 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Server_GUI2.Develop.Server.Storage;
+using Server_GUI2.Develop.Util;
+using Server_GUI2;
+using Newtonsoft.Json;
 
 namespace UnitTestProject1
 {
@@ -10,10 +13,12 @@ namespace UnitTestProject1
         [TestMethod]
         public void StorageTestMethod()
         {
-            Console.WriteLine(StorageFactory.Instance.Storages);
-
-            foreach (var i in GitStorage.GetStorages())
+            //GitStorageRepository.AddRepository(GitStorage.Local, new GitRemote("txkodo", "GitTest"));
+            foreach (var i in StorageFactory.Instance.Storages)
             {
+                if ( i is GitStorage g )
+                    foreach (var w in g.Worlds )
+                        Console.WriteLine( w );
             }
         }
     }

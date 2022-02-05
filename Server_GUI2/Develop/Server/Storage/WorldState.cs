@@ -11,12 +11,6 @@ namespace Server_GUI2.Develop.Server.Storage
     {
         [JsonProperty("type")]
         public string Type { get; set; }
-    }
-
-    public class NewWorldState : WorldState { }
-
-    public class ExistWorldState : WorldState
-    {
         [JsonProperty("version")]
         public string Version { get; set; }
         [JsonProperty("using")]
@@ -29,9 +23,9 @@ namespace Server_GUI2.Develop.Server.Storage
         public ServerProperty ServerProperty { get; set; } = null;
     }
 
-    class VanillaWorldState : ExistWorldState { }
+    class VanillaWorldState : WorldState { }
 
-    class SpigotWorldState : ExistWorldState { }
+    class SpigotWorldState : WorldState { }
 
     public class JsonWorldStateConverter : CustomCreationConverter<WorldState>
     {
@@ -45,8 +39,6 @@ namespace Server_GUI2.Develop.Server.Storage
             var type = (string)jObject.Property("type");
             switch (type)
             {
-                case "new":
-                    return JsonConvert.DeserializeObject<NewWorldState>(jObject.ToString());
                 case "vanilla":
                     return JsonConvert.DeserializeObject<VanillaWorldState>(jObject.ToString());
                 case "spigot":

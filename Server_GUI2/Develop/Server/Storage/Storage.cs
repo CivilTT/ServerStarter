@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,14 +15,8 @@ namespace Server_GUI2.Develop.Server.Storage
     /// </summary>
     public abstract class Storage
     {
-        public abstract WorldWriter GetWorldWriter(Version version);
-        public abstract List<LocalWorld> GetWorlds();
-
-        public Storage()
-        {
-            // WorldFactoryにストレージ内のワールドを登録
-            GetWorlds().ForEach( x => WorldFactory.Instance.Worlds.Add(x));
-        }
+        public ObservableCollection<RemoteWorld> Worlds = new ObservableCollection<RemoteWorld>();
+        public abstract string Id { get; }
     }
 
     /// <summary>
@@ -29,37 +24,71 @@ namespace Server_GUI2.Develop.Server.Storage
     /// </summary>
     public class GitStorage: Storage
     {
+        public static readonly GitLocal Local = new GitLocal(Path.Combine(SetUp.CurrentDirectory, "git_state"));
+        private Dictionary<string, WorldState> worldStates = new Dictionary<string, WorldState>();
+        private HashSet<string> usedNames = new HashSet<string>();
+
+        public override string Id => $"git/{Repository.Remote.Remote.Account}/{Repository.Remote.Remote.RepoName}";
+
+        /// <summary>
+        /// 使用可能なブランチ名かどうかを返す
+        /// </summary>
+        public bool IsUsableName(string name)
+        {
+            // TODO: 使用不可文字が入っていてもfalseを返す
+            return ! usedNames.Contains(name);
+        }
+
         public static List<GitStorage> GetStorages()
         {
-            var local = new GitLocal(Path.Combine(SetUp.CurrentDirectory,"git"));
-            var repos = GitStorageRepository.GetAllGitRepositories(local);
+            var repos = GitStorageRepository.GetAllGitRepositories(Local);
             return repos.Select(x => new GitStorage(x)).ToList();
+        }
+
+        public override string ToString()
+        {
+            return $"{ Repository.LocalBranch.Name}:{ Repository.Remote.Expression}";
         }
 
         public GitStorageRepository Repository;
         public GitStorage(GitStorageRepository repository)
         {
             Repository = repository;
-        }
+            foreach ( var kv in Repository.Remote.Remote.GetBranchs())
+            {
+                usedNames.Add(kv.Key);
+            }
 
-        public override WorldWriter GetWorldWriter(Version version)
-        {
-            return new GitWorldWriter();
-        }
+            worldStates = Repository.GetGitWorldstate();
 
-        public override List<LocalWorld> GetWorlds()
-        {
-            //Repository.GetGitWorlds();
-            // TODO: Gitの#stateブランチからworldstate.jsonを取得してワールド一覧のリストを返す
-            return new List<LocalWorld>();
+            foreach ( var worldState in worldStates)
+            {
+                if ( usedNames.Contains(worldState.Key) )
+                {
+                    var remoteWorld = new RemoteWorld(this,worldState.Key,worldState.Value);
+                    Worlds.Add(remoteWorld);
+                }
+                else
+                {
+                    // 存在しなくなったブランチはworldstateから削除
+                    worldStates.Remove(worldState.Key);
+                }
+            }
         }
 
         /// <summary>
-        /// TODO: ストレージとそれに結び付いたデータを削除
+        /// Worldstateを#state/worldstate.jsonに保存
+        /// </summary>
+        public void SaveWorldState()
+        {
+            Repository.SaveGitWorldstate(worldStates);
+        }
+
+        /// <summary>
+        /// TODO: ストレージ登録情報を削除
         /// </summary>
         public void Delete()
         {
-
         }
     }
 }
