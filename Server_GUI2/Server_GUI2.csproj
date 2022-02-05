@@ -159,6 +159,7 @@
     <Compile Include="Windows\MoreSettings\WorldSettings.xaml.cs">
       <DependentUpon>WorldSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\MoreSettings\WorldSettingsVM.cs" />
     <Compile Include="Windows\ProgressBar\Progress_Bar.xaml.cs">
       <DependentUpon>Progress_Bar.xaml</DependentUpon>
     </Compile>
