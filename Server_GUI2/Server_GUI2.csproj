@@ -91,6 +91,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Develop\Server\ServerSterterPath.cs" />
     <Compile Include="Develop\Server\World\WorldWrapper.cs" />
     <Compile Include="Develop\Server\World\WorldCollection.cs" />
     <Compile Include="Develop\Server\ServerType.cs" />

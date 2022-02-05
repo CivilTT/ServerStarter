@@ -10,12 +10,12 @@ namespace Server_GUI2
     static class StartServer
     {
         private static Version Version;
-        private static LocalWorld World;
+        private static WorldWrapper World;
 
         /// <summary>
         /// Runボタンが押された時に呼ばれる処理
         /// </summary>
-        public static void Run(Version version, LocalWorld world, Develop.Server.Storage.Storage storage)
+        public static void Run(Version version, WorldWrapper world)
         {
             Version = version;
             World = world;
@@ -23,17 +23,15 @@ namespace Server_GUI2
             // versionの導入
             var ( path, jarName ) = Version.ReadyVersion();
 
-            // サーバー実行
-            //world.WrapRun(
-            //    Version,
-            //    storage
-            //    () => Server.Start(
-            //        path,
-            //        jarName,
-            //        Version.Log4jArgument,
-            //        world.serverProperty
-            //        ),
-            //    );
+            //サーバー実行
+            world.WrapRun(
+                serverProperty => Server.Start(
+                    path,
+                    jarName,
+                    Version.Log4jArgument,
+                    serverProperty
+                    )
+                );
         }
     }
 }

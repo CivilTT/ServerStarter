@@ -16,6 +16,8 @@ namespace Server_GUI2.Develop.Server.World
         //public ObservableCollection<Datapack> Pligins { get; }
         public ServerProperty Property { get; protected set; }
         public ServerType? Type { get; protected set; }
+        public string Name { get; protected set; }
+        public Version Version { get; protected set; }
     }
 
     /// <summary>
@@ -30,14 +32,17 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public LocalWorld(
             string path,
+            Version version,
             ServerType? type,
             ServerProperty property,
             DatapackCollection datapacks
             )
         {
             Path = path;
+            Version = version;
+            Name = System.IO.Path.GetDirectoryName(path);
             // フォルダ存在しない場合は新規作成
-            if (!Directory.Exists(Path))
+            if (!System.IO.Directory.Exists(Path))
                 CreateWorldData();
 
             var currentType = GetServerType();
@@ -56,6 +61,23 @@ namespace Server_GUI2.Develop.Server.World
             Datapacks = datapacks;
         }
 
+        public LocalWorld ConvertVersion(Version version)
+        {
+            ServerType type;
+            if (version is VanillaVersion)
+                type = ServerType.Vanilla;
+            else if (version is SpigotVersion)
+                type = ServerType.Spigot;
+            else
+                throw new ArgumentException($"\"{version.GetType().ToString()}\" is unknowen version.");
+            return new LocalWorld(Path, version, type, Property, Datapacks);
+        }
+
+        public LocalWorld ToSpigot()
+        {
+            return new LocalWorld(Path, Version, ServerType.Vanilla, Property, Datapacks);
+        }
+
         /// <summary>
         /// ワールドデータを指定パスに移動
         /// </summary>
@@ -66,14 +88,14 @@ namespace Server_GUI2.Develop.Server.World
             if (addSuffixWhenNameCollided)
             {
                 var suffixNum = 1;
-                while (Directory.Exists(newPath))
+                while (System.IO.Directory.Exists(newPath))
                 {
                     suffixNum += 1;
                     newPath = $"{path}({suffixNum})";
                 }
             }
-            Directory.Move(Path, newPath);
-            return new LocalWorld(newPath, Type,Property,Datapacks);
+            System.IO.Directory.Move(Path, newPath);
+            return new LocalWorld(newPath, Version, Type, Property, Datapacks);
         }
 
         /// <summary>
@@ -82,8 +104,9 @@ namespace Server_GUI2.Develop.Server.World
         public LocalWorld(string path)
         {
             Path = path;
+            Name = System.IO.Path.GetDirectoryName(path);
             // フォルダ存在しない場合は新規作成
-            if (!Directory.Exists(Path))
+            if (!System.IO.Directory.Exists(Path))
                 CreateWorldData();
 
             Property = LoadProperties();
@@ -96,7 +119,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void CreateWorldData()
         {
-            Directory.CreateDirectory(Path);
+            System.IO.Directory.CreateDirectory(Path);
         }
 
         /// <summary>
@@ -106,11 +129,11 @@ namespace Server_GUI2.Develop.Server.World
         private void DeleteWorldData()
         {
             var worldPath = System.IO.Path.Combine(Path, "world");
-            if (Directory.Exists(worldPath)) Directory.Delete(worldPath);
+            if (System.IO.Directory.Exists(worldPath)) System.IO.Directory.Delete(worldPath);
             var netherPath = System.IO.Path.Combine(Path, "world_nether");
-            if (Directory.Exists(netherPath)) Directory.Delete(netherPath);
+            if (System.IO.Directory.Exists(netherPath)) System.IO.Directory.Delete(netherPath);
             var endPath = System.IO.Path.Combine(Path, "world_end");
-            if (Directory.Exists(endPath)) Directory.Delete(endPath);
+            if (System.IO.Directory.Exists(endPath)) System.IO.Directory.Delete(endPath);
         }
 
         /// <summary>
@@ -129,10 +152,10 @@ namespace Server_GUI2.Develop.Server.World
         private ServerType? GetServerType()
         {
             var worldPath = System.IO.Path.Combine(Path,"world");
-            if ( Directory.Exists(worldPath))
+            if (System.IO.Directory.Exists(worldPath))
             {
-                var netherPath = System.IO.Path.Combine(Path,"world_nether");
-                if (Directory.Exists(netherPath))
+                var netherPath = System.IO.Path.Combine(Path, "world_nether");
+                if (System.IO.Directory.Exists(netherPath))
                     return ServerType.Spigot;
                 else 
                     return ServerType.Vanilla;
@@ -165,14 +188,14 @@ namespace Server_GUI2.Develop.Server.World
         private DatapackCollection LoadDatapacks()
         {
             var datapackPath = System.IO.Path.Combine(Path, "datapack");
-            if (Directory.Exists(datapackPath))
+            if (System.IO.Directory.Exists(datapackPath))
             {
                 var collection = new List<string>();
-                var datapacks = Directory.GetDirectories(datapackPath);
+                var datapacks = System.IO.Directory.GetDirectories(datapackPath);
                 foreach (var datapack in datapacks)
                 {
                     var hasPackMcmeta = File.Exists(System.IO.Path.Combine(datapack, "pack.mcmeta"));
-                    var hasData = Directory.Exists(System.IO.Path.Combine(datapack, "Data"));
+                    var hasData = System.IO.Directory.Exists(System.IO.Path.Combine(datapack, "Data"));
                     if (hasPackMcmeta && hasData)
                     {
                         var name = System.IO.Path.GetFileName(datapack);
@@ -203,11 +226,15 @@ namespace Server_GUI2.Develop.Server.World
     public abstract class RemoteWorld: World
     {
         public RemoteWorld(
+            string name,
+            Version version,
             ServerType? type,
             ServerProperty property,
             DatapackCollection datapacks
             )
         {
+            Version = version;
+            Name = name;
             Type = type;
             Property = property;
             Datapacks = datapacks;
@@ -227,10 +254,12 @@ namespace Server_GUI2.Develop.Server.World
     public class GitRemoteWorld : RemoteWorld
     {
         public GitRemoteWorld(
-           ServerType? type,
-           ServerProperty property,
-           DatapackCollection datapacks
-           ): base(type,property,datapacks)
+            string name,
+            Version version,
+            ServerType? type,
+            ServerProperty property,
+            DatapackCollection datapacks
+            ): base(name, version, type, property, datapacks)
         {}
 
         /// <summary>

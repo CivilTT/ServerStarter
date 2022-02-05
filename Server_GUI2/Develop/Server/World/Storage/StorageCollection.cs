@@ -9,16 +9,24 @@ using Server_GUI2.Develop.Util;
 
 namespace Server_GUI2.Develop.Server.World
 {
-    public class StorageFactory
+    public class StorageCollection
     {
-        public static StorageFactory Instance { get; } = new StorageFactory();
+        public static StorageCollection Instance { get; } = new StorageCollection();
 
         public ObservableCollection<Storage> Storages { get; } = new ObservableCollection<Storage>();
 
-        private StorageFactory()
+        private StorageCollection()
         {
             // gitのリポジトリを全取得
             GitStorage.GetStorages().ForEach(x => Storages.Add(x));
+        }
+
+        // TODO: リモートリポジトリから消えた場合とリモートリポジトリと通信できない場合エラーを吐く
+        public RemoteWorld FindRemoteWorld(string storage,string world)
+        {
+            var storageValue = Instance.Storages.Where(x => x.Id == storage).First();
+            var worldValue = storageValue.Worlds.Where(x => x.Name == world).First();
+            return worldValue;
         }
 
         public void Add(Storage storage)

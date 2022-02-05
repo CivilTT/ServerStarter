@@ -16,7 +16,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public abstract void WrapRun(Action<ServerProperty> runFunc);
+        public abstract void WrapRun(Version version, Action<ServerProperty> runFunc);
     }
 
     /// <summary>
@@ -30,6 +30,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             LocalWorld = world;
         }
+
         /// <summary>
         /// リモートワールドとリンクする
         /// </summary>
@@ -41,7 +42,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public override void WrapRun(Action<ServerProperty> runFunc)
+        public override void WrapRun(Version version, Action<ServerProperty> runFunc)
         {
             LocalWorld.WrapRun(runFunc);
         }
@@ -76,9 +77,11 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public override void WrapRun(Action<ServerProperty> runFunc)
+        public override void WrapRun(Version version, Action<ServerProperty> runFunc)
         {
             var local = RemoteWorld.ToLocal(path);
+            // TODO: バージョンに従ってフォルダ移動
+            //local.Move();
             local.WrapRun(runFunc);
             RemoteWorld.FromLocal(local,false);
         }
@@ -108,7 +111,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public override void WrapRun(Action<ServerProperty> runFunc)
+        public override void WrapRun(Version version, Action<ServerProperty> runFunc)
         {
             localWorld.WrapRun(runFunc);
             RemoteWorld.FromLocal(localWorld,true);

@@ -65,10 +65,11 @@ namespace Server_GUI2.Develop.Server.World
             {
                 if ( usedNames.Contains(worldState.Key) )
                 {
+                    var name = worldState.Key;
                     var type = worldState.Value.Type == "vanilla" ? ServerType.Vanilla : ServerType.Spigot;
                     var property = worldState.Value.ServerProperty;
                     var datapacks = new DatapackCollection(worldState.Value.Datapacks);
-                    var remoteWorld = new GitRemoteWorld(type, property, datapacks);
+                    var remoteWorld = new GitRemoteWorld(name,type, property, datapacks);
                     Worlds.Add(remoteWorld);
                 }
                 else
