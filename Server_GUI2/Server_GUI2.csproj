@@ -91,10 +91,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Develop\Server\LocalWorld\WorldWrapper.cs" />
+    <Compile Include="Develop\Server\LocalWorld\WorldCollection.cs" />
+    <Compile Include="Develop\Server\ServerType.cs" />
+    <Compile Include="Develop\Server\LocalWorld\LocalWorld.cs" />
     <Compile Include="Develop\Server\StartServer.cs" />
     <Compile Include="Develop\Server\Storage\RemoteWorld.cs" />
     <Compile Include="Develop\Server\Storage\WorldState.cs" />
     <Compile Include="Develop\Server\Storage\StorageFactory.cs" />
+    <Compile Include="Develop\Server\World\WorldLink.cs" />
     <Compile Include="Develop\Server\World\Util\Plugin.cs" />
     <Compile Include="Develop\Server\World\WorldWriter.cs" />
     <Compile Include="Develop\Server\World\WorldConverter.cs" />
@@ -106,6 +111,7 @@
     <Compile Include="Develop\Server\World\Util\Datapack.cs" />
     <Compile Include="Develop\Server\World\Util\ShareWorld.cs" />
     <Compile Include="Develop\UserSettings.cs" />
+    <Compile Include="Develop\Util\ReadOnlyProperty.cs" />
     <Compile Include="Develop\Util\JsonItemConverter.cs" />
     <Compile Include="Develop\Util\Git.cs" />
     <Compile Include="Develop\Util\ReadContents.cs" />
@@ -213,7 +219,7 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Planning\git_repositories.json" />
+    <None Include="Planning\remotes.json" />
     <None Include="Planning\worldstate.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

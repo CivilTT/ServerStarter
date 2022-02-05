@@ -13,8 +13,8 @@ namespace Server_GUI2.Planning.World
         public readonly bool IsNewWorld;
         public bool Recreate { get; set; }
         //public CustomMap CustomMap { get; set; }
-        public ObservableCollection<Datapack> Datapacks { get;} = new ObservableCollection<Datapack>();
-        public ObservableCollection<Datapack> Pligins { get; } = new ObservableCollection<Datapack>();
+        public ObservableCollection<ADatapack> Datapacks { get;} = new ObservableCollection<ADatapack>();
+        public ObservableCollection<ADatapack> Pligins { get; } = new ObservableCollection<ADatapack>();
 
         public Version Version => HasRemote ? Remote.Version : Version;
         RemoteWorld Remote

@@ -2,6 +2,7 @@
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -12,7 +13,47 @@ using System.Windows;
 
 namespace Server_GUI2
 {
-    public class Datapack
+    public class DatapackCollection
+    {
+        public ObservableCollection<ADatapack> Datapacks { get;}
+        private List<Action<string>> operations = new List<Action<string>>();
+
+        public DatapackCollection(List<string> datapackNames)
+        {
+            Datapacks = new ObservableCollection<ADatapack>(datapackNames.Select(x => new ExistDatapack(x)));
+        }
+
+        /// <summary>
+        /// データパックを追加する
+        /// (ディレクトリ操作は行わない)
+        /// </summary>
+        public void Add(Datapack datapack)
+        {
+            Datapacks.Add(datapack);
+            operations.Add(datapack.Import);
+        }
+
+        /// <summary>
+        /// データパックを削除する
+        /// (ディレクトリ操作は行わない)
+        /// </summary>
+        public void Remove(ADatapack datapack)
+        {
+            Datapacks.Remove(datapack);
+            operations.Add(datapack.Remove);
+        }
+
+        /// <summary>
+        /// データパックの削除と追加をディレクトリ上で実際に行う
+        /// </summary>
+        public void Evaluate(string path)
+        {
+            foreach ( var operation in operations)
+                operation(path);
+        }
+    }
+
+    public abstract class ADatapack
     {
         public ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -20,7 +61,7 @@ namespace Server_GUI2
 
         protected bool IsZip;
 
-        protected Datapack(string name)
+        protected ADatapack(string name)
         {
             Name = name;
         }
@@ -31,32 +72,13 @@ namespace Server_GUI2
         /// </summary>
         public bool NeedToRemove;
 
-        protected virtual void Remove(string path) { }
-
-        protected virtual void Import(string path) { } 
-
-        /// <summary>
-        /// RUN時に実行。
-        /// ワールドデータ内にデータパックがあることを保証する
-        /// データパック導入に関する一連の処理を行う
-        /// </summary>
-        public void Ready(string path)
-        {
-            if (NeedToRemove)
-            {
-                Remove(path);
-            }
-            else
-            {
-                Import(path);
-            }
-        }
+        public virtual void Remove(string path) { }
     }
 
     /// <summary>
     /// すでに導入済のデータパック
     /// </summary>
-    public class ExistDatapack : Datapack
+    class ExistDatapack : ADatapack
     {
         public ExistDatapack(string name) : base(name)
         {
@@ -64,16 +86,11 @@ namespace Server_GUI2
         }
 
         /// <summary>
-        /// データパックを新規導入(何もしない)
-        /// </summary>
-        protected override void Import(string path ) { }
-
-
-        /// <summary>
         /// TODO: ディレクトリからデータパックを削除
         /// </summary>
-        protected override void Remove(string path)
+        public override void Remove(string datapacksPath)
         {
+            var path = Path.Combine(datapacksPath, Name);
             logger.Info("Remove the datapack");
             if (Directory.Exists(path))
             {
@@ -90,7 +107,7 @@ namespace Server_GUI2
     /// 展開して移動する必要があるデータパック
     /// 移動先に移動するデータパックが存在していないことを前提とする
     /// </summary>
-    public class ImportDatapack : Datapack
+    public class Datapack : ADatapack
     {
         private readonly string SourcePath;
         
@@ -98,14 +115,14 @@ namespace Server_GUI2
         /// 与えられたパスが有効なデータパックの場合インスタンスを生成する
         /// でなければnullを返す。
         /// </summary>
-        public static ImportDatapack TryGenInstance(string sourcePath, bool isZip)
+        public static Datapack TryGenInstance(string sourcePath, bool isZip)
         {
             // フォルダ名を取得する
             string name = Path.GetFileNameWithoutExtension(sourcePath);
 
             if ( isZip ? IsValidZip(sourcePath, name) : IsValidDirectory(sourcePath, name) )
             {
-                return new ImportDatapack(name, sourcePath, isZip);
+                return new Datapack(name, sourcePath, isZip);
             }
             else
             {
@@ -113,7 +130,7 @@ namespace Server_GUI2
             }
         }
 
-        private ImportDatapack(string name, string sourcePath, bool isZip) :base(name)
+        private Datapack(string name, string sourcePath, bool isZip) :base(name)
         {
             SourcePath = sourcePath;
             IsZip = isZip;
@@ -152,8 +169,12 @@ namespace Server_GUI2
             return result;
         }
 
-        protected override void Import(string path)
+        /// <summary>
+        /// データパックを新規導入
+        /// </summary>
+        public void Import(string datapacksPath)
         {
+            var path = Path.Combine(datapacksPath, Name);
             if (IsZip)
             {
                 string zipPath = $"{path}.zip";
@@ -181,6 +202,6 @@ namespace Server_GUI2
         /// <summary>
         /// ディレクトリからデータパックを削除(何もしない)
         /// </summary>
-        protected override void Remove(string path) { }
+        public override void Remove(string datapacksPath) { }
     }
 }

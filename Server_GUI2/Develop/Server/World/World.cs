@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.ObjectModel;
 using Server_GUI2.Develop.Server.Storage;
+using Server_GUI2.Develop.Util;
 
 namespace Server_GUI2.Develop.Server.World
 {
@@ -9,28 +10,57 @@ namespace Server_GUI2.Develop.Server.World
     {
         public string Path { get; private set; }
         public string Name { get; set; }
+        public string Id => $"{version.Name}/{Name}";
+        /// <summary>
+        /// 表示名(version/name)
+        /// </summary>
+        public string DisplayName
+        {
+            get
+            {
+                if (IsNewWorld)
+                    return "[new world]";
+                var suffix = HasRemote ? "(remote)" : "";
+                return $"{Version.Name}/{Name}{suffix}";
+            }
+        }
+
         public readonly bool IsNewWorld;
         public bool Recreate { get; set; }
         public CustomMap CustomMap { get; set; }
-        public ObservableCollection<Datapack> Datapacks { get; } = new ObservableCollection<Datapack>();
-        public ObservableCollection<Datapack> Pligins { get; } = new ObservableCollection<Datapack>();
+        public ObservableCollection<ADatapack> Datapacks { get; } = new ObservableCollection<ADatapack>();
+        public ObservableCollection<ADatapack> Pligins { get; } = new ObservableCollection<ADatapack>();
         private Version version;
-        public Version Version => HasRemote ? Remote.Version : Version;
-        RemoteWorld Remote { get; }
+        public Version Version => HasRemote ? Remote.Value.Version : version;
+        ReadOnlyProperty<RemoteWorld> Remote { get; }
         public ServerProperty property;
-        public bool HasRemote => Remote != null;
+        public bool HasRemote => Remote.Value != null;
 
-        public LocalWorld(DirectoryInfo directory,Version version)
+        public LocalWorld(string name)
+        {
+            IsNewWorld = true;
+            Name = name;
+            this.version = null;
+            this.Remote = WorldLink.Instance.GetLinkedRemote(this);
+        }
+
+        public LocalWorld(string name,Version version)
         {
             IsNewWorld = false;
-            Name = directory.Name;
+            Name = name;
             this.version = version;
+            this.Remote = WorldLink.Instance.GetLinkedRemote(this);
         }
 
         //リモートとリンクする
-        public void LinkToRemote()
+        public void LinkToRemote(RemoteWorld remote)
         {
+            WorldLink.Instance.Link(this,remote);
+        }
 
+        public void UnLink()
+        {
+            WorldLink.Instance.UnLink(this);
         }
 
         // フォルダに即時反映
@@ -97,7 +127,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             if (remote != null)
             {
-                if (Remote == remote)
+                if (Remote.Value == remote)
                 {
                     if (Recreate)
                     {
