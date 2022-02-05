@@ -8,7 +8,7 @@ using Server_GUI2;
 using Server_GUI2.Develop.Util;
 using Newtonsoft.Json;
 
-namespace Server_GUI2.Develop.Server.Storage
+namespace Server_GUI2.Develop.Server.World
 {
     /// <summary>
     /// Gitリポジトリ管理用クラス
