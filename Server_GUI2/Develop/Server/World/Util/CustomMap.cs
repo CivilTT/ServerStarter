@@ -41,9 +41,9 @@ namespace Server_GUI2.Develop.Server.World
         {
             // フォルダの直下(or一つ下)に ○○ が存在しているかを確認する
             // TODO: 有効性判定をどのファイルの存在で確認するか決定する
-            string dirPath = Directory.Exists($@"{sourcePath}\{name}") ? $@"{sourcePath}\{name}" : sourcePath;
+            string dirPath = System.IO.Directory.Exists($@"{sourcePath}\{name}") ? $@"{sourcePath}\{name}" : sourcePath;
 
-            return Directory.Exists($@"{dirPath}\data") && File.Exists($@"{dirPath}\pack.mcmeta");
+            return System.IO.Directory.Exists($@"{dirPath}\data") && File.Exists($@"{dirPath}\pack.mcmeta");
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Server_GUI2.Develop.Server.World
             }
 
             // 一層深くなっているときは、それを上げる処理をする
-            if (Directory.Exists($@"{path}\{Name}"))
+            if (System.IO.Directory.Exists($@"{path}\{Name}"))
             {
                 // TODO: この処理が本当に動くのか要検証
                 FileSystem.MoveDirectory($@"{path}\{Name}", path);

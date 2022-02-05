@@ -1,6 +1,7 @@
 {
 	"1.14.4/shareworld": {
-		"id": "git/account/repository/123456789",
+		"storage": "git/account/repository",
+		"world": "123456789",
 		"using": false
 	}
 }

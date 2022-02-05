@@ -37,11 +37,21 @@ namespace Server_GUI2.Develop.Server.World
                         if (worldDir.Name == "logs")
                             continue;
 
-                        // TODO: 接続済みローカルはLinkedRemoteWorldWrapperとして扱う
-                        if (linkJson.ContainsKey($"{verDir.Name}/{worldDir.Name}"))
-                            continue;
-
-                        WorldWrappers.Add(new UnLinkedLocalWorldWrapper(new LocalWorld(worldDir.FullName)));
+                        var key = $"{verDir.Name}/{worldDir.Name}";
+                        // 接続済みローカルはLinkedRemoteWorldWrapperとして扱う
+                        // TODO: リモートとの通信ができなかった場合のフォールバック
+                        // 通信できないワールドは一覧に追加しないorグレーアウトして選択できないように
+                        if (linkJson.ContainsKey(key))
+                        {
+                            var linkData = linkJson[key];
+                            var remote = StorageCollection.Instance.FindRemoteWorld(linkData.Storage,linkData.World);
+                            WorldWrappers.Add(new LinkedRemoteWorldWrapper(remote, worldDir.FullName));
+                        }
+                        // 未接続ローカルはUnLinkedLocalWorldWrapperとして扱う
+                        else
+                        {
+                            WorldWrappers.Add(new UnLinkedLocalWorldWrapper(new LocalWorld(worldDir.FullName)));
+                        }
                     }
                 }
                 catch (KeyNotFoundException)
@@ -65,16 +75,20 @@ namespace Server_GUI2.Develop.Server.World
 
     public class RemoteLinkJson
     {
-        [JsonProperty("id")]
-        public string Id;
+        [JsonProperty("storage")]
+        public string Storage;
+        
+        [JsonProperty("world")]
+        public string World;
 
         [JsonProperty("using")]
         public bool Using;
 
-        public RemoteLinkJson(string id, bool isUsing)
+        public RemoteLinkJson(string storage, string world, bool isUsing)
         {
             Using = isUsing;
-            Id = id;
+            Storage = storage;
+            World = world;
         }
     }
 }

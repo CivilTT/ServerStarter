@@ -39,9 +39,9 @@ namespace Server_GUI2.Develop.Server.World
             // 新たにrepositoryを紐づける際に起動
 
             // 初めてアカウントを紐づける場合(cd/git_worldstateがない場合) Init()
-            if ( ! Directory.Exists(local.Path))
+            if ( !System.IO.Directory.Exists(local.Path))
             {
-                Directory.CreateDirectory(local.Path);
+                System.IO.Directory.CreateDirectory(local.Path);
                 Init(local);
             }
 
