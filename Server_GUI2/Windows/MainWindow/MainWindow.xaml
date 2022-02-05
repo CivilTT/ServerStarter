@@ -6,7 +6,7 @@
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:Server_GUI2"
-        xmlns:vm="clr-namespace:Server_GUI2.Windows.ViewModels"
+        xmlns:vm="clr-namespace:Server_GUI2.Windows.MainWindow"
         mc:Ignorable="d"
         ResizeMode="CanMinimize"
         ui:WindowHelper.UseModernWindowStyle="True"

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:Server_GUI2.Windows.MoreSettings"
+        xmlns:vm="clr-namespace:Server_GUI2.Windows.MoreSettings"
         mc:Ignorable="d"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="WorldSettings" Height="550" Width="600" WindowStartupLocation="CenterScreen">
@@ -157,10 +158,14 @@
         <Style TargetType="TextBlock" x:Key="DatapackBlock" BasedOn="{StaticResource BlockSource}">
             <Setter Property="Width" Value="104"/>
         </Style>
-        
-        
+
+        <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
     </Window.Resources>
 
+    <Window.DataContext>
+        <vm:WorldSettingsVM/>
+    </Window.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180"/>
@@ -179,7 +184,7 @@
 
         <Grid Style="{StaticResource SideMenu}">
             <StackPanel Margin="0 0 0 50">
-                <ListView x:Name="SideMenuLV" Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseLeftButtonUp="ShowMenuContents">
+                <ListView x:Name="SideMenuLV" Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedIndex="{Binding MenuIndex}">
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
@@ -227,13 +232,14 @@
 
             </StackPanel>
 
-            <Button Content="OK" Click="Close_Click" Style="{StaticResource RunStyle}"/>
+            <Button Content="OK" Command="{Binding Close}" Style="{StaticResource RunStyle}"/>
             
         </Grid>
 
         <Line X1="3" X2="3" Y1="10" Y2="430" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
 
-        <Grid x:Name="PropertiesContents" Style="{StaticResource SettingContent}">
+        <!--//PropertiesContents//-->
+        <Grid Visibility="{Binding ShowProp, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <Button Content="Save as Default" Style="{StaticResource OtherStyle}"/>
                 <Button Content="Set Default" Style="{StaticResource OtherStyle}"/>
@@ -248,24 +254,25 @@
                             <TextBlock Text="gamemode" Style="{StaticResource PropertyIndex}"/>
                             <TextBlock Text="white-list" Style="{StaticResource PropertyIndex}"/>
                             <TextBlock Text="OTHER Settings" HorizontalAlignment="Left" Height="33" Margin="25,30,0,0" FontSize="24" FontWeight="Bold"/>
-                            <ComboBox x:Name="true_false" Margin="35,20,0,0" Width="160" DropDownClosed="TF_reload" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox x:Name="input_text" Margin="35,20,0,0" Width="160" DropDownClosed="IT_reload" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox x:Name="true_false" Margin="35,20,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox x:Name="input_text" Margin="35,20,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
 
                         </StackPanel>
                         <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
-                            <ComboBox x:Name="difficulty" Margin="10,63,0,0" DropDownClosed="Difficulty_CB" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox x:Name="hardcore" Margin="10,20,0,0" DropDownClosed="Hardcore_CB" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox x:Name="gamemode" Margin="10,20,0,0" DropDownClosed="Gamemode_CB" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox x:Name="white_list" Margin="10,20,0,0" DropDownClosed="White_list_CB" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox x:Name="true_false_combo" Margin="10,83,0,0" DropDownClosed="TF_CB" Style="{StaticResource PropertyCombo}"/>
-                            <TextBox x:Name="input_text_txt" Margin="10,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" TextChanged="IT_TB" Style="{StaticResource PropertyBox}"/>
+                            <ComboBox x:Name="difficulty" Margin="10,63,0,0" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox x:Name="hardcore" Margin="10,20,0,0" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox x:Name="gamemode" Margin="10,20,0,0" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox x:Name="white_list" Margin="10,20,0,0" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox x:Name="true_false_combo" Margin="10,83,0,0" Style="{StaticResource PropertyCombo}"/>
+                            <TextBox x:Name="input_text_txt" Margin="10,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource PropertyBox}"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
         </Grid>
 
-        <Grid x:Name="ShareWorldContents" Style="{StaticResource SettingContent}">
+        <!--//ShareWorldContents//-->
+        <Grid Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                     <TextBlock Text="Use ShareWorld" FontSize="24" Margin="20 0"/>
@@ -288,7 +295,8 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="DatapackContents" Visibility="Visible" Style="{StaticResource SettingContent}">
+        <!--//DatapackContents//-->
+        <Grid Visibility="Visible" Style="{StaticResource SettingContent}">
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" Orientation="Vertical">
                 <TextBlock Text="Data Kinds" Style="{StaticResource DatapackBlock}"/>
                 <TextBlock Text="Operation" Margin="0 20 0 15" Style="{StaticResource DatapackBlock}"/>
@@ -296,12 +304,12 @@
             </StackPanel>
             <StackPanel  Margin="150,0,10,55" Orientation="Vertical">
                 <StackPanel HorizontalAlignment="Center"  Height="35" VerticalAlignment="Top"  Width="360" Orientation="Horizontal">
-                    <RadioButton x:Name="zip" Content="ZIP" Checked="Zip_Checked" FontSize="16" Margin="70 0 20 0"/>
-                    <RadioButton x:Name="folder" Content="FOLDER" Width="75" Checked="Folder_Checked" FontSize="16"/>
+                    <RadioButton x:Name="zip" Content="ZIP" FontSize="16" Margin="70 0 20 0"/>
+                    <RadioButton x:Name="folder" Content="FOLDER" Width="75" FontSize="16"/>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left"  Height="40" Margin="0,12" Width="360" Orientation="Horizontal">
-                    <Button Content="Import" Margin="30 0" Click="Import_click" Style="{StaticResource OtherStyle}"/>
-                    <Button Content="Remove" Click="Remove_click" Style="{StaticResource OtherStyle}"/>
+                    <Button Content="Import" Margin="30 0" Style="{StaticResource OtherStyle}"/>
+                    <Button Content="Remove" Style="{StaticResource OtherStyle}"/>
                 </StackPanel>
                 <ListBox x:Name="Imported" HorizontalAlignment="Left" Height="100" Margin="0,5,0,0" VerticalAlignment="Top" Width="350" FontSize="50"/>
 
@@ -309,19 +317,23 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="PluginContents" Style="{StaticResource SettingContent}">
+        <!--//PluginContents//-->
+        <Grid Visibility="{Binding ShowPlugin, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
             <!--//PASS//-->
         </Grid>
 
-        <Grid x:Name="CustomMapContents" Style="{StaticResource SettingContent}">
+        <!--//CustomMapContents//-->
+        <Grid Visibility="{Binding ShowMap, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
             <!--//PASS//-->
         </Grid>
 
-        <Grid x:Name="OPContents" Style="{StaticResource SettingContent}">
+        <!--//OPContents//-->
+        <Grid Visibility="{Binding ShowOp, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
             <!--//PASS//-->
         </Grid>
 
-        <Grid x:Name="WhiteListContents" Style="{StaticResource SettingContent}">
+        <!--//WhiteListContents//-->
+        <Grid Visibility="{Binding ShowWhite, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
             <!--//PASS//-->
         </Grid>
 
