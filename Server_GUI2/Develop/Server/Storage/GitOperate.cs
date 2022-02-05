@@ -10,10 +10,13 @@ using Newtonsoft.Json;
 
 namespace Server_GUI2.Develop.Server.Storage
 {
+    /// <summary>
+    /// Gitリポジトリ管理用クラス
+    /// </summary>
     public class GitStorageRepository
     {
-        GitLocalBranch LocalBranch;
-        GitNamedRemote Remote;
+        public GitLocalBranch LocalBranch;
+        public GitNamedRemote Remote;
 
         /// <summary>
         /// 最初のリポジトリ
@@ -63,7 +66,7 @@ namespace Server_GUI2.Develop.Server.Storage
                 {
                     File.Create(jsonPath).Close();
                 }
-                var content = "{" + string.Join(",", remoteBranchs.Keys.Select(str => $"\"{str}\":{{\"type\":\"New\"}}")) + "}" ;
+                var content = "{}";
                 File.WriteAllText(jsonPath, content);
 
                 // git add -A
@@ -108,7 +111,7 @@ namespace Server_GUI2.Develop.Server.Storage
             LocalBranch = localBranch;
             Remote = remote;
         }
-        public void GetGitWorldstate()
+        public Dictionary<string, WorldState> GetGitWorldstate()
         {
             // cd/git_worldstate
             // git checkout {account}.{repository}
@@ -117,7 +120,19 @@ namespace Server_GUI2.Develop.Server.Storage
             LocalBranch.Pull();
             // TODO: worldstate.json を開きリモートワールド情報からWorldインスタンスを生成し返却
             var jsonPath = Path.Combine(LocalBranch.Local.Path, "worldstate.json");
-            File.ReadAllText(jsonPath);
+            var jsonContent = File.ReadAllText(jsonPath);
+            var worldState = JsonConvert.DeserializeObject<Dictionary<string, WorldState>>(jsonContent, new JsonWorldStateConverter());
+            return worldState;
+        }
+        public void SaveGitWorldstate(Dictionary<string, WorldState> worldstates)
+        {
+            LocalBranch.Checkout();
+            var jsonContent = JsonConvert.SerializeObject(worldstates, new JsonWorldStateConverter());
+            var jsonPath = Path.Combine(LocalBranch.Local.Path, "worldstate.json");
+            File.WriteAllText(jsonPath, jsonContent);
+            LocalBranch.Local.AddAll();
+            LocalBranch.Local.Commit("changed worldstate.json");
+            LocalBranch.Push();
         }
 
         public void RemoveGitRepository()

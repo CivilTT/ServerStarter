@@ -5,16 +5,21 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Server_GUI2.Develop.Util;
 namespace Server_GUI2.Develop.Server.World
 {
     public class WorldFactory
     {
         public static WorldFactory Instance = new WorldFactory(Path.Combine(SetUp.CurrentDirectory, "World_Data"));
-        public ObservableCollection<LocalWorld> Worlds { get; } = new ObservableCollection<LocalWorld>();
 
+        /// <summary>
+        /// データ整合性のためリスト変換はしない。
+        /// インデックスアクセスはプロパティ化して常に更新が反映されるようにする。
+        /// </summary>
+        public ObservableCollection<LocalWorld> Worlds { get; } = new ObservableCollection<LocalWorld>();
         private WorldFactory(string path)
         {
+            //　ディレクトリを走査し既存ワールド一覧を取得
             var versions = new DirectoryInfo(path);
             foreach ( var verDir in versions.EnumerateDirectories())
             {
@@ -26,7 +31,7 @@ namespace Server_GUI2.Develop.Server.World
                         //ログフォルダは無視
                         if (worldDir.Name == "logs")
                             continue;
-                        Worlds.Add(new LocalWorld(worldDir,version));
+                        Worlds.Add(new LocalWorld(worldDir.Name,version));
                     }
                 }
                 catch (KeyNotFoundException)
@@ -35,24 +40,18 @@ namespace Server_GUI2.Develop.Server.World
                     continue;
                 }
             }
+            // [new world]を追加
+            Worlds.Add(new LocalWorld("new world"));
         }
 
-        // shared world のリポジトリ名は User/repository/WorldName としてバージョン情報は記録しない
-        // バージョン情報やブランチ一覧等は特別なブランチを作ってjson管理とかがいいか
-
-        // リモートにあってローカルにない
-        // User.repository.WorldNameにclone
-
-        // リモートにあってローカルにある
-        // User.repository.WorldNameにpull
-
-        // リモートになくてローカルにある
-        // 通常起動
-
-        // リモートになくてローカルにない
-        // WorldNameを新規作成
-
-        // push先リポジトリを変えたい
-        // CustomMapからどうぞ
+        /// <summary>
+        /// 以下の挙動をするGetterを返す<br/>
+        /// | バージョンとワールド名を文字列で受け取り該当するワールドを返す<br/>
+        /// | 該当しなかった場合nullを返す
+        /// </summary>
+        public ReadOnlyProperty<LocalWorld> LocalWorldFromId(string id)
+        {
+            return new ReadOnlyProperty<LocalWorld>( () => Worlds.Where( x => x.Id == id ).FirstOrDefault());
+        }
     }
 }

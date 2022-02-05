@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Server_GUI2
 {
-    class SetUp
+    public class SetUp
     {
         public static string StarterVersion { get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); } }
         public static string CurrentDirectory { get { return Environment.GetEnvironmentVariable("SERVER_STERTER_TEST"); } }

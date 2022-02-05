@@ -188,3 +188,14 @@ C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\Uni
 C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\vi-VN\ModernWpf.Controls.resources.dll
 C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\zh-CN\ModernWpf.Controls.resources.dll
 C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\zh-TW\ModernWpf.Controls.resources.dll
+C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\UnitTestProject1.dll.config
+C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\ReactiveProperty.Core.dll
+C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\ReactiveProperty.dll
+C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\System.ComponentModel.Annotations.dll
+C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\System.Reactive.dll
+C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\ReactiveProperty.xml
+C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\ReactiveProperty.Core.xml
+C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\System.Reactive.xml
+C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\shiyu\OneDrive - 共生情報研究室\趣味\c_sharp\ServerStarter\UnitTestProject1\bin\Debug\System.Threading.Tasks.Extensions.xml
