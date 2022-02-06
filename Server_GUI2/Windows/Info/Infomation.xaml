@@ -129,6 +129,12 @@
 
                     <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
                         <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Players" Margin="10 0" Style="{StaticResource BlockStyle}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
+                        <StackPanel Orientation="Horizontal">
                             <Image Source="pack://application:,,,/Resources/SettingMenu/global-network.png" Width="30" Margin="10 0"/>
                             <TextBlock Text="Network" Margin="10 0" Style="{StaticResource BlockStyle}"/>
                         </StackPanel>
@@ -192,6 +198,16 @@
             <StackPanel>
                 <TextBlock Text="Javaのバージョン" FontSize="40"/>
                 <TextBlock Text="デフォルトserver properties" FontSize="20"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="PlayersContents" Grid.Column="1" Visibility="Hidden">
+            <StackPanel>
+                <TextBlock Text="OpやWhiteListを与える可能性のあるプレイヤー情報一覧" FontSize="40"/>
+                <TextBlock Text="設定可能なプレイヤーの追加・削除はここからしかできない" FontSize="20"/>
+                <TextBlock Text="他の画面では全てここでの登録内容を表示するだけ" FontSize="20"/>
+                <TextBlock Text="OpやWhiteListで使えるグループの作成機能" FontSize="20"/>
+                <TextBlock Text="（事前にグループを作成しておき、そのグループを選択したら、一括で設定される的な）" FontSize="20"/>
             </StackPanel>
         </Grid>
 
