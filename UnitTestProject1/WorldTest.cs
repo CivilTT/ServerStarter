@@ -10,7 +10,10 @@ namespace UnitTestProject1
         [TestMethod]
         public void WorldTestMethod()
         {
-            //WorldCollection.Instance.WorldWrappers;
+            foreach (var g in WorldCollection.Instance.WorldWrappers)
+            {
+                Console.WriteLine(g);
+            }
         }
     }
 }
