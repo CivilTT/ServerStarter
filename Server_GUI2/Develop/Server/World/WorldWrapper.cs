@@ -9,7 +9,7 @@ namespace Server_GUI2.Develop.Server.World
     /// <summary>
     /// ローカルとリモートのワールドのリンクを保持するクラス
     /// </summary>
-    abstract class WorldWrapper
+    public abstract class WorldWrapper
     {
         protected virtual World World { get;}
 

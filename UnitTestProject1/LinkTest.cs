@@ -11,11 +11,11 @@ namespace UnitTestProject1
         [TestMethod]
         public void LinkTestMethod()
         {
-            foreach (var i in WorldFactory.Instance.Worlds)
-            {
-                Console.WriteLine(i.DisplayName);
-            }
-            WorldLink.Instance.SaveJson();
+            //foreach (var i in WorldFactory.Instance.Worlds)
+            //{
+            //    Console.WriteLine(i.DisplayName);
+            //}
+            //WorldLink.Instance.SaveJson();
         }
     }
 }

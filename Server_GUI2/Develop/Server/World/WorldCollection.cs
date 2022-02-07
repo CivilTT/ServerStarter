@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Server_GUI2.Develop.Server.World
 {
-    class WorldCollection
+    public class WorldCollection
     {
         public static WorldCollection Instance = new WorldCollection(Path.Combine(SetUp.CurrentDirectory, "World_Data"));
 
