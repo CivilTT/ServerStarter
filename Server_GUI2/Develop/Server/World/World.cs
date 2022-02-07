@@ -145,7 +145,6 @@ namespace Server_GUI2.Develop.Server.World
             runFunc(Property);
         }
 
-
         /// <summary>
         // ServerTypeを判定する
         /// </summary>
@@ -208,12 +207,12 @@ namespace Server_GUI2.Develop.Server.World
                 return new DatapackCollection(new List<string>());
         }
 
-        //TODO: Vtos
+        //TODO: VtoS
         private void VtoS()
         {
 
         }
-        //TODO: Vtos
+        //TODO: StoV
         private void StoV()
         {
 
