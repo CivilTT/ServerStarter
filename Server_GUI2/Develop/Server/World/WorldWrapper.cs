@@ -11,12 +11,15 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     public abstract class WorldWrapper
     {
-        protected virtual World World { get;}
+        public abstract World World { get;}
 
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
         public abstract void WrapRun(Version version, Action<ServerProperty> runFunc);
+
+        public abstract string DisplayName { get; }
+        public Version Version => World.Version;
     }
 
     /// <summary>
@@ -25,7 +28,7 @@ namespace Server_GUI2.Develop.Server.World
     class UnLinkedLocalWorldWrapper: WorldWrapper
     {
         private LocalWorld LocalWorld { get; }
-        protected override World World => LocalWorld;
+        public override World World => LocalWorld;
         public UnLinkedLocalWorldWrapper(LocalWorld world)
         {
             LocalWorld = world;
@@ -46,6 +49,8 @@ namespace Server_GUI2.Develop.Server.World
         {
             LocalWorld.WrapRun(runFunc);
         }
+
+        public override string DisplayName => $"{LocalWorld.Version.Name}/{LocalWorld.Name}";
     }
 
     abstract class ALinkedRemoteWorldWrapper : WorldWrapper
@@ -58,11 +63,11 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     class LinkedRemoteWorldWrapper : ALinkedRemoteWorldWrapper
     {
-        private string path;
+        private WorldPath path;
         private RemoteWorld RemoteWorld { get; }
-        protected override World World => RemoteWorld;
+        public override World World => RemoteWorld;
 
-        public LinkedRemoteWorldWrapper(RemoteWorld remoteWorld,string path)
+        public LinkedRemoteWorldWrapper(RemoteWorld remoteWorld, WorldPath path)
         {
             this.path = path;
             RemoteWorld = remoteWorld;
@@ -85,6 +90,7 @@ namespace Server_GUI2.Develop.Server.World
             local.WrapRun(runFunc);
             RemoteWorld.FromLocal(local,false);
         }
+        public override string DisplayName => $"{RemoteWorld.Version.Name}/{RemoteWorld.Name}";
     }
 
     /// <summary>
@@ -94,7 +100,7 @@ namespace Server_GUI2.Develop.Server.World
     {
         private LocalWorld localWorld;
         private RemoteWorld RemoteWorld { get; }
-        protected override World World => RemoteWorld;
+        public override World World => RemoteWorld;
 
         public NewLinkedRemoteWorldWrapper(RemoteWorld remoteWorld, LocalWorld localWorld)
         {
@@ -116,5 +122,6 @@ namespace Server_GUI2.Develop.Server.World
             localWorld.WrapRun(runFunc);
             RemoteWorld.FromLocal(localWorld,true);
         }
+        public override string DisplayName => $"{RemoteWorld.Version.Name}/{RemoteWorld.Name}";
     }
 }
