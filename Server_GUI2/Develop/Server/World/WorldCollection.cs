@@ -11,7 +11,7 @@ namespace Server_GUI2.Develop.Server.World
 {
     public class WorldCollection
     {
-        public static WorldCollection Instance = new WorldCollection(Path.Combine(SetUp.CurrentDirectory, "World_Data"));
+        public static WorldCollection Instance = new WorldCollection(ServerGuiPath.Instance.WorldData);
 
         private string linkJsonPath = Path.Combine(SetUp.CurrentDirectory, "remotes.json");
 
@@ -20,18 +20,17 @@ namespace Server_GUI2.Develop.Server.World
         /// インデックスアクセスはプロパティ化して常に更新が反映されるようにする。
         /// </summary>
         public ObservableCollection<WorldWrapper> WorldWrappers { get; } = new ObservableCollection<WorldWrapper>();
-        private WorldCollection(string path)
+        private WorldCollection(WorldDataPath path)
         {
             // ローカルとリモートの接続情報
             var linkJson = LoadLinkJson();
             //　ディレクトリを走査し既存ワールド一覧を取得
-            var versions = new DirectoryInfo(path);
-            foreach (var verDir in versions.EnumerateDirectories())
+            foreach (var verDir in path.GetVersionDirectories())
             {
                 try
                 {
                     var version = VersionFactory.Instance.GetVersionFromName(verDir.Name);
-                    foreach (var worldDir in verDir.EnumerateDirectories())
+                    foreach (var worldDir in verDir.GetWorldDirectories())
                     {
                         // ログフォルダは無視
                         if (worldDir.Name == "logs")
@@ -45,12 +44,12 @@ namespace Server_GUI2.Develop.Server.World
                         {
                             var linkData = linkJson[key];
                             var remote = StorageCollection.Instance.FindRemoteWorld(linkData.Storage,linkData.World);
-                            WorldWrappers.Add(new LinkedRemoteWorldWrapper(remote, worldDir.FullName));
+                            WorldWrappers.Add(new LinkedRemoteWorldWrapper(remote, worldDir));
                         }
                         // 未接続ローカルはUnLinkedLocalWorldWrapperとして扱う
                         else
                         {
-                            WorldWrappers.Add(new UnLinkedLocalWorldWrapper(new LocalWorld(worldDir.FullName)));
+                            WorldWrappers.Add(new UnLinkedLocalWorldWrapper(new LocalWorld(worldDir, version)));
                         }
                     }
                 }

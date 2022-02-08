@@ -25,13 +25,13 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     public class LocalWorld : World
     {
-        public string Path { get; }
+        public WorldPath Path { get; }
 
         /// <summary>
         /// ワールドの設定をディレクトリに反映させる
         /// </summary>
         public LocalWorld(
-            string path,
+            WorldPath path,
             Version version,
             ServerType? type,
             ServerProperty property,
@@ -40,9 +40,9 @@ namespace Server_GUI2.Develop.Server.World
         {
             Path = path;
             Version = version;
-            Name = System.IO.Path.GetDirectoryName(path);
+            Name = path.Name;
             // フォルダ存在しない場合は新規作成
-            if (!System.IO.Directory.Exists(Path))
+            if (!Path.Exists)
                 CreateWorldData();
 
             var currentType = GetServerType();
@@ -69,7 +69,7 @@ namespace Server_GUI2.Develop.Server.World
             else if (version is SpigotVersion)
                 type = ServerType.Spigot;
             else
-                throw new ArgumentException($"\"{version.GetType().ToString()}\" is unknowen version.");
+                throw new ArgumentException($"\"{version.GetType()}\" is unknowen version.");
             return new LocalWorld(Path, version, type, Property, Datapacks);
         }
 
@@ -81,37 +81,38 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// ワールドデータを指定パスに移動
         /// </summary>
-        public LocalWorld Move(string path,bool addSuffixWhenNameCollided = false)
+        public LocalWorld Move(WorldPath path,bool addSuffixWhenNameCollided = false)
         {
+            var name = path.Name;
             var newPath = path;
             // 名前が衝突したら filename(x) と名前を変更
             if (addSuffixWhenNameCollided)
             {
                 var suffixNum = 1;
-                while (System.IO.Directory.Exists(newPath))
+                while (newPath.Exists)
                 {
                     suffixNum += 1;
-                    newPath = $"{path}({suffixNum})";
+                    newPath = path.Parent.GetWorldDirectory($"{name}({suffixNum})");
                 }
             }
-            System.IO.Directory.Move(Path, newPath);
+            Path.MoveTo(newPath);
             return new LocalWorld(newPath, Version, Type, Property, Datapacks);
         }
 
         /// <summary>
         /// ワールドの設定をディレクトリから取得する
         /// </summary>
-        public LocalWorld(string path)
+        public LocalWorld(WorldPath path,Version version)
         {
             Path = path;
-            Name = System.IO.Path.GetDirectoryName(path);
+            Name = path.Name;
             // フォルダ存在しない場合は新規作成
-            if (!System.IO.Directory.Exists(Path))
+            if (!Path.Exists)
                 CreateWorldData();
-
             Property = LoadProperties();
             Type = GetServerType();
             Datapacks = LoadDatapacks();
+            Version = version;
         }
 
         /// <summary>
@@ -119,7 +120,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void CreateWorldData()
         {
-            System.IO.Directory.CreateDirectory(Path);
+            Path.Create();
         }
 
         /// <summary>
@@ -128,12 +129,9 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void DeleteWorldData()
         {
-            var worldPath = System.IO.Path.Combine(Path, "world");
-            if (System.IO.Directory.Exists(worldPath)) System.IO.Directory.Delete(worldPath);
-            var netherPath = System.IO.Path.Combine(Path, "world_nether");
-            if (System.IO.Directory.Exists(netherPath)) System.IO.Directory.Delete(netherPath);
-            var endPath = System.IO.Path.Combine(Path, "world_end");
-            if (System.IO.Directory.Exists(endPath)) System.IO.Directory.Delete(endPath);
+            if (Path.World.Exists) Path.World.Delete();
+            if (Path.Nether.Exists) Path.Nether.Delete();
+            if (Path.End.Exists) Path.End.Delete();
         }
 
         /// <summary>
@@ -150,11 +148,9 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private ServerType? GetServerType()
         {
-            var worldPath = System.IO.Path.Combine(Path,"world");
-            if (System.IO.Directory.Exists(worldPath))
+            if (Path.World.Exists)
             {
-                var netherPath = System.IO.Path.Combine(Path, "world_nether");
-                if (System.IO.Directory.Exists(netherPath))
+                if (Path.Nether.Exists)
                     return ServerType.Spigot;
                 else 
                     return ServerType.Vanilla;
@@ -168,9 +164,8 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private ServerProperty LoadProperties()
         {
-            var propertyPath = System.IO.Path.Combine(Path, "server.properties");
-            if (File.Exists(propertyPath))
-                return new ServerProperty( File.ReadAllText(propertyPath) );
+            if (Path.ServerProperties.Exists)
+                return new ServerProperty(Path.ServerProperties.ReadAllText());
             else
                 return new ServerProperty();
         }
@@ -180,26 +175,18 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void SaveProperties()
         {
-            var propertyPath = System.IO.Path.Combine(Path, "server.properties");
-            File.WriteAllText(propertyPath,Property.ExportProperty());
+            Path.ServerProperties.WriteAllText(Property.ExportProperty());
         }
 
         private DatapackCollection LoadDatapacks()
         {
-            var datapackPath = System.IO.Path.Combine(Path, "datapack");
-            if (System.IO.Directory.Exists(datapackPath))
+            if (Path.World.Datapccks.Exists)
             {
                 var collection = new List<string>();
-                var datapacks = System.IO.Directory.GetDirectories(datapackPath);
-                foreach (var datapack in datapacks)
+                foreach (var datapack in Path.World.Datapccks.GetDatapackDirectories())
                 {
-                    var hasPackMcmeta = File.Exists(System.IO.Path.Combine(datapack, "pack.mcmeta"));
-                    var hasData = System.IO.Directory.Exists(System.IO.Path.Combine(datapack, "Data"));
-                    if (hasPackMcmeta && hasData)
-                    {
-                        var name = System.IO.Path.GetFileName(datapack);
-                        collection.Add(name);
-                    }
+                    if (datapack.Mcmeta.Exists && datapack.Data.Exists)
+                        collection.Add(datapack.Name);
                 }
                 return new DatapackCollection(collection);
             }
@@ -242,7 +229,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// ワールドデータを指定パスにPullする
         /// </summary>
-        public abstract LocalWorld ToLocal(string Path);
+        public abstract LocalWorld ToLocal(WorldPath Path);
 
         /// <summary>
         /// ローカルワールドデータをPushする
@@ -264,9 +251,9 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// TODO: ワールドデータを指定パスにPull/Cloneする
         /// </summary>
-        public override LocalWorld ToLocal(string Path)
+        public override LocalWorld ToLocal(WorldPath Path)
         {
-            return new LocalWorld(Path);
+            return new LocalWorld(Path,Version);
         }
 
         /// <summary>
