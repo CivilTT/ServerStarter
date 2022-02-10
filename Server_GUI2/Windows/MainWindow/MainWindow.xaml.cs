@@ -1,5 +1,6 @@
 ﻿using log4net;
 using Newtonsoft.Json;
+using Server_GUI2.Windows.MoreSettings;
 using Server_GUI2.Windows.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -342,9 +343,11 @@ namespace Server_GUI2
         private void More_Settings_Click(object sender, RoutedEventArgs e)
         {
             Hide();
-            m_set_window.Main = this;
-            m_set_window.Set_value();
-            m_set_window.ShowDialog();
+            //m_set_window.Main = this;
+            //m_set_window.Set_value();
+            //m_set_window.ShowDialog();
+            WorldSettings window = new WorldSettings();
+            window.Show();
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
@@ -591,7 +594,7 @@ namespace Server_GUI2
         private void Info_Click(object sender, RoutedEventArgs e)
         {
             Hide();
-            Infomation _info = new Infomation();
+            SystemSettings _info = new SystemSettings();
             _info.ShowDialog();
             Show();
         }

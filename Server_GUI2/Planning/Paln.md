@@ -64,5 +64,10 @@ static .Instance #ServerSterterのカレントディレクトリ
 
 こんな感じでプロパティアクセスで下位ディレクトリにアクセスできる
 
+---
 
+#### window SystemSettings(ShareWorld)
 
+- `Add Settings`を押すことで指定したレポジトリがなかった場合、自動で作成する
+- Remote Listの横のゴミ箱を押すことでブランチを削除することができる
+- ブランチがまだない新規レポジトリの場合、ブランチの項目は空欄のまま

@@ -52,7 +52,7 @@ namespace Server_GUI2.Windows.MainWindow
         public void Execute(object parameter)
         {
             _vm.Hide?.Invoke();
-            Infomation _info = new Infomation();
+            Server_GUI2.SystemSettings _info = new Server_GUI2.SystemSettings();
             _info.ShowDialog();
             _vm.Show?.Invoke();
         }
