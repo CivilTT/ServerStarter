@@ -185,7 +185,8 @@
         <StackPanel x:Name="world_hide" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="30,200" Orientation="Vertical" Grid.Column="1">
             <TextBlock Height="33" Text="World Name" FontSize="20" TextAlignment="Left"/>
             <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="World2" Margin="0,0,20,0"  ItemsSource="{Binding Items, ElementName=World}" Style="{StaticResource ComboStyle}"/>
+                <!--<ComboBox x:Name="World2" Margin="0,0,20,0"  ItemsSource="{Binding Items, ElementName=World}" Style="{StaticResource ComboStyle}"/>-->
+                <ComboBox x:Name="World2" Margin="0,0,20,0" Style="{StaticResource ComboStyle}"/>
                 <Button Width="33" Height="33" FontSize="18" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="world">
                     <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>

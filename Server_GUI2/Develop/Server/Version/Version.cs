@@ -156,7 +156,16 @@ namespace Server_GUI2
 
     public class VanillaVersion: Version
     {
-        protected override string Path { get { return $@"{SetUp.DataPath}\{Name}\"; } }
+        protected override string Path
+        { 
+            get 
+            {
+                Console.WriteLine("###");
+                Console.WriteLine(SetUp.DataPath);
+                Console.WriteLine(Name);
+                return $@"{SetUp.DataPath}\{Name}\";
+            } 
+        }
         protected override string JarName { get { return "server.jar"; } }
         public override string Log4jArgument
         {

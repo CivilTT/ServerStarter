@@ -149,16 +149,15 @@ namespace Server_GUI2.Windows.MainWindow
         /// </summary>
         private static string VanillaVerConverter(Version x)
         {
-            return null;
+            //return null;
 
-            // TODO: VanillaとSpigotの表示名Convert処理を記載
-            if(x is VanillaVersion)
+            if (x is SpigotVersion)
             {
-
+                return $"Spigot {x.Name}";
             }
-            else if (x is SpigotVersion)
+            else
             {
-
+                return x.Name;
             }
 
             //if (x.isRelease && x.isLatest)
