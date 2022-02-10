@@ -265,8 +265,7 @@
         <Line X1="3" X2="3" Y1="10" Y2="430" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
 
         <!--//ShareWorldContents//-->
-        <!--<ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">-->
-        <ScrollViewer Visibility="Hidden" Style="{StaticResource ScrollSource}">
+        <ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">
             <Grid Style="{StaticResource SettingContent}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="280"/>
@@ -458,8 +457,7 @@
         </Grid>
         
         <!--//Others//-->
-        <!--<Grid Visibility="{Binding ShowOthers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">-->
-        <Grid Style="{StaticResource SettingContent}">
+        <Grid Visibility="{Binding ShowOthers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="160"/>
                 <RowDefinition/>
@@ -526,167 +524,5 @@
 
         </Grid>
         
-        <!--<Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <Grid Style="{StaticResource SideMenu}">
-            <StackPanel>
-                <TextBlock Text="Setting Menu" FontSize="24" TextAlignment="Center" Margin="0 10"/>
-                <ListView x:Name="SideMenuLV" Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseLeftButtonUp="ShowMenuContents">
-
-                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="pack://application:,,,/Resources/SettingMenu/folder.png" Width="30" Margin="10 0"/>
-                            <TextBlock Text="ShareWorld" Margin="10 0" Style="{StaticResource BlockStyle}"/>
-                        </StackPanel>
-                    </ListViewItem>
-
-                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="pack://application:,,,/Resources/SettingMenu/database.png" Width="30" Margin="10 0"/>
-                            <TextBlock Text="Server" Margin="10 0" Style="{StaticResource BlockStyle}"/>
-                        </StackPanel>
-                    </ListViewItem>
-
-                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Players" Margin="10 0" Style="{StaticResource BlockStyle}"/>
-                        </StackPanel>
-                    </ListViewItem>
-
-                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="pack://application:,,,/Resources/SettingMenu/global-network.png" Width="30" Margin="10 0"/>
-                            <TextBlock Text="Network" Margin="10 0" Style="{StaticResource BlockStyle}"/>
-                        </StackPanel>
-                    </ListViewItem>
-
-                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="pack://application:,,,/Resources/SettingMenu/settings.png" Width="30" Margin="10 0"/>
-                            <TextBlock Text="System" Margin="10 0" Style="{StaticResource BlockStyle}"/>
-                        </StackPanel>
-                    </ListViewItem>
-
-                    <ListViewItem HorizontalAlignment="Left" Height="55" Width="200">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="pack://application:,,,/Resources/SettingMenu/Icon.png" Width="30" Margin="10 0"/>
-                            <TextBlock Text="Infomation" Margin="10 0" Style="{StaticResource BlockStyle}"/>
-                        </StackPanel>
-                    </ListViewItem>
-
-                </ListView>
-
-            </StackPanel>
-
-            <Button Content="OK" Click="Close_Click" Style="{StaticResource RunStyle}"/>
-
-        </Grid>-->
-
-        <!--<Grid x:Name="ShareWorldContents" Grid.Column="1" Visibility="Visible">
-            <StackPanel Margin="20 10">
-                --><!--<TextBlock Text="Git" FontSize="30"/>--><!--
-                <StackPanel Margin="20 5" Orientation="Horizontal">
-                    <TextBlock Text="Git Account Name" Width="180" Style="{StaticResource BlockStyle}"/>
-                    <TextBox x:Name="gitAccount" Width="250" Text="Example" Style="{StaticResource BoxStyle}"/>
-                </StackPanel>
-                <StackPanel Margin="20 5" Orientation="Horizontal">
-                    <TextBlock Text="Git Account E-mail" Width="180" Style="{StaticResource BlockStyle}"/>
-                    <TextBox x:Name="gitMail" Width="250" Text="Example@mail.com" Style="{StaticResource BoxStyle}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <DataGrid>
-                        --><!--// Contents //-->
-                        <!--Version, World, isSW, Account, E-mail-->
-                        <!--新規でSW化するワールドが追加された場合は、レポジトリの新規作成をするか否かを問う--><!--
-                    </DataGrid>
-                </StackPanel>
-                <TextBlock Text="その他のワールドをSWにするか（リモートレポジトリ作成機能付き）" FontSize="20"/>
-                <CheckBox Content="新VersionでSWが起動した際に以前のSWを消去する" IsChecked="True" FontSize="16"/>
-                <TextBlock Text="Personal Access Tokenのページへのリンク" FontSize="20"/>
-            </StackPanel>
-        </Grid>
-
-        <Grid x:Name="ServerContents" Grid.Column="1" Visibility="Hidden">
-            <StackPanel>
-                <TextBlock Text="Javaのバージョン" FontSize="40"/>
-                <TextBlock Text="デフォルトserver properties" FontSize="20"/>
-            </StackPanel>
-        </Grid>
-
-        <Grid x:Name="PlayersContents" Grid.Column="1" Visibility="Hidden">
-            <StackPanel>
-                <TextBlock Text="OpやWhiteListを与える可能性のあるプレイヤー情報一覧" FontSize="40"/>
-                <TextBlock Text="設定可能なプレイヤーの追加・削除はここからしかできない" FontSize="20"/>
-                <TextBlock Text="他の画面では全てここでの登録内容を表示するだけ" FontSize="20"/>
-                <TextBlock Text="OpやWhiteListで使えるグループの作成機能" FontSize="20"/>
-                <TextBlock Text="（事前にグループを作成しておき、そのグループを選択したら、一括で設定される的な）" FontSize="20"/>
-            </StackPanel>
-        </Grid>
-
-        <Grid x:Name="NetworkContents" Grid.Column="1" Visibility="Hidden">
-            <StackPanel>
-                <TextBlock Text="UPnP（ポート自動開放）の設定" FontSize="40"/>
-                <TextBlock Text="開放するポート番号" FontSize="20"/>
-            </StackPanel>
-        </Grid>
-
-        <Grid x:Name="SystemContents" Grid.Column="1" Visibility="Hidden">
-            <StackPanel>
-                <TextBlock Text="User Name" FontSize="40"/>
-                <TextBlock Text="Language (English, 日本語, 融合（現状と同じ）)" FontSize="20"/>
-                <TextBlock Text="テーマカラー" FontSize="20"/>
-            </StackPanel>
-        </Grid>
-
-        <Grid x:Name="InformationContents" Grid.Column="1" Visibility="Hidden"/>-->
-
-        <!--<Grid.RowDefinitions>
-            <RowDefinition Height="370"/>
-            <RowDefinition Height="235"/>
-        </Grid.RowDefinitions>-->
-        <!--<TextBlock Text="System Environment" FontSize="24" FontWeight="Bold" Margin="15" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"/>
-        <StackPanel Margin="20 60 0 0" Width="190" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0">
-            <TextBlock Text="OS" Style="{StaticResource BlockStyle}"/>
-            <TextBlock Text="CPU" Style="{StaticResource BlockStyle}"/>
-            <TextBlock Text="GPU" Style="{StaticResource BlockStyle}"/>
-            <TextBlock Text="Memory (All)" Style="{StaticResource BlockStyle}"/>
-            <TextBlock Text="Memory (Available)" Style="{StaticResource BlockStyle}"/>
-            <TextBlock Text="IP Address (Public)" Style="{StaticResource BlockStyle}"/>
-            <TextBlock Text="Java" Style="{StaticResource BlockStyle}"/>
-            <TextBlock Text="Git" Style="{StaticResource BlockStyle}"/>
-        </StackPanel>
-        <StackPanel Margin="220 60 0 0" Width="320" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <TextBox Text="{Binding Env_list[OS], Mode=OneWay}" />
-            <Viewbox Width="320" Height="28" Margin="0 5" HorizontalAlignment="Left">
-                <TextBox Text="{Binding Env_list[CPU], Mode=OneWay}" Margin="0" TextWrapping="WrapWithOverflow"/>
-            </Viewbox>
-            <TextBox Text="{Binding Env_list[GPU], Mode=OneWay}" />
-            <TextBox Text="{Binding TmpMemory, Converter={StaticResource Mall}, Mode=OneWay}" />
-            <TextBox Text="{Binding TmpMemory, Converter={StaticResource Mava}, Mode=OneWay}" />
-            <TextBox Text="{Binding Env_list[IP], Mode=OneWay}" />
-            <TextBox Text="{Binding Env_list[Java], Mode=OneWay}" />
-            <TextBox Text="{Binding Env_list[Git], Mode=OneWay}" />
-        </StackPanel>
-        
-        <TextBlock Text="Server Starter's Infomation" FontSize="24" FontWeight="Bold" Margin="15" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1"/>
-        <StackPanel Margin="20 60 0 0" Width="180" HorizontalAlignment="Left" Grid.Row="1">
-            <TextBlock Text="System Version" Style="{StaticResource BlockStyle}"/>
-            <TextBlock Text="Author" Style="{StaticResource BlockStyle}"/>
-            <TextBlock Text="Design Advisor" Style="{StaticResource BlockStyle}"/>
-        </StackPanel>
-        <StackPanel Margin="220 60 0 0" Width="320" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1">
-            <TextBox Text="{Binding StarterVersion, Mode=OneWay}"/>
-            <TextBox Text="CivilTT" Hyperlink.Click="Author_Click"/>
-            <TextBox Text="txkodo"/>
-        </StackPanel>-->
-
-        <!--<Button Content="System" Click="System_Click" Style="{StaticResource MenuButton}"/>-->
-
-
-
-        <!--<Button Content="OK" Click="OK_Click" Style="{StaticResource RunStyle}"/>-->
     </Grid>
 </Window>
