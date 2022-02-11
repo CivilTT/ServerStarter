@@ -100,8 +100,6 @@
     <Compile Include="Develop\Server\ServerType.cs" />
     <Compile Include="Develop\Server\World\LocalWorld.cs" />
     <Compile Include="Develop\Server\StartServer.cs" />
-    <Compile Include="Develop\Server\World\Storage\WorldState.cs" />
-    <Compile Include="Develop\Server\World\Storage\StorageCollection.cs" />
     <Compile Include="Develop\Server\World\Util\Plugin.cs" />
     <Compile Include="Develop\Server\World\Storage\Storage.cs" />
     <Compile Include="Develop\Server\World\Util\CustomMap.cs" />

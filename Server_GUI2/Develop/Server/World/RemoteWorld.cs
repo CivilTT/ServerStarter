@@ -18,13 +18,9 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     public abstract class RemoteWorld : IWorldBase
     {
-        public WorldState WorldState;
         public event EventHandler DeleteEvent;
-        public bool Exist
-        {
-            get => WorldState.Exist;
-            private set => WorldState.Exist = value;
-        }
+        public bool Exist;
+        public bool Using;
 
         public DatapackCollection Datapacks  { get; private set; }
 
@@ -32,28 +28,66 @@ namespace Server_GUI2.Develop.Server.World
 
         public ServerType? Type  { get; private set; }
 
-        public string Name  { get; private set; }
+        private string _name;
+        /// <summary>
+        /// ワールドの名称
+        /// </summary>
+        public string Name  {
+            get => _name;
+            set
+            {
+                if (Storage.IsUsableName(value))
+                    _name = value;
+                else
+                    throw new RemoteWorldException($"\"{value}\" is unavailable remote world name.");
+            }
+        }
+
+        /// <summary>
+        /// ブランチのuuid
+        /// </summary>
+        public string Id  { get; private set; }
 
         public Version Version  { get; private set; }
 
         public Storage Storage;
+
+        /// <summary>
+        /// WorldStateからRemotoworldを構成する
+        /// </summary>
+        public RemoteWorld(string id, WorldState state, Storage storage)
+        {
+            Exist = true;
+            Storage = storage;
+            Name = state.Name;
+            Id = id;
+            Version = VersionFactory.Instance.GetVersionFromName(state.Version);
+            Type = ServerTypeExt.FromStr(state.Type);
+            Property = state.ServerProperty;
+            Datapacks = new DatapackCollection(state.Datapacks);
+            Using = false;
+        }
+
         public RemoteWorld(
             Storage storage,
-            WorldState worldState,
+            string id,
             string name,
+            bool exist,
             Version version,
             ServerType? type,
             ServerProperty property,
             DatapackCollection datapacks
             )
         {
-            WorldState = worldState;
+            Exist = exist;
             Storage = storage;
-            Version = version;
             Name = name;
+            Id = id;
+            Version = version;
             Type = type;
             Property = property;
             Datapacks = datapacks;
+            Using = false;
         }
 
         /// <summary>
@@ -82,24 +116,39 @@ namespace Server_GUI2.Develop.Server.World
         {
             if (DeleteEvent != null) DeleteEvent(this,null);
         }
+
+        public WorldState ExportWorldState()
+        {
+            if (!Exist) throw new WorldException("non-exist world must not export worldstate");
+            return new WorldState(Name,Type.ToString(),Version.Name,Using,Datapacks.ExportList(),Property);
+        }
     }
 
     public class GitRemoteWorld : RemoteWorld
     {
         private GitRemote remote;
+
+        public GitRemoteWorld( GitRemote remote, string id, WorldState state, Storage storage ):
+            base(id, state, storage)
+        {
+            this.remote = remote;
+        }
+
         public GitRemoteWorld(
-            Storage storage,
-            WorldState worldState,
             GitRemote remote,
+            Storage storage,
+            string id,
             string name,
+            bool exist,
             Version version,
             ServerType? type,
             ServerProperty property,
             DatapackCollection datapacks
-            ) : base(storage, worldState, name, version, type, property, datapacks)
+            ):base( storage,id,name,exist,version,type,property,datapacks )
         {
             this.remote = remote;
         }
+
 
         /// <summary>
         /// TODO: ワールドデータを指定パスにPull/Cloneする

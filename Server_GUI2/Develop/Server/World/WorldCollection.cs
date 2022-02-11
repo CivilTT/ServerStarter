@@ -45,7 +45,7 @@ namespace Server_GUI2.Develop.Server.World
                 // 通信できないワールドは一覧に追加しないorグレーアウトして選択できないように
                 if (linkData != null)
                 {
-                    var remote = StorageCollection.Instance.FindStorage(linkData.RemoteStorage, linkData.RemoteWorld);
+                    var remote = StorageCollection.Instance.FindStorage(linkData.RemoteStorage).FindRemoteWorld(linkData.RemoteWorld);
                     // TODO: usingフラグが立ちっぱなしだったらpushする
                     // サーバー起動後にネットワークが切断された場合に起こりうる
                     var world = new World(local,remote);
@@ -113,7 +113,7 @@ namespace Server_GUI2.Develop.Server.World
         public RemoteLinkJson(RemoteWorld remote, LocalWorld local, bool Using)
         {
             RemoteStorage = remote.Storage.Id;
-            RemoteWorld = remote.Name;
+            RemoteWorld = remote.Id;
             LocalVersion = local.Version.Name;
             LocalWorld = local.Name;
             this.Using = Using;

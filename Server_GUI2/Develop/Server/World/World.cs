@@ -74,6 +74,11 @@ namespace Server_GUI2.Develop.Server.World
             }
         }
 
+        public WorldState ExportWorldState()
+        {
+            throw new WorldException("\"new world\" must not export world state");
+        }
+
         public bool IsUseableName(string name)
         {
             return Regex.IsMatch(name, @"^[0-9a-zA-Z_-]$");
@@ -134,6 +139,10 @@ namespace Server_GUI2.Develop.Server.World
         protected readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public event EventHandler DeleteEvent;
+
+        // remoteを削除する際のイベントハンドラ
+        private EventHandler deleteRemoteEvent;
+
         public readonly LocalWorld LocalWorld;
         public RemoteWorld RemoteWorld { get; private set; }
 
@@ -182,6 +191,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public World(LocalWorld local)
         {
+            deleteRemoteEvent = new EventHandler((_, __) => UnlinkForce());
             LocalWorld = local;
             RemoteWorld = null;
             CanCahngeRemote = true;
@@ -192,8 +202,10 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public World(LocalWorld local, RemoteWorld remote)
         {
+            deleteRemoteEvent = new EventHandler((_, __) => UnlinkForce());
             LocalWorld = local;
             RemoteWorld = remote;
+            RemoteWorld.DeleteEvent += deleteRemoteEvent;
             CanCahngeRemote = false;
         }
 
@@ -201,8 +213,14 @@ namespace Server_GUI2.Develop.Server.World
         public void Unlink()
         {
             if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
-            if (!HasRemote) throw new WorldException($"World \"{DisplayName}\" is unlinked");
+            UnlinkForce();
+        }
 
+        private void UnlinkForce()
+        {
+            if (!HasRemote) throw new WorldException($"World \"{DisplayName}\" is unlinked");
+            RemoteWorld.DeleteEvent -= deleteRemoteEvent;
+            CanCahngeRemote = true;
             RemoteWorld = null;
         }
 
@@ -212,6 +230,7 @@ namespace Server_GUI2.Develop.Server.World
             if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
             if (HasRemote) throw new WorldException($"World \"{DisplayName}\" is unlinked");
 
+            RemoteWorld.DeleteEvent += deleteRemoteEvent;
             RemoteWorld = remote;
         }
 
@@ -222,6 +241,11 @@ namespace Server_GUI2.Develop.Server.World
         {
             if (DeleteEvent != null) DeleteEvent(this, null);
             LocalWorld.Delete();
+        }
+
+        public WorldState ExportWorldState()
+        {
+            return new WorldState() ;
         }
 
         /// <summary>
@@ -272,7 +296,7 @@ namespace Server_GUI2.Develop.Server.World
             Using = true;
 
             // リモートワールドを複数人が同時に開かないようにロック
-            RemoteWorld.WorldState.Using = true;
+            RemoteWorld.Using = true;
             RemoteWorld.UpdateWorldState();
 
             // カスタムマップの導入＋バージョン変更
@@ -285,11 +309,7 @@ namespace Server_GUI2.Develop.Server.World
             RemoteWorld.FromLocal(LocalWorld);
 
             // リモートのワールドデータを更新し、ロック解除
-            RemoteWorld.WorldState.ServerProperty = LocalWorld.Property;
-            RemoteWorld.WorldState.Type = LocalWorld.Type?.ToStr();
-            RemoteWorld.WorldState.Version = version.Name;
-            RemoteWorld.WorldState.Datapacks = LocalWorld.Datapacks.GetNames();
-            RemoteWorld.WorldState.Using = false;
+            RemoteWorld.Using = false;
             RemoteWorld.UpdateWorldState();
 
             // 起動中フラグを回収
@@ -308,7 +328,7 @@ namespace Server_GUI2.Develop.Server.World
             Using = true;
 
             // リモートワールドを複数人が同時に開かないようにロック
-            RemoteWorld.WorldState.Using = true;
+            RemoteWorld.Using = true;
             RemoteWorld.UpdateWorldState();
 
             // Pull
@@ -325,11 +345,7 @@ namespace Server_GUI2.Develop.Server.World
             RemoteWorld.FromLocal(LocalWorld);
 
             // リモートのワールドデータを更新し、ロック解除
-            RemoteWorld.WorldState.ServerProperty = LocalWorld.Property;
-            RemoteWorld.WorldState.Type = LocalWorld.Type?.ToStr();
-            RemoteWorld.WorldState.Version = version.Name;
-            RemoteWorld.WorldState.Datapacks = LocalWorld.Datapacks.GetNames();
-            RemoteWorld.WorldState.Using = false;
+            RemoteWorld.Using = false;
             RemoteWorld.UpdateWorldState();
 
             // 起動中フラグを回収

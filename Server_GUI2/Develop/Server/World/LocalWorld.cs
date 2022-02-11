@@ -329,5 +329,10 @@ namespace Server_GUI2.Develop.Server.World
             Path.Nether.Delete();
             Path.End.Delete();
         }
+
+        public WorldState ExportWorldState()
+        {
+            return new WorldState(Name, Type.ToString(), Version.Name, false, Datapacks.ExportList(), Property);
+        }
     }
 }
