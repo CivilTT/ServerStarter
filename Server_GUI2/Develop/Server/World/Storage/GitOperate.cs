@@ -139,6 +139,9 @@ namespace Server_GUI2.Develop.Server.World
             LocalBranch.Push(Remote.CreateBranch("#state"));
         }
 
+        /// <summary>
+        /// リモートリポジトリの情報をローカルから削除
+        /// </summary>
         public void RemoveGitRepository()
         {
             // 以下の操作は cd/git_worldstate 内で行う
@@ -148,7 +151,6 @@ namespace Server_GUI2.Develop.Server.World
             LocalBranch.Local.GetBranch("#main").Checkout();
             // git branch -d {account}.{repository}
             LocalBranch.Remove();
-            // TODO: WorldFactory.Instance.Wordlsから該当リポジトリに紐づいたワールドをワールドデータとともに削除
         }
     }
 }
