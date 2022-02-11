@@ -37,6 +37,10 @@ namespace Server_GUI2.Develop.Server
                 return;
             Directory.Delete();
         }
+        protected void _MoveTo(DirectoryInfo destination)
+        {
+            Directory.MoveTo(destination.FullName);
+        }
     }
     public abstract class FilePath
     {
@@ -59,6 +63,29 @@ namespace Server_GUI2.Develop.Server
         public void WriteAllText(string content)
         {
             System.IO.File.WriteAllText(FullName,content);
+        }
+        protected void _MoveTo(FileInfo destination)
+        {
+            File.MoveTo(destination.FullName);
+        }
+        public void Delete(bool deletedOk = false)
+        {
+            if (deletedOk && !Exists)
+                return;
+            File.Delete();
+        }
+    }
+
+    public class AnyFile : FilePath
+    {
+        public DirectoryPath Parent;
+        internal AnyFile(FileInfo file, DirectoryPath parent) : base(file)
+        {
+            Parent = parent;
+        }
+        public void MoveTo(FileInfo destination)
+        {
+            _MoveTo(destination);
         }
     }
 
@@ -186,33 +213,70 @@ namespace Server_GUI2.Develop.Server
         }
     }
 
-    public class WorldWorldPath : DirectoryPath
+    public abstract class WorldSubPath : DirectoryPath
     {
+        public AnyFile LevelDat;
+        public AnyFile LevelDatOld;
+        public AnyFile SessionLock;
+        public AnyFile UidDat;
         public WorldPath Parent;
+        internal WorldSubPath(DirectoryInfo directory, WorldPath parent) : base(directory)
+        {
+            Parent = parent;
+            LevelDat = new AnyFile(SubFile("level.dat"), this);
+            LevelDatOld = new AnyFile(SubFile("level.dat_old"), this);
+            SessionLock = new AnyFile(SubFile("session.lock"), this);
+            UidDat = new AnyFile(SubFile("uid.dat"), this);
+        }
+    }
+
+    public class WorldWorldPath : WorldSubPath
+    {
+        public WorldDIMPath DIM1;
+        public WorldDIMPath DIM_1;
         public DatapacksPath Datapccks;
 
-        internal WorldWorldPath(DirectoryInfo directory, WorldPath parent) : base(directory)
+        internal WorldWorldPath(DirectoryInfo directory, WorldPath parent) : base(directory,parent)
         {
-            Parent = parent;
-            Datapccks = new DatapacksPath(SubDirectory("datapccks"), this);
+            DIM1 = new WorldDIMPath(SubDirectory("DIM1"), this);
+            DIM_1 = new WorldDIMPath(SubDirectory("DIM-1"), this);
+            Datapccks = new DatapacksPath(SubDirectory("datapacks"), this);
         }
     }
-    public class WorldNetherPath : DirectoryPath
+
+    public class WorldNetherPath : WorldSubPath
     {
-        public WorldPath Parent;
-        internal WorldNetherPath(DirectoryInfo directory, WorldPath parent) : base(directory)
+        public WorldDIMPath DIM_1;
+        internal WorldNetherPath(DirectoryInfo directory, WorldPath parent) : base(directory,parent)
         {
-            Parent = parent;
+            DIM_1 = new WorldDIMPath(SubDirectory("DIM_1"), this);
         }
     }
-    public class WorldEndPath : DirectoryPath
+
+    public class WorldEndPath : WorldSubPath
     {
-        public WorldPath Parent;
-        internal WorldEndPath(DirectoryInfo directory, WorldPath parent) : base(directory)
+        public WorldDIMPath DIM1;
+        internal WorldEndPath(DirectoryInfo directory, WorldPath parent) : base(directory, parent)
+        {
+            DIM1 = new WorldDIMPath(SubDirectory("DIM1"), this);
+        }
+    }
+
+    public class WorldDIMPath : DirectoryPath
+    {
+        public WorldSubPath Parent;
+
+        internal WorldDIMPath(DirectoryInfo directory, WorldSubPath parent) : base(directory)
         {
             Parent = parent;
         }
+
+        public void MoveTo(WorldDIMPath destination)
+        {
+            _MoveTo(destination.Directory);
+        }
     }
+
     public class DatapacksPath : DirectoryPath
     {
         public WorldWorldPath Parent;
@@ -229,6 +293,7 @@ namespace Server_GUI2.Develop.Server
             return new DatapackPath(SubDirectory(name), this);
         }
     }
+
     public class DatapackPath : DirectoryPath
     {
         public DatapacksPath Parent;
@@ -237,7 +302,7 @@ namespace Server_GUI2.Develop.Server
         internal DatapackPath(DirectoryInfo directory, DatapacksPath parent) : base(directory)
         {
             Parent = parent;
-            Data = new DatapackDataPath(SubDirectory("datapacks"), this);
+            Data = new DatapackDataPath(SubDirectory("data"), this);
             Mcmeta = new DatapackMcmetaPath(SubFile("pack.mcmeta"), this);
         }
     }

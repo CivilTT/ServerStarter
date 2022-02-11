@@ -22,11 +22,10 @@ namespace Server_GUI2.Develop.Server.World
         }
 
         // TODO: リモートリポジトリから消えた場合とリモートリポジトリと通信できない場合エラーを吐く
-        public RemoteWorld FindRemoteWorld(string storage,string world)
+        public Storage FindStorage(string storage)
         {
-            var storageValue = Instance.Storages.Where(x => x.Id == storage).First();
-            var worldValue = storageValue.Worlds.Where(x => x.Name == world).First();
-            return worldValue;
+            var storageValue = Storages.Where(x => x.Id == storage).First();
+            return storageValue;
         }
 
         public void Add(Storage storage)
