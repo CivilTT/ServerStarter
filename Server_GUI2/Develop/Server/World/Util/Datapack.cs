@@ -51,6 +51,11 @@ namespace Server_GUI2
             foreach ( var operation in operations)
                 operation(path);
         }
+
+        public List<string> GetNames()
+        {
+            return Datapacks.Select(x => x.Name).ToList();
+        }
     }
 
     public abstract class ADatapack

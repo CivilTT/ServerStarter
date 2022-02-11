@@ -16,7 +16,23 @@ namespace Server_GUI2.Develop.Server.World
     public abstract class Storage
     {
         public ObservableCollection<RemoteWorld> Worlds = new ObservableCollection<RemoteWorld>();
+        protected Dictionary<string, WorldState> worldStates = new Dictionary<string, WorldState>();
         public abstract string Id { get; }
+
+        public virtual void AddWorld(RemoteWorld world)
+        {
+            Worlds.Add(world);
+        }
+
+        public RemoteWorld FindRemoteWorld(string world)
+        {
+            return Worlds.Where(x => x.Name == world).First();
+        }
+ 
+        /// <summary>
+        ///worldstate.jsonを更新してpush
+        /// </summary>
+        public abstract void SaveWorldStates();
     }
 
     /// <summary>
@@ -25,7 +41,6 @@ namespace Server_GUI2.Develop.Server.World
     public class GitStorage: Storage
     {
         public static readonly GitLocal Local = new GitLocal(Path.Combine(SetUp.CurrentDirectory, "git_state"));
-        private Dictionary<string, WorldState> worldStates = new Dictionary<string, WorldState>();
         private HashSet<string> usedNames = new HashSet<string>();
 
         public override string Id => $"git/{Repository.Remote.Remote.Account}/{Repository.Remote.Remote.RepoName}";
@@ -43,8 +58,8 @@ namespace Server_GUI2.Develop.Server.World
         {
             var repos = GitStorageRepository.GetAllGitRepositories(Local);
             return repos.Select(x => new GitStorage(x)).ToList();
+        
         }
-
         public override string ToString()
         {
             return $"{ Repository.LocalBranch.Name}:{ Repository.Remote.Expression}";
@@ -70,8 +85,10 @@ namespace Server_GUI2.Develop.Server.World
                     var version = VersionFactory.Instance.GetVersionFromName(worldState.Value.Version);
                     var property = worldState.Value.ServerProperty;
                     var datapacks = new DatapackCollection(worldState.Value.Datapacks);
-                    var remoteWorld = new GitRemoteWorld(name, version, type, property, datapacks);
+                    var remoteWorld = new GitRemoteWorld(this, worldState.Value, repository.Remote.Remote, name, version, type, property, datapacks);
                     Worlds.Add(remoteWorld);
+                    // 削除イベントを追加
+                    remoteWorld.DeleteEvent += new EventHandler((_, __) => Worlds.Remove(remoteWorld));
                 }
                 else
                 {
@@ -84,9 +101,10 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// Worldstateを#state/worldstate.jsonに保存
         /// </summary>
-        public void SaveWorldState()
+        public override void SaveWorldStates()
         {
-            Repository.SaveGitWorldstate(worldStates);
+            // 存在しているリモートだけをフィルタして保存
+            Repository.SaveGitWorldstate(worldStates.Where(x => x.Value.Exist == true).ToDictionary(x => x.Key,x => x.Value ));
         }
 
         /// <summary>

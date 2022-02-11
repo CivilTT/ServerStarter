@@ -11,4 +11,25 @@ namespace Server_GUI2.Develop.Server
         Vanilla,
         Spigot
     }
+
+    public static class ServerTypeExt
+    {
+        public static string ToStr(this ServerType state)
+        {
+            return state == ServerType.Vanilla ? "vanilla" : "spigot";
+        }
+
+        public static ServerType FromStr(string str)
+        {
+            switch (str)
+            {
+                case "vanilla":
+                    return ServerType.Vanilla;
+                case "spigot":
+                    return ServerType.Spigot;
+                default:
+                    throw new ArgumentException($"\"{str}\" is invalid string for ServerType");
+            }
+        }
+    }
 }

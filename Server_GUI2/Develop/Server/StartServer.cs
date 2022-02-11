@@ -10,12 +10,12 @@ namespace Server_GUI2
     static class StartServer
     {
         private static Version Version;
-        private static WorldWrapper World;
+        private static World World;
 
         /// <summary>
         /// Runボタンが押された時に呼ばれる処理
         /// </summary>
-        public static void Run(Version version, WorldWrapper world)
+        public static void Run(Version version, World world)
         {
             Version = version;
             World = world;
@@ -27,7 +27,7 @@ namespace Server_GUI2
             world.WrapRun(
                 Version,
                 serverProperty => Server.Start(
-                    path,
+                    path.FullName,
                     jarName,
                     Version.Log4jArgument,
                     serverProperty
