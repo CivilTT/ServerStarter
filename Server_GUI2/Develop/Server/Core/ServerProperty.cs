@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reflection;
+using System.Linq;
 using Newtonsoft.Json;
 
 
@@ -26,8 +26,6 @@ namespace Server_GUI2
         /// </summary>
         public ServerProperty(string properties)
         {
-            StringOption = new SortedDictionary<string, string>();
-            BoolOption = new SortedDictionary<string, bool>();
             ReadProperty(properties);
         }
 
