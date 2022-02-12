@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:Server_GUI2.Windows.MoreSettings"
-        xmlns:vm="clr-namespace:Server_GUI2.Windows.MoreSettings" xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+        xmlns:vm="clr-namespace:Server_GUI2.Windows.MoreSettings"
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         mc:Ignorable="d"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="WorldSettings" Height="550" Width="600" WindowStartupLocation="CenterScreen">
@@ -138,7 +139,6 @@
         </Style>
         <Style TargetType="ComboBox" x:Key="PropertyCombo" BasedOn="{StaticResource ComboSource}">
             <Setter Property="Width" Value="145"/>
-
         </Style>
         <Style TargetType="TextBox" x:Key="PropertyBox" BasedOn="{StaticResource BoxSource}">
             <Setter Property="Width" Value="145"/>
@@ -263,8 +263,7 @@
                             <TextBlock Text="white-list" Style="{StaticResource PropertyIndex}"/>
                             <TextBlock Text="OTHER Settings" HorizontalAlignment="Left" Height="33" Margin="25,30,0,0" FontSize="24" FontWeight="Bold"/>
                             <ComboBox x:Name="true_false" Margin="35,20,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox x:Name="input_text" Margin="35,20,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
-
+                            <ComboBox x:Name="input_text" Margin="35,20,0,40" Width="160" Style="{StaticResource PropertyCombo}"/>
                         </StackPanel>
                         <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
                             <ComboBox x:Name="difficulty" Margin="10,63,0,0" Style="{StaticResource PropertyCombo}"/>
@@ -272,7 +271,7 @@
                             <ComboBox x:Name="gamemode" Margin="10,20,0,0" Style="{StaticResource PropertyCombo}"/>
                             <ComboBox x:Name="white_list" Margin="10,20,0,0" Style="{StaticResource PropertyCombo}"/>
                             <ComboBox x:Name="true_false_combo" Margin="10,83,0,0" Style="{StaticResource PropertyCombo}"/>
-                            <TextBox x:Name="input_text_txt" Margin="10,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource PropertyBox}"/>
+                            <TextBox x:Name="input_text_txt" Margin="10,20,0,40" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource PropertyBox}"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -296,15 +295,12 @@
                         <ComboBox Style="{StaticResource ShareWorldCombo}"/>
                         <TextBox Style="{StaticResource ShareWorldBox}"/>
                     </StackPanel>
-                </StackPanel>
-                <ui:HyperlinkButton Content="Personal Access Token" NavigateUri="https://github.com/settings/tokens" FontSize="20" Margin="20"/>
-                <ui:HyperlinkButton Content="資格情報マネージャー" NavigateUri="" FontSize="20" Margin="20 0"/>
-
+                </StackPanel>                
             </StackPanel>
         </Grid>
 
         <!--//AdditionalContents//-->
-        <Grid Visibility="Hidden" Margin="0 -10" Style="{StaticResource SettingContent}">
+        <Grid Visibility="{Binding ShowAdd, Converter={StaticResource BoolToVisible}}" Margin="0 -10" Style="{StaticResource SettingContent}">
             <TabControl>
                 <TabControl.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -459,8 +455,7 @@
         </Grid>
 
         <!--//WhiteListContents//-->
-        <!--<Grid Visibility="{Binding ShowWhite, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">-->
-        <Grid Visibility="Visible" Style="{StaticResource SettingContent}">
+        <Grid Visibility="{Binding ShowWhite, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Add WhiteList Player" Style="{StaticResource OpTitle}"/>
                 <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
