@@ -1,7 +1,9 @@
-{
-	"1.14.4/shareworld": {
-		"storage": "git/account/repository",
-		"world": "123456789",
+[
+	{
+		"remote_storage": "git/txkodo/GitTest",
+		"remote_world": "a",
+		"local_version": "1.18.1",
+		"local_world": "world(2)",
 		"using": false
 	}
-}
+]

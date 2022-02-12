@@ -12,6 +12,7 @@ using MW = ModernWpf;
 using System.Net;
 using System.Diagnostics;
 using Microsoft.VisualBasic.FileIO;
+using Server_GUI2.Develop.Server;
 
 namespace Server_GUI2
 {
@@ -22,6 +23,8 @@ namespace Server_GUI2
 
         protected VersionFactory VerFactory = VersionFactory.Instance;
 
+        public virtual ServerType Type { get; }
+
         public string Name;
 
         protected virtual string JarName { get; }
@@ -29,7 +32,7 @@ namespace Server_GUI2
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual string Path { get; }
+        public VersionPath Path { get; }
 
         private bool _Exists;
         public bool Exists 
@@ -48,15 +51,11 @@ namespace Server_GUI2
             }
         }
 
-        protected Version(string name)
+        protected Version(string name,VersionPath path)
         {
+            Path = path;
             Name = name;
-            Exists = Directory.Exists(Path);
-        }
-
-        public static Version TryGetInstance(string name)
-        {
-            return new Version(name);
+            Exists = Path.Exists;
         }
 
         /// <summary>
@@ -74,7 +73,7 @@ namespace Server_GUI2
         /// サーバー起動前に実行
         /// 必要があれば新しいバージョンの導入を行い、versionのパスと.jarの名称を返す
         /// </summary>
-        public (string, string) ReadyVersion()
+        public (VersionPath, string) ReadyVersion()
         {
             if (!Exists)
                 SetNewVersion();
@@ -119,7 +118,7 @@ namespace Server_GUI2
             logger.Warn("Warning the delete Version data");
             if (result == MessageBoxResult.OK)
             {
-                FileSystem.DeleteDirectory(Path, DeleteDirectoryOption.DeleteAllContents);
+                Path.Delete();
             }
         }
 
@@ -156,17 +155,9 @@ namespace Server_GUI2
 
     public class VanillaVersion: Version
     {
-        protected override string Path
-        { 
-            get 
-            {
-                Console.WriteLine("###");
-                Console.WriteLine(SetUp.DataPath);
-                Console.WriteLine(Name);
-                return $@"{SetUp.DataPath}\{Name}\";
-            } 
-        }
         protected override string JarName { get { return "server.jar"; } }
+        public override ServerType Type => ServerType.Vanilla;
+
         public override string Log4jArgument
         {
             get
@@ -211,7 +202,7 @@ namespace Server_GUI2
         // server.jarのダウンロードurl
         private string DownloadURL;
 
-        public VanillaVersion(string name, string downloadURL, bool isRelease, bool hasSpigot ,bool isLatest = false): base(name)
+        public VanillaVersion(string name, string downloadURL, bool isRelease, bool hasSpigot ,bool isLatest = false): base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name))
         {
             IsRelease = isRelease;
             HasSpigot = hasSpigot;
@@ -245,7 +236,7 @@ namespace Server_GUI2
                 throw new DownloadException($"Failed to get url to download server.jar (Error Message : {ex.Message})");
             }
 
-            Directory.CreateDirectory(Path);
+            Path.Create();
 
             try
             {
@@ -262,17 +253,16 @@ namespace Server_GUI2
             }
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Server.Start(Path, JarName, Log4jArgument,new ServerProperty());
+            Server.Start(Path.FullName, JarName, Log4jArgument,new ServerProperty());
         }
     }
 
     public class SpigotVersion: Version
     {
-        protected override string Path { get { return $@"{MainWindow.Data_Path}\Spigot_{Name}\"; } }
-
         protected override string JarName { get { return $"spigot-{Name}.jar"; } }
+        public override ServerType Type => ServerType.Spigot;
 
-        public SpigotVersion(string name) : base(name)
+        public SpigotVersion(string name) : base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name))
         {
             // Initialize
         }
@@ -282,7 +272,7 @@ namespace Server_GUI2
             base.SetNewVersion();
 
             logger.Info("Import Spigot Server");
-            Directory.CreateDirectory(Path);
+            Path.Create();
 
             try
             {
@@ -304,12 +294,12 @@ namespace Server_GUI2
             p.WaitForExit();
 
             // 余計なファイルの削除
-            DeleteInnerDirectory(Path, DeleteDirectoryOption.DeleteAllContents);
+            Path.Delete();
             MoveLogFile();
 
             if (p.ExitCode != 0)
             {
-                FileSystem.DeleteDirectory(Path, DeleteDirectoryOption.DeleteAllContents);
+                Path.Delete();
 
                 string message;
                 switch (p.ExitCode)
@@ -329,7 +319,7 @@ namespace Server_GUI2
             }
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Server.Start(Path, JarName, Log4jArgument,new ServerProperty());
+            Server.Start(Path.FullName, JarName, Log4jArgument,new ServerProperty());
         }
 
         private void CreateBuildBat()

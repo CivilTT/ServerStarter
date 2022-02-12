@@ -1,94 +1,122 @@
-﻿using System;
+﻿using log4net;
+using System;
+using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using System.Windows;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using MW = ModernWpf;
 
 namespace Server_GUI2.Develop.Server.World
 {
+    /// <summary>
+    /// World一覧を管理する
+    /// </summary>
     public class WorldCollection
     {
-        public static WorldCollection Instance = new WorldCollection(Path.Combine(SetUp.CurrentDirectory, "World_Data"));
+        public static WorldCollection Instance { get; } = new WorldCollection();
 
-        private string linkJsonPath = Path.Combine(SetUp.CurrentDirectory, "remotes.json");
+        private RemotesJsonPath jsonPath = ServerGuiPath.Instance.RemotesJson;
 
         /// <summary>
         /// データ整合性のためリスト変換はしない。
-        /// インデックスアクセスはプロパティ化して常に更新が反映されるようにする。
         /// </summary>
-        public ObservableCollection<WorldWrapper> WorldWrappers { get; } = new ObservableCollection<WorldWrapper>();
-        private WorldCollection(string path)
-        {
-            // ローカルとリモートの接続情報
-            var linkJson = LoadLinkJson();
-            //　ディレクトリを走査し既存ワールド一覧を取得
-            var versions = new DirectoryInfo(path);
-            foreach (var verDir in versions.EnumerateDirectories())
-            {
-                try
-                {
-                    var version = VersionFactory.Instance.GetVersionFromName(verDir.Name);
-                    foreach (var worldDir in verDir.EnumerateDirectories())
-                    {
-                        // ログフォルダは無視
-                        if (worldDir.Name == "logs")
-                            continue;
+        public ObservableCollection<IWorld> Worlds { get; } = new ObservableCollection<IWorld>();
 
-                        var key = $"{verDir.Name}/{worldDir.Name}";
-                        // 接続済みローカルはLinkedRemoteWorldWrapperとして扱う
-                        // TODO: リモートとの通信ができなかった場合のフォールバック
-                        // 通信できないワールドは一覧に追加しないorグレーアウトして選択できないように
-                        if (linkJson.ContainsKey(key))
-                        {
-                            var linkData = linkJson[key];
-                            var remote = StorageCollection.Instance.FindRemoteWorld(linkData.Storage,linkData.World);
-                            WorldWrappers.Add(new LinkedRemoteWorldWrapper(remote, worldDir.FullName));
-                        }
-                        // 未接続ローカルはUnLinkedLocalWorldWrapperとして扱う
-                        else
-                        {
-                            WorldWrappers.Add(new UnLinkedLocalWorldWrapper(new LocalWorld(worldDir.FullName)));
-                        }
-                    }
-                }
-                catch (KeyNotFoundException)
+        private WorldCollection()
+        {
+            var linkJson = LoadLinkJson();
+
+            // new World を追加
+            Worlds.Add(new NewWorld());
+
+            //　ローカルワールド一覧とリンク情報を組み合わせてWorldWrapperを構成
+            foreach (var local in LocalWorldCollection.Instance.LocalWorlds)
+            {
+                var linkData = linkJson.Where(x =>
+                   x.LocalVersion == local.Version.Name &&
+                   x.LocalWorld == local.Name
+                    ).FirstOrDefault();
+
+                // TODO: リモートとの通信ができなかった場合のフォールバック
+                // 通信できないワールドは一覧に追加しないorグレーアウトして選択できないように
+                if (linkData != null)
                 {
-                    //version名でないディレクトリは無視
-                    continue;
+                    var remote = StorageCollection.Instance.FindStorage(linkData.RemoteStorage).FindRemoteWorld(linkData.RemoteWorld);
+                    // TODO: usingフラグが立ちっぱなしだったらpushする
+                    // サーバー起動後にネットワークが切断された場合に起こりうる
+                    var world = new World(local,remote);
+                    Add(world);
+                }
+                else
+                {
+                    var world = new World(local);
+                    Add(world);
                 }
             }
         }
 
         /// <summary>
-        /// ローカルとリモートの接続情報を取得
+        /// WorldWrapperを追加(自動呼び出し)
         /// </summary>
-        private Dictionary<string, RemoteLinkJson> LoadLinkJson()
+        public void Add(World world)
         {
-            var json = File.ReadAllText(linkJsonPath);
-            var result = JsonConvert.DeserializeObject<Dictionary<string, RemoteLinkJson>>(json);
-            return result;
+            Worlds.Add(world);
+            world.DeleteEvent += new EventHandler((_, __) => Worlds.Remove(world));
+        }
+
+        /// <summary>
+        /// ローカルとリモートのリンク情報を取得
+        /// </summary>
+        private List<RemoteLinkJson> LoadLinkJson()
+        {
+            var json = jsonPath.ReadAllText();
+            return JsonConvert.DeserializeObject<List<RemoteLinkJson>>(json);
+        }
+
+        /// <summary>
+        /// ローカルとリモートの現在のリンク情報を保存
+        /// </summary>
+        public void SaveLinkJson()
+        {
+            // リモートを確実に持つワールドを抜き出して変換
+            var obj = Worlds.OfType<World>().Where(x => x.HasRemote && (! x.CanCahngeRemote)).Select(x => x.ExportLinkJson()).ToList();
+            JsonConvert.SerializeObject(obj);
         }
     }
-
     public class RemoteLinkJson
     {
-        [JsonProperty("storage")]
-        public string Storage;
-        
-        [JsonProperty("world")]
-        public string World;
+        [JsonProperty("remote_storage")]
+        public string RemoteStorage;
+
+        [JsonProperty("remote_world")]
+        public string RemoteWorld;
+
+        [JsonProperty("local_version")]
+        public string LocalVersion;
+
+        [JsonProperty("local_world")]
+        public string LocalWorld;
 
         [JsonProperty("using")]
         public bool Using;
 
-        public RemoteLinkJson(string storage, string world, bool isUsing)
+        /// <summary>
+        /// JsonSerialiser用コンストラクタ
+        /// </summary>
+        public RemoteLinkJson()
+        { }
+
+        public RemoteLinkJson(RemoteWorld remote, LocalWorld local, bool Using)
         {
-            Using = isUsing;
-            Storage = storage;
-            World = world;
+            RemoteStorage = remote.Storage.Id;
+            RemoteWorld = remote.Id;
+            LocalVersion = local.Version.Name;
+            LocalWorld = local.Name;
+            this.Using = Using;
         }
     }
 }
