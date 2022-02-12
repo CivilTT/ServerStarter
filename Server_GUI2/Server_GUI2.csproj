@@ -111,6 +111,8 @@
     <Compile Include="Develop\Util\Git.cs" />
     <Compile Include="Develop\Util\ReadContents.cs" />
     <Compile Include="Planning\World\World.cs" />
+    <Compile Include="Windows\MoreSettings\WorldSettingsCommand.cs" />
+    <Compile Include="Windows\SystemSettings\SystemSettingsCommand.cs" />
     <Compile Include="Windows\SystemSettings\SystemSettingsVM.cs" />
     <Compile Include="Windows\MainWindow\MainWindowCommand.cs" />
     <Compile Include="Windows\GeneralVM.cs" />

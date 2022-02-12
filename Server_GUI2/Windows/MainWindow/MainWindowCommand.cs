@@ -28,7 +28,7 @@ namespace Server_GUI2.Windows.MainWindow
 
         public void Execute(object parameter)
         {
-            System.Windows.MessageBox.Show(_vm.ShowAll.ToString());
+            MessageBox.Show(_vm.ShowAll.ToString());
             //Server.Run(_vm.RunWorld);
         }
     }

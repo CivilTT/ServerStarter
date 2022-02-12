@@ -92,7 +92,7 @@ namespace Server_GUI2
 
         //}
 
-        public static void WriteFile()
+        public void WriteFile()
         {
             string jsonData = JsonConvert.SerializeObject(userSettings, Formatting.Indented);
             using (var sw = new StreamWriter(JsonPath, false, Encoding.UTF8))
