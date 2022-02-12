@@ -40,5 +40,66 @@ namespace Server_GUI2.Windows.SystemSettings
         public bool ShowPlayers { get { return MenuIndex == 2; } }
         public bool ShowNet { get { return MenuIndex == 3; } }
         public bool ShowOthers { get { return MenuIndex == 4; } }
+
+        // ShareWorld
+        private string _accountName = "";
+        public string AccountName
+        {
+            get
+            {
+                return _accountName;
+            }
+            set
+            {
+                _accountName = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("AccountName"));
+            }
+        }
+        private string _accountEmail = "";
+        public string AccountEmail
+        {
+            get
+            {
+                return _accountEmail;
+            }
+            set
+            {
+                _accountEmail = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("AccountEmail"));
+            }
+        }
+        private string _repoName = "ShareWorld";
+        public string RepoName
+        {
+            get
+            {
+                return _repoName;
+            }
+            set
+            {
+                _repoName = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RepoName"));
+            }
+        }
+        private bool _isPrivate = true;
+        public bool IsPrivate
+        {
+            get
+            {
+                return _isPrivate;
+            }
+            set
+            {
+                _isPrivate = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsPrivate"));
+            }
+        }
+        public AddGitAccountCommand AddGitAccountCommand { get; private set; }
+
+
+        public SystemSettingsVM()
+        {
+            AddGitAccountCommand = new AddGitAccountCommand(this);
+        }
     }
 }

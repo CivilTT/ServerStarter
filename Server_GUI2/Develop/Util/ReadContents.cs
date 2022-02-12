@@ -79,7 +79,7 @@ namespace Server_GUI2.Develop.Util
         /// ローカルにあるJsonファイルを読み込む
         /// </summary>
         /// <returns>The deserialized object from the JSON string.</returns>
-        public static dynamic ReadlocalJson<T>(string path, string errorMessage)
+        public static T ReadlocalJson<T>(string path, string errorMessage)
         {
             dynamic root = null;
             try

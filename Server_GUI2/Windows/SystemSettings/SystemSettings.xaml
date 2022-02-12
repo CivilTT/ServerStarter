@@ -275,21 +275,21 @@
                 <StackPanel Orientation="Vertical" Margin="30 40 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Account Name" Style="{StaticResource SWBlock}"/>
-                        <TextBox Style="{StaticResource SWBox}"/>
+                        <TextBox Text="{Binding AccountName}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Account E-mail" Style="{StaticResource SWBlock}"/>
-                        <TextBox Style="{StaticResource SWBox}"/>
+                        <TextBox Text="{Binding AccountEmail}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Repository" Style="{StaticResource SWBlock}"/>
-                        <TextBox Text="ShareWorld" Style="{StaticResource SWBox}"/>
+                        <TextBox Text="{Binding RepoName}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Type" Style="{StaticResource SWBlock}"/>
-                        <ui:ToggleSwitch OnContent="Private" OffContent="Public" Margin="20 5" FontSize="20" IsOn="True"/>
+                        <ui:ToggleSwitch IsOn="{Binding IsPrivate}" OnContent="Private" OffContent="Public" Margin="20 5" FontSize="20"/>
                     </StackPanel>
-                    <Button Content="Add Setting" HorizontalAlignment="Right" Margin="20 5" Style="{StaticResource RunStyle}"/>
+                    <Button Content="Add Setting" HorizontalAlignment="Right" Margin="20 5" Command="{Binding AddGitAccountCommand}" Style="{StaticResource RunStyle}"/>
                 </StackPanel>
                 <TextBlock Text="Remote List" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
                 <Button Width="33" Height="33" FontSize="18" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="world" Grid.Row="1" Margin="35 0" VerticalAlignment="Top" HorizontalAlignment="Right">
