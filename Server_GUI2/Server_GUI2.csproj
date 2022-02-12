@@ -112,6 +112,7 @@
     <Compile Include="Develop\Util\Git.cs" />
     <Compile Include="Develop\Util\ReadContents.cs" />
     <Compile Include="Planning\World\World.cs" />
+    <Compile Include="Windows\SystemSettings\SystemSettingsVM.cs" />
     <Compile Include="Windows\MainWindow\MainWindowCommand.cs" />
     <Compile Include="Windows\GeneralVM.cs" />
     <Compile Include="Windows\MainWindow\MainWindowVM.cs" />
@@ -123,7 +124,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Info\Infomation.xaml">
+    <Page Include="Windows\SystemSettings\SystemSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,8 +155,8 @@
     <Compile Include="Windows\MoreSettings\CustomMap\haihu.xaml.cs">
       <DependentUpon>haihu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Info\Infomation.xaml.cs">
-      <DependentUpon>Infomation.xaml</DependentUpon>
+    <Compile Include="Windows\SystemSettings\SystemSettings.xaml.cs">
+      <DependentUpon>SystemSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MoreSettings\WorldSettings.xaml.cs">
       <DependentUpon>WorldSettings.xaml</DependentUpon>
@@ -278,6 +279,9 @@
     <PackageReference Include="ModernWpfUI">
       <Version>0.9.4</Version>
     </PackageReference>
+    <PackageReference Include="Mono.Nat">
+      <Version>3.0.2</Version>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
@@ -313,6 +317,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Planning\Paln.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SystemSettings\copy-solid.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SystemSettings\github-brands.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\SystemSettings\twitter-brands.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<Target Name="AfterResolveReferences">

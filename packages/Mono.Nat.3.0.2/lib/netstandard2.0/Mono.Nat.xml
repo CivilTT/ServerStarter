@@ -1,0 +1,299 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Mono.Nat</name>
+    </assembly>
+    <members>
+        <member name="P:Mono.Nat.INatDevice.DeviceEndpoint">
+            <summary>
+            The endpoint to send messages to the WAN device
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.INatDevice.LastSeen">
+            <summary>
+            The UTC time the last message was received from the WAN device.
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.INatDevice.NatProtocol">
+            <summary>
+            The NAT protocol supported by the WAN device (e.g. NAT-PMP or uPnP)
+            </summary>
+        </member>
+        <member name="M:Mono.Nat.INatDevice.CreatePortMapAsync(Mono.Nat.Mapping)">
+            <summary>
+            Creates a port map using the specified Mapping. If that exact mapping cannot be
+            created, a best-effort mapping may be created which uses a different port. The
+            return value is actual created mapping.
+            </summary>
+            <param name="mapping"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Mono.Nat.INatDevice.DeletePortMapAsync(Mono.Nat.Mapping)">
+            <summary>
+            Deletes a port mapping from the WAN device.
+            </summary>
+            <param name="mapping"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Mono.Nat.INatDevice.GetAllMappingsAsync">
+            <summary>
+            Retrieves a list of all mappings on the WAN device.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Mono.Nat.INatDevice.GetExternalIPAsync">
+            <summary>
+            Gets the external IP address associated with the WAN device.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Mono.Nat.INatDevice.GetSpecificMappingAsync(Mono.Nat.Protocol,System.Int32)">
+            <summary>
+            Retrieves the mapping associated with this combination of public port and protocol. Throws a MappingException
+            if there is no mapping matching the criteria.
+            </summary>
+            <param name="protocol">The protocol of the mapping</param>
+            <param name="publicPort">The external/WAN port of the mapping</param>
+            <returns></returns>
+        </member>
+        <member name="E:Mono.Nat.ISearcher.DeviceFound">
+            <summary>
+            This event is raised whenever a device which supports port mapping is discovered
+            </summary>
+        </member>
+        <member name="E:Mono.Nat.ISearcher.UnknownDeviceFound">
+            <summary>
+            This event is raised whenever a device which doesn't supports port mapping is discovered.
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.ISearcher.Protocol">
+            <summary>
+            The port mapping protocol supported by the device
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.ISearcher.Listening">
+            <summary>
+            While running the searcher constantly listens for UDP broadcasts when new devices come online.
+            </summary>
+        </member>
+        <member name="M:Mono.Nat.ISearcher.BeginSearching">
+            <summary>
+            Periodically send a multicast UDP message to scan for new devices.
+            If the searcher is not listening, it will begin listening until 'Stop' is invoked.
+            </summary>
+        </member>
+        <member name="M:Mono.Nat.ISearcher.BeginSearching(System.Net.IPAddress)">
+            <summary>
+            Immediately sends a unicast UDP message to this IP address to check for a compatible device.
+            If the searcher is not listening, it will begin listening until 'Stop' is invoked.
+            </summary>
+            <param name="gatewayAddress">The IP address which should</param>
+        </member>
+        <member name="M:Mono.Nat.ISearcher.HandleMessageReceived(System.Net.IPAddress,System.Byte[],System.Net.IPEndPoint,System.Threading.CancellationToken)">
+            <summary>
+            Permits Mono.NAT to process messages not received internally.
+            </summary>
+            <param name="localAddress">Interface ip.</param>
+            <param name="response">Response received.</param>
+            <param name="endpoint">Destination ip.</param>
+            <param name="token">Cancellation token.</param>
+        </member>
+        <member name="P:Mono.Nat.Logging.Logger.Factory">
+            <summary>
+            The factory method used to create new ILogger instances. The <see cref="T:System.String"/> parameter
+            is the <see cref="P:System.Type.FullName"/> for the class the ILogger is associated with. You can
+            return <see langword="null"/> for any class to disable logging for that class.
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.Mapping.Description">
+            <summary>
+            The text description for the port mapping.
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.Mapping.Expiration">
+            <summary>
+            The time the port mapping should expire at.
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.Mapping.Lifetime">
+            <summary>
+            The lifetime of the port mapping in seconds. If a lifetime of '0' is specified then the
+            protocol default lifetime is used. uPnP defaults to 'indefinite' whereas NAT-PMP defaults
+            to 7,200 seconds.
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.Mapping.Protocol">
+            <summary>
+            The protocol used for the port mapping.
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.Mapping.PrivatePort">
+            <summary>
+            The internal/LAN port which will receive traffic sent to the <see cref="P:Mono.Nat.Mapping.PublicPort"/> on the WAN device.
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.Mapping.PublicPort">
+            <summary>
+            Traffic sent to this external/WAN port is forwarded to the <see cref="P:Mono.Nat.Mapping.PrivatePort"/> on the LAN device.
+            </summary>
+        </member>
+        <member name="M:Mono.Nat.Mapping.#ctor(Mono.Nat.Protocol,System.Int32,System.Int32)">
+            <summary>
+            Create a port mapping so traffic sent to the <paramref name="publicPort"/> on the WAN device is sent to the <paramref name="privatePort"/> on the LAN device.
+            </summary>
+            <param name="protocol">The protocol used by the port mapping.</param>
+            <param name="privatePort">The internal/LAN port which will receive traffic sent to the <paramref name="publicPort"/> on the WAN device.</param>
+            <param name="publicPort">Traffic sent to this external/WAN port is forwarded to the <paramref name="privatePort"/> on the LAN device.</param>
+        </member>
+        <member name="M:Mono.Nat.Mapping.#ctor(Mono.Nat.Protocol,System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Create a port mapping so traffic sent to the <paramref name="publicPort"/> on the WAN device is sent to the <paramref name="privatePort"/> on the LAN device.
+            </summary>
+            <param name="protocol">The protocol used by the port mapping.</param>
+            <param name="privatePort">The internal/LAN port which will receive traffic sent to the <paramref name="publicPort"/> on the WAN device.</param>
+            <param name="publicPort">Traffic sent to this public/WAN port is forwarded to the <paramref name="privatePort"/> on the LAN device.</param>
+            <param name="lifetime">The lifetime of the port mapping in seconds. If a lifetime of '0' is specified then the protocol default lifetime is used. uPnP defaults to 'indefinite' whereas NAT-PMP defaults to 7,200 seconds.</param>
+            <param name="description">The text description for the port mapping.</param>
+        </member>
+        <member name="M:Mono.Nat.Mapping.Equals(System.Object)">
+            <summary>
+            Mappings are considered equal if they have the same PrivatePort, PublicPort and Protocol.
+            </summary>
+            <param name="obj">The other object to compare with</param>
+            <returns></returns>
+        </member>
+        <member name="M:Mono.Nat.Mapping.Equals(Mono.Nat.Mapping)">
+            <summary>
+            Mappings are considered equal if they have the same PrivatePort, PublicPort and Protocol.
+            </summary>
+            <param name="other">The other mapping to compare with</param>
+            <returns></returns>
+        </member>
+        <member name="M:Mono.Nat.NatUtility.Search(System.Net.IPAddress,Mono.Nat.NatProtocol)">
+            <summary>
+            Sends a single (non-periodic) message to the specified IP address to see if it supports the
+            specified port mapping protocol, and begin listening indefinitely for responses.
+            </summary>
+            <param name="gatewayAddress">The IP address</param>
+            <param name="type"></param>
+        </member>
+        <member name="M:Mono.Nat.NatUtility.StartDiscovery(Mono.Nat.NatProtocol[])">
+            <summary>
+            Periodically send a multicast UDP message to scan for new devices, and begin listening indefinitely
+            for responses.
+            </summary>
+            <param name="devices">The protocols which should be searched for. An empty array will result in all supported protocols being used.</param>
+        </member>
+        <member name="M:Mono.Nat.NatUtility.ParseMessage(Mono.Nat.NatProtocol,System.Net.IPAddress,System.Byte[],System.Net.IPEndPoint)">
+            <summary>
+            Parses a message received elsewhere.
+            </summary>
+            <param name="type">Type of message.</param>
+            <param name="localAddress"></param>
+            <param name="content"></param>
+            <param name="source"></param>
+        </member>
+        <member name="M:Mono.Nat.NatUtility.StopDiscovery">
+            <summary>
+            Stop listening for responses to the search messages, and cancel any pending searches.
+            </summary>
+        </member>
+        <member name="M:Mono.Nat.Pmp.PmpNatDevice.ToString">
+            <summary>
+            Overridden.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.Unknown">
+            <summary>
+            An unknown error occurred
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.InvalidArgs">
+            <summary>
+            One, or more, of the arguments were invalid.
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.ActionFailed">
+            <summary>
+            Unexpected failure performing the request.
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.SpecifiedArrayIndexInvalid">
+            <summary>
+            The specified array index is out of bounds 
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.WildCardNotPermittedInSourceIP">
+            <summary>
+            The source IP address cannot be wild-carded.
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.WildCardNotPermittedInExternalPort">
+            <summary>
+            The external port cannot be wild-carded.
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.ConflictInMappingEntry">
+            <summary>
+            The port mapping entry specified conflicts with a mapping assigned previously to another client.
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.SamePortValuesRequired">
+            <summary>
+            Internal and External port values must be the same.
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.Success">
+            <summary>
+            No error occurred.
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.UnsupportedVersion">
+            <summary>
+            The NAT
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.NotAuthorizedOrRefused">
+            <summary>
+            The NAT device supports creating mappings, but the user has turned the feature off.
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.NetworkFailure">
+            <summary>
+            The NAT device itself has not obtained a DHCP lease.
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.OutOfResources">
+            <summary>
+            The NAT device cannot create any more mappings at this time.
+            </summary>
+        </member>
+        <member name="F:Mono.Nat.ErrorCode.UnsupportedOperation">
+            <summary>
+            The NAT device does not support this operation.
+            </summary>
+        </member>
+        <member name="M:Mono.Nat.Upnp.DiscoverDeviceMessage.EncodeSSDP">
+            <summary>
+            The message sent to discover all uPnP devices on the network
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Mono.Nat.Upnp.UpnpNatDevice.DeviceControlUri">
+            <summary>
+            The url we can use to control the port forwarding
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.Upnp.UpnpNatDevice.LocalAddress">
+            <summary>
+            The IP address of the LAN device (the current machine)
+            </summary>
+        </member>
+        <member name="P:Mono.Nat.Upnp.UpnpNatDevice.ServiceType">
+            <summary>
+            The service type we're using on the device
+            </summary>
+        </member>
+    </members>
+</doc>

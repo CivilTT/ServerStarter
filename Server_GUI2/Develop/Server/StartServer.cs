@@ -24,7 +24,7 @@ namespace Server_GUI2
             var ( path, jarName ) = Version.ReadyVersion();
 
             //サーバー実行
-            world.WrapRun(
+            World.WrapRun(
                 Version,
                 serverProperty => Server.Start(
                     path.FullName,

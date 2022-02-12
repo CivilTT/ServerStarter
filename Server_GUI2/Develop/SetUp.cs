@@ -11,7 +11,10 @@ namespace Server_GUI2
     public class SetUp
     {
         public static string StarterVersion { get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); } }
-        public static string CurrentDirectory { get { return Environment.GetEnvironmentVariable("SERVER_STERTER_TEST"); } }
+        
+        //TODO: リリース時にはCurrentDirectoryの記述を変更する
+        //public static string CurrentDirectory { get { return Environment.GetEnvironmentVariable("SERVER_STERTER_TEST"); } }
+        public static string CurrentDirectory { get { return AppDomain.CurrentDomain.BaseDirectory; } }
         public static string DataPath { get { return Path.Combine(CurrentDirectory, "World_Data"); } }
 
         public static UserSettings userSet = new UserSettings();

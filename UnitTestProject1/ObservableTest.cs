@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System;
 
@@ -11,7 +12,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void ObservableTest1()
         {
-            var a = new ObservableCollection<int>();
+            var a = new List<int>();
             a.Add(1);
             a.Add(2);
             a.Add(3);
