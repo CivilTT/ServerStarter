@@ -23,6 +23,11 @@ namespace Server_GUI2
             Datapacks = new ObservableCollection<ADatapack>(datapackNames.Select(x => new ExistDatapack(x)));
         }
 
+        public List<string> ExportList()
+        {
+            return Datapacks.Select(x => x.Name).ToList();
+        }
+
         /// <summary>
         /// データパックを追加する
         /// (ディレクトリ操作は行わない)
@@ -50,6 +55,11 @@ namespace Server_GUI2
         {
             foreach ( var operation in operations)
                 operation(path);
+        }
+
+        public List<string> GetNames()
+        {
+            return Datapacks.Select(x => x.Name).ToList();
         }
     }
 

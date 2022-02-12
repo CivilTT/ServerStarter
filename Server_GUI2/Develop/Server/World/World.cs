@@ -1,279 +1,402 @@
-﻿using System;
+﻿using log4net;
+using System;
+using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Server_GUI2.Develop.Server;
+using System.Reflection;
+using System.Windows;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using MW = ModernWpf;
 
 namespace Server_GUI2.Develop.Server.World
 {
-    public abstract class World
+    public class WorldException: Exception
     {
-        public DatapackCollection Datapacks { get; protected set; }
-        // TODO: pluginの読み込み
-        //public ObservableCollection<Datapack> Pligins { get; }
-        public ServerProperty Property { get; protected set; }
-        public ServerType? Type { get; protected set; }
-        public string Name { get; protected set; }
-        public Version Version { get; protected set; }
+        public WorldException(string message) : base(message) { }
+    }
+
+    public interface IWorld: IWorldBase
+    {
+        RemoteWorld RemoteWorld { get; }
+        string DisplayName { get; }
+
+        bool CanCahngeRemote { get; }
+        CustomMap CustomMap { get; set; }
+
+        bool HasCustomMap { get; }
+
+        bool HasRemote { get; }
+
+        void Unlink();
+
+        void Link(RemoteWorld remote);
+
+        void WrapRun(Version version, Action<ServerProperty> runFunc);
     }
 
     /// <summary>
-    /// ワールドデータをあらわすクラス
+    /// GUIのメインウィンドウの【New World】
     /// </summary>
-    public class LocalWorld : World
+    public class NewWorld : IWorld
     {
-        public string Path { get; }
+        protected readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// ワールドの設定をディレクトリに反映させる
-        /// </summary>
-        public LocalWorld(
-            string path,
-            Version version,
-            ServerType? type,
-            ServerProperty property,
-            DatapackCollection datapacks
-            )
+        public bool HasRemote => RemoteWorld != null;
+
+        public RemoteWorld RemoteWorld { get; private set; }
+
+        public string DisplayName => "【new World】";
+
+        public bool CanCahngeRemote { get; } = true;
+
+        public CustomMap CustomMap { get; set; }
+
+        public bool HasCustomMap => CustomMap != null;
+
+        public DatapackCollection Datapacks { get; } = new DatapackCollection(new List<string>());
+
+        public ServerProperty Property { get; } = new ServerProperty();
+
+        public ServerType? Type { get; } = null;
+
+        private string _name = "input_name";
+        public string Name
         {
-            Path = path;
-            Version = version;
-            Name = System.IO.Path.GetDirectoryName(path);
-            // フォルダ存在しない場合は新規作成
-            if (!System.IO.Directory.Exists(Path))
-                CreateWorldData();
-
-            var currentType = GetServerType();
-            //if (currentType == null) : 変換不要
-            // 目的サーバーがない場合はワールドを初期化
-            if (type == null)
-                DeleteWorldData();
-            if (currentType == ServerType.Vanilla && type == ServerType.Spigot)
-                VtoS();
-            else if (currentType == ServerType.Spigot && type == ServerType.Vanilla)
-                StoV();
-
-            Type = type;
-            Property = property;
-            SaveProperties();
-            Datapacks = datapacks;
-        }
-
-        public LocalWorld ConvertVersion(Version version)
-        {
-            ServerType type;
-            if (version is VanillaVersion)
-                type = ServerType.Vanilla;
-            else if (version is SpigotVersion)
-                type = ServerType.Spigot;
-            else
-                throw new ArgumentException($"\"{version.GetType().ToString()}\" is unknowen version.");
-            return new LocalWorld(Path, version, type, Property, Datapacks);
-        }
-
-        public LocalWorld ToSpigot()
-        {
-            return new LocalWorld(Path, Version, ServerType.Vanilla, Property, Datapacks);
-        }
-
-        /// <summary>
-        /// ワールドデータを指定パスに移動
-        /// </summary>
-        public LocalWorld Move(string path,bool addSuffixWhenNameCollided = false)
-        {
-            var newPath = path;
-            // 名前が衝突したら filename(x) と名前を変更
-            if (addSuffixWhenNameCollided)
+            get => _name;
+            set 
             {
-                var suffixNum = 1;
-                while (System.IO.Directory.Exists(newPath))
-                {
-                    suffixNum += 1;
-                    newPath = $"{path}({suffixNum})";
-                }
+                if (IsUseableName(value))
+                    _name = value;
+                else
+                    throw new WorldException($"\"{value}\" is invalid world name.");
             }
-            System.IO.Directory.Move(Path, newPath);
-            return new LocalWorld(newPath, Version, Type, Property, Datapacks);
+        }
+
+        public WorldState ExportWorldState()
+        {
+            throw new WorldException("\"new world\" must not export world state");
+        }
+
+        public bool IsUseableName(string name)
+        {
+            return Regex.IsMatch(name, @"^[0-9a-zA-Z_-]$");
+        }
+
+        public Version Version { get; } = null;
+
+        /// <summary>
+        /// リンクされていないローカルワールド
+        /// </summary>
+        public NewWorld()
+        {
+            RemoteWorld = null;
+        }
+
+        // リンクを解除
+        public void Unlink()
+        {
+            if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
+            if (!HasRemote) throw new WorldException($"World \"{DisplayName}\" is unlinked");
+
+            RemoteWorld = null;
+        }
+
+        // リモートをリンク
+        public void Link(RemoteWorld remote)
+        {
+            if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
+            if (HasRemote) throw new WorldException($"World \"{DisplayName}\" is unlinked");
+
+            RemoteWorld = remote;
+        }
+
+        public void WrapRun(Version version, Action<ServerProperty> runFunc)
+        {
+            // ローカルワールドを生成
+            var localWorld = new LocalWorld( version.Path.GetWorldDirectory(Name), version );
+
+            World world;
+            if (HasRemote)
+                world = new World(localWorld,RemoteWorld);
+            else
+                world = new World(localWorld);
+
+            WorldCollection.Instance.Add(world);
+
+            // 実行
+            world.WrapRun(version,runFunc);
+        }
+    }
+
+    /// <summary>
+    /// ローカルとリモートの接続を管理する
+    /// GUIのメインウィンドウのWorldにはこれが入る
+    /// </summary>
+    public class World : IWorld
+    {
+        protected readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public event EventHandler DeleteEvent;
+
+        // remoteを削除する際のイベントハンドラ
+        private EventHandler deleteRemoteEvent;
+
+        public readonly LocalWorld LocalWorld;
+        public RemoteWorld RemoteWorld { get; private set; }
+
+        private IWorldBase world
+        {
+            get
+            {
+                if (HasRemote)
+                    return RemoteWorld;
+                else
+                    return LocalWorld;
+            }
         }
 
         /// <summary>
-        /// ワールドの設定をディレクトリから取得する
+        /// サーバーが立っている間true
         /// </summary>
-        public LocalWorld(string path)
-        {
-            Path = path;
-            Name = System.IO.Path.GetDirectoryName(path);
-            // フォルダ存在しない場合は新規作成
-            if (!System.IO.Directory.Exists(Path))
-                CreateWorldData();
+        private bool Using;
 
-            Property = LoadProperties();
-            Type = GetServerType();
-            Datapacks = LoadDatapacks();
+        public bool HasRemote => RemoteWorld != null;
+
+        //リンク先が変更可能か
+        public bool CanCahngeRemote { get; private set; }
+
+        public CustomMap CustomMap { get; set; }
+
+        public bool HasCustomMap => CustomMap != null;
+
+        public DatapackCollection Datapacks => world.Datapacks;
+
+        public ServerProperty Property => world.Property;
+
+        public ServerType? Type => world.Type;
+
+        // ワールドの表示名
+        public string DisplayName => HasRemote ?
+            $"{world.Version.Name}/{world.Name}*" :
+            $"{world.Version.Name}/{world.Name}";
+
+        public string Name => world.Name;
+
+        public Version Version => world.Version;
+
+        /// <summary>
+        /// リンクされていないローカルワールド
+        /// </summary>
+        public World(LocalWorld local)
+        {
+            deleteRemoteEvent = new EventHandler((_, __) => UnlinkForce());
+            LocalWorld = local;
+            RemoteWorld = null;
+            CanCahngeRemote = true;
         }
 
         /// <summary>
-        /// 指定パスにワールドデータを新規作成する
+        /// リンクされたローカルワールド
         /// </summary>
-        private void CreateWorldData()
+        public World(LocalWorld local, RemoteWorld remote)
         {
-            System.IO.Directory.CreateDirectory(Path);
+            deleteRemoteEvent = new EventHandler((_, __) => UnlinkForce());
+            LocalWorld = local;
+            RemoteWorld = remote;
+            RemoteWorld.DeleteEvent += deleteRemoteEvent;
+            CanCahngeRemote = false;
+        }
+
+        // リンクを解除
+        public void Unlink()
+        {
+            if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
+            UnlinkForce();
+        }
+
+        private void UnlinkForce()
+        {
+            if (!HasRemote) throw new WorldException($"World \"{DisplayName}\" is unlinked");
+            RemoteWorld.DeleteEvent -= deleteRemoteEvent;
+            CanCahngeRemote = true;
+            RemoteWorld = null;
+        }
+
+        // リモートをリンク
+        public void Link(RemoteWorld remote)
+        {
+            if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
+            if (HasRemote) throw new WorldException($"World \"{DisplayName}\" is unlinked");
+
+            RemoteWorld.DeleteEvent += deleteRemoteEvent;
+            RemoteWorld = remote;
         }
 
         /// <summary>
-        /// ワールドデータを削除<br/>
-        /// /world /world_nether /world_end を削除
+        /// ワールドを削除(ローカル)
         /// </summary>
-        private void DeleteWorldData()
+        public void Delete()
         {
-            var worldPath = System.IO.Path.Combine(Path, "world");
-            if (System.IO.Directory.Exists(worldPath)) System.IO.Directory.Delete(worldPath);
-            var netherPath = System.IO.Path.Combine(Path, "world_nether");
-            if (System.IO.Directory.Exists(netherPath)) System.IO.Directory.Delete(netherPath);
-            var endPath = System.IO.Path.Combine(Path, "world_end");
-            if (System.IO.Directory.Exists(endPath)) System.IO.Directory.Delete(endPath);
+            if (DeleteEvent != null) DeleteEvent(this, null);
+            LocalWorld.Delete();
+        }
+
+        public WorldState ExportWorldState()
+        {
+            return new WorldState() ;
         }
 
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public void WrapRun(Action<ServerProperty> runFunc)
+        public void WrapRun(Version version, Action<ServerProperty> runFunc)
         {
-            // 起動
-            runFunc(Property);
+            // リモートがない場合
+            if (!HasRemote)
+                WrapRun_Unlinked(version, runFunc);
+            // 起動前からリンクされていたリモートがある場合
+            else if (!CanCahngeRemote)
+                WrapRun_Linked(version, runFunc);
+            // 新しくローカルをリンクする場合
+            else
+                WrapRun_NewLink(version, runFunc);
         }
 
         /// <summary>
-        // ServerTypeを判定する
+        /// remotes.jsonを保存する際に使う
         /// </summary>
-        private ServerType? GetServerType()
+        public RemoteLinkJson ExportLinkJson()
         {
-            var worldPath = System.IO.Path.Combine(Path,"world");
-            if (System.IO.Directory.Exists(worldPath))
+            return new RemoteLinkJson(RemoteWorld, LocalWorld, Using);
+        }
+
+        /// <summary>
+        /// 起動関数を引数に取って起動
+        /// </summary>
+        public void WrapRun_Unlinked(Version version, Action<ServerProperty> runFunc)
+        {
+            // カスタムマップの導入＋バージョン変更
+            TryImportCustomMapAndChangeVersion(LocalWorld, version);
+            // データパックの導入
+            Datapacks.Evaluate(LocalWorld.Path.FullName);
+            // 実行
+            LocalWorld.WrapRun(runFunc);
+        }
+
+        /// <summary>
+        /// 起動関数を引数に取って起動
+        /// 新規リモートワールドにPush
+        /// </summary>
+        private void WrapRun_NewLink(Version version, Action<ServerProperty> runFunc)
+        {
+            // ワールドのリンク先を固定する
+            CanCahngeRemote = false;
+
+            // 起動中フラグを立てる
+            Using = true;
+
+            // リモートワールドを複数人が同時に開かないようにロック
+            RemoteWorld.Using = true;
+            RemoteWorld.UpdateWorldState();
+
+            // カスタムマップの導入＋バージョン変更
+            TryImportCustomMapAndChangeVersion(LocalWorld, version);
+
+            // データパックの導入
+            Datapacks.Evaluate(LocalWorld.Path.FullName);
+
+            // 実行
+            LocalWorld.WrapRun(runFunc);
+
+            // Push
+            RemoteWorld.FromLocal(LocalWorld);
+
+            // リモートのワールドデータを更新し、ロック解除
+            RemoteWorld.Using = false;
+            RemoteWorld.UpdateWorldState();
+
+            // 起動中フラグを回収
+            // TODO: Pushが成功しなかった場合はフラグを立てたままにする
+            Using = false;
+        }
+
+        /// <summary>
+        /// 既存リモートワールドからPull
+        /// 起動関数を引数に取って起動
+        /// 既存リモートワールドにPush
+        /// </summary>
+        private void WrapRun_Linked(Version version, Action<ServerProperty> runFunc)
+        {
+            // 起動中フラグを立てる
+            Using = true;
+
+            // リモートワールドを複数人が同時に開かないようにロック
+            RemoteWorld.Using = true;
+            RemoteWorld.UpdateWorldState();
+
+            // Pull
+            RemoteWorld.ToLocal(LocalWorld);
+
+            // カスタムマップの導入＋バージョン変更
+            TryImportCustomMapAndChangeVersion(LocalWorld, version);
+
+            // データパックの導入
+            Datapacks.Evaluate(LocalWorld.Path.FullName);
+
+            // 実行
+            LocalWorld.WrapRun(runFunc);
+
+            // Push
+            RemoteWorld.FromLocal(LocalWorld);
+
+            // リモートのワールドデータを更新し、ロック解除
+            RemoteWorld.Using = false;
+            RemoteWorld.UpdateWorldState();
+
+            // 起動中フラグを回収
+            // TODO: Pushが成功しなかった場合はフラグを立てたままにする
+            Using = false;
+
+            // LinkJsonを更新
+            WorldCollection.Instance.SaveLinkJson();
+        }
+
+        /// <summary>
+        /// 必要に応じてCutomMapを導入し、必要に応じてバージョンを変更する
+        /// </summary>
+        private void TryImportCustomMapAndChangeVersion(LocalWorld local, Version version)
+        {
+            if (HasCustomMap)
             {
-                var netherPath = System.IO.Path.Combine(Path, "world_nether");
-                if (System.IO.Directory.Exists(netherPath))
-                    return ServerType.Spigot;
-                else 
-                    return ServerType.Vanilla;
+                CustomMap.Import(local.Path.World.FullName);
+                // LocalWorldの中身に変更を反映(VtoSコンバート等も含む)
+                local.ReConstruct(local.Path, version, version.Type, local.Property, local.Datapacks);
             }
-            else
-                return null;
-        }
 
-        /// <summary>
-        // server.propertiesを読み込む
-        /// </summary>
-        private ServerProperty LoadProperties()
-        {
-            var propertyPath = System.IO.Path.Combine(Path, "server.properties");
-            if (File.Exists(propertyPath))
-                return new ServerProperty( File.ReadAllText(propertyPath) );
-            else
-                return new ServerProperty();
-        }
-
-        /// <summary>
-        // server.propertiesを保存する
-        /// </summary>
-        private void SaveProperties()
-        {
-            var propertyPath = System.IO.Path.Combine(Path, "server.properties");
-            File.WriteAllText(propertyPath,Property.ExportProperty());
-        }
-
-        private DatapackCollection LoadDatapacks()
-        {
-            var datapackPath = System.IO.Path.Combine(Path, "datapack");
-            if (System.IO.Directory.Exists(datapackPath))
+            //versionのダウングレードを確認して警告表示
+            if (version < Version)
             {
-                var collection = new List<string>();
-                var datapacks = System.IO.Directory.GetDirectories(datapackPath);
-                foreach (var datapack in datapacks)
+                logger.Warn($"The World-Data will be recreated by {version} from {Version}");
+                var result = MW.MessageBox.Show(
+                    $"ワールドデータを{Version}から{version}へバージョンダウンしようとしています。\n" +
+                    $"データが破損する可能性が極めて高い操作ですが、危険性を理解したうえで実行しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
                 {
-                    var hasPackMcmeta = File.Exists(System.IO.Path.Combine(datapack, "pack.mcmeta"));
-                    var hasData = System.IO.Directory.Exists(System.IO.Path.Combine(datapack, "Data"));
-                    if (hasPackMcmeta && hasData)
-                    {
-                        var name = System.IO.Path.GetFileName(datapack);
-                        collection.Add(name);
-                    }
+                    throw new DowngradeException("User reject downgrading");
                 }
-                return new DatapackCollection(collection);
             }
-            else
-                return new DatapackCollection(new List<string>());
-        }
 
-        //TODO: VtoS
-        private void VtoS()
-        {
-
-        }
-        //TODO: StoV
-        private void StoV()
-        {
-
-        }
-    }
-
-    /// <summary>
-    /// リモートにあるワールドの情報
-    /// </summary>
-    public abstract class RemoteWorld: World
-    {
-        public RemoteWorld(
-            string name,
-            Version version,
-            ServerType? type,
-            ServerProperty property,
-            DatapackCollection datapacks
-            )
-        {
-            Version = version;
-            Name = name;
-            Type = type;
-            Property = property;
-            Datapacks = datapacks;
-        }
-
-        /// <summary>
-        /// ワールドデータを指定パスにPullする
-        /// </summary>
-        public abstract LocalWorld ToLocal(string Path);
-
-        /// <summary>
-        /// ローカルワールドデータをPushする
-        /// </summary>
-        public abstract void FromLocal(LocalWorld local,bool firstPush);
-    }
-
-    public class GitRemoteWorld : RemoteWorld
-    {
-        public GitRemoteWorld(
-            string name,
-            Version version,
-            ServerType? type,
-            ServerProperty property,
-            DatapackCollection datapacks
-            ): base(name, version, type, property, datapacks)
-        {}
-
-        /// <summary>
-        /// TODO: ワールドデータを指定パスにPull/Cloneする
-        /// </summary>
-        public override LocalWorld ToLocal(string Path)
-        {
-            return new LocalWorld(Path);
-        }
-
-        /// <summary>
-        /// TODO: ワールドデータを指定パスにPushする
-        /// </summary>
-        public override void FromLocal(LocalWorld local, bool firstPush)
-        {
+            // version変更
+            if (local.Path.Parent != version.Path)
+            {
+                // versionのフォルダに移動するとともにVtoS変換
+                Console.WriteLine($"local.path: {local.Path}");
+                Console.WriteLine($"local.path: {version}");
+                var newPath = version.Path.GetWorldDirectory(local.Path.Name);
+                local.Move(newPath, version, version.Type, local.Property, local.Datapacks, addSuffixWhenNameCollided: true);
+            }
         }
     }
 }

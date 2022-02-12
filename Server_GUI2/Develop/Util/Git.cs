@@ -30,6 +30,7 @@ namespace Server_GUI2.Develop.Util
 
             if (code != 0)
             {
+                Console.WriteLine(output);
                 throw exception;
             }
             else
@@ -51,6 +52,7 @@ namespace Server_GUI2.Develop.Util
                     StandardOutputEncoding = Encoding.UTF8
                 }
             };
+            Console.WriteLine("git " + (directory == null ? arguments : $"-C \"{directory}\" {arguments}"));
             process.Start();
             process.WaitForExit();
             string output = process.StandardOutput.ReadToEnd();
@@ -224,14 +226,24 @@ namespace Server_GUI2.Develop.Util
             return new GitNamedRemote(this,remote,name);
         }
 
-        public void Init(string branchName)
+        public GitLocalBranch Init(string branchName)
         {
             GitCommand.ExecuteThrow($"init", new GitException($"failed to init {Path}"), Path);
             GitCommand.ExecuteThrow($"branch -m \"{branchName}\"", new GitException($"failed to change branch name to {branchName}"), Path);
+            return GetBranch(branchName);
         }
         public void Fetch(GitRemoteBranch remoteBranch)
         {
             GitCommand.ExecuteThrow($"fetch \"{remoteBranch.Remote.Expression}\" \"{remoteBranch.Name}\"", new GitException($"failed to fetch {remoteBranch.Remote.Expression}/{remoteBranch.Name} to {Path}"), Path);
+        }
+        public void Merge()
+        {
+            GitCommand.ExecuteThrow($"merge", new GitException($"failed to merge path:{Path}"), Path);
+        }
+
+        public void Push()
+        {
+            GitCommand.ExecuteThrow($"push", new GitException($"failed to push path:{Path}"), Path);
         }
 
         public List<GitNamedRemote> GetRemotes()
