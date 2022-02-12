@@ -279,6 +279,8 @@ namespace Server_GUI2.Develop.Server.World
         {
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
+            // データパックの導入
+            Datapacks.Evaluate(LocalWorld.Path.FullName);
             // 実行
             LocalWorld.WrapRun(runFunc);
         }
@@ -301,6 +303,9 @@ namespace Server_GUI2.Develop.Server.World
 
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
+
+            // データパックの導入
+            Datapacks.Evaluate(LocalWorld.Path.FullName);
 
             // 実行
             LocalWorld.WrapRun(runFunc);
@@ -337,6 +342,8 @@ namespace Server_GUI2.Develop.Server.World
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
 
+            // データパックの導入
+            Datapacks.Evaluate(LocalWorld.Path.FullName);
 
             // 実行
             LocalWorld.WrapRun(runFunc);

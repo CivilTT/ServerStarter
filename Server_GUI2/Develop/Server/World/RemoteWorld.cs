@@ -29,10 +29,11 @@ namespace Server_GUI2.Develop.Server.World
         public ServerType? Type  { get; private set; }
 
         private string _name;
+
         /// <summary>
         /// ワールドの名称
         /// </summary>
-        public string Name  {
+        public string Name {
             get => _name;
             set
             {
