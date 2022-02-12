@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
@@ -92,8 +93,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public override bool IsUsableName(string name)
         {
-            // TODO: 使用不可文字が入っていてもfalseを返す
-            return ! usedNames.Contains(name);
+            return Regex.IsMatch(name, "^[a-zA-Z0-9_-]$") && !usedNames.Contains(name);
         }
 
         public static List<GitStorage> GetStorages()
