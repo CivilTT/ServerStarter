@@ -121,20 +121,27 @@ namespace Server_GUI2.Develop.Server.World
             // TODO: worldstate.json を開きリモートワールド情報からWorldインスタンスを生成し返却
             var jsonPath = Path.Combine(LocalBranch.Local.Path, "worldstate.json");
             var jsonContent = File.ReadAllText(jsonPath);
-            var worldState = JsonConvert.DeserializeObject<Dictionary<string, WorldState>>(jsonContent, new JsonWorldStateConverter());
+            var worldState = JsonConvert.DeserializeObject<Dictionary<string, WorldState>>(jsonContent);
             return worldState;
         }
         public void SaveGitWorldstate(Dictionary<string, WorldState> worldstates)
         {
             LocalBranch.Checkout();
-            var jsonContent = JsonConvert.SerializeObject(worldstates, new JsonWorldStateConverter());
+
+            // TODO: デフォルト値を無視しつつConverterを適用
+            var jsonContent = JsonConvert.SerializeObject(worldstates, Formatting.Indented, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+
             var jsonPath = Path.Combine(LocalBranch.Local.Path, "worldstate.json");
             File.WriteAllText(jsonPath, jsonContent);
+            LocalBranch.Checkout();
             LocalBranch.Local.AddAll();
             LocalBranch.Local.Commit("changed worldstate.json");
-            LocalBranch.Push();
+            LocalBranch.Push(Remote.CreateBranch("#state"));
         }
 
+        /// <summary>
+        /// リモートリポジトリの情報をローカルから削除
+        /// </summary>
         public void RemoveGitRepository()
         {
             // 以下の操作は cd/git_worldstate 内で行う
@@ -144,7 +151,6 @@ namespace Server_GUI2.Develop.Server.World
             LocalBranch.Local.GetBranch("#main").Checkout();
             // git branch -d {account}.{repository}
             LocalBranch.Remove();
-            // TODO: WorldFactory.Instance.Wordlsから該当リポジトリに紐づいたワールドをワールドデータとともに削除
         }
     }
 }
