@@ -11,6 +11,7 @@
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="Infomation" Height="550" Width="600" WindowStartupLocation="CenterScreen">
+    
     <Window.Resources>
         <!--//Source//-->
         <Style TargetType="Button" x:Key="ButtonSource" BasedOn="{StaticResource {x:Type Button}}">
@@ -45,6 +46,7 @@
         </Style>
         <Style TargetType="TextBox" x:Key="BoxSource" BasedOn="{StaticResource {x:Type TextBox}}">
             <Setter Property="Height" Value="33"/>
+            <Setter Property="Padding" Value="10 5 0 0"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="BorderBrush" Value="#EBEBEB"/>
             <Setter Property="Background" Value="#EBEBEB"/>
@@ -157,6 +159,9 @@
         <Style TargetType="TextBox" x:Key="SWBox" BasedOn="{StaticResource BoxSource}">
             <Setter Property="Width" Value="185"/>
             <Setter Property="Margin" Value="20 5"/>
+            <!--//Delete Buttonで一括削除するとAdd Accountの利用可否が更新されないため、表示していない//-->
+            <!--//MainWindowと同様にTextChangedを使えば解決するが、そうするとMVVMの思想から外れる//-->
+            <Setter Property="ui:TextBoxHelper.IsDeleteButtonVisible" Value="False"/>
         </Style>
         
         <!--//Server//-->
@@ -265,51 +270,61 @@
         <Line X1="3" X2="3" Y1="10" Y2="430" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
 
         <!--//ShareWorldContents//-->
-        <ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">
+        <!--<ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">-->
+        <ScrollViewer Visibility="Hidden" Style="{StaticResource ScrollSource}">
             <Grid Style="{StaticResource SettingContent}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="280"/>
+                    <RowDefinition Height="240"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Add Remote Setting" Style="{StaticResource TitleBlock}"/>
                 <StackPanel Orientation="Vertical" Margin="30 40 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Account Name" Style="{StaticResource SWBlock}"/>
-                        <TextBox Text="{Binding AccountName}" Style="{StaticResource SWBox}"/>
+                        <TextBox Text="{Binding AccountName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Account E-mail" Style="{StaticResource SWBlock}"/>
-                        <TextBox Text="{Binding AccountEmail}" Style="{StaticResource SWBox}"/>
+                        <TextBox Text="{Binding AccountEmail.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Repository" Style="{StaticResource SWBlock}"/>
-                        <TextBox Text="{Binding RepoName}" Style="{StaticResource SWBox}"/>
+                        <TextBox Text="{Binding RepoName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <!--<StackPanel Orientation="Horizontal">
                         <TextBlock Text="Type" Style="{StaticResource SWBlock}"/>
-                        <ui:ToggleSwitch IsOn="{Binding IsPrivate}" OnContent="Private" OffContent="Public" Margin="20 5" FontSize="20"/>
-                    </StackPanel>
-                    <Button Content="Add Setting" HorizontalAlignment="Right" Margin="20 5" Command="{Binding AddGitAccountCommand}" Style="{StaticResource RunStyle}"/>
+                        <ui:ToggleSwitch IsOn="{Binding IsPrivate.Value}" OnContent="Private" OffContent="Public" Margin="20 5" FontSize="20"/>
+                    </StackPanel>-->
+                    <Button Content="Add Account" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_SW}" Command="{Binding AddListCommand}" CommandParameter="Git" Style="{StaticResource RunStyle}"/>
                 </StackPanel>
                 <TextBlock Text="Remote List" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
-                <Button Width="33" Height="33" FontSize="18" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="world" Grid.Row="1" Margin="35 0" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <Button Width="33" Height="33" FontSize="18" Padding="3" Command="{Binding DeleteListCommand}" CommandParameter="Remote" Grid.Row="1" Margin="35 0" VerticalAlignment="Top" HorizontalAlignment="Right">
                     <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                 </Button>
                 <StackPanel Orientation="Vertical" Grid.Row="1" Margin="20 40 20 10">
-                    <DataGrid Grid.Row="1" ItemsSource="{Binding OpPlayersList}"
-                                CanUserAddRows="False"
-                                CanUserDeleteRows="False"
-                                CanUserResizeRows="False"
-                                CanUserResizeColumns="False"
-                                RowHeaderWidth="0"
-                                VirtualizingPanel.ScrollUnit="Pixel"
-                                HorizontalAlignment="Left">
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding RemoteList}"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              CanUserResizeRows="False"
+                              CanUserResizeColumns="False"
+                              RowHeaderWidth="0"
+                              AutoGenerateColumns="False"
+                              VirtualizingPanel.ScrollUnit="Pixel"
+                              HorizontalAlignment="Left"
+                              SelectedItem="{Binding RLIndex.Value}"
+                              MaxHeight="250">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Account Name" IsReadOnly="True" Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="E-mail" IsReadOnly="True" Binding="{Binding UUID}"/>
-                            <DataGridTextColumn Header="Repository" IsReadOnly="True" Binding="{Binding UUID}"/>
-                            <DataGridTextColumn Header="Branch" IsReadOnly="True" Binding="{Binding UUID}"/>
+                            <DataGridTextColumn Header="Repository" IsReadOnly="True" Binding="{Binding Repository}"/>
+                            <DataGridTextColumn Header="World" IsReadOnly="True" Binding="{Binding Branch}"/>
+                            <DataGridTemplateColumn Header="Show">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                     <TextBlock Text="Links" Margin="0 10" Style="{StaticResource TitleBlock}"/>
@@ -357,7 +372,77 @@
         </ScrollViewer>
         
         <!--//Players//-->
-        <ScrollViewer Visibility="{Binding ShowPlayers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">
+        <!--<ScrollViewer Visibility="{Binding ShowPlayers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">-->
+        <Grid Margin="0 -10" Style="{StaticResource SettingContent}">
+            <TabControl>
+                <TabControl.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Transparent" Offset="0"/>
+                        <GradientStop Color="Gold" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabControl.Background>
+                
+                <!--//Player//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Player"/>
+                    </TabItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="180"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        
+                        <StackPanel Orientation="Vertical" Margin="0 10">
+                            <TextBlock Text="Add Player" Style="{StaticResource TitleBlock}"/>
+                            <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
+                                <TextBlock Text="New Player Name" Style="{StaticResource PlayerBlock}"/>
+                                <TextBox Width="160" Text="{Binding PlayerName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerBox}"/>
+                            </StackPanel>
+                            <Button Content="Add" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" IsEnabled="{Binding CanAddition_Pl}" Command="{Binding AddListCommand}" CommandParameter="Player" Style="{StaticResource RunStyle}"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Player List" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                        <Button Width="33" Height="33" FontSize="18" Padding="3" Grid.Row="1" Command="{Binding DeleteListCommand}" CommandParameter="Player" Margin="20 0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                        </Button>
+                        <DataGrid ItemsSource="{Binding PlayerList}"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  CanUserResizeRows="False"
+                                  CanUserResizeColumns="False"
+                                  RowHeaderWidth="0"
+                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                  AutoGenerateColumns="False"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Top"
+                                  Grid.Row="1"
+                                  MaxHeight="170"
+                                  SelectedItem="{Binding PLIndex.Value}"
+                                  Margin="20 50 0 0">
+                            <DataGrid.Columns>
+                                <!--//Typeは Player or Group を表示する//-->
+                                <!--<DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>-->
+                                <DataGridTextColumn Header="Player Name" IsReadOnly="True" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="UUID" IsReadOnly="True" Binding="{Binding UUID}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Orientation="Vertical" Grid.Row="1">
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                
+                <!--//Group//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Group"/>
+                    </TabItem.Header>
+                </TabItem>
+            </TabControl>
+        </Grid>
+        
+        <ScrollViewer Visibility="Hidden" Style="{StaticResource ScrollSource}">
             <Grid Style="{StaticResource SettingContent}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="140"/>
@@ -365,12 +450,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
             
-                <TextBlock Text="Add Player" Style="{StaticResource TitleBlock}"/>
-                <StackPanel Orientation="Horizontal" Margin="40 50 0 0">
-                    <TextBlock Text="New Player Name" Style="{StaticResource PlayerBlock}"/>
-                    <TextBox Width="160" Style="{StaticResource PlayerBox}"/>
-                </StackPanel>
-                <Button Content="Add" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20 10" Style="{StaticResource RunStyle}"/>
+                
 
                 <TextBlock Text="Create Players Group" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
                 <StackPanel Orientation="Vertical" Grid.Row="1" Margin="40 50 0 0">
@@ -385,7 +465,7 @@
                 </StackPanel>
                 <Button Content="Add" Width="100" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20 30" Style="{StaticResource RunStyle}"/>
 
-                <TextBlock Text="Registered List" Grid.Row="2" Style="{StaticResource TitleBlock}"/>
+                <TextBlock Text="Group List" Grid.Row="2" Style="{StaticResource TitleBlock}"/>
                 <Button Width="33" Height="33" FontSize="18" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="world" Grid.Row="2" Margin="20 0" HorizontalAlignment="Right" VerticalAlignment="Top">
                     <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
@@ -402,8 +482,8 @@
                               Margin="20 50 0 20">
                     <DataGrid.Columns>
                         <!--//Typeは Player or Group を表示する//-->
-                        <DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>
-                        <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding UUID}"/>
+                        <!--<DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>-->
+                        <DataGridTextColumn Header="Group Name" IsReadOnly="True" Binding="{Binding UUID}"/>
                         <DataGridTextColumn Header="Members" IsReadOnly="True" Binding="{Binding UUID}"/>
                     </DataGrid.Columns>
                 </DataGrid>
