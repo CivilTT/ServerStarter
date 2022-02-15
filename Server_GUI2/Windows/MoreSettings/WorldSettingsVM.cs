@@ -36,11 +36,11 @@ namespace Server_GUI2.Windows.MoreSettings
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowWhite"));
             }
         }
-        public bool ShowProp { get { return MenuIndex == 0; } }
-        public bool ShowSW { get { return MenuIndex == 1; } }
-        public bool ShowAdd { get { return MenuIndex == 2; } }
-        public bool ShowOp { get { return MenuIndex == 3; } }
-        public bool ShowWhite { get { return MenuIndex == 4; } }
+        public bool ShowProp => MenuIndex == 0;
+        public bool ShowSW => MenuIndex == 1;
+        public bool ShowAdd => MenuIndex == 2;
+        public bool ShowOp => MenuIndex == 3;
+        public bool ShowWhite => MenuIndex == 4;
 
 
         //Op
