@@ -41,15 +41,15 @@ namespace Server_GUI2.Develop.Util
 
         public static (int, string) Execute(string arguments, string directory)
         {
-            // TODO: directory引数で実行ディレクトリを変更
             var process = new Process()
             {
                 StartInfo = new ProcessStartInfo("git")
                 {
-                    Arguments = directory == null ? arguments : $"-C \"{directory}\" {arguments}",
+                    Arguments = arguments,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
-                    StandardOutputEncoding = Encoding.UTF8
+                    StandardOutputEncoding = Encoding.UTF8,
+                    WorkingDirectory = directory
                 }
             };
             Console.WriteLine("git " + (directory == null ? arguments : $"-C \"{directory}\" {arguments}"));

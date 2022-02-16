@@ -21,10 +21,13 @@ namespace Server_GUI2.Develop.Server.World
         public event EventHandler DeleteEvent;
         public bool Exist;
         public bool Using;
+        public bool Available;
 
         public DatapackCollection Datapacks  { get; private set; }
 
-        public ServerProperty Property  { get; private set; }
+        public ServerProperty Property { get; private set; }
+
+        public PluginCollection Plugins { get; private set; }
 
         public ServerType? Type  { get; private set; }
 
@@ -56,7 +59,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// WorldStateからRemotoworldを構成する
         /// </summary>
-        public RemoteWorld(string id, WorldState state, Storage storage)
+        public RemoteWorld(string id, WorldState state, Storage storage, bool available = false)
         {
             Exist = true;
             Storage = storage;
@@ -66,7 +69,9 @@ namespace Server_GUI2.Develop.Server.World
             Type = ServerTypeExt.FromStr(state.Type);
             Property = state.ServerProperty;
             Datapacks = new DatapackCollection(state.Datapacks);
+            Plugins = new PluginCollection(state.Plugins);
             Using = false;
+            Available = available;
         }
 
         public RemoteWorld(
@@ -77,7 +82,9 @@ namespace Server_GUI2.Develop.Server.World
             Version version,
             ServerType? type,
             ServerProperty property,
-            DatapackCollection datapacks
+            DatapackCollection datapacks,
+            PluginCollection plugins,
+            bool available = false
             )
         {
             Exist = exist;
@@ -88,7 +95,9 @@ namespace Server_GUI2.Develop.Server.World
             Type = type;
             Property = property;
             Datapacks = datapacks;
+            Plugins = plugins;
             Using = false;
+            Available = available;
         }
 
         /// <summary>
@@ -121,7 +130,7 @@ namespace Server_GUI2.Develop.Server.World
         public WorldState ExportWorldState()
         {
             if (!Exist) throw new WorldException("non-exist world must not export worldstate");
-            return new WorldState(Name,Type.ToString(),Version.Name,Using,Datapacks.ExportList(),Property);
+            return new WorldState(Name,Type.ToString(),Version.Name,Using,Datapacks.ExportList(),Plugins.ExportList(), Property);
         }
     }
 
@@ -144,8 +153,9 @@ namespace Server_GUI2.Develop.Server.World
             Version version,
             ServerType? type,
             ServerProperty property,
-            DatapackCollection datapacks
-            ):base( storage,id,name,exist,version,type,property,datapacks )
+            DatapackCollection datapacks,
+            PluginCollection plugins
+            ):base( storage,id,name,exist,version,type,property,datapacks, plugins)
         {
             this.remote = remote;
         }
@@ -192,7 +202,6 @@ namespace Server_GUI2.Develop.Server.World
 
         /// <summary>
         /// ワールドデータを指定パスにPushする
-        /// TODO: Git処理ラインの最適化
         /// </summary>
         public override void FromLocal(LocalWorld localWorld)
         {

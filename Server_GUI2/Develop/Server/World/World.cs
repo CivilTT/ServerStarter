@@ -19,10 +19,14 @@ namespace Server_GUI2.Develop.Server.World
 
     public interface IWorld: IWorldBase
     {
+        bool Available { get; }
+
         RemoteWorld RemoteWorld { get; }
+
         string DisplayName { get; }
 
         bool CanCahngeRemote { get; }
+
         CustomMap CustomMap { get; set; }
 
         bool HasCustomMap { get; }
@@ -41,6 +45,8 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     public class NewWorld : IWorld
     {
+        public bool Available => Version.Available && RemoteWorld.Available;
+
         protected readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public bool HasRemote => RemoteWorld != null;
@@ -57,11 +63,14 @@ namespace Server_GUI2.Develop.Server.World
 
         public DatapackCollection Datapacks { get; } = new DatapackCollection(new List<string>());
 
+        public PluginCollection Plugins { get; } = new PluginCollection(new List<string>());
+
         public ServerProperty Property { get; } = new ServerProperty();
 
         public ServerType? Type { get; } = null;
 
         private string _name = "input_name";
+
         public string Name
         {
             get => _name;
@@ -136,6 +145,8 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     public class World : IWorld
     {
+        public bool Available => Version.Available && RemoteWorld.Available;
+
         protected readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public event EventHandler DeleteEvent;
@@ -172,6 +183,7 @@ namespace Server_GUI2.Develop.Server.World
         public bool HasCustomMap => CustomMap != null;
 
         public DatapackCollection Datapacks => world.Datapacks;
+        public PluginCollection Plugins => world.Plugins;
 
         public ServerProperty Property => world.Property;
 
@@ -279,8 +291,13 @@ namespace Server_GUI2.Develop.Server.World
         {
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
+
             // データパックの導入
             Datapacks.Evaluate(LocalWorld.Path.FullName);
+
+            // プラグインの導入
+            Plugins.Evaluate(LocalWorld.Path.FullName);
+
             // 実行
             LocalWorld.WrapRun(runFunc);
         }
@@ -306,6 +323,9 @@ namespace Server_GUI2.Develop.Server.World
 
             // データパックの導入
             Datapacks.Evaluate(LocalWorld.Path.FullName);
+
+            // プラグインの導入
+            Plugins.Evaluate(LocalWorld.Path.FullName);
 
             // 実行
             LocalWorld.WrapRun(runFunc);
@@ -344,6 +364,9 @@ namespace Server_GUI2.Develop.Server.World
 
             // データパックの導入
             Datapacks.Evaluate(LocalWorld.Path.FullName);
+
+            // プラグインの導入
+            Plugins.Evaluate(LocalWorld.Path.FullName);
 
             // 実行
             LocalWorld.WrapRun(runFunc);

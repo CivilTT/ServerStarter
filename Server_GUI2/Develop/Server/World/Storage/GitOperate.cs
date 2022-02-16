@@ -116,23 +116,17 @@ namespace Server_GUI2.Develop.Server.World
             // cd/git_worldstate
             // git checkout {account}.{repository}
             LocalBranch.Checkout();
+
             // git pull {account}.{repository}
             LocalBranch.Pull();
+
             // TODO: worldstate.json を開きリモートワールド情報からWorldインスタンスを生成し返却
-            var jsonPath = Path.Combine(LocalBranch.Local.Path, "worldstate.json");
-            var jsonContent = File.ReadAllText(jsonPath);
-            var worldState = JsonConvert.DeserializeObject<Dictionary<string, WorldState>>(jsonContent);
-            return worldState;
+            return ServerGuiPath.Instance.GitState.WorldStateJson.ReadJson();
         }
         public void SaveGitWorldstate(Dictionary<string, WorldState> worldstates)
         {
-            LocalBranch.Checkout();
+            ServerGuiPath.Instance.GitState.WorldStateJson.WriteJson(worldstates,false,true);
 
-            // TODO: デフォルト値を無視しつつConverterを適用
-            var jsonContent = JsonConvert.SerializeObject(worldstates, Formatting.Indented, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-
-            var jsonPath = Path.Combine(LocalBranch.Local.Path, "worldstate.json");
-            File.WriteAllText(jsonPath, jsonContent);
             LocalBranch.Checkout();
             LocalBranch.Local.AddAll();
             LocalBranch.Local.Commit("changed worldstate.json");
