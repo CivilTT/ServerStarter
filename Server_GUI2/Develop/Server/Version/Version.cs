@@ -23,6 +23,8 @@ namespace Server_GUI2
 
         protected VersionFactory VerFactory = VersionFactory.Instance;
 
+        public bool Available;
+
         public virtual ServerType Type { get; }
 
         public string Name;
@@ -51,11 +53,12 @@ namespace Server_GUI2
             }
         }
 
-        protected Version(string name,VersionPath path)
+        protected Version(string name,VersionPath path, bool available)
         {
             Path = path;
             Name = name;
             Exists = Path.Exists;
+            Available = available;
         }
 
         /// <summary>
@@ -202,7 +205,8 @@ namespace Server_GUI2
         // server.jarのダウンロードurl
         private string DownloadURL;
 
-        public VanillaVersion(string name, string downloadURL, bool isRelease, bool hasSpigot ,bool isLatest = false): base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name))
+        public VanillaVersion(string name, string downloadURL, bool isRelease, bool hasSpigot ,bool isLatest = false, bool available = true):
+            base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name),available)
         {
             IsRelease = isRelease;
             HasSpigot = hasSpigot;
@@ -262,7 +266,7 @@ namespace Server_GUI2
         protected override string JarName { get { return $"spigot-{Name}.jar"; } }
         public override ServerType Type => ServerType.Spigot;
 
-        public SpigotVersion(string name) : base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name))
+        public SpigotVersion(string name, bool available) : base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name), available)
         {
             // Initialize
         }

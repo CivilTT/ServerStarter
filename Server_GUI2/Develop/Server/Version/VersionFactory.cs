@@ -1,26 +1,28 @@
 ﻿using AngleSharp.Html.Dom;
-using AngleSharp.Html.Parser;
 using log4net;
 using Server_GUI2.Develop.Util;
-using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net;
 using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
-using MW = ModernWpf;
 using Newtonsoft.Json;
+using Server_GUI2.Develop.Server;
 
 namespace Server_GUI2
 {
     public class VersionFactory
     {
         private static Dictionary<string, int> VersionIndex = new Dictionary<string, int>();
+
+        /// <summary>
+        /// Vanillaの新しいサーバーがダウンロード可能
+        /// </summary>
+        public bool VanillaImportable { get; private set; }
+
+        /// <summary>
+        /// Spigotの新しいサーバーがダウンロード可能
+        /// </summary>
+        public bool SpigotImportable { get; private set; }
+
         public static int GetIndex(string name)
         {
             return VersionIndex[name];
@@ -93,7 +95,11 @@ namespace Server_GUI2
                 bool hasSpigot = (spigotList?.Contains(id)) ?? false;
                 bool isRelease = type == "release";
                 bool isLatest = id == latestRelease || id == latestSnapShot;
-                var versionInstance = new VanillaVersion(id,downloadURL, isRelease, hasSpigot, isLatest);
+
+                // リモートにアクセス可能orすでに存在する
+                bool available = VanillaImportable || ServerGuiPath.Instance.WorldData.GetVersionDirectory(id).Exists;
+
+                var versionInstance = new VanillaVersion(id,downloadURL, isRelease, hasSpigot, isLatest, available);
                 versions.Add(versionInstance);
                 VersionMap[id] = versionInstance;
                 VersionIndex[id] = i;
@@ -114,31 +120,27 @@ namespace Server_GUI2
         }
 
         /// <summary>
-        /// version_manifest_v2.jsonを取得
+        /// version_manifest_v2.jsonを取得<br>
+        /// isOnlineはリンク先のversion_manifest_v2.jsonを取得できたときtrueになる
         /// </summary>
         // version_manifest_v2.jsonを保持し、インターネットから読み込めないときにはこれを利用する
         private VanillaVersonsJson GetVanillaVersionJson()
         {
             string url = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
+
             VanillaVersonsJson versions = ReadContents.ReadJson<VanillaVersonsJson>(url);
 
-            if (versions != null)
+            VanillaImportable = versions != null;
+
+            if (VanillaImportable)
             {
-                using (var sw = new StreamWriter($@"{Directory.GetCurrentDirectory()}\version_manifest_v2.json", false, Encoding.UTF8))
-                {
-                    sw.Write(JsonConvert.SerializeObject(versions));
-                }
+                // jsonをローカルに保存
+                ServerGuiPath.Instance.ManifestJson.WriteJson(versions);
             }
             else
             {
-                using (var reader = new StreamReader($@"{Directory.GetCurrentDirectory()}\version_manifest_v2.json"))
-                {
-                    // TODO: 保存されたversion_manifest_v2.jsonがないときServerStarterは起動できないこととする（そもそもインターネットに接続していない状態でサーバーを立てたいか？）
-                    string errorMessage =
-                       "Minecraftのバージョン一覧の取得に失敗しました。\n" +
-                       "新しいバージョンのサーバーの導入はできません";
-                    versions = ReadContents.ReadlocalJson<VanillaVersonsJson>(reader.ReadToEnd(), errorMessage);
-                }
+                // jsonをローカルから読み込み
+                versions = ServerGuiPath.Instance.ManifestJson.ReadJson();
             }
             return versions;
         }
@@ -152,35 +154,48 @@ namespace Server_GUI2
                 "Spigotのバージョン一覧の取得に失敗しました。\n" +
                 "新しいバージョンのサーバーの導入はできません";
             IHtmlDocument doc = ReadContents.ReadHtml(url, message);
-            if (doc == null)
+
+            SpigotImportable = doc != null;
+
+            var vers = new List<string>();
+
+            if (SpigotImportable)
             {
-                return new List<string>();
+                var table = doc.QuerySelectorAll("body > pre > a");
+                foreach (var htmlDatas in table)
+                {
+                    string verName = htmlDatas.InnerHtml;
+
+                    // 1.x.x--spigot
+                    verName = verName.Replace(".json", "") + "--spigot";
+
+                    vers.Add(verName);
+                    if (verName.Substring(0, 2) != "1.")
+                        continue;
+
+                    // 1.9.jsonが対応バージョン一覧の最後に記載されているため
+                    if (verName == "1.9")
+                        break;
+                }
+                // ローカルに保存
+                ServerGuiPath.Instance.SpigotVersionJson.WriteJson(vers);
+            }
+            else
+            {
+                // ローカルから読み込み
+                vers = ServerGuiPath.Instance.SpigotVersionJson.ReadJson();
             }
 
-            var table = doc.QuerySelectorAll("body > pre > a");
-            List<string> vers = new List<string>();
-
-            foreach (var htmlDatas in table)
+            foreach (var ver in vers)
             {
-                string verName = htmlDatas.InnerHtml;
-                if (verName.Substring(0, 2) != "1.")
-                    continue;
-
-                // 1.x.x--spigot
-                verName = verName.Replace(".json", "");
-
-                vers.Add(verName);
+                // バージョンが利用可能か
+                var available = SpigotImportable || ServerGuiPath.Instance.WorldData.GetVersionDirectory(ver).Exists;
 
                 // versionを生成してリストに追加
-                // TODO: SpigotVersionの引数downloadURLの削除
-                var versionInstance = new SpigotVersion(verName + "--spigot");
+                var versionInstance = new SpigotVersion(ver, available);
                 versions.Add(versionInstance);
 
-                VersionMap[verName + "--spigot"] = versionInstance;
-
-                // 1.9.jsonが対応バージョン一覧の最後に記載されているため
-                if (verName == "1.9")
-                    break;
+                VersionMap[ver] = versionInstance;
             }
 
             return vers;

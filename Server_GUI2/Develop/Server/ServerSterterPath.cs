@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using Server_GUI2.Develop.Server.World;
 
 namespace Server_GUI2.Develop.Server
 {
@@ -42,6 +45,17 @@ namespace Server_GUI2.Develop.Server
             Directory.MoveTo(destination.FullName);
         }
     }
+
+    public abstract class SubDirectoryPath<T> : DirectoryPath where T : DirectoryPath
+    {
+        public T Parent;
+        protected SubDirectoryPath(DirectoryInfo directory, T parent):base(directory)
+        {
+            Parent = parent;
+        }
+    }
+
+
     public abstract class FilePath
     {
         protected FilePath(FileInfo file)
@@ -52,15 +66,14 @@ namespace Server_GUI2.Develop.Server
         public bool Exists => File.Exists;
         public string Name => File.Name;
         public string FullName => File.FullName;
-
-        public string ReadAllText()
+        protected string _ReadAllText()
         {
             var stream = File.OpenRead();
             var result = new StreamReader(stream).ReadToEnd();
             stream.Close();
             return result;
         }
-        public void WriteAllText(string content)
+        protected void _WriteAllText(string content)
         {
             System.IO.File.WriteAllText(FullName,content);
         }
@@ -76,16 +89,53 @@ namespace Server_GUI2.Develop.Server
         }
     }
 
-    public class AnyFile : FilePath
+    public class TextFile<T> : FilePath where T : DirectoryPath
     {
-        public DirectoryPath Parent;
-        internal AnyFile(FileInfo file, DirectoryPath parent) : base(file)
+        public T Parent;
+        internal TextFile(FileInfo file, T parent) : base(file)
         {
             Parent = parent;
         }
         public void MoveTo(FileInfo destination)
         {
             _MoveTo(destination);
+        }
+
+        public string ReadAllText()
+        {
+            return _ReadAllText();
+        }
+
+        public void WriteAllText(string content)
+        {
+            _WriteAllText(content);
+        }
+    }
+
+    public class JsonFile<T,S> : FilePath where T : DirectoryPath
+    {
+        public T Parent;
+        internal JsonFile(FileInfo file, T parent) : base(file)
+        {
+            Parent = parent;
+        }
+        public void MoveTo(FileInfo destination)
+        {
+            _MoveTo(destination);
+        }
+
+        public S ReadJson()
+        {
+           return JsonConvert.DeserializeObject<S>(_ReadAllText());
+        }
+
+        public void WriteJson(S content, bool indented = false, bool ignoreDefault = false )
+        {
+            var format = indented ? Formatting.Indented : Formatting.None;
+            var str = ignoreDefault ?
+                JsonConvert.SerializeObject(content, format, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore }) :
+                JsonConvert.SerializeObject(content, format);
+            _WriteAllText(str);
         }
     }
 
@@ -97,53 +147,33 @@ namespace Server_GUI2.Develop.Server
         // TODO: 元のカレントディレクトリに戻す
         public static ServerGuiPath Instance = new ServerGuiPath(new DirectoryInfo(Environment.GetEnvironmentVariable("SERVER_STERTER_TEST")));
         public WorldDataPath WorldData;
-        public RemotesJsonPath RemotesJson;
         public GitStatePath GitState;
+        public JsonFile<ServerGuiPath, List<RemoteLinkJson>> RemotesJson;
+        public JsonFile<ServerGuiPath, VanillaVersonsJson> ManifestJson;
+        public JsonFile<ServerGuiPath, List<string>> SpigotVersionJson;
         private ServerGuiPath(DirectoryInfo directory) : base(directory)
         {
             WorldData = new WorldDataPath(SubDirectory("World_Data"),this);
-            RemotesJson = new RemotesJsonPath(SubFile("remotes.json"), this);
+            RemotesJson = new JsonFile<ServerGuiPath, List<RemoteLinkJson>>(SubFile("remotes.json"), this);
             GitState = new GitStatePath(SubDirectory("git_state"), this);
+            ManifestJson = new JsonFile<ServerGuiPath, VanillaVersonsJson>(SubFile("version_manifest_v2.json"), this);
+            SpigotVersionJson = new JsonFile<ServerGuiPath,List<string>>(SubFile("spigot_versions.json"), this);
         }
     }
 
-    public class RemotesJsonPath : FilePath
+    public class GitStatePath : SubDirectoryPath<ServerGuiPath>
     {
-        public ServerGuiPath Parent;
-        internal RemotesJsonPath(FileInfo file, ServerGuiPath parent) : base(file)
+        public JsonFile<GitStatePath, Dictionary<string, WorldState>> WorldStateJson;
+        internal GitStatePath(DirectoryInfo directory, ServerGuiPath parent) : base(directory,parent)
         {
-            Parent = parent;
+            WorldStateJson = new JsonFile<GitStatePath, Dictionary<string, WorldState>>(SubFile("worldstate.json"), this);
         }
     }
 
-    public class GitStatePath : DirectoryPath
+    public class WorldDataPath : SubDirectoryPath<ServerGuiPath>
     {
-        public ServerGuiPath Parent;
-        public WorldstateJsonPath WorldStateJson;
-        internal GitStatePath(DirectoryInfo directory, ServerGuiPath parent) : base(directory)
-        {
-            Parent = parent;
-            WorldStateJson = new WorldstateJsonPath(SubFile("worldstate.json"), this);
-        }
-    }
+        internal WorldDataPath(DirectoryInfo directory, ServerGuiPath parent) : base(directory,parent){ }
 
-    public class WorldstateJsonPath : FilePath
-    {
-        public GitStatePath Parent;
-        internal WorldstateJsonPath(FileInfo file, GitStatePath parent) : base(file)
-        {
-            Parent = parent;
-        }
-    }
-
-
-    public class WorldDataPath : DirectoryPath
-    {
-        public ServerGuiPath Parent;
-        internal WorldDataPath(DirectoryInfo directory, ServerGuiPath parent) : base(directory)
-        {
-            Parent = parent;
-        }
         public VersionPath[] GetVersionDirectories()
         {
             return Directory.GetDirectories().Select(x => new VersionPath(x, this)).ToArray();
@@ -153,14 +183,12 @@ namespace Server_GUI2.Develop.Server
             return new VersionPath(SubDirectory(name), this);
         }
     }
-    public class VersionPath : DirectoryPath
+    public class VersionPath : SubDirectoryPath<WorldDataPath>
     {
-        public WorldDataPath Parent;
         //TODO : Add eura.txt server.jar server.properties ...
         public VersionLogsPath Logs;
-        internal VersionPath(DirectoryInfo directory, WorldDataPath parent) : base(directory)
+        internal VersionPath(DirectoryInfo directory, WorldDataPath parent) : base(directory,parent)
         {
-            Parent = parent;
             Logs = new VersionLogsPath(SubDirectory("logs"), this);
         }
         public WorldPath[] GetWorldDirectories()
@@ -173,26 +201,21 @@ namespace Server_GUI2.Develop.Server
         }
     }
 
-    public class VersionLogsPath : DirectoryPath
+    public class VersionLogsPath : SubDirectoryPath<VersionPath>
     {
-        public VersionPath Parent;
-        internal VersionLogsPath(DirectoryInfo directory, VersionPath parent) : base(directory)
-        {
-            Parent = parent;
-        }
+        internal VersionLogsPath(DirectoryInfo directory, VersionPath parent) : base(directory,parent){ }
     }
 
-    public class WorldPath : DirectoryPath
+    public class WorldPath : SubDirectoryPath<VersionPath>
     {
-        public VersionPath Parent;
-        public ServerPropertiesPath ServerProperties;
+        public TextFile<WorldPath> ServerProperties;
         public WorldWorldPath World;
         public WorldNetherPath Nether;
         public WorldEndPath End;
-        internal WorldPath(DirectoryInfo directory, VersionPath parent) : base(directory)
+        internal WorldPath(DirectoryInfo directory, VersionPath parent) : base(directory,parent)
         {
             Parent = parent;
-            ServerProperties = new ServerPropertiesPath(SubFile("server.properties"), this);
+            ServerProperties = new TextFile<WorldPath>(SubFile("server.properties"), this);
             World = new WorldWorldPath(SubDirectory("world"), this);
             Nether = new WorldNetherPath(SubDirectory("world_nether"), this);
             End = new WorldEndPath(SubDirectory("world_end"), this);
@@ -204,29 +227,19 @@ namespace Server_GUI2.Develop.Server
         }
     }
 
-    public class ServerPropertiesPath : FilePath
+    public abstract class WorldSubPath : SubDirectoryPath<WorldPath>
     {
-        public WorldPath Parent;
-        internal ServerPropertiesPath(FileInfo file, WorldPath parent) : base(file)
+        public TextFile<WorldSubPath> LevelDat;
+        public TextFile<WorldSubPath> LevelDatOld;
+        public TextFile<WorldSubPath> SessionLock;
+        public TextFile<WorldSubPath> UidDat;
+        internal WorldSubPath(DirectoryInfo directory, WorldPath parent) : base(directory, parent)
         {
             Parent = parent;
-        }
-    }
-
-    public abstract class WorldSubPath : DirectoryPath
-    {
-        public AnyFile LevelDat;
-        public AnyFile LevelDatOld;
-        public AnyFile SessionLock;
-        public AnyFile UidDat;
-        public WorldPath Parent;
-        internal WorldSubPath(DirectoryInfo directory, WorldPath parent) : base(directory)
-        {
-            Parent = parent;
-            LevelDat = new AnyFile(SubFile("level.dat"), this);
-            LevelDatOld = new AnyFile(SubFile("level.dat_old"), this);
-            SessionLock = new AnyFile(SubFile("session.lock"), this);
-            UidDat = new AnyFile(SubFile("uid.dat"), this);
+            LevelDat = new TextFile<WorldSubPath>(SubFile("level.dat"), this);
+            LevelDatOld = new TextFile<WorldSubPath>(SubFile("level.dat_old"), this);
+            SessionLock = new TextFile<WorldSubPath>(SubFile("session.lock"), this);
+            UidDat = new TextFile<WorldSubPath>(SubFile("uid.dat"), this);
         }
     }
 
@@ -262,14 +275,9 @@ namespace Server_GUI2.Develop.Server
         }
     }
 
-    public class WorldDIMPath : DirectoryPath
+    public class WorldDIMPath : SubDirectoryPath<WorldSubPath>
     {
-        public WorldSubPath Parent;
-
-        internal WorldDIMPath(DirectoryInfo directory, WorldSubPath parent) : base(directory)
-        {
-            Parent = parent;
-        }
+        internal WorldDIMPath(DirectoryInfo directory, WorldSubPath parent) : base(directory, parent){ }
 
         public void MoveTo(WorldDIMPath destination)
         {
@@ -277,13 +285,9 @@ namespace Server_GUI2.Develop.Server
         }
     }
 
-    public class DatapacksPath : DirectoryPath
+    public class DatapacksPath : SubDirectoryPath<WorldWorldPath>
     {
-        public WorldWorldPath Parent;
-        internal DatapacksPath(DirectoryInfo directory, WorldWorldPath parent) : base(directory)
-        {
-            Parent = parent;
-        }
+        internal DatapacksPath(DirectoryInfo directory, WorldWorldPath parent) : base(directory, parent){ }
         public DatapackPath[] GetDatapackDirectories()
         {
             return Directory.GetDirectories().Select(x => new DatapackPath(x, this)).ToArray();
@@ -294,32 +298,20 @@ namespace Server_GUI2.Develop.Server
         }
     }
 
-    public class DatapackPath : DirectoryPath
+    public class DatapackPath : SubDirectoryPath<DatapacksPath>
     {
-        public DatapacksPath Parent;
         public DatapackDataPath Data;
-        public DatapackMcmetaPath Mcmeta;
-        internal DatapackPath(DirectoryInfo directory, DatapacksPath parent) : base(directory)
+        public TextFile<DatapackPath> Mcmeta;
+        internal DatapackPath(DirectoryInfo directory, DatapacksPath parent) : base(directory, parent)
         {
             Parent = parent;
             Data = new DatapackDataPath(SubDirectory("data"), this);
-            Mcmeta = new DatapackMcmetaPath(SubFile("pack.mcmeta"), this);
+            Mcmeta = new TextFile<DatapackPath>(SubFile("pack.mcmeta"), this);
         }
     }
-    public class DatapackDataPath : DirectoryPath
+
+    public class DatapackDataPath : SubDirectoryPath<DatapackPath>
     {
-        public DatapackPath Parent;
-        internal DatapackDataPath(DirectoryInfo directory, DatapackPath parent) : base(directory)
-        {
-            Parent = parent;
-        }
-    }
-    public class DatapackMcmetaPath : FilePath
-    {
-        public DatapackPath Parent;
-        internal DatapackMcmetaPath(FileInfo file, DatapackPath parent) : base(file)
-        {
-            Parent = parent;
-        }
+        internal DatapackDataPath(DirectoryInfo directory, DatapackPath parent) : base(directory, parent){ }
     }
 }

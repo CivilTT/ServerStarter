@@ -19,7 +19,7 @@ namespace Server_GUI2.Develop.Server.World
     {
         public static WorldCollection Instance { get; } = new WorldCollection();
 
-        private RemotesJsonPath jsonPath = ServerGuiPath.Instance.RemotesJson;
+        private JsonFile<ServerGuiPath, List<RemoteLinkJson>> jsonPath = ServerGuiPath.Instance.RemotesJson;
 
         /// <summary>
         /// データ整合性のためリスト変換はしない。
@@ -73,8 +73,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private List<RemoteLinkJson> LoadLinkJson()
         {
-            var json = jsonPath.ReadAllText();
-            return JsonConvert.DeserializeObject<List<RemoteLinkJson>>(json);
+            return jsonPath.ReadJson();
         }
 
         /// <summary>
@@ -84,7 +83,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             // リモートを確実に持つワールドを抜き出して変換
             var obj = Worlds.OfType<World>().Where(x => x.HasRemote && (! x.CanCahngeRemote)).Select(x => x.ExportLinkJson()).ToList();
-            JsonConvert.SerializeObject(obj);
+            jsonPath.WriteJson(obj);
         }
     }
     public class RemoteLinkJson

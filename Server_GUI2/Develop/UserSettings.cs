@@ -94,7 +94,7 @@ namespace Server_GUI2
 
         public void WriteFile()
         {
-            string jsonData = JsonConvert.SerializeObject(userSettings, Formatting.Indented);
+            string jsonData = JsonConvert.SerializeObject(userSettings, Formatting.Indented, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
             using (var sw = new StreamWriter(JsonPath, false, Encoding.UTF8))
             {
                 sw.Write(jsonData);
@@ -104,6 +104,7 @@ namespace Server_GUI2
 
     public class UserSettingsJson
     {
+        [JsonIgnore]
         public static int LatestJsonVer = 1;
 
         [JsonProperty("JsonVersion")]
@@ -130,21 +131,28 @@ namespace Server_GUI2
         [JsonProperty("DefaultProperty")]
         // あくまでデフォルトはシステムで保持しておき、それから変更したものを通常設定としたい場合の部分のみこれで保持する
         // { "difficulty" : "hard" }
-        public Dictionary<string, string> defaultProperties = new Dictionary<string, string>();
-
+        public ServerProperty defaultProperties = new ServerProperty();
     }
 
     public class LatestRun
     {
+        [JsonProperty("Version")]
         public string VersionName;
+
+        [JsonProperty("Type")]
         public string VersionType;
+
+        [JsonProperty("World")]
         public string WorldName;
 
-        public LatestRun(Version version, LocalWorld world)
+        public LatestRun(Version version, World world)
         {
             VersionName = version.Name;
-            VersionType = version is VanillaVersion ? "vanila" : "spigot";
-            // TODO: WorldName = world.Name;
+            VersionType = version.Type.ToStr();
+            WorldName = world.Name;
         }
+
+        // JsonSerialize用コンストラクタ
+        public LatestRun() { }
     }
 }

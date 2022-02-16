@@ -11,7 +11,7 @@ namespace Server_GUI2.Develop.Server.World
     {
         DatapackCollection Datapacks { get; }
         // TODO: pluginの読み込み
-        //public ObservableCollection<Datapack> Pligins { get; }
+        PluginCollection Plugins { get; }
         ServerProperty Property { get; }
         ServerType? Type { get; }
         string Name { get; }
@@ -40,18 +40,22 @@ namespace Server_GUI2.Develop.Server.World
         [JsonProperty("datapacks")]
         public List<string> Datapacks { get; set; } = new List<string>();
 
+        [JsonProperty("plugins")]
+        public List<string> Plugins { get; set; } = new List<string>();
+
         [JsonProperty("properties")]
         [DefaultValue(null)]
         public ServerProperty ServerProperty { get; set; } = null;
 
         public WorldState(){ }
-        public WorldState(string name,string type,string version,bool isUsing,List<string> datapacks, ServerProperty serverProperty)
+        public WorldState(string name,string type,string version,bool isUsing,List<string> datapacks, List<string> plugins, ServerProperty serverProperty)
         {
             Name = name;
             Type = type;
             Version = version;
             Using = isUsing;
             Datapacks = datapacks;
+            Plugins = plugins;
             ServerProperty = serverProperty;
         }
     }
