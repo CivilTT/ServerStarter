@@ -10,6 +10,7 @@
         mc:Ignorable="d"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="WorldSettings" Height="550" Width="600" WindowStartupLocation="CenterScreen">
+    
     <Window.Resources>
         <!--//Source//-->
         <Style TargetType="Button" x:Key="ButtonSource" BasedOn="{StaticResource {x:Type Button}}">
