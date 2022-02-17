@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Server_GUI2.Develop.Server.World;
-using Server_GUI2.Develop.Util;
+using Server_GUI2.Util;
 
 namespace Server_GUI2.Develop.Server.World
 {
@@ -86,7 +86,7 @@ namespace Server_GUI2.Develop.Server.World
         public static readonly GitLocal Local = new GitLocal(ServerGuiPath.Instance.GitState.FullName);
         private HashSet<string> usedNames = new HashSet<string>();
 
-        public override string Id => $"git/{Repository.Remote.Remote.Account}/{Repository.Remote.Remote.RepoName}";
+        public override string Id => $"git/{Repository.Branch.RemoteBranch.NamedRemote.Remote.Account}/{Repository.Branch.RemoteBranch.NamedRemote.Remote.Repository}";
 
         /// <summary>
         /// 使用可能なブランチ名かどうかを返す
@@ -123,21 +123,25 @@ namespace Server_GUI2.Develop.Server.World
 
             var id = Guid.NewGuid();
 
-            var result = new GitRemoteWorld( Repository.Remote.Remote,this,id.ToString(),worldName,false, null, null, prop, new DatapackCollection(new List<string>()));
+            var remote = Repository.Branch.RemoteBranch.NamedRemote.Remote;
+            var datapacks = new DatapackCollection(new List<string>());
+            var plugins = new PluginCollection(new List<string>());
+            // TODO: Availableがfalseになる可能性あり
+            var result = new GitRemoteWorld( remote, this,id.ToString(),worldName,false, null, null, prop, datapacks, plugins, true );
             AddWorld(result);
             return result;
         }
 
         public override string ToString()
         {
-            return $"{ Repository.LocalBranch.Name}:{ Repository.Remote.Expression}";
+            return $"{ Repository.Branch.LocalBranch.Name}:{ Repository.Branch.RemoteBranch.NamedRemote.Remote.Expression}";
         }
 
         public GitStorageRepository Repository;
         public GitStorage(GitStorageRepository repository)
         {
             Repository = repository;
-            foreach ( var kv in Repository.Remote.Remote.GetBranchs())
+            foreach ( var kv in Repository.Branch.RemoteBranch.NamedRemote.GetBranchs())
             {
                 usedNames.Add(kv.Key);
             }
@@ -148,7 +152,8 @@ namespace Server_GUI2.Develop.Server.World
             {
                 if ( usedNames.Contains(worldState.Key))
                 {
-                    var remoteWorld = new GitRemoteWorld(repository.Remote.Remote, worldState.Key, worldState.Value, this);
+                    // TODO: Availableがfalseになる可能性あり
+                    var remoteWorld = new GitRemoteWorld(repository.Branch.RemoteBranch.NamedRemote.Remote, worldState.Key, worldState.Value, this, true);
                     RemoteWorlds.Add(remoteWorld);
                     // 削除イベントを追加
                     remoteWorld.DeleteEvent += new EventHandler((_, __) => RemoteWorlds.Remove(remoteWorld));

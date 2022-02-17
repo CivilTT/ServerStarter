@@ -1,4 +1,4 @@
-﻿# 計画書
+﻿﻿# 計画書
 
 ### classes
 
@@ -6,44 +6,44 @@
 
 バージョンデータ
 
+##### bool available
+
+バージョンが利用可能か
 
 
-#### class﻿ World
 
-ワールドデータ本体
-
-###### class LocalWorld
+#### class LocalWorld
 
 ローカルに存在するワールド。存在しないときはこのクラスは使えない。
 
-###### class RemoteWorld
+
+
+#### class RemoteWorld
 
 リモートに存在するワールド。
 
-.ToLocal()
+##### ToLocal()
+
 #ローカルにPullする
 
-.FromLocal()
+##### FromLocal()
+
 #ローカルからPushする
 
 
 
-#### class WorldWrapper
+#### class World
 
 GUI上で選択するときのワールドはこっち。
 
-.WrapRun()
+##### .WrapRun()
+
 #ワールドの新規作成とかVtoSとかPullとかぜんぶやってくれる
-#引数に渡したサーバーを起動。
-
-
+#引数に渡したサーバーを起動
 
 #### class WorldCollection
 
-実際はWorldWrapperの集合
-
-リンクされてなかったローカルワールドを新しくリンク
-リンクされていたワールドの接続を解除
+ワールド一覧
 
 
 
@@ -57,12 +57,13 @@ Gitのリポジトリ的なやつ
 
 #### class ServerGuiPathPath
 
-static .Instance #ServerSterterのカレントディレクトリ
+##### .Instance
 
-.WorldData
-#ワールドデータのディレクトリ
+#ServerSterterのカレントディレクトリ
 
-こんな感じでプロパティアクセスで下位ディレクトリにアクセスできる
+プロパティアクセスで下位ディレクトリにアクセスできる
+
+
 
 ---
 
