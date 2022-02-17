@@ -1,4 +1,4 @@
-﻿using Server_GUI2.Develop.Util;
+﻿using Server_GUI2.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -59,7 +59,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// WorldStateからRemotoworldを構成する
         /// </summary>
-        public RemoteWorld(string id, WorldState state, Storage storage, bool available = false)
+        public RemoteWorld(string id, WorldState state, Storage storage, bool available)
         {
             Exist = true;
             Storage = storage;
@@ -84,7 +84,7 @@ namespace Server_GUI2.Develop.Server.World
             ServerProperty property,
             DatapackCollection datapacks,
             PluginCollection plugins,
-            bool available = false
+            bool available
             )
         {
             Exist = exist;
@@ -124,7 +124,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public virtual void Delete()
         {
-            if (DeleteEvent != null) DeleteEvent(this,null);
+            DeleteEvent?.Invoke(this,null);
         }
 
         public WorldState ExportWorldState()
@@ -138,8 +138,8 @@ namespace Server_GUI2.Develop.Server.World
     {
         private GitRemote remote;
 
-        public GitRemoteWorld( GitRemote remote, string id, WorldState state, Storage storage ):
-            base(id, state, storage)
+        public GitRemoteWorld( GitRemote remote, string id, WorldState state, Storage storage, bool available ):
+            base(id, state, storage, available)
         {
             this.remote = remote;
         }
@@ -154,8 +154,9 @@ namespace Server_GUI2.Develop.Server.World
             ServerType? type,
             ServerProperty property,
             DatapackCollection datapacks,
-            PluginCollection plugins
-            ):base( storage,id,name,exist,version,type,property,datapacks, plugins)
+            PluginCollection plugins,
+            bool available
+            ) :base( storage,id,name,exist,version,type,property,datapacks, plugins, available)
         {
             this.remote = remote;
         }
@@ -166,88 +167,82 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public override void ToLocal(LocalWorld local)
         {
+            if (!Available) throw new RemoteWorldException($"remoteworld {Id} is not available");
             var gitlocal = new GitLocal(local.Path.FullName);
-            // gitリポジトリではない or 別のブランチを追跡している場合
-            bool ready = false;
-            if (gitlocal.IsGitLocal())
-            {
-                ready = gitlocal.GetBranchs().ContainsKey(Name);
-                if (!ready)
-                {
-                    // .gitディレクトリごと削除
-                    var gitPath = Path.Combine(local.Path.FullName, ".git");
-                    Directory.Delete(gitPath, true);
-                }
-            }
+            var branches = gitlocal.GetBranchs();
 
-            if (!ready)
+            if (
+                // gitリポジトリである
+                gitlocal.IsGitRepository() &&
+                // {Name}ブランチがある
+                branches.ContainsKey(Id) &&
+                // {Name}ブランチがリンクされている
+                branches[Id] is GitLinkedLocalBranch branch
+                )
             {
-                // #main ローカルブランチを作る
-                gitlocal.Init("#main");
-                gitlocal.Commit("#main");
-                // add remote "origin"
+                branch.Pull();
+            }
+            else
+            {
+                // .gitディレクトリごと削除
+                var gitPath = Path.Combine(local.Path.FullName, ".git");
+                if (Directory.Exists(gitPath)) Directory.Delete(gitPath, true);
+
+                // リモートの追加
                 var named = gitlocal.AddRemote(remote, "origin");
-                named.CreateBranch(Name);
-            }
-            var remoteBranch = new GitNamedRemote(gitlocal, remote, "origin");
-            // fetch
-            gitlocal.Fetch(remoteBranch.CreateBranch(Name));
-            // checkout
-            gitlocal.GetBranch(Name).Checkout();
-            // merge
-            gitlocal.Merge();
 
+                // pull
+                named.GetBranchs()[Id].CreateLinkedBranch(Id).Pull();
+            }
+            // データを更新
             local.ReConstruct(local.Path, Version);
         }
 
         /// <summary>
         /// ワールドデータを指定パスにPushする
         /// </summary>
-        public override void FromLocal(LocalWorld localWorld)
+        public override void FromLocal(LocalWorld local)
         {
-            var local = new GitLocal(localWorld.Path.FullName);
-            // gitリポジトリではない or 別のブランチを追跡している場合
-            bool ready = false;
-            if (local.IsGitLocal())
+            if (!Available) throw new RemoteWorldException($"remoteworld {Name} is not available");
+
+            var gitlocal = new GitLocal(local.Path.FullName);
+            var branches = gitlocal.GetBranchs();
+
+            if (
+                // gitリポジトリである
+                gitlocal.IsGitRepository() &&
+                // {Name}ブランチがある
+                branches.ContainsKey(Id) &&
+                // {Name}ブランチがリンクされている
+                branches[Id] is GitLinkedLocalBranch branch
+                )
             {
-                ready = local.GetBranchs().ContainsKey(Name);
-                if (!ready)
-                {
-                    // .gitディレクトリごと削除
-                    var gitPath = System.IO.Path.Combine(localWorld.Path.FullName, ".git");
-                    Directory.Delete(gitPath, true);
-                }
-            }
-            // gitリポジトリでないとき
-            if (!ready)
-            {
-                // #main ローカルブランチを作る
-                local.Init("#main");
-                local.Commit("#main");
-                // add remote "origin"
-                var named = local.AddRemote(remote, "origin");
-                var remoteBranch = named.CreateBranch(Name);
-                var localBranch = local.GetBranch(Name);
-                localBranch.Checkout();
-                local.AddAll();
-                local.Commit("test commit");
-                localBranch.PushTrack(remoteBranch);
+                // push
+                branch.CommitPush("MESSAGE");
             }
             else
             {
-                // checkout
-                local.GetBranch(Name).Checkout();
-                local.AddAll();
-                local.Commit("test commit");
-                // push
-                local.Push();
+                // .gitディレクトリごと削除
+                var gitPath = Path.Combine(local.Path.FullName, ".git");
+                if (Directory.Exists(gitPath)) Directory.Delete(gitPath, true);
+
+                // リモートの追加
+                var named = gitlocal.AddRemote(remote, "origin");
+
+                // pushs
+                gitlocal.CreateBranch(Id).CreateLinkedBranch(named, Id).CommitPush("MESSAGE");
             }
         }
 
+        /// <summary>
+        /// リモートにあるデータを削除する
+        /// </summary>
         // TODO: ブランチの削除
         public override void Delete()
         {
+            if (!Available) throw new RemoteWorldException($"remoteworld {Name} is not available");
             base.Delete();
+            
         }
     }
 }

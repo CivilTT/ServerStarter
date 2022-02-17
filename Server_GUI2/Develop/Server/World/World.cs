@@ -149,12 +149,17 @@ namespace Server_GUI2.Develop.Server.World
 
         protected readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        // 削除イベント
         public event EventHandler DeleteEvent;
 
         // remoteを削除する際のイベントハンドラ
         private EventHandler deleteRemoteEvent;
 
         public readonly LocalWorld LocalWorld;
+
+        // localを削除する際のイベントハンドラ
+        private EventHandler deleteLocalEvent;
+
         public RemoteWorld RemoteWorld { get; private set; }
 
         private IWorldBase world
@@ -204,6 +209,8 @@ namespace Server_GUI2.Develop.Server.World
         public World(LocalWorld local)
         {
             deleteRemoteEvent = new EventHandler((_, __) => UnlinkForce());
+            deleteLocalEvent = new EventHandler((_, __) => Delete());
+
             LocalWorld = local;
             RemoteWorld = null;
             CanCahngeRemote = true;
@@ -251,7 +258,13 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public void Delete()
         {
-            if (DeleteEvent != null) DeleteEvent(this, null);
+            // リモートを解除
+            if (HasRemote) UnlinkForce();
+
+            // ローカルのイベントを解除
+            LocalWorld.DeleteEvent -= deleteLocalEvent;
+
+            // 削除
             LocalWorld.Delete();
         }
 
