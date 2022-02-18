@@ -90,7 +90,6 @@ namespace Server_GUI2.Develop.Util
                 {
                     jsonStr = sr.ReadToEnd();
                 }
-
                 root = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(jsonStr);
             }
             catch (Exception ex)
@@ -100,9 +99,9 @@ namespace Server_GUI2.Develop.Util
                         $"【エラー要因】\n{ex.Message}";
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-
             return root;
         }
+
         public static dynamic ReadlocalJson(string path, string errorMessage)
         {
             dynamic root = null;

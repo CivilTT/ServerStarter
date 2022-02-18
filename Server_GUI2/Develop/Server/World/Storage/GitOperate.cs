@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Server_GUI2;
-using Server_GUI2.Develop.Util;
+using Server_GUI2.Util;
 using Newtonsoft.Json;
 
 namespace Server_GUI2.Develop.Server.World
@@ -15,8 +15,7 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     public class GitStorageRepository
     {
-        public GitLocalBranch LocalBranch;
-        public GitNamedRemote Remote;
+        public GitLinkedLocalBranch Branch;
 
         /// <summary>
         /// 最初のリポジトリ
@@ -24,10 +23,9 @@ namespace Server_GUI2.Develop.Server.World
         private static void Init(GitLocal local)
         {
             // git init
-            // git branch -m "#main"
-            local.Init("#main");
+            local.Init();
             // git commit --allow-empty -m "empty"
-            local.Commit("first commit");
+            local.AddAllAndCommit("first commit");
         }
 
         /// <summary>
@@ -35,28 +33,25 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public static GitStorageRepository AddRepository(GitLocal local, GitRemote remote)
         {
-            var id = $"{remote.Account}.{remote.RepoName}";
+            var id = $"{remote.Account}.{remote.Repository}";
             // 新たにrepositoryを紐づける際に起動
 
             // 初めてアカウントを紐づける場合(cd/git_worldstateがない場合) Init()
-            if ( !System.IO.Directory.Exists(local.Path))
+            if ( !Directory.Exists(local.Path))
             {
-                System.IO.Directory.CreateDirectory(local.Path);
+                Directory.CreateDirectory(local.Path);
                 Init(local);
             }
 
             // cd/git_worldstate 内でgit remote add {account}.{repository} https://...
             var namedRemote = local.AddRemote(remote, id);
-            var remoteBranchs = remote.GetBranchs();
-
-            GitLocalBranch branch;
-            GitRemoteBranch remoteBranch = namedRemote.CreateBranch("#state");
+            var remoteBranchs = namedRemote.GetBranchs();
 
             // 1. まっさらなリポジトリである場合(#stateブランチがない場合)
             if (! remoteBranchs.Keys.Contains("#state"))
             {
                 // 新規ブランチを作成 git branch {account}.{repository}
-                branch = local.CreateBranch(id);
+                var branch = local.CreateBranch(id);
                 // git checkout {account}.{repository}
                 branch.Checkout();
 
@@ -66,77 +61,64 @@ namespace Server_GUI2.Develop.Server.World
                 {
                     File.Create(jsonPath).Close();
                 }
+
                 var content = "{}";
                 File.WriteAllText(jsonPath, content);
 
                 // git add -A
-                local.AddAll();
                 // git commit -m "initialized"
-                local.Commit("initialized");
                 // git push -u {account}.{repository} {account}.{repository}:#state
-                branch.PushTrack(remoteBranch);
+                var linked = branch.CreateLinkedBranch(namedRemote, "#state");
+                linked.CommitPush("initialized");
+                return new GitStorageRepository(linked);
             }
             // 2. #stateブランチがある場合
             else
             {
-                // cd/git_worldstate 内でgit branch {account}.{repository} --track {account}.{repository}/#state
-                local.Fetch(remoteBranch);
-                branch = local.CreateTrackBranch(id, remoteBranch);
+                var statebranch = remoteBranchs["#state"];
+
+                // git branch {account}.{repository} --track {account}.{repository}/#state
                 // git checkout {account}.{repository}
+                var branch = statebranch.CreateLinkedBranch(id);
+                branch.Pull();
+                branch.LocalBranch.Checkout();
+                return new GitStorageRepository(branch);
             }
-            return new GitStorageRepository(branch, namedRemote);
         }
 
         public static List<GitStorageRepository> GetAllGitRepositories(GitLocal local)
         {
-            var repos = new List<GitStorageRepository>();
-
-            if ( ! local.IsGitLocal())
+            if (!local.IsGitRepository())
             {
-                return repos;
+                return new List<GitStorageRepository>();
             }
-            // cd/git_worldstate
-            // 紐づけられたリポジトリを取得
-            var remotes = local.GetRemotes();
-            var branchs = local.GetBranchs();
-            foreach (var remote in remotes)
+            else
             {
-                repos.Add(new GitStorageRepository(branchs[remote.Name],remote));
+                return local.GetBranchs().Select(x => x.Value).OfType<GitLinkedLocalBranch>().Select(x => new GitStorageRepository(x)).ToList();
             }
-            return repos;
         }
 
-        public GitStorageRepository(GitLocalBranch localBranch, GitNamedRemote remote)
+        public GitStorageRepository(GitLinkedLocalBranch branch)
         {
-            LocalBranch = localBranch;
-            Remote = remote;
+            Branch = branch;
         }
         public Dictionary<string, WorldState> GetGitWorldstate()
         {
             // cd/git_worldstate
             // git checkout {account}.{repository}
-            LocalBranch.Checkout();
+            Branch.LocalBranch.Checkout();
+
             // git pull {account}.{repository}
-            LocalBranch.Pull();
-            // TODO: worldstate.json を開きリモートワールド情報からWorldインスタンスを生成し返却
-            var jsonPath = Path.Combine(LocalBranch.Local.Path, "worldstate.json");
-            var jsonContent = File.ReadAllText(jsonPath);
-            var worldState = JsonConvert.DeserializeObject<Dictionary<string, WorldState>>(jsonContent);
-            return worldState;
+            Branch.Pull();
+
+            return ServerGuiPath.Instance.GitState.WorldStateJson.ReadJson();
         }
         public void SaveGitWorldstate(Dictionary<string, WorldState> worldstates)
         {
-            LocalBranch.Checkout();
+            ServerGuiPath.Instance.GitState.WorldStateJson.WriteJson(worldstates,false,true);
 
-            // TODO: デフォルト値を無視しつつConverterを適用
-            var jsonContent = JsonConvert.SerializeObject(worldstates, Formatting.Indented, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-
-            var jsonPath = Path.Combine(LocalBranch.Local.Path, "worldstate.json");
-            File.WriteAllText(jsonPath, jsonContent);
-            LocalBranch.Checkout();
-            LocalBranch.Local.AddAll();
-            LocalBranch.Local.Commit("changed worldstate.json");
-            LocalBranch.Push(Remote.CreateBranch("#state"));
+            Branch.LocalBranch.Checkout();
+            Branch.CommitPush("changed worldstate.json");
         }
 
         /// <summary>
@@ -144,13 +126,13 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public void RemoveGitRepository()
         {
-            // 以下の操作は cd/git_worldstate 内で行う
-            Remote.Remove();
-            // git remote remove {account}.{repository}
+            // TODO: #mainブランチが存在しない場合
             // git checkout "#main"
-            LocalBranch.Local.GetBranch("#main").Checkout();
+            Branch.LocalBranch.Local.GetBranch("#main").Checkout();
+            // git remote remove {account}.{repository}
+            Branch.RemoteBranch.NamedRemote.Remove();
             // git branch -d {account}.{repository}
-            LocalBranch.Remove();
+            Branch.LocalBranch.Remove();
         }
     }
 }

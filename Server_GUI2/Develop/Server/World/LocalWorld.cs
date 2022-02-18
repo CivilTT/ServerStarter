@@ -29,6 +29,7 @@ namespace Server_GUI2.Develop.Server.World
                         var world = new LocalWorld(worldDir, version);
                         // コレクションに追加
                         LocalWorlds.Add(world);
+
                         // ワールド削除時にコレクションから削除
                         world.DeleteEvent += new EventHandler((sender,arg) => LocalWorlds.Remove(world));
                     }
@@ -59,6 +60,8 @@ namespace Server_GUI2.Develop.Server.World
         public WorldPath Path { get; private set; }
 
         public DatapackCollection Datapacks { get; private set; }
+
+        public PluginCollection Plugins { get; private set; }
         
         public ServerProperty Property { get; private set; }
 
@@ -69,6 +72,9 @@ namespace Server_GUI2.Develop.Server.World
         public Version Version { get; private set; }
 
         public event EventHandler DeleteEvent;
+
+        // バージョンデータがなくなったら削除
+        private EventHandler WhenVersionDeleted;
 
         /// <summary>
         /// ワールドの設定をディレクトリに反映させる
@@ -81,6 +87,7 @@ namespace Server_GUI2.Develop.Server.World
             DatapackCollection datapacks
             )
         {
+            WhenVersionDeleted = new EventHandler((_, __) => Delete());
             ReConstruct(path, version, type, property, datapacks);
         }
 
@@ -89,6 +96,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public LocalWorld(WorldPath path, Version version)
         {
+            WhenVersionDeleted = new EventHandler((_, __) => Delete());
             ReConstruct(path, version);
         }
 
@@ -97,6 +105,9 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public void ReConstruct(WorldPath path, Version version)
         {
+            // 元のバージョンからイベントを削除
+            if (Version != null) Version.DeleteEvent -= WhenVersionDeleted;
+
             Path = path;
             Name = path.Name;
             // フォルダ存在しない場合は新規作成
@@ -106,6 +117,9 @@ namespace Server_GUI2.Develop.Server.World
             Type = GetServerType();
             Datapacks = LoadDatapacks();
             Version = version;
+
+            // 新しいバージョンにイベントを登録
+            version.DeleteEvent += WhenVersionDeleted;
         }
 
         /// <summary>
@@ -119,6 +133,9 @@ namespace Server_GUI2.Develop.Server.World
             DatapackCollection datapacks
             )
         {
+            // 元のバージョンからイベントを削除
+            Version.DeleteEvent -= WhenVersionDeleted;
+
             Path = path;
             Version = version;
             Name = path.Name;
@@ -140,6 +157,9 @@ namespace Server_GUI2.Develop.Server.World
             Property = property;
             SaveProperties();
             Datapacks = datapacks;
+
+            // 新しいバージョンにイベントを登録
+            version.DeleteEvent += WhenVersionDeleted;
         }
 
 
@@ -203,7 +223,7 @@ namespace Server_GUI2.Develop.Server.World
         public void Delete()
         {
             // 削除イベントの呼び出し
-            if (DeleteEvent != null) DeleteEvent(this,null);
+            DeleteEvent?.Invoke(this,null);
             // ワールドデータを全削除
             Path.Delete();
         }
@@ -332,7 +352,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public WorldState ExportWorldState()
         {
-            return new WorldState(Name, Type.ToString(), Version.Name, false, Datapacks.ExportList(), Property);
+            return new WorldState(Name, Type.ToString(), Version.Name, false, Datapacks.ExportList(), Plugins.ExportList(), Property);
         }
     }
 }
