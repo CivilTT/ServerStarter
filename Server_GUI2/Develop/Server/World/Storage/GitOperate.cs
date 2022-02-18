@@ -88,10 +88,14 @@ namespace Server_GUI2.Develop.Server.World
 
         public static List<GitStorageRepository> GetAllGitRepositories(GitLocal local)
         {
-            if ( ! local.IsGitRepository())
+            if (!local.IsGitRepository())
+            {
                 return new List<GitStorageRepository>();
+            }
             else
-                return local.GetBranchs().OfType<GitLinkedLocalBranch>().Select(x => new GitStorageRepository(x)).ToList();
+            {
+                return local.GetBranchs().Select(x => x.Value).OfType<GitLinkedLocalBranch>().Select(x => new GitStorageRepository(x)).ToList();
+            }
         }
 
         public GitStorageRepository(GitLinkedLocalBranch branch)
@@ -107,7 +111,6 @@ namespace Server_GUI2.Develop.Server.World
             // git pull {account}.{repository}
             Branch.Pull();
 
-            // TODO: worldstate.json を開きリモートワールド情報からWorldインスタンスを生成し返却
             return ServerGuiPath.Instance.GitState.WorldStateJson.ReadJson();
         }
         public void SaveGitWorldstate(Dictionary<string, WorldState> worldstates)

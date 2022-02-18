@@ -10,7 +10,6 @@ namespace Server_GUI2.Develop.Server.World
     public interface IWorldBase
     {
         DatapackCollection Datapacks { get; }
-        // TODO: pluginの読み込み
         PluginCollection Plugins { get; }
         ServerProperty Property { get; }
         ServerType? Type { get; }

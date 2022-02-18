@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Net.Http;
 
 namespace Server_GUI2.Util
 {
@@ -92,10 +93,8 @@ namespace Server_GUI2.Util
         /// </summary>
         public Dictionary<string, IGitLocalBranch> GetBranchs()
         {
-            var output = GitCommand.ExecuteThrow($"for-each-ref --format='%(refname:short)...%(upstream:short)' refs/heads", new GitException($"failed to get branch list from {Path}"), Path);
+            var output = GitCommand.ExecuteThrow($"for-each-ref --format=%(refname:short)...%(upstream:short) refs/heads", new GitException($"failed to get branch list from {Path}"), Path);
             var branchMap = new Dictionary<string, IGitLocalBranch>();
-            Console.WriteLine("output");
-            Console.WriteLine(output);
 
             if (output.Length == 0) return branchMap;
 
@@ -105,7 +104,7 @@ namespace Server_GUI2.Util
 
             foreach (var i in lines)
             {
-                var splitted = i.Split(new string[]{"..."},StringSplitOptions.None);
+                var splitted = i.Split(new string[]{"..."},StringSplitOptions.RemoveEmptyEntries);
 
                 var branchName = splitted[0];
 
@@ -124,6 +123,13 @@ namespace Server_GUI2.Util
                 }
 
             }
+
+            Console.WriteLine("               GetBranchs");
+            foreach (var jk in branchMap)
+            {
+                Console.WriteLine(jk.Key);
+            }
+
             return branchMap;
         }
 
@@ -196,11 +202,15 @@ namespace Server_GUI2.Util
         public bool Exists;
         public GitLocalBranch(GitLocal local, string name, bool exists)
         {
+            Local = local;
             Name = name;
             Exists = exists;
         }
 
-        public void Checkout() { }
+        public void Checkout()
+        {
+            GitCommand.ExecuteThrow($"checkout {Name}", new GitException($"falied to 'git checkout {Name}'"), Local.Path);
+        }
 
         /// <summary>
         /// 新しくリモートブランチを作成し追跡する
@@ -241,7 +251,7 @@ namespace Server_GUI2.Util
 
             LocalBranch.Checkout();
             if (linked)
-            {
+            {                
                 // git pull
                 GitCommand.ExecuteThrow($"pull", new GitException($"falied to 'git pull'"), LocalBranch.Local.Path);
             }
@@ -315,6 +325,18 @@ namespace Server_GUI2.Util
         }
 
         /// <summary>
+        /// リポジトリにアクセス可能か
+        /// </summary>
+        public bool IsAvailable
+        {
+            get
+            {
+                var response = new HttpClient().GetAsync(Remote.Expression).Result;
+                return response.StatusCode == System.Net.HttpStatusCode.OK;
+            } 
+        }
+
+        /// <summary>
         /// リモートブランチを返す(実際のブランチの生成はしない)
         /// </summary>
         public GitRemoteBranch GetBranch(string name)
@@ -369,7 +391,15 @@ namespace Server_GUI2.Util
         /// <returns></returns>
         public GitLinkedLocalBranch CreateLinkedBranch(string name)
         {
-            return new GitLinkedLocalBranch(this.NamedRemote.Local.GetBranch(name), this);
+            return new GitLinkedLocalBranch(NamedRemote.Local.GetBranch(name), this);
+        }
+
+        /// <summary>
+        /// リモートブランチを削除
+        /// </summary>
+        public void Delete()
+        {
+            GitCommand.ExecuteThrow($"push {NamedRemote.Name} :{Name}", new GitException($"failed to remove remote repository"), NamedRemote.Local.Path);
         }
     }
 }

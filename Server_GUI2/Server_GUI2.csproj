@@ -107,6 +107,7 @@
     <Compile Include="Develop\Server\World\Util\Datapack.cs" />
     <Compile Include="Develop\Server\World\Util\ShareWorld.cs" />
     <Compile Include="Develop\UserSettings.cs" />
+    <Compile Include="Develop\Util\LogExt.cs" />
     <Compile Include="Develop\Util\ReadOnlyProperty.cs" />
     <Compile Include="Develop\Util\JsonItemConverter.cs" />
     <Compile Include="Develop\Util\Git.cs" />

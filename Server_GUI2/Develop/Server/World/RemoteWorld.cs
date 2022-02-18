@@ -40,8 +40,12 @@ namespace Server_GUI2.Develop.Server.World
             get => _name;
             set
             {
+                if (_name == value) return;
                 if (Storage.IsUsableName(value))
+                {
                     _name = value;
+                    Storage.AddUsedName(value);
+                }
                 else
                     throw new RemoteWorldException($"\"{value}\" is unavailable remote world name.");
             }
@@ -163,7 +167,7 @@ namespace Server_GUI2.Develop.Server.World
 
 
         /// <summary>
-        /// TODO: ワールドデータを指定パスにPull/Cloneする
+        /// ワールドデータを指定パスにPull/Cloneする
         /// </summary>
         public override void ToLocal(LocalWorld local)
         {
@@ -237,12 +241,14 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// リモートにあるデータを削除する
         /// </summary>
-        // TODO: ブランチの削除
         public override void Delete()
         {
             if (!Available) throw new RemoteWorldException($"remoteworld {Name} is not available");
             base.Delete();
-            
+            var local = new GitLocal(ServerGuiPath.Instance.GitState.FullName);
+            var named = local.AddRemote(remote, "#temp");
+            named.GetBranchs()[Id].Delete();
+            named.Remove();
         }
     }
 }
