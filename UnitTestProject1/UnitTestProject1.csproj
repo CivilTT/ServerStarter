@@ -86,6 +86,7 @@
     <Compile Include="StorageTest.cs" />
     <Compile Include="ObservableTest.cs" />
     <Compile Include="LinkTest.cs" />
+    <Compile Include="Logtest.cs" />
     <Compile Include="UPnP.cs" />
     <Compile Include="WorldTest.cs" />
     <Compile Include="VersionListTest.cs" />
