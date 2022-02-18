@@ -195,6 +195,11 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Width" Value="200"/>
         </Style>
+        <Style TargetType="Button" x:Key="GroupButton" BasedOn="{StaticResource OtherStyle}">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0 10"/>
+        </Style>
         
         <!--//NetWork//-->
         <Style TargetType="TextBlock" x:Key="NetStatusBlock" BasedOn="{StaticResource PropertyIndex}">
@@ -203,6 +208,7 @@
         
         <!--//Converter//-->
         <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
+        <vm:MemberListConverter x:Key="MemberListConverter"/>
     </Window.Resources>
 
     <Window.DataContext>
@@ -295,7 +301,7 @@
                         <TextBlock Text="Type" Style="{StaticResource SWBlock}"/>
                         <ui:ToggleSwitch IsOn="{Binding IsPrivate.Value}" OnContent="Private" OffContent="Public" Margin="20 5" FontSize="20"/>
                     </StackPanel>-->
-                    <Button Content="Add Account" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_SW}" Command="{Binding AddListCommand}" CommandParameter="Git" Style="{StaticResource RunStyle}"/>
+                    <Button Content="Add Account" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_SW}" Command="{Binding AddListCommand}" CommandParameter="Remote" Style="{StaticResource RunStyle}"/>
                 </StackPanel>
                 <TextBlock Text="Remote List" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
                 <Button Width="33" Height="33" FontSize="18" Padding="3" Command="{Binding DeleteListCommand}" CommandParameter="Remote" Grid.Row="1" Margin="35 0" VerticalAlignment="Top" HorizontalAlignment="Right">
@@ -373,8 +379,8 @@
         
         <!--//Players//-->
         <!--<ScrollViewer Visibility="{Binding ShowPlayers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">-->
-        <Grid Margin="0 -10" Style="{StaticResource SettingContent}">
-            <TabControl>
+        <Grid Margin="0 -10 0 0" Style="{StaticResource SettingContent}">
+            <TabControl SelectedIndex="{Binding PlayersTabIndex.Value}">
                 <TabControl.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Transparent" Offset="0"/>
@@ -399,7 +405,7 @@
                                 <TextBlock Text="New Player Name" Style="{StaticResource PlayerBlock}"/>
                                 <TextBox Width="160" Text="{Binding PlayerName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerBox}"/>
                             </StackPanel>
-                            <Button Content="Add" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" IsEnabled="{Binding CanAddition_Pl}" Command="{Binding AddListCommand}" CommandParameter="Player" Style="{StaticResource RunStyle}"/>
+                            <Button Content="Regist" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" IsEnabled="{Binding CanAddition_Pl}" Command="{Binding AddListCommand}" CommandParameter="Player" Style="{StaticResource RunStyle}"/>
                         </StackPanel>
 
                         <TextBlock Text="Player List" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
@@ -438,59 +444,82 @@
                     <TabItem.Header>
                         <TextBlock Text="Group"/>
                     </TabItem.Header>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="450"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Orientation="Vertical" Margin="0 10">
+                                <TextBlock Text="Add Group" Style="{StaticResource TitleBlock}"/>
+                                <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
+                                    <TextBlock Text="New Group Name" Style="{StaticResource PlayerBlock}"/>
+                                    <TextBox Width="160" Text="{Binding GroupName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerBox}"/>
+                                </StackPanel>
+                                <!--<TextBlock Text="New Group Member" Margin="40 20 0 0" Style="{StaticResource PlayerBlock}"/>-->
+                                <UniformGrid Rows="1" Margin="40 20 20 0">
+                                    <StackPanel Orientation="Vertical" Width="160" HorizontalAlignment="Left">
+                                        <TextBlock Text="Players" Style="{StaticResource PlayerBlock}"/>
+                                        <ListBox ItemsSource="{Binding PlayerList_Group}" SelectedItem="{Binding PLGIndex.Value}" Height="170">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}" FontSize="20" Padding="1"/>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        <Button Content="Add" Command="{Binding AddListCommand}" CommandParameter="GroupPlayer" Style="{StaticResource GroupButton}"/>
+                                        
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical" Width="160" HorizontalAlignment="Right">
+                                        <TextBlock Text="Members" Style="{StaticResource PlayerBlock}"/>
+                                        <ListBox ItemsSource="{Binding MemberList}" SelectedItem="{Binding MLIndex.Value}" Height="170">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}" FontSize="20" Padding="1"/>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        <Button Content="Remove" Command="{Binding DeleteListCommand}" CommandParameter="GroupMember" Style="{StaticResource GroupButton}"/>
+
+                                    </StackPanel>
+                                </UniformGrid>
+                                <Button Content="Register" Width="100" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_Gr}" Command="{Binding AddListCommand}" CommandParameter="Group" Style="{StaticResource RunStyle}"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Group List" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                            <Button Width="33" Height="33" FontSize="18" Padding="3" Grid.Row="1" Command="{Binding DeleteListCommand}" CommandParameter="Group" Margin="20 0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                            </Button>
+                            <DataGrid ItemsSource="{Binding GroupList}"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      CanUserResizeRows="False"
+                                      CanUserResizeColumns="False"
+                                      RowHeaderWidth="0"
+                                      VirtualizingPanel.ScrollUnit="Pixel"
+                                      AutoGenerateColumns="False"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Top"
+                                      Grid.Row="1"
+                                      MaxHeight="170"
+                                      SelectedItem="{Binding GLIndex.Value}"
+                                      Margin="20 50 0 50">
+                                <DataGrid.Columns>
+                                    <!--//Typeは Player or Group を表示する//-->
+                                    <!--<DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>-->
+                                    <DataGridTextColumn Header="Group Name" IsReadOnly="True" Binding="{Binding GroupName}"/>
+                                    <DataGridTextColumn Header="Members" IsReadOnly="True" Binding="{Binding PlayerList, Converter={StaticResource MemberListConverter}}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <StackPanel Orientation="Vertical" Grid.Row="1">
+                            </StackPanel>
+                        </Grid>                        
+                    </ScrollViewer>
                 </TabItem>
             </TabControl>
         </Grid>
-        
-        <ScrollViewer Visibility="Hidden" Style="{StaticResource ScrollSource}">
-            <Grid Style="{StaticResource SettingContent}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="140"/>
-                    <RowDefinition Height="220"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-            
-                
-
-                <TextBlock Text="Create Players Group" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
-                <StackPanel Orientation="Vertical" Grid.Row="1" Margin="40 50 0 0">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Group Name" Style="{StaticResource PlayerBlock}"/>
-                        <TextBox Style="{StaticResource PlayerBox}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-                        <TextBlock Text="Player Name" Style="{StaticResource PlayerBlock}"/>
-                        <ComboBox Style="{StaticResource PlayerCombo}"/>
-                    </StackPanel>
-                </StackPanel>
-                <Button Content="Add" Width="100" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20 30" Style="{StaticResource RunStyle}"/>
-
-                <TextBlock Text="Group List" Grid.Row="2" Style="{StaticResource TitleBlock}"/>
-                <Button Width="33" Height="33" FontSize="18" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="world" Grid.Row="2" Margin="20 0" HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
-                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
-                </Button>
-                <DataGrid ItemsSource="{Binding OpPlayersList}"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              CanUserResizeRows="False"
-                              CanUserResizeColumns="False"
-                              RowHeaderWidth="0"
-                              VirtualizingPanel.ScrollUnit="Pixel"
-                              HorizontalAlignment="Left"
-                              Grid.Row="2"
-                              Margin="20 50 0 20">
-                    <DataGrid.Columns>
-                        <!--//Typeは Player or Group を表示する//-->
-                        <!--<DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>-->
-                        <DataGridTextColumn Header="Group Name" IsReadOnly="True" Binding="{Binding UUID}"/>
-                        <DataGridTextColumn Header="Members" IsReadOnly="True" Binding="{Binding UUID}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-
-            </Grid>
-            
-        </ScrollViewer>
         
         <!--//NetWork//-->
         <Grid Visibility="{Binding ShowNet, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">

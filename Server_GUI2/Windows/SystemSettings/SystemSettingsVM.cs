@@ -4,12 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
@@ -65,6 +67,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
 
         // Players
+        public BindingValue<int> PlayersTabIndex { get; private set; }
         // Player
         public BindingValue<string> PlayerName { get; private set; }
         public bool CanAddition_Pl
@@ -78,7 +81,22 @@ namespace Server_GUI2.Windows.SystemSettings
         public ObservableCollection<Player> PlayerList { get; private set; }
         public BindingValue<Player> PLIndex { get; private set; }
         // Group
+        public BindingValue<string> GroupName { get; private set; }
+        public ObservableCollection<Player> PlayerList_Group { get; private set; }
+        public BindingValue<Player> PLGIndex { get; private set; }
+        public ObservableCollection<Player> MemberList { get; private set; }
+        public BindingValue<Player> MLIndex { get; private set; }
+        public bool CanAddition_Gr
+        {
+            get
+            {
+                bool hasName = GroupName.Value != "" && GroupName.Value != null;
+                bool hasMembers = MemberList != null && MemberList.Count != 0;
+                return hasName && hasMembers;
+            }
+        }
         public ObservableCollection<PlayerGroup> GroupList { get; private set; }
+        public BindingValue<PlayerGroup> GLIndex { get; private set; }
 
 
         public SystemSettingsVM()
@@ -109,6 +127,11 @@ namespace Server_GUI2.Windows.SystemSettings
 
 
             // Players
+            PlayersTabIndex = new BindingValue<int>(0, () =>
+            {
+                if (PlayersTabIndex != null && PlayersTabIndex.Value == 1)
+                    UpdateGroupPlayersAndMembers();
+            });
             // Player
             PlayerName = new BindingValue<string>("", () =>
             {
@@ -117,6 +140,68 @@ namespace Server_GUI2.Windows.SystemSettings
             });
             PlayerList = new ObservableCollection<Player>();
             PLIndex = new BindingValue<Player>(null, () => new PropertyChangedEventArgs("PLIndex"));
+            // Group
+            GroupName = new BindingValue<string>("", () =>
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("GroupName"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanAddition_Gr"));
+            });
+            PlayerList_Group = new ObservableCollection<Player>();
+            PLGIndex = new BindingValue<Player>(null, () => new PropertyChangedEventArgs("PLGIndex"));
+            MemberList = new ObservableCollection<Player>();
+            MLIndex = new BindingValue<Player>(null, () => new PropertyChangedEventArgs("MLIndex"));
+            GroupList = new ObservableCollection<PlayerGroup>();
+            GLIndex = new BindingValue<PlayerGroup>(null, () => new PropertyChangedEventArgs("GLIndex"));
+        }
+
+        /// <summary>
+        /// PlayersタブのGroup内のPlayerとMemberの内容を更新する
+        /// </summary>
+        private void UpdateGroupPlayersAndMembers()
+        {
+            PlayerList_Group.Clear();
+            List<Player> tmpMember = MemberList.ToList();
+
+            // 登録済みのプレイヤー名をループ
+            foreach (var player in PlayerList)
+            {
+                // Membersに登録されていないものをPlayersに登録
+                if (!MemberList.Contains(player))
+                {
+                    PlayerList_Group.Add(player);
+                }
+                else
+                {
+                    // これをやっていきtmpMemberに残ったものが、「Membersの中で登録済みのプレイヤーでないもの」となる
+                    tmpMember.Remove(player);
+                }
+            }
+
+            // Membersの中で登録済みのプレイヤーでないものを削除
+            foreach (var removedPlayer in tmpMember)
+            {
+                MemberList.Remove(removedPlayer);
+            }
+        }
+    }
+
+    public class MemberListConverter : IValueConverter
+    {
+        // TODO: Listを表示するためのConverterを作成する
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (!(value is ObservableCollection<Player> memberList))
+            {
+                // 流れてきた値がObservableCollection<Player>ではない場合の処理
+            }
+
+            // Kusa, Gomi, CivilTTみたいな感じ
+            //return 
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -148,10 +233,21 @@ namespace Server_GUI2.Windows.SystemSettings
         }
     }
 
-    class PlayerGroup
+    class PlayerGroup : IEquatable<PlayerGroup>
     {
         public string GroupName { get; private set; }
-        public List<Player> PlayerList { get; private set; }
+        public ObservableCollection<Player> PlayerList { get; private set; }
+
+        public PlayerGroup(string name, ObservableCollection<Player> list)
+        {
+            GroupName = name;
+            PlayerList = list;
+        }
+
+        public bool Equals(PlayerGroup other)
+        {
+            return other.GroupName == GroupName;
+        }
     }
 
     class Player : IEquatable<Player>
@@ -190,7 +286,6 @@ namespace Server_GUI2.Windows.SystemSettings
             return uuid;
         }
 
-        // ListのContainsなどを利用できるようにする
         public bool Equals(Player other)
         {
             return other.UUID == UUID;
