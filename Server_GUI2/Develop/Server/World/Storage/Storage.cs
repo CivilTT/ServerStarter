@@ -23,7 +23,9 @@ namespace Server_GUI2.Develop.Server.World
             GitStorage.GetStorages().ForEach(x => Add(x));
         }
 
-        // TODO: リモートリポジトリから消えた場合とリモートリポジトリと通信できない場合エラーを吐く
+        /// <summary>
+        /// 条件に合うリモートリポジトリを返す
+        /// </summary>
         public Storage FindStorage(string storage)
         {
             var storageValue = Storages.Where(x => x.Id == storage).First();
@@ -47,7 +49,12 @@ namespace Server_GUI2.Develop.Server.World
         public ObservableCollection<RemoteWorld> RemoteWorlds = new ObservableCollection<RemoteWorld>();
         protected Dictionary<string, WorldState> worldStates = new Dictionary<string, WorldState>();
         public event EventHandler DeleteEvent;
+
+        protected HashSet<string> usedNames = new HashSet<string>();
+
         public abstract string Id { get; }
+
+        public bool Available { get; set; }
 
         public virtual void AddWorld(RemoteWorld world)
         {
@@ -55,10 +62,22 @@ namespace Server_GUI2.Develop.Server.World
             world.DeleteEvent += new EventHandler((_, __) => RemoteWorlds.Remove(world));
         }
 
+        /// <summary>
+        /// 与えられたidに該当するリモートワールドを返す
+        /// </summary>
         public RemoteWorld FindRemoteWorld(string worldId)
         {
-            return RemoteWorlds.Where(x => x.Id == worldId).First();
+            if (Available)
+            {
+                return RemoteWorlds.Where(x => x.Id == worldId).First();
+            }
+            else
+            {
+                return CreateUnavailableRemoteWorld(worldId);
+            }
         }
+
+        protected abstract RemoteWorld CreateUnavailableRemoteWorld(string worldId);
 
         public virtual void Delete()
         {
@@ -76,6 +95,11 @@ namespace Server_GUI2.Develop.Server.World
         public abstract RemoteWorld CreateRemoteWorld(string worldName);
 
         public abstract bool IsUsableName(string name);
+
+        public void AddUsedName(string name)
+        {
+            usedNames.Add(name);
+        }
     }
 
     /// <summary>
@@ -84,7 +108,6 @@ namespace Server_GUI2.Develop.Server.World
     public class GitStorage: Storage
     {
         public static readonly GitLocal Local = new GitLocal(ServerGuiPath.Instance.GitState.FullName);
-        private HashSet<string> usedNames = new HashSet<string>();
 
         public override string Id => $"git/{Repository.Branch.RemoteBranch.NamedRemote.Remote.Account}/{Repository.Branch.RemoteBranch.NamedRemote.Remote.Repository}";
 
@@ -93,13 +116,18 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public override bool IsUsableName(string name)
         {
-            return Regex.IsMatch(name, "^[a-zA-Z0-9_-]$") && !usedNames.Contains(name);
+            return Regex.IsMatch(name, "^[a-zA-Z0-9_-]+$") && !usedNames.Contains(name);
         }
 
         public static List<GitStorage> GetStorages()
         {
             var repos = GitStorageRepository.GetAllGitRepositories(Local);
             return repos.Select(x => new GitStorage(x)).ToList();
+        }
+
+        protected override RemoteWorld CreateUnavailableRemoteWorld(string worldId)
+        {
+            return new GitRemoteWorld(Repository.Branch.RemoteBranch.NamedRemote.Remote, worldId, null, this, true);
         }
 
         /// <summary>
@@ -119,6 +147,9 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public override RemoteWorld CreateRemoteWorld(string worldName)
         {
+            // ストレージにアクセスできない場合はエラー
+            if (!Available) throw new RemoteWorldException($"git storage \"{Repository.Branch.RemoteBranch.Expression}\" is not accessible.");
+
             var prop = new ServerProperty();
 
             var id = Guid.NewGuid();
@@ -126,7 +157,6 @@ namespace Server_GUI2.Develop.Server.World
             var remote = Repository.Branch.RemoteBranch.NamedRemote.Remote;
             var datapacks = new DatapackCollection(new List<string>());
             var plugins = new PluginCollection(new List<string>());
-            // TODO: Availableがfalseになる可能性あり
             var result = new GitRemoteWorld( remote, this,id.ToString(),worldName,false, null, null, prop, datapacks, plugins, true );
             AddWorld(result);
             return result;
@@ -141,18 +171,21 @@ namespace Server_GUI2.Develop.Server.World
         public GitStorage(GitStorageRepository repository)
         {
             Repository = repository;
+            Available = repository.Branch.RemoteBranch.NamedRemote.IsAvailable;
+
+            var newUsedNames = new HashSet<string>();
+
             foreach ( var kv in Repository.Branch.RemoteBranch.NamedRemote.GetBranchs())
             {
-                usedNames.Add(kv.Key);
+                newUsedNames.Add(kv.Key);
             }
 
             worldStates = Repository.GetGitWorldstate();
 
             foreach ( var worldState in worldStates)
             {
-                if ( usedNames.Contains(worldState.Key))
+                if (newUsedNames.Contains(worldState.Key))
                 {
-                    // TODO: Availableがfalseになる可能性あり
                     var remoteWorld = new GitRemoteWorld(repository.Branch.RemoteBranch.NamedRemote.Remote, worldState.Key, worldState.Value, this, true);
                     RemoteWorlds.Add(remoteWorld);
                     // 削除イベントを追加
@@ -164,6 +197,8 @@ namespace Server_GUI2.Develop.Server.World
                     worldStates.Remove(worldState.Key);
                 }
             }
+
+            usedNames.UnionWith(newUsedNames);
         }
 
         /// <summary>
@@ -171,8 +206,12 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public override void SaveWorldStates()
         {
-            // 存在しているリモートだけをフィルタして保存
-            Repository.SaveGitWorldstate( RemoteWorlds.Where(x => x.Exist == true).ToDictionary(x => x.Id,x => x.ExportWorldState()));
+            // 通信可能な場合のみ発動
+            if (Available)
+            {
+                // 存在しているリモートだけをフィルタして保存
+                Repository.SaveGitWorldstate(RemoteWorlds.Where(x => x.Exist == true).ToDictionary(x => x.Id, x => x.ExportWorldState()));
+            }
         }
 
         /// <summary>

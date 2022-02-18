@@ -88,7 +88,6 @@ namespace Server_GUI2.Develop.Server.World
             )
         {
             WhenVersionDeleted = new EventHandler((_, __) => Delete());
-            version.DeleteEvent += WhenVersionDeleted;
             ReConstruct(path, version, type, property, datapacks);
         }
 
@@ -97,7 +96,6 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public LocalWorld(WorldPath path, Version version)
         {
-            version.DeleteEvent += WhenVersionDeleted;
             WhenVersionDeleted = new EventHandler((_, __) => Delete());
             ReConstruct(path, version);
         }
@@ -108,7 +106,7 @@ namespace Server_GUI2.Develop.Server.World
         public void ReConstruct(WorldPath path, Version version)
         {
             // 元のバージョンからイベントを削除
-            Version.DeleteEvent -= WhenVersionDeleted;
+            if (Version != null) Version.DeleteEvent -= WhenVersionDeleted;
 
             Path = path;
             Name = path.Name;

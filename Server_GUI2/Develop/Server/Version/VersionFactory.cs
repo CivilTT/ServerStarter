@@ -4,6 +4,7 @@ using Server_GUI2.Develop.Util;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System;
 using Newtonsoft.Json;
 using Server_GUI2.Develop.Server;
 
@@ -110,12 +111,13 @@ namespace Server_GUI2
         /// <summary>
         /// SpigotとVanilaでバージョンの表記が違う場合に書き足していく
         /// </summary>
-        private void AddSpigotOnlyVersionToVersionIndex(List<string > spigotList)
+        private void AddSpigotOnlyVersionToVersionIndex(List<string> spigotList)
         {
             foreach (var i in spigotList)
             {
-                var name = i == "1.14-pre5" ? "1.14 Pre-Release 5" : i;
-                VersionIndex[i + "--spigot"] = VersionIndex[name];
+                var withoutPrefix = i.Substring(0, i.Length - 8);
+                var name = withoutPrefix == "1.14-pre5" ? "1.14 Pre-Release 5" : withoutPrefix;
+                VersionIndex[withoutPrefix + "--spigot"] = VersionIndex[name];
             }
         }
 
@@ -169,9 +171,10 @@ namespace Server_GUI2
                     // 1.x.x--spigot
                     verName = verName.Replace(".json", "") + "--spigot";
 
-                    vers.Add(verName);
                     if (verName.Substring(0, 2) != "1.")
                         continue;
+
+                    vers.Add(verName);
 
                     // 1.9.jsonが対応バージョン一覧の最後に記載されているため
                     if (verName == "1.9")

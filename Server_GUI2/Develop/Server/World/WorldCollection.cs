@@ -21,9 +21,6 @@ namespace Server_GUI2.Develop.Server.World
 
         private JsonFile<ServerGuiPath, List<RemoteLinkJson>> jsonPath = ServerGuiPath.Instance.RemotesJson;
 
-        /// <summary>
-        /// データ整合性のためリスト変換はしない。
-        /// </summary>
         public ObservableCollection<IWorld> Worlds { get; } = new ObservableCollection<IWorld>();
 
         private WorldCollection()
@@ -41,15 +38,19 @@ namespace Server_GUI2.Develop.Server.World
                    x.LocalWorld == local.Name
                     ).FirstOrDefault();
 
-                // TODO: リモートとの通信ができなかった場合のフォールバック
                 // 通信できないワールドは一覧に追加しないorグレーアウトして選択できないように
                 if (linkData != null)
                 {
-                    var remote = StorageCollection.Instance.FindStorage(linkData.RemoteStorage).FindRemoteWorld(linkData.RemoteWorld);
-                    // TODO: usingフラグが立ちっぱなしだったらpushする
-                    // サーバー起動後にネットワークが切断された場合に起こりうる
+                    var storage = StorageCollection.Instance.FindStorage(linkData.RemoteStorage);
+                    var remote = storage.FindRemoteWorld(linkData.RemoteWorld);
                     var world = new World(local,remote);
                     Add(world);
+
+                    // TODO: usingフラグが立ちっぱなしだったらpushする
+                    if (linkData.Using)
+                    {
+                    }
+                    // サーバー起動後にネットワークが切断された場合に起こりうる
                 }
                 else
                 {
