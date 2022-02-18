@@ -10,7 +10,7 @@ namespace Server_GUI2.Develop.Server.World
 {
     public class RemoteWorldException : Exception
     {
-        public RemoteWorldException(string message) : base(message) { }
+        public RemoteWorldException( string message) : base(message) { }
     }
 
     /// <summary>
