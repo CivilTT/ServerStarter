@@ -30,8 +30,7 @@ namespace UnitTestProject1
                 "c",
                 "d"
             };
-            l.WriteLine();
-
+            l.ToStr(x => x + x).WriteLine();
 
             // Dictの中身を出力
             var d = new Dictionary<string, string> {

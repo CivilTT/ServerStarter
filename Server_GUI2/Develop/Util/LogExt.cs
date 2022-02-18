@@ -85,7 +85,25 @@ namespace Server_GUI2.Util
         {
             dynamic xx = obj;
             string s = ToStr(xx);
-            Console.WriteLine(ToStr(s));
+            Console.WriteLine(s);
+        }
+
+        public static void WriteLine<V>(this IEnumerable<V> list, Func<V,string> func)
+        {
+            string s = ToStr(list, func);
+            Console.WriteLine(s);
+        }
+
+        public static void WriteLine<K,V>(this Dictionary<K,V> list, Func<V, string> func)
+        {
+            string s = ToStr(list, func);
+            Console.WriteLine(s);
+        }
+
+        public static void WriteLine<K,V>(this Dictionary<K,V> list, Func<K, string> keyfunc, Func<V, string> valuefunc)
+        {
+            string s = ToStr(list, keyfunc,valuefunc);
+            Console.WriteLine(s);
         }
     }
 }
