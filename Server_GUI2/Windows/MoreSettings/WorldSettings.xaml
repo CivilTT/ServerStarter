@@ -8,6 +8,7 @@
         xmlns:vm="clr-namespace:Server_GUI2.Windows.MoreSettings"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="WorldSettings" Height="550" Width="600" WindowStartupLocation="CenterScreen">
     
