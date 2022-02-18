@@ -3,7 +3,7 @@ using Server_GUI2;
 using System;
 using System.IO;
 using Server_GUI2.Develop.Server.World;
-using Server_GUI2.Develop.Util;
+using Server_GUI2.Util;
 
 namespace UnitTestProject1
 {
@@ -13,17 +13,24 @@ namespace UnitTestProject1
         [TestMethod]
         public void GitTestMethod()
         {
-            //var path = Environment.GetEnvironmentVariable("SERVER_STERTER_TEST");
+            var path = Environment.GetEnvironmentVariable("SERVER_STERTER_TEST");
 
-            //var gitpath = Path.Combine(path, "git_state");
+            var gitpath = Path.Combine(path, "gittest");
 
-            //var local = new GitLocal(gitpath);
-            //var remote = new GitRemote("txkodo", "GitTest");
-            //var reader = GitStorageRepository.AddRepository(local, remote);
+            // ディレクトリを空にする
+            Directory.Delete(gitpath, true);
+            Directory.CreateDirectory(gitpath);
 
-            //var remote2 = new GitRemote("txkodo", "GitTest2");
+            var local = new GitLocal(gitpath);
+            local.Init();
+            var remote = new GitRemote("txkodo", "GitTest");
+            var namedRemote = local.AddRemote(remote, "GITTEST");
 
-            //var reader2 = GitStorageRepository.AddRepository(local, remote2);
+            foreach ( var i in local.GetNamedRemotes())
+            {
+                Console.WriteLine(i.Key);
+                Console.WriteLine(i.Value);
+            }
         }
     }
 }

@@ -19,10 +19,14 @@ namespace Server_GUI2.Develop.Server.World
 
     public interface IWorld: IWorldBase
     {
+        bool Available { get; }
+
         RemoteWorld RemoteWorld { get; }
+
         string DisplayName { get; }
 
         bool CanCahngeRemote { get; }
+
         CustomMap CustomMap { get; set; }
 
         bool HasCustomMap { get; }
@@ -41,6 +45,8 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     public class NewWorld : IWorld
     {
+        public bool Available => Version.Available && RemoteWorld.Available;
+
         protected readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public bool HasRemote => RemoteWorld != null;
@@ -57,11 +63,14 @@ namespace Server_GUI2.Develop.Server.World
 
         public DatapackCollection Datapacks { get; } = new DatapackCollection(new List<string>());
 
+        public PluginCollection Plugins { get; } = new PluginCollection(new List<string>());
+
         public ServerProperty Property { get; } = new ServerProperty();
 
         public ServerType? Type { get; } = null;
 
         private string _name = "input_name";
+
         public string Name
         {
             get => _name;
@@ -136,14 +145,21 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     public class World : IWorld
     {
+        public bool Available => Version.Available && RemoteWorld.Available;
+
         protected readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        // 削除イベント
         public event EventHandler DeleteEvent;
 
         // remoteを削除する際のイベントハンドラ
         private EventHandler deleteRemoteEvent;
 
         public readonly LocalWorld LocalWorld;
+
+        // localを削除する際のイベントハンドラ
+        private EventHandler deleteLocalEvent;
+
         public RemoteWorld RemoteWorld { get; private set; }
 
         private IWorldBase world
@@ -172,6 +188,7 @@ namespace Server_GUI2.Develop.Server.World
         public bool HasCustomMap => CustomMap != null;
 
         public DatapackCollection Datapacks => world.Datapacks;
+        public PluginCollection Plugins => world.Plugins;
 
         public ServerProperty Property => world.Property;
 
@@ -192,6 +209,8 @@ namespace Server_GUI2.Develop.Server.World
         public World(LocalWorld local)
         {
             deleteRemoteEvent = new EventHandler((_, __) => UnlinkForce());
+            deleteLocalEvent = new EventHandler((_, __) => Delete());
+
             LocalWorld = local;
             RemoteWorld = null;
             CanCahngeRemote = true;
@@ -239,7 +258,13 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public void Delete()
         {
-            if (DeleteEvent != null) DeleteEvent(this, null);
+            // リモートを解除
+            if (HasRemote) UnlinkForce();
+
+            // ローカルのイベントを解除
+            LocalWorld.DeleteEvent -= deleteLocalEvent;
+
+            // 削除
             LocalWorld.Delete();
         }
 
@@ -279,8 +304,13 @@ namespace Server_GUI2.Develop.Server.World
         {
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
+
             // データパックの導入
             Datapacks.Evaluate(LocalWorld.Path.FullName);
+
+            // プラグインの導入
+            Plugins.Evaluate(LocalWorld.Path.FullName);
+
             // 実行
             LocalWorld.WrapRun(runFunc);
         }
@@ -306,6 +336,9 @@ namespace Server_GUI2.Develop.Server.World
 
             // データパックの導入
             Datapacks.Evaluate(LocalWorld.Path.FullName);
+
+            // プラグインの導入
+            Plugins.Evaluate(LocalWorld.Path.FullName);
 
             // 実行
             LocalWorld.WrapRun(runFunc);
@@ -344,6 +377,9 @@ namespace Server_GUI2.Develop.Server.World
 
             // データパックの導入
             Datapacks.Evaluate(LocalWorld.Path.FullName);
+
+            // プラグインの導入
+            Plugins.Evaluate(LocalWorld.Path.FullName);
 
             // 実行
             LocalWorld.WrapRun(runFunc);

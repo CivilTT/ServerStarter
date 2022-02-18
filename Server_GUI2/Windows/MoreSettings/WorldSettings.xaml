@@ -249,7 +249,7 @@
         <Line X1="3" X2="3" Y1="10" Y2="430" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
 
         <!--//PropertiesContents//-->
-        <Grid Visibility="{Binding ShowProp, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <Grid Visibility="Hidden" Style="{StaticResource SettingContent}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <Button Content="Save as Default" Style="{StaticResource OtherStyle}"/>
                 <Button Content="Set Default" Style="{StaticResource OtherStyle}"/>
@@ -281,7 +281,7 @@
         </Grid>
 
         <!--//ShareWorldContents//-->
-        <Grid Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <Grid Visibility="Visible" Style="{StaticResource SettingContent}">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                     <TextBlock Text="Use ShareWorld" FontSize="24" Margin="20 0"/>

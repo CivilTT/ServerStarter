@@ -16,12 +16,21 @@ using Server_GUI2.Develop.Server;
 
 namespace Server_GUI2
 {
+    public class VersionException : Exception
+    {
+        public VersionException(string message):base(message){ }
+    }
+
     public class Version : IComparable<Version>, INotifyPropertyChanged
     {
         protected ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static WebClient wc = new WebClient();
 
         protected VersionFactory VerFactory = VersionFactory.Instance;
+
+        public event EventHandler DeleteEvent;
+
+        public bool Available;
 
         public virtual ServerType Type { get; }
 
@@ -51,11 +60,12 @@ namespace Server_GUI2
             }
         }
 
-        protected Version(string name,VersionPath path)
+        protected Version(string name,VersionPath path, bool available)
         {
             Path = path;
             Name = name;
             Exists = Path.Exists;
+            Available = available;
         }
 
         /// <summary>
@@ -85,39 +95,29 @@ namespace Server_GUI2
         /// </summary>
         protected virtual void SetNewVersion()
         {
-            Exists = true;
-
-            logger.Info("There are already new version, or not");
+            logger.Info("Install new version");
             if (Exists)
             {
-                logger.Info("There are already new version");
+                logger.Info($"Version: {Name} is already exists");
                 return;
             }
 
-            logger.Info("Download server.jar");
-            if (Name == "")
-            {
-                MessageBoxResult? result = MW.MessageBox.Show("導入するサーバーのバージョンが選択されていません。\r\nサーバーのバージョンを選択をした上で再度「Run」を押してください。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                if (result == MessageBoxResult.OK)
-                {
-                    // システムを再起動する
-                    // TODO: これは単に再表示するだけのほうが良いのでは？
-                    System.Windows.Forms.Application.Restart();
-                }
+            Exists = true;
 
-                ArgumentException arg = new ArgumentException("Did not select opening version");
-                throw new ServerStarterException<ArgumentException>(arg);
-            }
+            logger.Info("Download server");
         }
 
         public void Remove()
         {
             Exists = false;
 
-            MessageBoxResult? result = MW.MessageBox.Show($"このバージョンを削除しますか？\r\n「{Data_list.ReadVersion}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-            logger.Warn("Warning the delete Version data");
+            MessageBoxResult? result = MW.MessageBox.Show($"このバージョンを削除しますか？\r\n「{Name}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            logger.Warn("delete Version data");
             if (result == MessageBoxResult.OK)
             {
+                // 削除イベント発火
+                DeleteEvent?.Invoke(this,null);
+                // ディレクトリを削除
                 Path.Delete();
             }
         }
@@ -202,7 +202,8 @@ namespace Server_GUI2
         // server.jarのダウンロードurl
         private string DownloadURL;
 
-        public VanillaVersion(string name, string downloadURL, bool isRelease, bool hasSpigot ,bool isLatest = false): base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name))
+        public VanillaVersion(string name, string downloadURL, bool isRelease, bool hasSpigot ,bool isLatest = false, bool available = true):
+            base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name),available)
         {
             IsRelease = isRelease;
             HasSpigot = hasSpigot;
@@ -262,7 +263,7 @@ namespace Server_GUI2
         protected override string JarName { get { return $"spigot-{Name}.jar"; } }
         public override ServerType Type => ServerType.Spigot;
 
-        public SpigotVersion(string name) : base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name))
+        public SpigotVersion(string name, bool available) : base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name), available)
         {
             // Initialize
         }

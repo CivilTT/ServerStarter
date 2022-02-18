@@ -95,9 +95,6 @@ namespace Server_GUI2
             
         }
 
-        /// <summary>
-        /// TODO: ディレクトリからデータパックを削除
-        /// </summary>
         public override void Remove(string datapacksPath)
         {
             var path = Path.Combine(datapacksPath, Name);

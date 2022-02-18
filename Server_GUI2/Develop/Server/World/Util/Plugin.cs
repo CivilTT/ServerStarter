@@ -1,22 +1,73 @@
 ﻿using log4net;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Server_GUI2.Develop.Server
+namespace Server_GUI2
 {
-    class Plugin
+    public class PluginCollection
+    {
+        public ObservableCollection<APlugin> Plugins { get; }
+        private List<Action<string>> operations = new List<Action<string>>();
+
+        public PluginCollection(List<string> pluginNames)
+        {
+            Plugins = new ObservableCollection<APlugin>(pluginNames.Select(x => new ExistPlugin(x)));
+        }
+
+        public List<string> ExportList()
+        {
+            return Plugins.Select(x => x.Name).ToList();
+        }
+
+        /// <summary>
+        /// データパックを追加する
+        /// (ディレクトリ操作は行わない)
+        /// </summary>
+        public void Add(Plugin plugin)
+        {
+            Plugins.Add(plugin);
+            operations.Add(plugin.Import);
+        }
+
+        /// <summary>
+        /// データパックを削除する
+        /// (ディレクトリ操作は行わない)
+        /// </summary>
+        public void Remove(APlugin plugin)
+        {
+            Plugins.Remove(plugin);
+            operations.Add(plugin.Remove);
+        }
+
+        /// <summary>
+        /// データパックの削除と追加をディレクトリ上で実際に行う
+        /// </summary>
+        public void Evaluate(string path)
+        {
+            foreach (var operation in operations)
+                operation(path);
+        }
+
+        public List<string> GetNames()
+        {
+            return Plugins.Select(x => x.Name).ToList();
+        }
+    }
+
+
+    public class APlugin
     {
         public ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public string Name { get; private set; }
 
+        protected bool IsZip;
 
-        public Plugin(string name)
+        protected APlugin(string name)
         {
             Name = name;
         }
@@ -25,45 +76,34 @@ namespace Server_GUI2.Develop.Server
         /// 削除の必要性があるかどうか
         /// TODO: Viewを更新するためにEventを作成する
         /// </summary>
-        public bool IsRemove;
+        public bool NeedToRemove;
 
-        protected virtual void Remove(string path) { }
-
-        protected virtual void Import(string path) { }
-
-        public void Ready(string path)
-        {
-            if (IsRemove)
-                Remove(path);
-
-            Import(path);
-        }
-
+        public virtual void Remove(string path) { }
     }
-    
-    class ExistPlugin : Plugin
+
+    public class ExistPlugin : APlugin
     {
         public ExistPlugin(string name) : base(name)
         {
 
         }
 
-        protected override void Remove(string path)
+        public override void Remove(string path)
         {
             File.Delete(path);
         }
     }
 
-    class ImportPlugin : Plugin
+    public class Plugin : APlugin
     {
         private readonly string SourcePath;
 
-        public ImportPlugin(string name, string sourcePath) : base(name)
+        public Plugin(string name, string sourcePath) : base(name)
         {
             SourcePath = sourcePath;
         }
 
-        protected override void Import(string path)
+        public void Import(string path)
         {
             File.Move(SourcePath, path);
         }
