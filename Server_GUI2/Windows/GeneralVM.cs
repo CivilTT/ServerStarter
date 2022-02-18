@@ -1,13 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Server_GUI2.Windows.ViewModels
 {
-    class GeneralVM
+    public static class GeneralVM
     {
+        public static void Sort<T>(this ObservableCollection<T> collection)
+        {
+            var sortableList = new List<T>(collection);
+            sortableList.Sort();
+
+            for (int i = 0; i < sortableList.Count; i++)
+            {
+                collection.Move(collection.IndexOf(sortableList[i]), i);
+            }
+        }
     }
 
     interface IOperateWindows
@@ -30,7 +41,7 @@ namespace Server_GUI2.Windows.ViewModels
             }
         }
 
-        private Action action;
+        private readonly Action action;
 
         public BindingValue(T defaultValue, Action action)
         {
