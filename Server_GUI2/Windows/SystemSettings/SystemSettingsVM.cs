@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Server_GUI2.Util;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
@@ -147,9 +148,17 @@ namespace Server_GUI2.Windows.SystemSettings
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanAddition_Gr"));
             });
             PlayerList_Group = new ObservableCollection<Player>();
-            PLGIndex = new BindingValue<Player>(null, () => new PropertyChangedEventArgs("PLGIndex"));
+            PLGIndex = new BindingValue<Player>(null, () =>
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PLGIndex"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanAddition_Gr"));
+            });
             MemberList = new ObservableCollection<Player>();
-            MLIndex = new BindingValue<Player>(null, () => new PropertyChangedEventArgs("MLIndex"));
+            MLIndex = new BindingValue<Player>(null, () =>
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MLIndex"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanAddition_Gr"));
+            });
             GroupList = new ObservableCollection<PlayerGroup>();
             GLIndex = new BindingValue<PlayerGroup>(null, () => new PropertyChangedEventArgs("GLIndex"));
         }
@@ -187,25 +196,25 @@ namespace Server_GUI2.Windows.SystemSettings
 
     public class MemberListConverter : IValueConverter
     {
-        // TODO: Listを表示するためのConverterを作成する
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is ObservableCollection<Player> memberList))
+            if (value is ObservableCollection<Player> memberList)
             {
-                // 流れてきた値がObservableCollection<Player>ではない場合の処理
+                return string.Join(",  ", memberList.Select(x => x.Name));
             }
 
-            // Kusa, Gomi, CivilTTみたいな感じ
-            //return 
+            // 流れてきた値がObservableCollection<Player>ではない場合の処理
+            return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            // Windowから値が入らないため実装の必要性がない
             throw new NotImplementedException();
         }
     }
 
-    class AccountInfo : IEquatable<AccountInfo>
+    class AccountInfo : IEquatable<AccountInfo>, IComparable<AccountInfo>
     {
         public string Name { get; private set; }
         public string Email { get; private set; }
@@ -231,9 +240,14 @@ namespace Server_GUI2.Windows.SystemSettings
         {
             return other.Name == Name;
         }
+
+        public int CompareTo(AccountInfo other)
+        {
+            return Name.CompareTo(other.Name);
+        }
     }
 
-    class PlayerGroup : IEquatable<PlayerGroup>
+    class PlayerGroup : IEquatable<PlayerGroup>, IComparable<PlayerGroup>
     {
         public string GroupName { get; private set; }
         public ObservableCollection<Player> PlayerList { get; private set; }
@@ -248,9 +262,14 @@ namespace Server_GUI2.Windows.SystemSettings
         {
             return other.GroupName == GroupName;
         }
+
+        public int CompareTo(PlayerGroup other)
+        {
+            return GroupName.CompareTo(other.GroupName);
+        }
     }
 
-    class Player : IEquatable<Player>
+    class Player : IEquatable<Player>, IComparable<Player>
     {
         readonly WebClient wc;
         public string Name { get; private set; }
@@ -289,6 +308,11 @@ namespace Server_GUI2.Windows.SystemSettings
         public bool Equals(Player other)
         {
             return other.UUID == UUID;
+        }
+
+        public int CompareTo(Player other)
+        {
+            return Name.CompareTo(other.Name);
         }
     }
 }

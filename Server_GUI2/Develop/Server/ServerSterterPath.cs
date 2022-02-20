@@ -145,8 +145,8 @@ namespace Server_GUI2.Develop.Server
     public class ServerGuiPath : DirectoryPath
     {
         // TODO: 元のカレントディレクトリに戻す
-        public static ServerGuiPath Instance = new ServerGuiPath(new DirectoryInfo(Environment.GetEnvironmentVariable("SERVER_STERTER_TEST")));
-        //public static ServerGuiPath Instance = new ServerGuiPath(new DirectoryInfo(AppDomain.CurrentDomain.SetupInformation.ApplicationBase));
+        //public static ServerGuiPath Instance = new ServerGuiPath(new DirectoryInfo(Environment.GetEnvironmentVariable("SERVER_STERTER_TEST")));
+        public static ServerGuiPath Instance = new ServerGuiPath(new DirectoryInfo(AppDomain.CurrentDomain.SetupInformation.ApplicationBase));
 
         public WorldDataPath WorldData;
         public GitStatePath GitState;
