@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server_GUI2.Windows.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -45,6 +46,7 @@ namespace Server_GUI2.Windows.SystemSettings
                 }
 
                 list.Add(content);
+                list.Sort();
             }
 
             switch (parameter)
@@ -158,7 +160,9 @@ namespace Server_GUI2.Windows.SystemSettings
 
                 case "Group":
                     var groupList = _vm.GroupList;
-                    var groupIndex = _vm.MLIndex.Value;
+                    var groupIndex = _vm.GLIndex.Value ?? null;
+                    var groupName = _vm.GLIndex.Value?.GroupName ?? null;
+                    DeleteContent(groupList, groupIndex, groupName, "削除したい行を選択してください。");
                     break;
 
                 default:
