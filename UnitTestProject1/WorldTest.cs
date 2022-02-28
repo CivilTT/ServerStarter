@@ -17,12 +17,9 @@ namespace UnitTestProject1
             foreach (var i in WorldCollection.Instance.Worlds)
             {
                 Console.WriteLine(i.DisplayName);
-                foreach (var j in i.Datapacks.Datapacks)
-                    Console.WriteLine("   " + j.Name);
             }
-            //var ver = VersionFactory.Instance.GetVersionFromName("1.18.1");
-            //WorldCollection.Instance.WorldWrappers[1].WrapRun(ver, x => { } );
-
+            var ver = VersionFactory.Instance.GetVersionFromName("1.18.1");
+            WorldCollection.Instance.Worlds[1].WrapRun(ver, x => { });
         }
     }
 }
