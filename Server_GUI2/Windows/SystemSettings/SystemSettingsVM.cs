@@ -251,7 +251,10 @@ namespace Server_GUI2.Windows.SystemSettings
 
     public class PlayerGroup : IEquatable<PlayerGroup>, IComparable<PlayerGroup>
     {
+        [JsonProperty("GroupName")]
         public string GroupName { get; private set; }
+
+        [JsonProperty("PlayerList")]
         public ObservableCollection<Player> PlayerList { get; private set; }
 
         public PlayerGroup(string name, ObservableCollection<Player> list)
