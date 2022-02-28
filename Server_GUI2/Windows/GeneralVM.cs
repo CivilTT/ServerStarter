@@ -1,13 +1,59 @@
-﻿using System;
+﻿using Server_GUI2.Util;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Server_GUI2.Windows.ViewModels
 {
-    public static class GeneralVM
+    abstract class GeneralVM : INotifyPropertyChanged, IOperateWindows
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public Action Show { get; set; }
+        public Action Hide { get; set; }
+        public Action Close { get; set; }
+
+        /// <summary>
+        /// PropertyChanged?.Invokeの記述を省略する
+        /// </summary>
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        protected void OnPropertyChanged(string[] propertyList)
+        {
+            foreach (string property in propertyList)
+                OnPropertyChanged(property);
+        }
+
+        /// <summary>
+        /// GUI上で情報が入力されているか否かを確認する
+        /// 引数を複数取る場合、全ての変数に対してAND検証した結果を返す
+        /// </summary>
+        /// <returns>情報がある場合はtrue, ない場合やそもそも検査対象の変数がnullの時はfalse</returns>
+        protected bool CheckHasContent<T>(BindingValue<T> bindingValue, T checkValue)
+        {
+            return bindingValue != null && !EqualityComparer<T>.Default.Equals(bindingValue.Value, checkValue) && bindingValue.Value != null;
+        }
+        protected bool CheckHasContent<T>(List<BindingValue<T>> bindingValues, T checkValue)
+        {
+            foreach (var binding in bindingValues)
+                if (!CheckHasContent(binding, checkValue)) return false;
+
+            return true;
+        }
+        protected bool CheckHasContent<T>(ObservableCollection<T> collection)
+        {
+            return collection != null && collection.Count != 0;
+        }
+    }
+
+    public static class AdditionalCollectionFuncs
     {
         public static void Sort<T>(this ObservableCollection<T> collection)
         {
@@ -28,7 +74,7 @@ namespace Server_GUI2.Windows.ViewModels
         Action Close { get; set; }
     }
 
-    class BindingValue<T>
+    public class BindingValue<T>
     {
         private T _value;
         public T Value

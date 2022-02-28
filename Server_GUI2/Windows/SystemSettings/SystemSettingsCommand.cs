@@ -1,34 +1,24 @@
-﻿using Server_GUI2.Windows.ViewModels;
+﻿using Server_GUI2.Develop.Util;
+using Server_GUI2.Windows.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using MW = ModernWpf;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
-    class AddListCommand : ICommand
+    class AddListCommand : GeneralCommand<SystemSettingsVM>
     {
-        private readonly SystemSettingsVM _vm;
-
-        public event EventHandler CanExecuteChanged;
-
         public AddListCommand(SystemSettingsVM vm)
         {
             _vm = vm;
         }
 
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             void AddContent<T>(ObservableCollection<T> list, T content, string alreadyContainMessage, string nullMessage="")
             {
@@ -94,23 +84,39 @@ namespace Server_GUI2.Windows.SystemSettings
         }
     }
 
-    class DeleteListCommand : ICommand
+    class EditListCommand : GeneralCommand<SystemSettingsVM>
     {
-        private readonly SystemSettingsVM _vm;
+        public EditListCommand(SystemSettingsVM vm)
+        {
+            _vm = vm;
+        }
 
-        public event EventHandler CanExecuteChanged;
+        public override void Execute(object parameter)
+        {
+            switch (parameter)
+            {
+                case "Remote":
+                    var remoteList = _vm.RemoteList;
+                    var remoteDeleteItem = _vm.RLIndex.Value ?? null;
+                    _vm.AccountName.Value = remoteDeleteItem.Name;
+                    _vm.AccountEmail.Value = remoteDeleteItem.Email;
+                    _vm.RepoName.Value = remoteDeleteItem.Repository;
+                    remoteList.Remove(remoteDeleteItem);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
+    class DeleteListCommand : GeneralCommand<SystemSettingsVM>
+    {
         public DeleteListCommand(SystemSettingsVM vm)
         {
             _vm = vm;
         }
 
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             void DeleteContent<T>(ObservableCollection<T> list, T deleteItem, string name, string nullMessage)
             {
@@ -138,8 +144,8 @@ namespace Server_GUI2.Windows.SystemSettings
 
                 case "Player":
                     var playerList = _vm.PlayerList;
-                    var playerDeleteItem = _vm.PLIndex.Value ?? null;
-                    var playerName = _vm.PLIndex.Value?.Name ?? null;
+                    var playerDeleteItem = _vm.PLIndex ?? null;
+                    var playerName = _vm.PLIndex?.Name ?? null;
                     DeleteContent(playerList, playerDeleteItem, playerName, "削除したい行を選択してください。");
                     break;
 
@@ -160,14 +166,168 @@ namespace Server_GUI2.Windows.SystemSettings
 
                 case "Group":
                     var groupList = _vm.GroupList;
-                    var groupIndex = _vm.GLIndex.Value ?? null;
-                    var groupName = _vm.GLIndex.Value?.GroupName ?? null;
+                    var groupIndex = _vm.GLIndex ?? null;
+                    var groupName = _vm.GLIndex?.GroupName ?? null;
                     DeleteContent(groupList, groupIndex, groupName, "削除したい行を選択してください。");
                     break;
 
                 default:
                     throw new ArgumentException("This Parameter is not registed (self Exception)");
             }
+        }
+    }
+
+    class CredentialManagerCommand : GeneralCommand<SystemSettingsVM>
+    {
+        public CredentialManagerCommand(SystemSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            Process.Start("control", "/name Microsoft.CredentialManager");
+        }
+    }
+
+    class AddPortCommand : GeneralCommand<SystemSettingsVM>
+    {
+        public AddPortCommand(SystemSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            PortSetting portSetting = new PortSetting(_vm);
+            _ = portSetting.AddPort();
+        }
+    }
+
+    class PortSetting
+    {
+        readonly SystemSettingsVM _vm;
+        readonly PortMapping PortMapping = new PortMapping();
+
+        public PortSetting(SystemSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public async Task AddPort()
+        {
+            int portNum = int.Parse(_vm.PortNumber.Value);
+            _vm.PortStatus.Value = new PortStatus(portNum, PortStatus.Status.Registering);
+
+            bool isSuccess = await PortMapping.AddPort(portNum);
+
+            if (isSuccess)
+                _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Open;
+            else
+                _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Failed;
+        }
+
+        public async Task DeletePort()
+        {
+            int portNum = int.Parse(_vm.PortNumber.Value);
+            PortStatus status = _vm.PortStatus.Value;
+
+            // そもそもポート開放していない場合は何もしない
+            if (status == null || (status.StatusEnum.Value != PortStatus.Status.Open && status.StatusEnum.Value != PortStatus.Status.Registering))
+                return;
+
+            var result = MW.MessageBox.Show(
+                $"{portNum}番のポートを閉鎖します。よろしいですか？\n" +
+                $"違う番号のポートを閉鎖する場合は「いいえ」を選択し、Port Numberを変更してください。",
+                "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result != MessageBoxResult.Yes)
+            {
+                _vm.UsingPortMapping.Value = true;
+                return;
+            }
+
+            bool isSuccess = await PortMapping.DeletePort(portNum);
+
+            if (isSuccess)
+                _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Close;
+            else
+            {
+                MW.MessageBox.Show(
+                        "ポートの閉鎖に失敗しました。\n" +
+                        "ルーターなどの設定を変更した場合は、Auto Port Mappingを始めた際の設定に戻し、Auto Port MappingをOffにしてください。",
+                        "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Open;
+                _vm.UsingPortMapping.Value = true;
+            }
+        }
+    }
+
+    class ClipbordCommand : GeneralCommand<SystemSettingsVM>
+    {
+        public ClipbordCommand(SystemSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            Clipboard.SetText(_vm.IP);
+        }
+    }
+
+    class TwitterCommand : GeneralCommand<SystemSettingsVM>
+    {
+        public TwitterCommand(SystemSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            string url = $"https://twitter.com/{parameter}";
+            Process.Start(url);
+        }
+    }
+
+    class GitCommandVM : GeneralCommand<SystemSettingsVM>
+    {
+        public GitCommandVM(SystemSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            string url = $"https://github.com/{parameter}";
+            Process.Start(url);
+        }
+    }
+
+    class SaveCommand : GeneralCommand<SystemSettingsVM>
+    {
+        public SaveCommand(SystemSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            UserSettingsJson saveData = new UserSettingsJson
+            {
+                PlayerName = _vm.UserName.Value,
+                Language = "English",
+                RemoteContents = _vm.RemoteList.ToList(),
+                DefaultProperties = _vm.PropertyIndexs.Value,
+                Players = _vm.PlayerList.ToList(),
+                PlayerGroups = _vm.GroupList.ToList(),
+                PortStatus = _vm.PortStatus.Value.StatusEnum.Value == PortStatus.Status.Open ? _vm.PortStatus.Value : null
+            };
+
+            UserSettings.Instance.userSettings = saveData;
+            UserSettings.Instance.WriteFile();
+
+            _vm.Close();
         }
     }
 }

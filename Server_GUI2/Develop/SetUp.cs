@@ -17,7 +17,6 @@ namespace Server_GUI2
         public static string CurrentDirectory { get { return AppDomain.CurrentDomain.BaseDirectory; } }
         public static string DataPath { get { return Path.Combine(CurrentDirectory, "World_Data"); } }
 
-
         public void ChangeSpecification()
         {
             // 仕様変更が必要な場合に使う

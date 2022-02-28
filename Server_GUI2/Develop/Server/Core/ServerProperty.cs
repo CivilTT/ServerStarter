@@ -91,6 +91,7 @@ namespace Server_GUI2
                 {"resource-pack",""},
                 {"entity-broadcast-range-percentage","100"},
                 {"level-name",""},
+                {"level-type", "default"},
                 {"player-idle-timeout","0"},
                 {"rcon.password",""},
                 {"motd","A Minecraft Server"},
@@ -104,7 +105,7 @@ namespace Server_GUI2
                 {"max-players","20"},
                 {"resource-pack-sha1",""},
                 {"spawn-protection","16"},
-                {"max-world-size","29999984"},
+                {"max-world-size","29999984"}
             };
 
         [JsonIgnore]
@@ -132,7 +133,7 @@ namespace Server_GUI2
             {"use-native-transport",true},
             {"enable-status",true},
             {"online-mode",true},
-            {"allow-flight",false},
+            {"allow-flight",false}
         };
 
         [JsonProperty("broadcast-rcon-to-ops")]
@@ -277,6 +278,14 @@ namespace Server_GUI2
         {
             get { return StringOption["level-name"]; }
             set { StringOption["level-name"] = value; }
+        }
+
+        [JsonProperty("level-type")]
+        [DefaultValue("default")]
+        public string LevelType
+        {
+            get { return StringOption["level-type"]; }
+            set { StringOption["level-type"] = value; }
         }
 
         [JsonProperty("player-idle-timeout")]

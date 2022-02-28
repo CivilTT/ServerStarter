@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Server_GUI2.Develop.Server;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
+using Server_GUI2.Windows.SystemSettings;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,54 +19,41 @@ namespace Server_GUI2
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static UserSettingsJson userSettings = new UserSettingsJson();
+        public static UserSettings Instance = new UserSettings();
 
-        public static string JsonPath
-        {
-            get
-            {
-                return "info.json";
-            }
-        }
+        public UserSettingsJson userSettings = new UserSettingsJson();
 
-        public string OldInfoPath
-        {
-            get
-            {
-                return $@"{SetUp.DataPath}\info.txt";
-            }
-        }
+        public static string JsonPath => "info.json";
+        public string OldInfoPath => $@"{SetUp.DataPath}\info.txt";
 
-        public UserSettings()
+        private UserSettings()
         {
             ReadFile();
         }
 
-        public void ReadFile()
+        private void ReadFile()
         {
             string errorMessage =
                 "個人設定の読み込みに失敗しました。\n" +
                 "個人設定の再設定を行ってください。";
             if (File.Exists(JsonPath))
             {
-                logger.Info("Read the local info data");
+                logger.Info("Read the local info.json data");
                 userSettings = ReadContents.ReadlocalJson<UserSettingsJson>(JsonPath, errorMessage);
-                if (userSettings.jsonVersion != UserSettingsJson.LatestJsonVer)
+                if (userSettings.JsonVersion != UserSettingsJson.LatestJsonVer)
                 {
                     // TODO: jsonの中身を変更した場合にはここにバージョン変換の実装を書く
                 }
             }
             else if (File.Exists(OldInfoPath))
             {
-                logger.Info("Read the local info data");
+                logger.Info("Read the local info.txt data");
+                
                 List<string> info = ReadContents.ReadOldInfo(OldInfoPath);
-                ShareWorld sw = new ShareWorld
-                {
-                    gitAccountName = info[5],
-                    gitAccountMail = info[6]
-                };
-                userSettings.playerName = info[0];
-                userSettings.shareworlds = new List<ShareWorld>() { sw };
+                AccountInfo accountInfo = new AccountInfo(info[5], info[6], "ShareWorld", "main");
+                
+                userSettings.PlayerName = info[0];
+                userSettings.RemoteContents.Add(accountInfo);
             }
             else
             {
@@ -108,30 +96,39 @@ namespace Server_GUI2
         public static int LatestJsonVer = 1;
 
         [JsonProperty("JsonVersion")]
-        public int jsonVersion = LatestJsonVer;
+        public int JsonVersion = LatestJsonVer;
 
         [JsonProperty("PlayerName")]
-        public string playerName;
+        public string PlayerName;
 
         [JsonProperty("Language")]
-        public string language;
+        public string Language;
 
         [JsonProperty("LatestRun")]
         // LatestRun : {
         //  "Version" : "1.17.1", 
         //  "World" : "ShareWorld"
         // }
-        public LatestRun latestRun;
+        public LatestRun LatestRun;
 
-        [JsonProperty("ShareWorld")]
+        [JsonProperty("RemoteContents")]
         // ShareWorld はワールド名、Gitのアカウント名、GitのE-mailアドレスの情報を記録する
         // ShareWorldという名前でなくても共有ワールド化できるようにする
-        public List<ShareWorld> shareworlds = new List<ShareWorld>();
+        public List<AccountInfo> RemoteContents = new List<AccountInfo>();
 
         [JsonProperty("DefaultProperty")]
         // あくまでデフォルトはシステムで保持しておき、それから変更したものを通常設定としたい場合の部分のみこれで保持する
         // { "difficulty" : "hard" }
-        public ServerProperty defaultProperties = new ServerProperty();
+        public ServerProperty DefaultProperties = new ServerProperty();
+
+        [JsonProperty("Players")]
+        public List<Player> Players = new List<Player>();
+
+        [JsonProperty("PlayerGroups")]
+        public List<PlayerGroup> PlayerGroups = new List<PlayerGroup>();
+
+        [JsonProperty("PortMapping")]
+        public PortStatus PortStatus = null;
     }
 
     public class LatestRun

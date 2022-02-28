@@ -26,7 +26,7 @@ namespace Server_GUI2.Windows.MainWindow
 
         // 一般
         public string StarterVersion { get { return $"ver {SetUp.StarterVersion}"; } }
-        public string PlayerName { get { return UserSettings.userSettings.playerName; } }
+        public string PlayerName { get { return UserSettings.Instance.userSettings.PlayerName; } }
         public string OpContents { get { return $"{PlayerName} has op rights in this version's server"; } }
 
 
@@ -224,7 +224,7 @@ namespace Server_GUI2.Windows.MainWindow
         {
             get
             {
-                LatestRun latestRun = UserSettings.userSettings.latestRun;
+                LatestRun latestRun = UserSettings.Instance.userSettings.LatestRun;
 
                 if (latestRun != null && latestRun.VersionName != "" && ExistsVersions.Contains(latestRun.VersionName))
                 {
