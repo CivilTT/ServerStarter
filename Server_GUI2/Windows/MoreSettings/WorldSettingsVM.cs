@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using Server_GUI2.Windows.SystemSettings;
 
 namespace Server_GUI2.Windows.MoreSettings
 {
@@ -44,16 +45,20 @@ namespace Server_GUI2.Windows.MoreSettings
 
 
         //Op
-        public ObservableCollection<Player> OpPlayersList = new ObservableCollection<Player>();
+        public ObservableCollection<OpPlayer> OpPlayersList = new ObservableCollection<OpPlayer>();
 
 
     }
 
-    public class Player
+    public class OpPlayer : Player
     {
-        public string Name;
-        public string UUID;
         public int OpLevel;
-        public bool BypassesPlayerLimit = false;
+        public bool BypassesPlayerLimit;
+
+        public OpPlayer(string name, int opLevel, bool bypassesPlayerLimit=false) : base(name)
+        {
+            OpLevel = opLevel;
+            BypassesPlayerLimit = bypassesPlayerLimit;
+        }
     }
 }
