@@ -21,7 +21,7 @@ namespace Server_GUI2.Windows.SystemSettings
 {
     class SystemSettingsVM : GeneralVM
     {
-        readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
+        static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
 
         // 設定項目の表示非表示を操作
         public BindingValue<int> MenuIndex { get; private set; }
@@ -51,8 +51,62 @@ namespace Server_GUI2.Windows.SystemSettings
         public string[] DifficultyCombo => new string[4] { "peaceful", "easy", "normal", "hard" };
         public string[] GamemodeCombo => new string[4] { "survival", "creative", "adventure", "spectator" };
         public string[] TypeCombo => new string[4] { "default", "flat", "largeBiomes", "amplified" };
+        /// <summary>
+        /// MainSettingsで使用（最終保存データを格納）
+        /// </summary>
         public BindingValue<ServerProperty> PropertyIndexs { get; private set; }
-
+        /// <summary>
+        /// TrueFalseの左側の項目一覧
+        /// </summary>
+        public string[] OtherTFPropertyIndexs
+        {
+            get
+            {
+                ServerProperty defaultProperties = SaveData.DefaultProperties;
+                string[] removeIndex = new string[2] { "hardcore", "white-list" };
+                List<string> allindex = defaultProperties.BoolOption.Keys.ToList();
+                allindex.RemoveAll(index => removeIndex.Contains(index));
+                return allindex.ToArray();
+            }
+        }
+        /// <summary>
+        /// TrueFalseの左側で選択している項目
+        /// </summary>
+        public BindingValue<string> SelectedTFIndex { get; private set; }
+        /// <summary>
+        /// Stringの左側の項目一覧
+        /// </summary>
+        public string[] OtherPropertyIndexs
+        {
+            get
+            {
+                ServerProperty defaultProperties = SaveData.DefaultProperties;
+                string[] removeIndex = new string[4] { "difficulty", "gamemode", "level-type", "level-name" };
+                List<string> allindex = defaultProperties.StringOption.Keys.ToList();
+                allindex.RemoveAll(index => removeIndex.Contains(index));
+                return allindex.ToArray();
+            }
+        }
+        /// <summary>
+        /// Stringの左側で選択している項目
+        /// </summary>
+        public BindingValue<string> SelectedPropIndex { get; private set; }
+        /// <summary>
+        /// TrueFalseの右側で選択している項目
+        /// </summary>
+        public bool SelectedTFProperty
+        {
+            get => PropertyIndexs.Value.BoolOption[SelectedTFIndex.Value];
+            set => PropertyIndexs.Value.BoolOption[SelectedTFIndex.Value] = value;
+        }
+        /// <summary>
+        /// Stringの右側の記載事項
+        /// </summary>
+        public string OtherStringProperty
+        {
+            get => PropertyIndexs.Value.StringOption[SelectedPropIndex.Value];
+            set => PropertyIndexs.Value.StringOption[SelectedPropIndex.Value] = value;
+        }
 
 
         // Players
@@ -124,6 +178,8 @@ namespace Server_GUI2.Windows.SystemSettings
             // Server
             ServerProperty defaultProperties = SaveData.DefaultProperties;
             PropertyIndexs = new BindingValue<ServerProperty>(defaultProperties, () => OnPropertyChanged("PropertyIndexs"));
+            SelectedTFIndex = new BindingValue<string>(OtherTFPropertyIndexs[0], () => OnPropertyChanged("SelectedTFProperty"));
+            SelectedPropIndex = new BindingValue<string>(OtherPropertyIndexs[0], () => OnPropertyChanged("OtherStringProperty"));
 
             // Players
             PlayersTabIndex = new BindingValue<int>(0, () => UpdateGroupPlayersAndMembers());
@@ -136,7 +192,6 @@ namespace Server_GUI2.Windows.SystemSettings
             PLGIndex = new BindingValue<Player>(null, () => OnPropertyChanged("CanAddition_Gr"));
             MemberList = new ObservableCollection<Player>();
             MLIndex = new BindingValue<Player>(null, () => OnPropertyChanged("CanAddition_Gr"));
-            Console.WriteLine(SaveData.PlayerGroups.Count);
             GroupList = new ObservableCollection<PlayerGroup>(SaveData.PlayerGroups);
 
 
@@ -146,7 +201,7 @@ namespace Server_GUI2.Windows.SystemSettings
             AddPortCommand = new AddPortCommand(this);
             ClipbordCommand = new ClipbordCommand(this);
             PortStatus status = SaveData.PortStatus;
-            PortStatus defaultStatus = new PortStatus(25565, Develop.Util.PortStatus.Status.Ready);
+            PortStatus defaultStatus = new PortStatus(int.Parse(defaultProperties.ServerPort), Develop.Util.PortStatus.Status.Ready);
             PortStatus = new BindingValue<PortStatus>(UsingPortMapping.Value && status.StatusEnum.Value == Develop.Util.PortStatus.Status.Open ? status : defaultStatus, () => OnPropertyChanged("PortStatus"));
 
             // Others
@@ -162,26 +217,21 @@ namespace Server_GUI2.Windows.SystemSettings
         /// <summary>
         /// PlayersタブのGroup内のPlayerとMemberの内容を更新する
         /// </summary>
-        private void UpdateGroupPlayersAndMembers()
+        public void UpdateGroupPlayersAndMembers()
         {
             if (PlayersTabIndex == null || PlayersTabIndex.Value == 0)
                 return;
 
-            PlayerList_Group.Clear();
-            List<Player> tmpMember = MemberList.ToList();
-
             // Membersに登録されていないものをPlayersに登録
-            PlayerList.Where(player => !MemberList.Contains(player)).ToList().ForEach(player => PlayerList_Group.Add(player));
-            // これをやっていきtmpMemberに残ったものが、「Membersの中で登録済みのプレイヤーでないもの」となる
-            tmpMember.AddRange(PlayerList.Where(player => MemberList.Contains(player)));
+            PlayerList_Group.ChangeCollection(PlayerList.Where(player => !MemberList.Contains(player)));
 
             // Membersの中で登録済みのプレイヤーでないものを削除
-            tmpMember.ForEach(member => MemberList.Remove(member));
+            MemberList.RemoveAll(player => !PlayerList.Contains(player));
         }
 
         private void UpdateUsingPortMapping()
         {
-            OnPropertyChanged(new string[3] { "UsingPortMapping", "CanWritePortNumber", "CanAddition_Po" });
+            OnPropertyChanged(new string[4] { "OtherPropertyIndexs", "UsingPortMapping", "CanWritePortNumber", "CanAddition_Po" });
 
             if (UsingPortMapping == null || UsingPortMapping.Value)
                 return;
@@ -270,8 +320,6 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public int CompareTo(PlayerGroup other)
         {
-            GroupName.WriteLine();
-            other.GroupName.WriteLine();
             return GroupName.CompareTo(other.GroupName);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Server_GUI2.Develop.Util;
+using Server_GUI2.Util;
 using Server_GUI2.Windows.ViewModels;
 using System;
 using System.Collections.ObjectModel;
@@ -20,7 +21,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
-            void AddContent<T>(ObservableCollection<T> list, T content, string alreadyContainMessage, string nullMessage="")
+            void AddContent<T>(ObservableCollection<T> list, T content, string alreadyContainMessage, string nullMessage= "追加したいプレイヤーを選択してください。")
             {
                 if (content == null)
                 {
@@ -48,6 +49,7 @@ namespace Server_GUI2.Windows.SystemSettings
                         _vm.AccountEmail.Value,
                         _vm.RepoName.Value,
                         "");
+                    // TODO: 追加の前にそのレポジトリが有効か否かを確認する必要あり？
                     AddContent(gitList, gitContent, "このレポジトリはすでに登録されています。");
                     break;
 
@@ -66,7 +68,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     var playerListGroup = _vm.PlayerList_Group;
                     var memberList = _vm.MemberList;
                     var selectedPlayer = _vm.PLGIndex?.Value ?? null;
-                    AddContent(memberList, selectedPlayer, "このプレイヤーはすでにグループメンバーに登録されています。", "追加したいプレイヤーを選択してください。");
+                    AddContent(memberList, selectedPlayer, "このプレイヤーはすでにグループメンバーに登録されています。");
                     playerListGroup.Remove(selectedPlayer);
                     break;
 
@@ -97,11 +99,24 @@ namespace Server_GUI2.Windows.SystemSettings
             {
                 case "Remote":
                     var remoteList = _vm.RemoteList;
-                    var remoteDeleteItem = _vm.RLIndex.Value ?? null;
+                    var remoteDeleteItem = _vm.RLIndex.Value;
                     _vm.AccountName.Value = remoteDeleteItem.Name;
                     _vm.AccountEmail.Value = remoteDeleteItem.Email;
                     _vm.RepoName.Value = remoteDeleteItem.Repository;
                     remoteList.Remove(remoteDeleteItem);
+                    break;
+                case "Group":
+                    var groupList = _vm.GroupList;
+                    var groupIndex = _vm.GLIndex;
+                    if (groupIndex == null)
+                    {
+                        MW.MessageBox.Show("編集したい行を選択してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    // TODO: 編集ボタンを押してもMembersに追記されない
+                    _vm.MemberList.ChangeCollection(groupIndex.PlayerList);
+                    _vm.UpdateGroupPlayersAndMembers();
+                    groupList.Remove(groupIndex);
                     break;
                 default:
                     break;
@@ -118,7 +133,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
-            void DeleteContent<T>(ObservableCollection<T> list, T deleteItem, string name, string nullMessage)
+            void DeleteContent<T>(ObservableCollection<T> list, T deleteItem, string name, string nullMessage= "削除したい行を選択してください。")
             {
                 if (name == null)
                 {
@@ -139,14 +154,14 @@ namespace Server_GUI2.Windows.SystemSettings
                     var remoteList = _vm.RemoteList;
                     var remoteDeleteItem = _vm.RLIndex.Value ?? null;
                     var remoteName = _vm.RLIndex.Value?.Name ?? null;
-                    DeleteContent(remoteList, remoteDeleteItem, remoteName, "削除したい行を選択してください。");
+                    DeleteContent(remoteList, remoteDeleteItem, remoteName);
                     break;
 
                 case "Player":
                     var playerList = _vm.PlayerList;
                     var playerDeleteItem = _vm.PLIndex ?? null;
                     var playerName = _vm.PLIndex?.Name ?? null;
-                    DeleteContent(playerList, playerDeleteItem, playerName, "削除したい行を選択してください。");
+                    DeleteContent(playerList, playerDeleteItem, playerName);
                     break;
 
                 case "GroupMember":
@@ -157,6 +172,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     {
                         memberList.Remove(memberIndex);
                         playerList_Group.Add(memberIndex);
+                        playerList_Group.Sort();
                     }
                     else
                     {
@@ -166,9 +182,9 @@ namespace Server_GUI2.Windows.SystemSettings
 
                 case "Group":
                     var groupList = _vm.GroupList;
-                    var groupIndex = _vm.GLIndex ?? null;
+                    var groupIndex = _vm.GLIndex;
                     var groupName = _vm.GLIndex?.GroupName ?? null;
-                    DeleteContent(groupList, groupIndex, groupName, "削除したい行を選択してください。");
+                    DeleteContent(groupList, groupIndex, groupName);
                     break;
 
                 default:

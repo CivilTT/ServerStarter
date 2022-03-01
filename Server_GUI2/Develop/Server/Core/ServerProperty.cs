@@ -77,39 +77,39 @@ namespace Server_GUI2
             return string.Join("\n", result);
         }
 
-        [JsonIgnore]
-        private SortedDictionary<string, string> StringOption { get; } =
-            new SortedDictionary<string, string>()
-            {
-                {"view-distance","10"},
-                {"resource-pack-prompt",""},
-                {"server-ip",""},
-                {"rcon.port","25575"},
-                {"gamemode","survival"},
-                {"server-port","25565"},
-                {"op-permission-level","4"},
-                {"resource-pack",""},
-                {"entity-broadcast-range-percentage","100"},
-                {"level-name",""},
-                {"level-type", "default"},
-                {"player-idle-timeout","0"},
-                {"rcon.password",""},
-                {"motd","A Minecraft Server"},
-                {"query.port","25565"},
-                {"rate-limit","0"},
-                {"function-permission-level","2"},
-                {"difficulty","easy"},
-                {"network-compression-threshold","256"},
-                {"text-filtering-config",""},
-                {"max-tick-time","60000"},
-                {"max-players","20"},
-                {"resource-pack-sha1",""},
-                {"spawn-protection","16"},
-                {"max-world-size","29999984"}
-            };
 
         [JsonIgnore]
-        private SortedDictionary<string, bool> BoolOption { get; } = new SortedDictionary<string, bool>()
+        public SortedDictionary<string, string> StringOption { get; } = new SortedDictionary<string, string>()
+        {
+            {"view-distance","10"},
+            {"resource-pack-prompt",""},
+            {"server-ip",""},
+            {"rcon.port","25575"},
+            {"gamemode","survival"},
+            {"server-port","25565"},
+            {"op-permission-level","4"},
+            {"resource-pack",""},
+            {"entity-broadcast-range-percentage","100"},
+            {"level-name",""},
+            {"level-type", "default"},
+            {"player-idle-timeout","0"},
+            {"rcon.password",""},
+            {"motd","A Minecraft Server"},
+            {"query.port","25565"},
+            {"rate-limit","0"},
+            {"function-permission-level","2"},
+            {"difficulty","easy"},
+            {"network-compression-threshold","256"},
+            {"text-filtering-config",""},
+            {"max-tick-time","60000"},
+            {"max-players","20"},
+            {"resource-pack-sha1",""},
+            {"spawn-protection","16"},
+            {"max-world-size","29999984"}
+        };
+
+        [JsonIgnore]
+        public SortedDictionary<string, bool> BoolOption { get; } = new SortedDictionary<string, bool>()
         {
             {"broadcast-rcon-to-ops",true},
             {"enable-jmx-monitoring",false},

@@ -65,6 +65,32 @@ namespace Server_GUI2.Windows.ViewModels
                 collection.Move(collection.IndexOf(sortableList[i]), i);
             }
         }
+
+        public static void AddRange<T>(this ObservableCollection<T> sourceCollection, IEnumerable<T> collection)
+        {
+            foreach (var item in collection)
+            {
+                sourceCollection.Add(item);
+            }
+        }
+
+        public static void RemoveAll<T>(this ObservableCollection<T> collection, Predicate<T> match)
+        {
+            foreach (var item in collection)
+            {
+                if (match(item))
+                    collection.Remove(item);
+            }
+        }
+
+        /// <summary>
+        /// コレクションの中身のデータを全て入れ替える
+        /// </summary>
+        public static void ChangeCollection<T>(this ObservableCollection<T> sourceCollection, IEnumerable<T> collection)
+        {
+            sourceCollection.Clear();
+            sourceCollection.AddRange(collection);
+        }
     }
 
     interface IOperateWindows
