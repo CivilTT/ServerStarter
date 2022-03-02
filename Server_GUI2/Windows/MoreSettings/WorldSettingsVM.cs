@@ -17,7 +17,7 @@ namespace Server_GUI2.Windows.MoreSettings
         static readonly StorageCollection Storages = StorageCollection.Instance;
 
         public Version RunVersion;
-        public World RunWorld;
+        public IWorld RunWorld;
 
         // 設定項目の表示非表示を操作
         public BindingValue<int> MenuIndex { get; private set; }
@@ -106,7 +106,7 @@ namespace Server_GUI2.Windows.MoreSettings
 
         // DataPack
         public bool IsZipDatapack { get; set; } = true;
-        public ObservableCollection<ADatapack> Datapacks { get; private set; }
+        public DatapackCollection Datapacks { get; private set; }
 
 
 
@@ -116,7 +116,7 @@ namespace Server_GUI2.Windows.MoreSettings
 
 
 
-        public WorldSettingsVM(Version runVer, World runWor)
+        public WorldSettingsVM(Version runVer, IWorld runWor)
         {
             RunVersion = runVer;
             RunWorld = runWor;
@@ -140,7 +140,7 @@ namespace Server_GUI2.Windows.MoreSettings
 
 
             // Datapack
-            Datapacks = RunWorld.Datapacks.Datapacks;
+            Datapacks = RunWorld.Datapacks;
 
 
 

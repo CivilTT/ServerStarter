@@ -1,7 +1,9 @@
 ﻿using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Util;
 using Server_GUI2.Windows.MoreSettings;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -80,14 +82,14 @@ namespace Server_GUI2.Windows.MainWindow
         public Version RunVersion => ShowNewVersions ? NewVersionIndex.Value : ExistsVersionIndex.Value;
         
         // World
-        public ObservableCollection<World> Worlds { get; private set; }
-        public BindingValue<World> WorldIndex { get; private set; }
+        public ObservableCollection<IWorld> Worlds { get; private set; }
+        public BindingValue<IWorld> WorldIndex { get; private set; }
         public bool ShowNewWorld => (WorldIndex.Value?.Name ?? "") == "【new World】";
         public BindingValue<string> NewWorldName { get; private set; }
         // TODO: 仮で実行するワールドを既存のものから選択したものにしている
         // 本実装では新規に対応したものに差し替え
         //public World RunWorld => ShowNewWorld ? new NewWorld() : WorldIndex.Value;
-        public World RunWorld => WorldIndex.Value;
+        public IWorld RunWorld => WorldIndex.Value;
 
 
         // Setting
@@ -329,7 +331,8 @@ namespace Server_GUI2.Windows.MainWindow
         public WorldSettingCommand WorldSettingCommand { get; private set; }
 
 
-        public MainWindowVM(IShowWindowService<SystemSettingsVM> ssWindow, IShowWindowService<WorldSettingsVM> wsWindow)
+        //public MainWindowVM(IShowWindowService<SystemSettingsVM> ssWindow, IShowWindowService<WorldSettingsVM> wsWindow)
+        public MainWindowVM()
         {
             // General
             RunCommand = new RunCommand(this);
@@ -344,34 +347,41 @@ namespace Server_GUI2.Windows.MainWindow
             };
             // TODO: LatestRunのデータをstringではなく、VersionやIWorldで持つべき？
             // Defaultについては以前の開設バージョンがなければ、リストの一番上の要素を選択する実装にする
-            ExistsVersionIndex = new BindingValue<Version>((Version)AllVers.Select(ver => ver.Name == SaveData.LatestRun.VersionName), () => OnPropertyChanged("ShowNewVersions"));
+            Version firstSelectVer = SaveData.LatestRun == null ? ExistsVersions[0] : VersionFactory.Instance.GetVersionFromName(SaveData.LatestRun.VersionName);
+            ExistsVersionIndex = new BindingValue<Version>(firstSelectVer, () => OnPropertyChanged("ShowNewVersions"));
             NewVersions = new ObservableCollection<Version>(AllVers.OfType<VanillaVersion>());
             ShowAll = new BindingValue<bool>(false, () => UpdateNewVersions());
             ShowSpigot = new BindingValue<bool>(false, () => UpdateNewVersions());
 
 
             // World
-            Worlds = new ObservableCollection<World>((IEnumerable<World>)AllWorlds);
-            WorldIndex = new BindingValue<World>((World)(IEnumerable<World>)AllWorlds.Select(world => world.Name == SaveData.LatestRun.WorldName), () => OnPropertyChanged("ShowNewWorld"));
+            Worlds = new ObservableCollection<IWorld>(AllWorlds);
+            IWorld firstSelectWor = Worlds[0];
+            if (SaveData.LatestRun != null)
+            {
+                LocalWorld targetWorld = LocalWorldCollection.Instance.FindLocalWorld(SaveData.LatestRun.VersionName, SaveData.LatestRun.WorldName);
+                firstSelectWor = AllWorlds.OfType<World>().Where(world => world.LocalWorld == targetWorld).FirstOrDefault();
+            }
+            WorldIndex = new BindingValue<IWorld>(firstSelectWor, () => OnPropertyChanged("ShowNewWorld"));
             NewWorldName = new BindingValue<string>("Input World Name", () => OnPropertyChanged("CanRun"));
 
             // Setting
             ResetWorld = new BindingValue<bool>(false, () => OnPropertyChanged("ShowSaveWorld"));
 
             // Window
-            SettingCommand = new SettingCommand(this, ssWindow);
-            WorldSettingCommand = new WorldSettingCommand(this, wsWindow);
+            //SettingCommand = new SettingCommand(this, ssWindow);
+            //WorldSettingCommand = new WorldSettingCommand(this, wsWindow);
         }
 
         private void UpdateNewVersions()
         {
-            if (ShowSpigot.Value)
+            if (ShowSpigot != null && ShowSpigot.Value)
             {
                 NewVersions.ChangeCollection(AllVers.OfType<SpigotVersion>());
             }
             else
             {
-                if (ShowAll.Value)
+                if (ShowAll != null && ShowAll.Value)
                     NewVersions.ChangeCollection(AllVers.OfType<VanillaVersion>());
                 else
                     NewVersions.ChangeCollection(AllVers.OfType<VanillaVersion>().Where(ver => ver.IsRelease));
@@ -385,14 +395,9 @@ namespace Server_GUI2.Windows.MainWindow
     {
         public object Convert(object value, System.Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is VanillaVersion vanila)
+            if (value is Version version)
             {
-                return vanila.Name;
-            }
-
-            if (value is SpigotVersion spigot)
-            {
-                return $"Spigot {spigot.Name}";
+                return version.Name;
             }
 
             return value.ToString();
@@ -446,17 +451,9 @@ namespace Server_GUI2.Windows.MainWindow
     {
         public object Convert(object value, System.Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is World world)
+            if (value is IWorld world)
             {
-                string verName = world.Version.Name;
-                string spigotHead = world.Version is SpigotVersion ? "(Spigot)" : "";
-                string worldName = world.Name;
-                return $"{spigotHead}{verName}/{worldName}";
-            }
-
-            if (value is NewWorld)
-            {
-                return "【new World】";
+                return world.DisplayName;
             }
 
             return value.ToString();
