@@ -20,7 +20,7 @@ namespace UnitTestProject1
                     return new Failure<int, string>($"Error: {num} is not even number.");
             }
 
-            var result = Half(10);
+            var result = Half(9);
 
             // エラーの場合にデフォルト値を適用
             result.SuccessOrDefault(-1).WriteLine();
