@@ -1,4 +1,5 @@
-﻿using Server_GUI2.Develop.Util;
+﻿using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Develop.Util;
 using Server_GUI2.Util;
 using Server_GUI2.Windows.ViewModels;
 using System;
@@ -43,14 +44,15 @@ namespace Server_GUI2.Windows.SystemSettings
             switch (parameter)
             {
                 case "Remote":
-                    var gitList = _vm.RemoteList;
-                    var gitContent= new AccountInfo(
-                        _vm.AccountName.Value,
-                        _vm.AccountEmail.Value,
-                        _vm.RepoName.Value,
-                        "");
-                    // TODO: 追加の前にそのレポジトリが有効か否かを確認する必要あり？
-                    AddContent(gitList, gitContent, "このレポジトリはすでに登録されています。");
+                    GitStorage storage = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value);
+                    //var gitList = _vm.RemoteList;
+                    //var repo = new Repository(_vm.RepoName.Value)
+                    //var gitContent= new AccountInfo(
+                    //    _vm.AccountName.Value,
+                    //    _vm.AccountEmail.Value,
+                    //    repo);
+                    //// TODO: 追加の前にそのレポジトリが有効か否かを確認する必要あり？
+                    //AddContent(gitList, gitContent, "このレポジトリはすでに登録されています。");
                     break;
 
                 case "Player":
@@ -100,7 +102,7 @@ namespace Server_GUI2.Windows.SystemSettings
                 case "Remote":
                     var remoteList = _vm.RemoteList;
                     var remoteDeleteItem = _vm.RLIndex.Value;
-                    _vm.AccountName.Value = remoteDeleteItem.Name;
+                    _vm.AccountName.Value = remoteDeleteItem;
                     _vm.AccountEmail.Value = remoteDeleteItem.Email;
                     _vm.RepoName.Value = remoteDeleteItem.Repository;
                     remoteList.Remove(remoteDeleteItem);
@@ -333,7 +335,7 @@ namespace Server_GUI2.Windows.SystemSettings
             {
                 PlayerName = _vm.UserName.Value,
                 Language = "English",
-                RemoteContents = _vm.RemoteList.ToList(),
+                //RemoteContents = _vm.RemoteList.ToList(),
                 DefaultProperties = _vm.PropertyIndexs.Value,
                 Players = _vm.PlayerList.ToList(),
                 PlayerGroups = _vm.GroupList.ToList(),

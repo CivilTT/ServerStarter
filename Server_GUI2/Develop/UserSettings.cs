@@ -6,8 +6,10 @@ using Server_GUI2.Develop.Util;
 using Server_GUI2.Windows.SystemSettings;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,10 +52,7 @@ namespace Server_GUI2
                 logger.Info("Read the local info.txt data");
                 
                 List<string> info = ReadContents.ReadOldInfo(OldInfoPath);
-                AccountInfo accountInfo = new AccountInfo(info[5], info[6], "ShareWorld", "main");
-                
-                userSettings.PlayerName = info[0];
-                userSettings.RemoteContents.Add(accountInfo);
+                // TODO: info.txtから読み込んだ情報を新システムに登録
             }
             else
             {
@@ -111,10 +110,11 @@ namespace Server_GUI2
         // }
         public LatestRun LatestRun;
 
-        [JsonProperty("RemoteContents")]
-        // ShareWorld はワールド名、Gitのアカウント名、GitのE-mailアドレスの情報を記録する
-        // ShareWorldという名前でなくても共有ワールド化できるようにする
-        public List<AccountInfo> RemoteContents = new List<AccountInfo>();
+        [JsonProperty("OwnerHasOp")]
+        public bool OwnerHasOp;
+
+        [JsonProperty("ShutdownPC")]
+        public bool ShutdownPC;
 
         [JsonProperty("DefaultProperty")]
         // あくまでデフォルトはシステムで保持しておき、それから変更したものを通常設定としたい場合の部分のみこれで保持する
@@ -151,5 +151,77 @@ namespace Server_GUI2
 
         // JsonSerialize用コンストラクタ
         public LatestRun() { }
+    }
+
+    public class PlayerGroup : IEquatable<PlayerGroup>, IComparable<PlayerGroup>
+    {
+        [JsonProperty("GroupName")]
+        public string GroupName { get; private set; }
+
+        [JsonProperty("PlayerList")]
+        public ObservableCollection<Player> PlayerList { get; private set; }
+
+        public PlayerGroup(string name, ObservableCollection<Player> list)
+        {
+            GroupName = name;
+            PlayerList = list;
+        }
+
+        public bool Equals(PlayerGroup other)
+        {
+            return other.GroupName == GroupName;
+        }
+
+        public int CompareTo(PlayerGroup other)
+        {
+            return GroupName.CompareTo(other.GroupName);
+        }
+    }
+
+    public class Player : IEquatable<Player>, IComparable<Player>
+    {
+        readonly WebClient wc;
+        public string Name { get; private set; }
+        public string UUID { get; private set; }
+
+        public Player(string name)
+        {
+            wc = new WebClient();
+            Name = name;
+            UUID = "";
+            UUID = GetUuid(name);
+        }
+
+        private string GetUuid(string name)
+        {
+            string url = $@"https://api.mojang.com/users/profiles/minecraft/{name}";
+            string jsonStr = wc.DownloadString(url);
+
+            dynamic root = JsonConvert.DeserializeObject(jsonStr);
+            if (root == null)
+                return "";
+
+            string uuid = root.id;
+            Name = root.name;
+
+            string uuid_1 = uuid.Substring(0, 8);
+            string uuid_2 = uuid.Substring(8, 4);
+            string uuid_3 = uuid.Substring(12, 4);
+            string uuid_4 = uuid.Substring(16, 4);
+            string uuid_5 = uuid.Substring(20);
+            uuid = uuid_1 + "-" + uuid_2 + "-" + uuid_3 + "-" + uuid_4 + "-" + uuid_5;
+
+            return uuid;
+        }
+
+        public bool Equals(Player other)
+        {
+            return other.UUID == UUID;
+        }
+
+        public int CompareTo(Player other)
+        {
+            return Name.CompareTo(other.Name);
+        }
     }
 }

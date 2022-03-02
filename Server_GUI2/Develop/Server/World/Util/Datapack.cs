@@ -16,7 +16,7 @@ namespace Server_GUI2
     public class DatapackCollection
     {
         public ObservableCollection<ADatapack> Datapacks { get;}
-        private List<Action<string>> operations = new List<Action<string>>();
+        private readonly List<Action<string>> operations = new List<Action<string>>();
 
         public DatapackCollection(List<string> datapackNames)
         {
