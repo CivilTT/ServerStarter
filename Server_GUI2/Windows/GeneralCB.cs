@@ -1,31 +1,17 @@
-﻿using Server_GUI2.Windows.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Threading.Tasks;
+using Server_GUI2.Windows.ViewModels;
 
-namespace Server_GUI2
+namespace Server_GUI2.Windows
 {
-    /// <summary>
-    /// SystemSettings.xaml の相互作用ロジック
-    /// </summary>
-    public partial class SystemSettings : Window
+    public partial class GeneralCB : Window
     {
-        public SystemSettings()
+        public GeneralCB()
         {
-            InitializeComponent();
             Loaded += WindowLoaded;
         }
 
@@ -44,6 +30,10 @@ namespace Server_GUI2
                 vm.Show += () =>
                 {
                     Show();
+                };
+                vm.ShowDialog += () =>
+                {
+                    ShowDialog();
                 };
             }
         }

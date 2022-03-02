@@ -15,6 +15,7 @@ namespace Server_GUI2.Windows.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Action Show { get; set; }
+        public Action ShowDialog { get; set; }
         public Action Hide { get; set; }
         public Action Close { get; set; }
 
@@ -96,6 +97,7 @@ namespace Server_GUI2.Windows.ViewModels
     interface IOperateWindows
     {
         Action Show { get; set; }
+        Action ShowDialog { get; set; }
         Action Hide { get; set; }
         Action Close { get; set; }
     }

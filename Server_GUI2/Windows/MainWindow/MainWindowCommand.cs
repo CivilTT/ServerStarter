@@ -1,4 +1,5 @@
-﻿using Server_GUI2.Windows.ViewModels;
+﻿using Server_GUI2.Windows.MoreSettings;
+using Server_GUI2.Windows.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,47 +10,28 @@ using System.Windows.Input;
 
 namespace Server_GUI2.Windows.MainWindow
 {
-    class RunCommand : ICommand
+    class RunCommand : GeneralCommand<MainWindowVM>
     {
-        private MainWindowVM _vm;
-
-        public event EventHandler CanExecuteChanged;
-
         public RunCommand(MainWindowVM vm)
         {
             _vm = vm;
         }
 
-        public bool CanExecute(object parameter)
-        {
-            // Bindingが作動しないようにしたいときはfalseにする
-            return true;
-        }
-
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             MessageBox.Show(_vm.ShowAll.ToString());
             //Server.Run(_vm.RunWorld);
         }
     }
 
-    class SettingCommand : ICommand
+    class SettingCommand : GeneralCommand<MainWindowVM>
     {
-        private MainWindowVM _vm;
-
-        public event EventHandler CanExecuteChanged;
-
         public SettingCommand(MainWindowVM vm)
         {
             _vm = vm;
         }
 
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             _vm.Hide?.Invoke();
             Server_GUI2.SystemSettings _info = new Server_GUI2.SystemSettings();
@@ -58,23 +40,30 @@ namespace Server_GUI2.Windows.MainWindow
         }
     }
 
-    class DeleteCommand : ICommand
+    class WorldSettingCommand : GeneralCommand<MainWindowVM>
     {
-        public event EventHandler CanExecuteChanged;
+        public WorldSettingCommand(MainWindowVM vm)
+        {
+            _vm = vm;
+        }
 
-        private MainWindowVM _vm;
+        public override void Execute(object parameter)
+        {
+            _vm.Hide?.Invoke();
+            WorldSettings window = new WorldSettings();
+            window.ShowDialog();
+            _vm.Show?.Invoke();
+        }
+    }
 
+    class DeleteCommand : GeneralCommand<MainWindowVM>
+    {
         public DeleteCommand(MainWindowVM vm)
         {
             _vm = vm;
         }
 
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             switch (parameter.ToString())
             {
@@ -91,23 +80,14 @@ namespace Server_GUI2.Windows.MainWindow
         }
     }
 
-    class CloseCommand : ICommand
+    class CloseCommand : GeneralCommand<MainWindowVM>
     {
-        private MainWindowVM _vm;
-
-        public event EventHandler CanExecuteChanged;
-
         public CloseCommand(MainWindowVM vm)
         {
             _vm = vm;
         }
 
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             SetLatestRun();
 
@@ -118,10 +98,10 @@ namespace Server_GUI2.Windows.MainWindow
 
         private void SetLatestRun()
         {
-            List<string> vers = _vm.ExistsVersions;
-            string existsVer = _vm.SelectedExistsVersion;
-            string newVer = _vm.SelectedNewVersion;
-            string ver = (existsVer == vers[vers.Count - 1]) ? newVer : existsVer;
+            //List<string> vers = _vm.ExistsVersions;
+            //string existsVer = _vm.SelectedExistsVersion;
+            //string newVer = _vm.SelectedNewVersion;
+            //string ver = (existsVer == vers[vers.Count - 1]) ? newVer : existsVer;
 
             //LatestRun latestRun = new LatestRun();
 

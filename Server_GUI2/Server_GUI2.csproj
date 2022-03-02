@@ -113,6 +113,7 @@
     <Compile Include="Develop\Util\Git.cs" />
     <Compile Include="Develop\Util\ReadContents.cs" />
     <Compile Include="Planning\World\World.cs" />
+    <Compile Include="Windows\GeneralCB.cs" />
     <Compile Include="Windows\GeneralCommand.cs" />
     <Compile Include="Windows\MoreSettings\WorldSettingsCommand.cs" />
     <Compile Include="Windows\SystemSettings\SystemSettingsCommand.cs" />

@@ -30,6 +30,9 @@ namespace Server_GUI2
 
         public event EventHandler DeleteEvent;
 
+        /// <summary>
+        /// インターネットが切れている状況でlocalに該当のVersionが存在しない場合にfalse
+        /// </summary>
         public bool Available;
 
         public virtual ServerType Type { get; }
