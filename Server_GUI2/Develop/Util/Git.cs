@@ -315,13 +315,6 @@ namespace Server_GUI2.Util
         {
             return value != null && Account == value.Account && Repository == value.Repository;
         }
-        public static bool operator ==(GitRemote l, GitRemote r)
-        {
-            return  l == null l.Equals(r);
-        }
-        public static bool operator !=(GitRemote l, GitRemote r)
-        {
-        }
     }
 
     public class GitNamedRemote
