@@ -149,7 +149,6 @@ namespace Server_GUI2.Develop.Server.World
         public static Either<GitStorage,string> AddStorage(string account, string repository, string email)
         {
             // TODO: ストレージのアカウント系のエラー処置
-            //StorageCollection.Instance.Storages
             var remote = new GitRemote(account,repository);
             var repo = GitStorageRepository.AddRepository(Local,remote);
             var storage = new GitStorage(repo);
