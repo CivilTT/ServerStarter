@@ -54,6 +54,10 @@ namespace Server_GUI2.Develop.Server.World
 
         public abstract string Id { get; }
 
+        public abstract string AccountName { get; }
+
+        public abstract string RepositoryName { get; }
+
         public bool Available { get; set; }
 
         public virtual void AddWorld(RemoteWorld world)
@@ -111,6 +115,10 @@ namespace Server_GUI2.Develop.Server.World
 
         public override string Id => $"git/{Repository.Branch.RemoteBranch.NamedRemote.Remote.Account}/{Repository.Branch.RemoteBranch.NamedRemote.Remote.Repository}";
 
+        public override string AccountName => Repository.Branch.RemoteBranch.NamedRemote.Remote.Account;
+
+        public override string RepositoryName => Repository.Branch.RemoteBranch.NamedRemote.Remote.Repository;
+
         /// <summary>
         /// 使用可能なブランチ名かどうかを返す
         /// </summary>
@@ -135,6 +143,8 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public static GitStorage AddStorage(string account,string repository)
         {
+            // TODO: ストレージのアカウント系のエラー処置
+            //StorageCollection.Instance.Storages
             var remote = new GitRemote(account,repository);
             var repo = GitStorageRepository.AddRepository(Local,remote);
             var storage = new GitStorage(repo);
