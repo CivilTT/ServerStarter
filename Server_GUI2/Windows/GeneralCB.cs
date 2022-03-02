@@ -31,10 +31,6 @@ namespace Server_GUI2.Windows
                 {
                     Show();
                 };
-                vm.ShowDialog += () =>
-                {
-                    ShowDialog();
-                };
             }
         }
     }

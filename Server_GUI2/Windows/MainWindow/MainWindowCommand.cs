@@ -1,4 +1,5 @@
 ﻿using Server_GUI2.Windows.MoreSettings;
+using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -26,32 +27,38 @@ namespace Server_GUI2.Windows.MainWindow
 
     class SettingCommand : GeneralCommand<MainWindowVM>
     {
-        public SettingCommand(MainWindowVM vm)
+        private readonly IShowWindowService<SystemSettingsVM> SSwindow;
+
+        public SettingCommand(MainWindowVM vm, IShowWindowService<SystemSettingsVM> ssWindow)
         {
             _vm = vm;
+            SSwindow = ssWindow;
         }
 
         public override void Execute(object parameter)
         {
             _vm.Hide?.Invoke();
-            Server_GUI2.SystemSettings _info = new Server_GUI2.SystemSettings();
-            _info.ShowDialog();
+            var systemSettingWindow = new SystemSettingsVM();
+            SSwindow.ShowDialog(systemSettingWindow);
             _vm.Show?.Invoke();
         }
     }
 
     class WorldSettingCommand : GeneralCommand<MainWindowVM>
     {
-        public WorldSettingCommand(MainWindowVM vm)
+        private readonly IShowWindowService<WorldSettingsVM> WSwindow;
+
+        public WorldSettingCommand(MainWindowVM vm, IShowWindowService<WorldSettingsVM> wsWindow)
         {
             _vm = vm;
+            WSwindow = wsWindow;
         }
 
         public override void Execute(object parameter)
         {
             _vm.Hide?.Invoke();
-            WorldSettings window = new WorldSettings();
-            window.ShowDialog();
+            var worldSettingWindow = new WorldSettingsVM(_vm.RunVersion, _vm.RunWorld);
+            WSwindow.ShowDialog(worldSettingWindow);
             _vm.Show?.Invoke();
         }
     }

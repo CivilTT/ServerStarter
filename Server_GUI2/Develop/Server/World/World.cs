@@ -194,7 +194,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public ServerType? Type => world.Type;
 
-        // ワールドの表示名
+        // ワールドの表示名（内部実装用）（ViewではConverterを通して表示名を決定している）
         public string DisplayName => HasRemote ?
             $"{world.Version.Name}/{world.Name}*" :
             $"{world.Version.Name}/{world.Name}";
