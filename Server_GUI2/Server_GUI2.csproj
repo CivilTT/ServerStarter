@@ -116,6 +116,7 @@
     <Compile Include="Windows\GeneralCB.cs" />
     <Compile Include="Windows\GeneralCommand.cs" />
     <Compile Include="Windows\MoreSettings\WorldSettingsCommand.cs" />
+    <Compile Include="Windows\ShowNewWindow.cs" />
     <Compile Include="Windows\SystemSettings\SystemSettingsCommand.cs" />
     <Compile Include="Windows\SystemSettings\SystemSettingsVM.cs" />
     <Compile Include="Windows\MainWindow\MainWindowCommand.cs" />

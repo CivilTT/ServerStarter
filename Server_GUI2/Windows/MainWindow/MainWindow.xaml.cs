@@ -1,7 +1,9 @@
 ﻿using log4net;
 using Newtonsoft.Json;
 using Server_GUI2.Windows;
+using Server_GUI2.Windows.MainWindow;
 using Server_GUI2.Windows.MoreSettings;
+using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -91,7 +93,7 @@ namespace Server_GUI2
 
             logger.Info("The system of Server Starter is started.");
             InitializeComponent();
-            Loaded += MainWindow_Loaded;
+            //Loaded += MainWindow_Loaded;
             GUI = gui;
 
             Pd = new ProgressDialog
@@ -108,17 +110,17 @@ namespace Server_GUI2
             Pd.Message = "Check existence of World_Data Folder";
             Pd.Value = 10;
 
-            func.Build_info();
-            Pd.Message = "Check the info.txt";
-            Pd.Value = 20;
+            //func.Build_info();
+            //Pd.Message = "Check the info.txt";
+            //Pd.Value = 20;
 
             //info.txtの読み取り
-            using (StreamReader sr = new StreamReader($@"{Data_Path}\info.txt", Encoding.GetEncoding("Shift_JIS")))
-            {
-                Data_list.Info = data.Set_info(sr);
-            }
-            Pd.Message = "Read the local info data";
-            Pd.Value = 30;
+            //using (StreamReader sr = new StreamReader($@"{Data_Path}\info.txt", Encoding.GetEncoding("Shift_JIS")))
+            //{
+            //    Data_list.Info = data.Set_info(sr);
+            //}
+            //Pd.Message = "Read the local info data";
+            //Pd.Value = 30;
 
             // 読み取ったinfo.txtの情報をもとにバージョンアップの必要性があるか否かを判別
             func.Check_versionUP();
@@ -128,16 +130,16 @@ namespace Server_GUI2
             //右上 & opの仕様の変更
             //name.Text = Data_list.Info[0];
             // op.Content = Data_list.Info[0] + " has op rights in this version's server";
-            Get_op = true;
-            shutdown.IsChecked = Properties.Settings.Default.Shutdown;
+            //Get_op = true;
+            //shutdown.IsChecked = Properties.Settings.Default.Shutdown;
 
-            Pd.Message = "Set the value of GUI";
-            Pd.Value = 50;
+            //Pd.Message = "Set the value of GUI";
+            //Pd.Value = 50;
 
             // インストールされているVersionとWorldの連想配列を作成
-            data.Set_VerWor();
-            Pd.Message = "Check the all Directories of Server Version and World";
-            Pd.Value = 60;
+            //data.Set_VerWor();
+            //Pd.Message = "Check the all Directories of Server Version and World";
+            //Pd.Value = 60;
 
             // 環境の確認
             data.Set_env();
@@ -145,66 +147,57 @@ namespace Server_GUI2
             Pd.Value = 70;
 
             //追加バージョンの読み込み
-            logger.Info("Read the new NewVersions");
+            //logger.Info("Read the new NewVersions");
             //release_versions = jsonReader.Import_version("release");
             //All_versions = jsonReader.Import_version("all");
             //spigot_versions = htmlReader.Get_SpigotVers();
             
             // new_Version = func.Init_new_Versions(new_Version, release_versions);
             // new_Version.SelectedIndex = 0;
-            Pd.Message = "Read the new NewVersions";
-            Pd.Value = 80;
+            //Pd.Message = "Read the new NewVersions";
+            //Pd.Value = 80;
 
-            if (GUI)
-            {
-                //Versionの選択
-                //Version = func.Init_version(Version);
-                //World_reload();
-                // if (Version.Text == "【new Version】")
-                // {
-                //     version_main.Visibility = Visibility.Hidden;
-                //     select_version.Visibility = Visibility.Visible;
-                //     version_hide.Visibility = Visibility.Visible;
-                //     Version2.SelectedIndex = Version2.Items.IndexOf("【new Version】");
-                // }
-                // data.Set_Version(Version, new_Version.Text);
-                Pd.Message = "Read the local NewVersions";
-                Pd.Value = 90;
+            //if (GUI)
+            //{
+            //    //Versionの選択
+            //    //Version = func.Init_version(Version);
+            //    //World_reload();
+            //    // if (Version.Text == "【new Version】")
+            //    // {
+            //    //     version_main.Visibility = Visibility.Hidden;
+            //    //     select_version.Visibility = Visibility.Visible;
+            //    //     version_hide.Visibility = Visibility.Visible;
+            //    //     Version2.SelectedIndex = Version2.Items.IndexOf("【new Version】");
+            //    // }
+            //    // data.Set_Version(Version, new_Version.Text);
+            //    Pd.Message = "Read the local NewVersions";
+            //    Pd.Value = 90;
 
-                //Worldの選択
-                data.Set_SW();
-                //World = func.Init_world(World);
-                //Name_reload(null, null);
-                // data.Set_World(World);
-                // if (World.Text == "【new World】")
-                // {
-                //     world_hide.Visibility = Visibility.Visible;
-                //     World2.SelectedIndex = World2.Items.IndexOf("【new World】");
-                //     world_main.Visibility = Visibility.Hidden;
-                // }
-                Pd.Message = "Read the local Worlds";
-            }
+            //    //Worldの選択
+            //    data.Set_SW();
+            //    //World = func.Init_world(World);
+            //    //Name_reload(null, null);
+            //    // data.Set_World(World);
+            //    // if (World.Text == "【new World】")
+            //    // {
+            //    //     world_hide.Visibility = Visibility.Visible;
+            //    //     World2.SelectedIndex = World2.Items.IndexOf("【new World】");
+            //    //     world_main.Visibility = Visibility.Hidden;
+            //    // }
+            //    Pd.Message = "Read the local Worlds";
+            //}
             Pd.Value = 100;
             Pd.Close();
-        }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            if(DataContext is IOperateWindows vm)
+            var systemSettingWindow = new ShowNewWindow<SystemSettings, SystemSettingsVM>()
             {
-                vm.Close += () =>
-                {
-                    Close();
-                };
-                vm.Hide += () =>
-                {
-                    Hide();
-                };
-                vm.Show += () =>
-                {
-                    Show();
-                };
-            }
+                Owner = this
+            };
+            var worldSettingWindow = new ShowNewWindow<WorldSettings, WorldSettingsVM>()
+            {
+                Owner = this
+            };
+            DataContext = new MainWindowVM(systemSettingWindow, worldSettingWindow);
         }
 
         public void Start(bool gui=true)
@@ -334,29 +327,29 @@ namespace Server_GUI2
             Application.Current.Shutdown();
         }
 
-        private void START_Click(object sender, RoutedEventArgs e)
-        {
-            //MAINを閉じる
-            Hide();
-            Start();
-        }
+        //private void START_Click(object sender, RoutedEventArgs e)
+        //{
+        //    //MAINを閉じる
+        //    Hide();
+        //    Start();
+        //}
 
-        private void More_Settings_Click(object sender, RoutedEventArgs e)
-        {
-            Hide();
-            //m_set_window.Main = this;
-            //m_set_window.Set_value();
-            //m_set_window.ShowDialog();
-            WorldSettings window = new WorldSettings();
-            window.Show();
-        }
+        //private void More_Settings_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Hide();
+        //    //m_set_window.Main = this;
+        //    //m_set_window.Set_value();
+        //    //m_set_window.ShowDialog();
+        //    WorldSettings window = new WorldSettings();
+        //    window.Show();
+        //}
 
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            logger.Info("Starter was pushed Close Button");
-            Application.Current.Shutdown();
-            logger.Info("This System is successfully over");
-        }
+        //private void Close_Click(object sender, RoutedEventArgs e)
+        //{
+        //    logger.Info("Starter was pushed Close Button");
+        //    Application.Current.Shutdown();
+        //    logger.Info("This System is successfully over");
+        //}
 
         //private void World_reload(object sender, EventArgs e)
         //{
@@ -567,56 +560,56 @@ namespace Server_GUI2
         //    Data_list.World = input_box_world.Text;
         //}
 
-        private void Op_Click(object sender, RoutedEventArgs e)
-        {
-            if (op.IsChecked == true)
-            {
-                Get_op = true;
-            }
-            else
-            {
-                Get_op = false;
-            }
-        }
+        //private void Op_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (op.IsChecked == true)
+        //    {
+        //        Get_op = true;
+        //    }
+        //    else
+        //    {
+        //        Get_op = false;
+        //    }
+        //}
 
-        private void Shutdown_Click(object sender, RoutedEventArgs e)
-        {
-            if (shutdown.IsChecked == true)
-            {
-                Properties.Settings.Default.Shutdown = true;
-            }
-            else
-            {
-                Properties.Settings.Default.Shutdown = false;
-            }
-            Properties.Settings.Default.Save();
-        }
+        //private void Shutdown_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (shutdown.IsChecked == true)
+        //    {
+        //        Properties.Settings.Default.Shutdown = true;
+        //    }
+        //    else
+        //    {
+        //        Properties.Settings.Default.Shutdown = false;
+        //    }
+        //    Properties.Settings.Default.Save();
+        //}
 
-        private void Info_Click(object sender, RoutedEventArgs e)
-        {
-            Hide();
-            SystemSettings _info = new SystemSettings();
-            _info.ShowDialog();
-            Show();
-        }
+        //private void Info_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Hide();
+        //    SystemSettings _info = new SystemSettings();
+        //    _info.ShowDialog();
+        //    Show();
+        //}
 
-        private void Save_world_Click(object sender, RoutedEventArgs e)
-        {
-            //そもそもresetにチェックがついていないときはバックアップを生成しない。
-            Save_world = sa_world.IsEnabled != false && Save_world;
-        }
+        //private void Save_world_Click(object sender, RoutedEventArgs e)
+        //{
+        //    //そもそもresetにチェックがついていないときはバックアップを生成しない。
+        //    Save_world = sa_world.IsEnabled != false && Save_world;
+        //}
 
-        private void Reset_world_Click(object sender, RoutedEventArgs e)
-        {
-            Reset_world = re_world.IsChecked == true;
-            sa_world.IsEnabled = re_world.IsChecked == true;
-            sa_world.Foreground = (re_world.IsChecked == true) ? Brushes.Black : Brushes.LightGray;
-            if (re_world.IsChecked == false)
-            {
-                sa_world.IsChecked = false;
-                Save_world = false;
-            }
-        }
+        //private void Reset_world_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Reset_world = re_world.IsChecked == true;
+        //    sa_world.IsEnabled = re_world.IsChecked == true;
+        //    sa_world.Foreground = (re_world.IsChecked == true) ? Brushes.Black : Brushes.LightGray;
+        //    if (re_world.IsChecked == false)
+        //    {
+        //        sa_world.IsChecked = false;
+        //        Save_world = false;
+        //    }
+        //}
 
         //private void TF_spigot(object sender, RoutedEventArgs e)
         //{
@@ -730,28 +723,6 @@ namespace Server_GUI2
     {
         [JsonProperty("name")]
         public string Name { get; set; }
-    }
-
-    public class InverseBoolConverter : IValueConverter
-    {
-        // 2.Convertメソッドを実装
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            // 流れてきた値がboolじゃない時は不正値として変換
-            // お好みで例外を投げても良い
-            if (!(value is bool b)) { return DependencyProperty.UnsetValue; }
-
-            // 流れてきたbool値を変換してreturnする
-            return !b;
-        }
-
-        // 3.ConvertBackメソッドを実装
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            // ただの反転なのでBinding元に書き戻すときも全く同様の処理で良い
-            if (!(value is bool b)) { return DependencyProperty.UnsetValue; }
-            return !b;
-        }
     }
 
 }

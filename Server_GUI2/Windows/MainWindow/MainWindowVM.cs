@@ -1,4 +1,6 @@
 ﻿using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Windows.MoreSettings;
+using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.ViewModels;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -72,14 +74,29 @@ namespace Server_GUI2.Windows.MainWindow
         /// </summary>
         public ObservableCollection<Version> ExistsVersions { get; private set; }
         public BindingValue<Version> ExistsVersionIndex { get; private set; }
-        public bool ShowNewVersions => ExistsVersionIndex.Value.Name == "【new Version】";
+        public bool ShowNewVersions => (ExistsVersionIndex.Value?.Name ?? "") == "【new Version】";
         public ObservableCollection<Version> NewVersions { get; private set; }
         public BindingValue<Version> NewVersionIndex { get; private set; }
+        public Version RunVersion => ShowNewVersions ? NewVersionIndex.Value : ExistsVersionIndex.Value;
         
         // World
         public ObservableCollection<World> Worlds { get; private set; }
         public BindingValue<World> WorldIndex { get; private set; }
+        public bool ShowNewWorld => (WorldIndex.Value?.Name ?? "") == "【new World】";
         public BindingValue<string> NewWorldName { get; private set; }
+        // TODO: 仮で実行するワールドを既存のものから選択したものにしている
+        // 本実装では新規に対応したものに差し替え
+        //public World RunWorld => ShowNewWorld ? new NewWorld() : WorldIndex.Value;
+        public World RunWorld => WorldIndex.Value;
+
+
+        // Setting
+        public BindingValue<bool> ResetWorld { get; private set; }
+        public bool SaveWorld { get; set; }
+        public bool ShowSaveWorld => ResetWorld != null && ResetWorld.Value;
+        public bool OwnerHasOp { get; set; }
+        public bool ShutdownPC { get; set; }
+
         //private List<string> ShowNewVersions;
         //{
         //    get
@@ -296,18 +313,23 @@ namespace Server_GUI2.Windows.MainWindow
 
         //    }
         //}
-        private string _selectedWorld;
-        public string SelectedWorld;
+        //private string _selectedWorld;
+        //public string SelectedWorld;
 
 
 
         // ボタンなどに呼応した処理
         public RunCommand RunCommand { get; private set; }
-        public SettingCommand SettingCommand { get; private set; }
         public DeleteCommand DeleteCommand { get; private set; }
         public CloseCommand CloseCommand { get; private set; }
 
-        public MainWindowVM()
+
+        // Window
+        public SettingCommand SettingCommand { get; private set; }
+        public WorldSettingCommand WorldSettingCommand { get; private set; }
+
+
+        public MainWindowVM(IShowWindowService<SystemSettingsVM> ssWindow, IShowWindowService<WorldSettingsVM> wsWindow)
         {
             // General
             RunCommand = new RunCommand(this);
@@ -316,8 +338,12 @@ namespace Server_GUI2.Windows.MainWindow
 
 
             // Version
-            ExistsVersions = new ObservableCollection<Version>(AllVers.Where(ver => ver.Exists));
-            ExistsVersions.Add(new VanillaVersion("【new Version】", "", true, false));
+            ExistsVersions = new ObservableCollection<Version>(AllVers.Where(ver => ver.Exists))
+            {
+                new VanillaVersion("【new Version】", "", true, false)
+            };
+            // TODO: LatestRunのデータをstringではなく、VersionやIWorldで持つべき？
+            // Defaultについては以前の開設バージョンがなければ、リストの一番上の要素を選択する実装にする
             ExistsVersionIndex = new BindingValue<Version>((Version)AllVers.Select(ver => ver.Name == SaveData.LatestRun.VersionName), () => OnPropertyChanged("ShowNewVersions"));
             NewVersions = new ObservableCollection<Version>(AllVers.OfType<VanillaVersion>());
             ShowAll = new BindingValue<bool>(false, () => UpdateNewVersions());
@@ -326,10 +352,15 @@ namespace Server_GUI2.Windows.MainWindow
 
             // World
             Worlds = new ObservableCollection<World>((IEnumerable<World>)AllWorlds);
-            NewWorldName = new BindingValue<string>("Input World Name", () => OnPropertyChanged(""));
+            WorldIndex = new BindingValue<World>((World)(IEnumerable<World>)AllWorlds.Select(world => world.Name == SaveData.LatestRun.WorldName), () => OnPropertyChanged("ShowNewWorld"));
+            NewWorldName = new BindingValue<string>("Input World Name", () => OnPropertyChanged("CanRun"));
+
+            // Setting
+            ResetWorld = new BindingValue<bool>(false, () => OnPropertyChanged("ShowSaveWorld"));
 
             // Window
-            SettingCommand = new SettingCommand(this);
+            SettingCommand = new SettingCommand(this, ssWindow);
+            WorldSettingCommand = new WorldSettingCommand(this, wsWindow);
         }
 
         private void UpdateNewVersions()
