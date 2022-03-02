@@ -26,7 +26,7 @@ namespace Server_GUI2.Windows.MoreSettings
                     using (var cofd = new CommonOpenFileDialog()
                     {
                         Title = "フォルダを選択してください",
-                        InitialDirectory = $@"{_vm.RunWorld.LocalWorld.Path}\datapacks",
+                        //InitialDirectory = $@"{_vm.RunWorld.LocalWorld.Path}\datapacks",
                         // フォルダ選択モードにする
                         IsFolderPicker = isZip,
                     })
@@ -43,9 +43,10 @@ namespace Server_GUI2.Windows.MoreSettings
                         }
 
                         // FileNameで選択されたフォルダを取得する
-                        string datapack_name = Path.GetFileName(cofd.FileName);
-                        Imported.Items.Remove("(None)");
-                        Imported.Items.Add("【new】" + datapack_name);
+                        _vm.Datapacks.Add(datapack);
+                        //string datapack_name = Path.GetFileName(cofd.FileName);
+                        //Imported.Items.Remove("(None)");
+                        //Imported.Items.Add("【new】" + datapack_name);
                         // MessageBox.Show($"{cofd.FileName}を選択しました");
                     }
                     break;
