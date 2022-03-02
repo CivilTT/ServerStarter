@@ -242,7 +242,7 @@
 
             </StackPanel>
 
-            <Button Content="OK" Command="{Binding Close}" Style="{StaticResource RunStyle}"/>
+            <Button Content="Save" Command="{Binding SaveCommand}" Style="{StaticResource RunStyle}"/>
 
         </Grid>
 
@@ -288,11 +288,11 @@
                     <ui:ToggleSwitch OnContent="Yes" OffContent="No" FontSize="24" Margin="80 0 0 0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20" VerticalAlignment="Top">
-                    <TextBlock Text="Account" FontSize="20" Margin="0 0 84 0"/>
+                    <TextBlock Text="Account" Width="150" FontSize="20"/>
                     <ComboBox Style="{StaticResource ShareWorldCombo}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20 0" VerticalAlignment="Top">
-                    <TextBlock Text="Remote World" FontSize="20" Margin="0 0 30 0"/>
+                    <TextBlock Text="Remote World" Width="150" FontSize="20"/>
                     <StackPanel Orientation="Vertical">
                         <ComboBox Style="{StaticResource ShareWorldCombo}"/>
                         <TextBox Style="{StaticResource ShareWorldBox}"/>

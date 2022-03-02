@@ -3,10 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Markup;
 
 namespace Server_GUI2.Windows.ViewModels
 {
@@ -121,6 +125,65 @@ namespace Server_GUI2.Windows.ViewModels
         {
             this.action = action;
             Value = defaultValue;
+        }
+    }
+
+    public class InverseBoolConverter : IValueConverter
+    {
+        // 2.Convertメソッドを実装
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            // 流れてきた値がboolじゃない時は不正値として変換
+            // お好みで例外を投げても良い
+            if (!(value is bool b)) { return DependencyProperty.UnsetValue; }
+
+            // 流れてきたbool値を変換してreturnする
+            return !b;
+        }
+
+        // 3.ConvertBackメソッドを実装
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            // ただの反転なのでBinding元に書き戻すときも全く同様の処理で良い
+            if (!(value is bool b)) { return DependencyProperty.UnsetValue; }
+            return !b;
+        }
+    }
+
+    /// <summary>
+    /// 複数のConverterを取れるようにする
+    /// </summary>
+    [ContentProperty(nameof(Converters))]
+    public class ValueConverterGroup : IValueConverter
+    {
+        public Collection<IValueConverter> Converters { get; } = new Collection<IValueConverter>();
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var result = value;
+
+            if (Converters == null) return result;
+
+            foreach (var conv in Converters)
+            {
+                result = conv.Convert(result, targetType, parameter, culture);
+            }
+
+            return result;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var result = value;
+
+            if (Converters == null) return result;
+
+            foreach (var conv in Converters.Reverse())
+            {
+                result = conv.ConvertBack(result, targetType, parameter, culture);
+            }
+
+            return result;
         }
     }
 

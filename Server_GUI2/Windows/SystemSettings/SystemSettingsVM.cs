@@ -16,12 +16,14 @@ using Server_GUI2.Util;
 using Server_GUI2.Develop.Util;
 using MW = ModernWpf;
 using System.Text.RegularExpressions;
+using Server_GUI2.Develop.Server.World;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
     class SystemSettingsVM : GeneralVM
     {
         static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
+        static readonly StorageCollection Storages = StorageCollection.Instance;
 
         // 設定項目の表示非表示を操作
         public BindingValue<int> MenuIndex { get; private set; }
@@ -41,9 +43,9 @@ namespace Server_GUI2.Windows.SystemSettings
         public BindingValue<string> AccountEmail { get; private set; }
         public BindingValue<string> RepoName { get; private set; }
         public bool CanAddition_SW => CheckHasContent(new List<BindingValue<string>> { AccountName, AccountEmail, RepoName }, "");
-        public ObservableCollection<AccountInfo> RemoteList { get; private set; }
-        public BindingValue<AccountInfo> RLIndex { get; private set; }
-        public bool HasBranch => (RLIndex.Value?.Branch ?? "null") != "";
+        public ObservableCollection<Storage> RemoteList { get; private set; }
+        public BindingValue<Storage> RLIndex { get; private set; }
+        public bool HasBranch => RLIndex.Value?.RemoteWorlds.Count != 0;
         public CredentialManagerCommand CredentialManagerCommand { get; private set; }
 
         // Server
@@ -171,8 +173,8 @@ namespace Server_GUI2.Windows.SystemSettings
             AccountName = new BindingValue<string>("", () => OnPropertyChanged(new string[2] { "AccountName", "CanAddition_SW" }));
             AccountEmail = new BindingValue<string>("", () => OnPropertyChanged(new string[2] { "AccountEmail", "CanAddition_SW" }));
             RepoName = new BindingValue<string>("ShareWorld", () => OnPropertyChanged(new string[2] { "RepoName", "CanAddition_SW" }));
-            RemoteList = new ObservableCollection<AccountInfo>(SaveData.RemoteContents);
-            RLIndex = new BindingValue<AccountInfo>(null, () => OnPropertyChanged(new string[2] { "RLIndex", "HasBranch" }));
+            RemoteList = Storages.Storages;
+            RLIndex = new BindingValue<Storage>(null, () => OnPropertyChanged(new string[2] { "RLIndex", "HasBranch" }));
             CredentialManagerCommand = new CredentialManagerCommand(this);
 
             // Server
@@ -258,116 +260,6 @@ namespace Server_GUI2.Windows.SystemSettings
         {
             // Windowから値が入らないため実装の必要性がない
             throw new NotImplementedException();
-        }
-    }
-
-    public class AccountInfo : IEquatable<AccountInfo>, IComparable<AccountInfo>
-    {
-        [JsonProperty("Name")]
-        public string Name { get; private set; }
-        [JsonProperty("Email")]
-        public string Email { get; private set; }
-        [JsonProperty("Repository")]
-        public string Repository { get; private set; }
-        [JsonProperty("Branch")]
-        public string Branch { get; private set; }
-        [JsonProperty("IsShow")]
-        public bool IsShow { get; set; }
-
-        public AccountInfo(
-            string name,
-            string email,
-            string repo,
-            string branch,
-            bool isshow = true)
-        {
-            Name = name;
-            Email = email;
-            Repository = repo;
-            Branch = branch;
-            IsShow = isshow;
-        }
-
-        public bool Equals(AccountInfo other)
-        {
-            return other.Name == Name;
-        }
-
-        public int CompareTo(AccountInfo other)
-        {
-            return Name.CompareTo(other.Name);
-        }
-    }
-
-    public class PlayerGroup : IEquatable<PlayerGroup>, IComparable<PlayerGroup>
-    {
-        [JsonProperty("GroupName")]
-        public string GroupName { get; private set; }
-
-        [JsonProperty("PlayerList")]
-        public ObservableCollection<Player> PlayerList { get; private set; }
-
-        public PlayerGroup(string name, ObservableCollection<Player> list)
-        {
-            GroupName = name;
-            PlayerList = list;
-        }
-
-        public bool Equals(PlayerGroup other)
-        {
-            return other.GroupName == GroupName;
-        }
-
-        public int CompareTo(PlayerGroup other)
-        {
-            return GroupName.CompareTo(other.GroupName);
-        }
-    }
-
-    public class Player : IEquatable<Player>, IComparable<Player>
-    {
-        readonly WebClient wc;
-        public string Name { get; private set; }
-        public string UUID { get; private set; }
-
-        public Player(string name)
-        {
-            wc = new WebClient();
-            Name = name;
-            UUID = "";
-            UUID = GetUuid(name);
-        }
-
-        private string GetUuid(string name)
-        {
-            string url = $@"https://api.mojang.com/users/profiles/minecraft/{name}";
-            string jsonStr = wc.DownloadString(url);
-
-            dynamic root = JsonConvert.DeserializeObject(jsonStr);
-            if (root == null)
-                return "";
-
-            string uuid = root.id;
-            Name = root.name;
-
-            string uuid_1 = uuid.Substring(0, 8);
-            string uuid_2 = uuid.Substring(8, 4);
-            string uuid_3 = uuid.Substring(12, 4);
-            string uuid_4 = uuid.Substring(16, 4);
-            string uuid_5 = uuid.Substring(20);
-            uuid = uuid_1 + "-" + uuid_2 + "-" + uuid_3 + "-" + uuid_4 + "-" + uuid_5;
-
-            return uuid;
-        }
-
-        public bool Equals(Player other)
-        {
-            return other.UUID == UUID;
-        }
-
-        public int CompareTo(Player other)
-        {
-            return Name.CompareTo(other.Name);
         }
     }
 }

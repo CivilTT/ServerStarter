@@ -7,8 +7,10 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:Server_GUI2"
         xmlns:vm="clr-namespace:Server_GUI2.Windows.MainWindow"
+        xmlns:basevm="clr-namespace:Server_GUI2.Windows.ViewModels"
         xmlns:base="clr-namespace:Server_GUI2.Windows"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:MainWindowVM, IsDesignTimeCreatable=True}"
         ResizeMode="CanMinimize"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="Server Starter" Height="630" Width="630" WindowStartupLocation="CenterScreen">
@@ -137,13 +139,17 @@
         <vm:ExistsVersionConverter x:Key="ExistsConverter"/>
         <vm:NewVersionConverter x:Key="NewConverter"/>
         <vm:WorldConverter x:Key="WorldConverter"/>
-        <local:InverseBoolConverter x:Key="InverseBool"/>
+        <basevm:InverseBoolConverter x:Key="InverseBool"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
+        <basevm:ValueConverterGroup x:Key="InverseBoolToVisible">
+            <basevm:InverseBoolConverter/>
+            <BooleanToVisibilityConverter/>
+        </basevm:ValueConverterGroup>
     </Window.Resources>
 
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <vm:MainWindowVM/>
-    </Window.DataContext>
+    </Window.DataContext>-->
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -152,9 +158,9 @@
         </Grid.ColumnDefinitions>
 
         <Image Source="pack://application:,,,/Resources/MainWindow/main_image.png" Grid.Column="1" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="30,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32" Foreground="White" Grid.Column="1" Text="Server Starter for Minecraft" FontWeight="Bold"/>
-        <TextBlock x:Name="name" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding PlayerName}" VerticalAlignment="Top" Margin="0 30 40 0" FontSize="18" Foreground="White" TextAlignment="Right" FontWeight="Bold"  Grid.Column="1"/>
-        <TextBlock x:Name="info_version" HorizontalAlignment="Right" Text="{Binding StarterVersion}" VerticalAlignment="Top" FontSize="16" Foreground="White" Margin="0 155 40 0" Grid.Column="1"/>
+        <TextBlock Text="Server Starter for Minecraft" HorizontalAlignment="Left" Margin="30,15,0,0" VerticalAlignment="Top" FontSize="32" Foreground="White" Grid.Column="1" FontWeight="Bold"/>
+        <TextBlock Text="{Binding PlayerName}" HorizontalAlignment="Right" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0 30 40 0" FontSize="18" Foreground="White" TextAlignment="Right" FontWeight="Bold"  Grid.Column="1"/>
+        <TextBlock Text="{Binding StarterVersion}" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="16" Foreground="White" Margin="0 155 40 0" Grid.Column="1"/>
 
         <Line Stroke="White" StrokeThickness="2" X1="30" Y1="65" X2="595" Y2="65" Grid.Column="1"/>
 
@@ -179,53 +185,52 @@
         </StackPanel>-->
 
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,200" Width="253" Orientation="Vertical" Grid.Column="1">
-            <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="Server Version" VerticalAlignment="Top" Width="140" FontSize="20"/>
+            <TextBlock Text="Server Version" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="140" FontSize="20"/>
             <StackPanel Orientation="Horizontal">
-                <ComboBox Margin="0,0,20,0" SelectedItem="{Binding ExistsVersionIndex.Value}" ItemsSource="{Binding ExistsVersions, Converter={StaticResource ExistsConverter}}" Style="{StaticResource ComboStyle}"/>
-                <Button Visibility="{Binding ReverseShowNewVers, Converter={StaticResource BoolToVisible}}" Command="{Binding DeleteCommand}" CommandParameter="version" Style="{StaticResource MiniButton}">
+                <ComboBox SelectedItem="{Binding ExistsVersionIndex.Value}" ItemsSource="{Binding ExistsVersions, Converter={StaticResource ExistsConverter}}" Margin="0,0,20,0" Style="{StaticResource ComboStyle}"/>
+                <Button Command="{Binding DeleteCommand}" CommandParameter="version" Visibility="{Binding ReverseShowNewVers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource MiniButton}">
                     <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                 </Button>
             </StackPanel>
-            <ComboBox Margin="0 10 0 0" Width="253" Visibility="{Binding ShowNewVersions, Converter={StaticResource BoolToVisible}}" SelectedItem="{Binding NewVersionIndex.Value}" ItemsSource="{Binding NewVersions, Converter={StaticResource NewConverter}}" Style="{StaticResource ComboStyle}"/>
+            <ComboBox SelectedItem="{Binding NewVersionIndex.Value}" ItemsSource="{Binding NewVersions, Converter={StaticResource NewConverter}}" Margin="0 10 0 0" Width="253" Visibility="{Binding ShowNewVersions, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ComboStyle}"/>
             <StackPanel Orientation="Horizontal" Margin="0 5">
                 <ui:ToggleSwitch Header="Show Versions" OffContent="Release" OnContent="All" FontSize="18" Width="140" Visibility="{Binding ShowNewVersions, Converter={StaticResource BoolToVisible}}" IsEnabled="{Binding ShowSpigot, Converter={StaticResource InverseBool}}" IsOn="{Binding ShowAll.Value}"/>
-                <ui:ToggleSwitch x:Name="Toggle_spigot" Header="Import Spigot" OffContent="No" OnContent="Yes" FontSize="18" Visibility="{Binding ShowNewVersions, Converter={StaticResource BoolToVisible}}" IsOn="{Binding ShowSpigot.Value}"/>
+                <ui:ToggleSwitch Header="Import Spigot" OffContent="No" OnContent="Yes" FontSize="18" Visibility="{Binding ShowNewVersions, Converter={StaticResource BoolToVisible}}" IsOn="{Binding ShowSpigot.Value}"/>
             </StackPanel>
         </StackPanel>
         
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="30,200" Orientation="Vertical" Grid.Column="1">
-            <TextBlock Height="33" Text="World Name" FontSize="20" TextAlignment="Left"/>
+            <TextBlock Text="World Name" Height="33" FontSize="20" TextAlignment="Left"/>
             <StackPanel Orientation="Horizontal">
-                <!--<ComboBox x:Name="World2" Margin="0,0,20,0"  ItemsSource="{Binding Items, ElementName=World}" Style="{StaticResource ComboStyle}"/>-->
                 <ComboBox SelectedItem="{Binding WorldIndex}" ItemsSource="{Binding Worlds, Converter={StaticResource WorldConverter}}" Margin="0,0,20,0" Style="{StaticResource ComboStyle}"/>
-                <Button Width="33" Height="33" FontSize="18" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="world">
+                <Button Command="{Binding DeleteCommand}" CommandParameter="world" Visibility="{Binding ShowNewWorld, Converter={StaticResource InverseBoolToVisible}}" Style="{StaticResource MiniButton}">
                     <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                 </Button>
             </StackPanel>
 
-            <TextBox Text="{Binding NewWorldName.Value}" Margin="0 10" Style="{StaticResource BoxStyle}"/>
+            <TextBox Text="{Binding NewWorldName.Value}" Visibility="{Binding ShowNewWorld, Converter={StaticResource BoolToVisible}}" Margin="0 10" Style="{StaticResource BoxStyle}"/>
         </StackPanel>
 
-        <Button x:Name="Run_button" Content="Run" Margin="0,335,30,0" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Command="{Binding RunCommand}" Style="{StaticResource RunStyle}"/>
+        <Button Command="{Binding RunCommand}" Content="Run" Margin="0,335,30,0" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" IsEnabled="{Binding CanRun}" Style="{StaticResource RunStyle}"/>
 
         <Line StrokeThickness="0.3" Y1="390" Y2="390" Grid.Column="1" Style="{StaticResource LineStyle}"/>
 
         <StackPanel Orientation="Vertical" Margin="50,400,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1">
-            <CheckBox x:Name="re_world" Content="Recreate World (When you want to reset the selected world)" FontSize="16" Click="Reset_world_Click"/>
-            <CheckBox x:Name="sa_world" Content="Save old World before recreating it (Saving name : ...__old(1))" FontSize="16" Margin="40,0,0,10" Click="Save_world_Click" IsEnabled="False"/>
+            <CheckBox Content="Recreate World (When you want to reset the selected world)" FontSize="16" IsChecked="{Binding ResetWorld.Value}"/>
+            <CheckBox Content="Save old World before recreating it (Saving name : ...__old(1))" FontSize="16" Margin="40,0,0,10" IsChecked="{Binding SaveWorld}" IsEnabled="{Binding ShowSaveWorld}"/>
 
-            <CheckBox x:Name="op" Content="{Binding OpContents}" FontSize="16" IsChecked="True" Click="Op_Click"/>
-            <CheckBox x:Name="shutdown" Content="Shutdown this PC after stopping the server" FontSize="16" Click="Shutdown_Click"/>
+            <CheckBox Content="{Binding OpContents}" FontSize="16" IsChecked="{Binding OwnerHasOp}"/>
+            <CheckBox Content="Shutdown this PC after stopping the server" FontSize="16" IsChecked="{Binding ShutdownPC}"/>
         </StackPanel>
         <Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="61" Y1="425" X2="61" Y2="448" Grid.Column="1"/>
         <Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="61" Y1="448" X2="91" Y2="448" Grid.Column="1"/>
 
 
-        <Button x:Name="info" Content="Info" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="60" Margin="30,0,0,10" Grid.Column="1" Command="{Binding SettingCommand}" Style="{StaticResource OtherStyle}"/>
-        <StackPanel x:Name="Execute" HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Margin="0,0,0,10" Orientation="Horizontal" Grid.Column="1">
-            <Button x:Name="More_Settings_button" Content="More Settings" Click="More_Settings_Click" Style="{StaticResource OtherStyle}"/>
+        <Button Content="Info" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="60" Margin="30,0,0,10" Grid.Column="1" Command="{Binding SettingCommand}" Style="{StaticResource OtherStyle}"/>
+        <StackPanel HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Margin="0,0,0,10" Orientation="Horizontal" Grid.Column="1">
+            <Button Content="More Settings" Command="{Binding WorldSettingCommand}" IsEnabled="{Binding CanRun}" Style="{StaticResource OtherStyle}"/>
             <Button Content="Close" Margin="10,0,30,0" Command="{Binding CloseCommand}" Style="{StaticResource OtherStyle}"/>
         </StackPanel>
     </Grid>
