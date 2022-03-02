@@ -1,74 +1,86 @@
-﻿using Server_GUI2;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using System.Windows.Data;
+﻿using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Windows.ViewModels;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Data;
 
 namespace Server_GUI2.Windows.MainWindow
 {
-    class MainWindowVM : INotifyPropertyChanged, IOperateWindows
+    class MainWindowVM : GeneralVM
     {
         // あえて直接呼び出さないことで、Load処理の前にallVersionsなどが呼ばれることを防止している
         private static readonly VersionFactory verFactory = VersionFactory.Instance;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // Window操作系
-        public Action Close { get; set; }
-        public Action Show { get; set; }
-        public Action Hide { get; set; }
-
+        static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
 
         // 一般
         public string StarterVersion { get { return $"ver {SetUp.StarterVersion}"; } }
         public string PlayerName { get { return UserSettings.Instance.userSettings.PlayerName; } }
         public string OpContents { get { return $"{PlayerName} has op rights in this version's server"; } }
+        readonly ObservableCollection<Version> AllVers = VersionFactory.Instance.Versions;
+        readonly ObservableCollection<IWorld> AllWorlds = WorldCollection.Instance.Worlds;
+
+
+        // General
+        public bool CanRun => Regex.IsMatch(NewWorldName.Value, @"^[0-9a-zA-Z_-]+$");
 
 
         // 新規Versionの表示に関連
         /// <summary>
         /// ToggleSwitchのOnOffを保持
         /// </summary>
-        private bool _showAll = false;
-        public bool ShowAll
-        {
-            get
-            {
-                return _showAll;
-            }
-            set 
-            {
-                _showAll = value;
-                NewVersions = ShowNewVersions;
-                SelectedNewVersion = ShowNewVersions[0];
-            } 
-        }
-        private bool _showSpigot = false;
-        public bool ShowSpigot
-        {
-            get 
-            {
-                return _showSpigot;
-            }
-            set
-            {
-                _showSpigot = value;
-                NewVersions = ShowNewVersions;
-                SelectedNewVersion = ShowNewVersions[0];
+        public BindingValue<bool> ShowAll { get; private set; }
+        //private bool _showAll = false;
+        //public bool ShowAll
+        //{
+        //    get
+        //    {
+        //        return _showAll;
+        //    }
+        //    set 
+        //    {
+        //        _showAll = value;
+        //        NewVersions = ShowNewVersions;
+        //        SelectedNewVersion = ShowNewVersions[0];
+        //    } 
+        //}
+        public BindingValue<bool> ShowSpigot { get; private set; }
+        //private bool _showSpigot = false;
+        //public bool ShowSpigot
+        //{
+        //    get 
+        //    {
+        //        return _showSpigot;
+        //    }
+        //    set
+        //    {
+        //        _showSpigot = value;
+        //        NewVersions = ShowNewVersions;
+        //        SelectedNewVersion = ShowNewVersions[0];
 
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowSpigot"));
-            }
-        }
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowSpigot"));
+        //    }
+        //}
 
+        //Version
         /// <summary>
         /// Comboboxに表示するバージョンの一覧を保持
         /// </summary>
-        private List<string> ShowNewVersions;
+        public ObservableCollection<Version> ExistsVersions { get; private set; }
+        public BindingValue<Version> ExistsVersionIndex { get; private set; }
+        public bool ShowNewVersions => ExistsVersionIndex.Value.Name == "【new Version】";
+        public ObservableCollection<Version> NewVersions { get; private set; }
+        public BindingValue<Version> NewVersionIndex { get; private set; }
+        
+        // World
+        public ObservableCollection<World> Worlds { get; private set; }
+        public BindingValue<World> WorldIndex { get; private set; }
+        public BindingValue<string> NewWorldName { get; private set; }
+        //private List<string> ShowNewVersions;
         //{
         //    get
         //    {
@@ -113,70 +125,70 @@ namespace Server_GUI2.Windows.MainWindow
         //public CollectionViewSource view;
 
 
-        public List<string> NewVersions
-        {
-            get
-            {
-                return ShowNewVersions;
-            }
-            set
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NewVersions"));
-            }
-        }
+        //public List<string> NewVersions
+        //{
+        //    get
+        //    {
+        //        return ShowNewVersions;
+        //    }
+        //    set
+        //    {
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NewVersions"));
+        //    }
+        //}
 
         /// <summary>
         /// 選択されているバージョンを文字列で保持
         /// </summary>
-        private string _selectedNewVersion = VanillaVerConverter(verFactory.Versions[0]);
-        public string SelectedNewVersion
-        {
-            get
-            {
-                return _selectedNewVersion;
-            }
-            set
-            {
-                _selectedNewVersion = value;
+        //private string _selectedNewVersion = VanillaVerConverter(verFactory.Versions[0]);
+        //public string SelectedNewVersion
+        //{
+        //    get
+        //    {
+        //        return _selectedNewVersion;
+        //    }
+        //    set
+        //    {
+        //        _selectedNewVersion = value;
 
-                // ToggleSwitchが回された後に最初に表示する項目をShow○○から制御するため必要
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedNewVersion"));
-            }
-        }
+        //        // ToggleSwitchが回された後に最初に表示する項目をShow○○から制御するため必要
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedNewVersion"));
+        //    }
+        //}
 
         /// <summary>
         /// 型VersionをComboboxで表示する文字列に変換する
         /// </summary>
-        private static string VanillaVerConverter(Version x)
-        {
-            //return null;
+        //private static string VanillaVerConverter(Version x)
+        //{
+        //    //return null;
 
-            if (x is SpigotVersion)
-            {
-                return $"Spigot {x.Name}";
-            }
-            else
-            {
-                return x.Name;
-            }
+        //    if (x is SpigotVersion)
+        //    {
+        //        return $"Spigot {x.Name}";
+        //    }
+        //    else
+        //    {
+        //        return x.Name;
+        //    }
 
-            //if (x.isRelease && x.isLatest)
-            //{
-            //    return $"【LatestRelease】 {x.Name}";
-            //}
-            //else if (!x.isRelease && x.isLatest)
-            //{
-            //    return $"【LatestSnapshot】 {x.Name}";
-            //}
-            //else if (x.isRelease)
-            //{
-            //    return $"release {x.Name}";
-            //}
-            //else
-            //{
-            //    return $"snapshot {x.Name}";
-            //}
-        }
+        //    //if (x.isRelease && x.isLatest)
+        //    //{
+        //    //    return $"【LatestRelease】 {x.Name}";
+        //    //}
+        //    //else if (!x.isRelease && x.isLatest)
+        //    //{
+        //    //    return $"【LatestSnapshot】 {x.Name}";
+        //    //}
+        //    //else if (x.isRelease)
+        //    //{
+        //    //    return $"release {x.Name}";
+        //    //}
+        //    //else
+        //    //{
+        //    //    return $"snapshot {x.Name}";
+        //    //}
+        //}
 
 
 
@@ -184,95 +196,95 @@ namespace Server_GUI2.Windows.MainWindow
         /// <summary>
         /// Comboboxに表示するバージョンの一覧を保持
         /// </summary>
-        private List<string> ShowExistsVersions
-        {
-            get
-            {
-                // この部分はバージョンの表示を一つにすれば不要になる？
-                List<string> _vers = new List<string>();
-                _vers.Add("【new Version】");
-                return _vers;
-            }
-        }
-        public List<string> ExistsVersions
-        {
-            get
-            {
-                return ShowExistsVersions;
-            }
-            set
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ExistsVersions"));
-            }
-        }
-        public static string ExistsVerConverter(Version x)
-        {
-            if (x is VanillaVersion)
-            {
-                return x.Name;
-            }
-            else
-            {
-                return $"Spigot {x.Name}";
-            }
-        }
+        //private List<string> ShowExistsVersions
+        //{
+        //    get
+        //    {
+        //        // この部分はバージョンの表示を一つにすれば不要になる？
+        //        List<string> _vers = new List<string>();
+        //        _vers.Add("【new Version】");
+        //        return _vers;
+        //    }
+        //}
+        //public List<string> ExistsVersions
+        //{
+        //    get
+        //    {
+        //        return ShowExistsVersions;
+        //    }
+        //    set
+        //    {
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ExistsVersions"));
+        //    }
+        //}
+        //public static string ExistsVerConverter(Version x)
+        //{
+        //    if (x is VanillaVersion)
+        //    {
+        //        return x.Name;
+        //    }
+        //    else
+        //    {
+        //        return $"Spigot {x.Name}";
+        //    }
+        //}
 
         /// <summary>
         /// 選択されているバージョンを文字列で保持
         /// </summary>
-        private string InitSelectedExistsVersion
-        {
-            get
-            {
-                LatestRun latestRun = UserSettings.Instance.userSettings.LatestRun;
+        //private string InitSelectedExistsVersion
+        //{
+        //    get
+        //    {
+        //        LatestRun latestRun = UserSettings.Instance.userSettings.LatestRun;
 
-                if (latestRun != null && latestRun.VersionName != "" && ExistsVersions.Contains(latestRun.VersionName))
-                {
-                    return latestRun.VersionName;
-                }
+        //        if (latestRun != null && latestRun.VersionName != "" && ExistsVersions.Contains(latestRun.VersionName))
+        //        {
+        //            return latestRun.VersionName;
+        //        }
 
-                return ExistsVersions[0];
-            }
-        }
-        private string _selectedExistsVersion;
-        public string SelectedExistsVersion
-        {
-            get
-            {
-                if (_selectedExistsVersion == null)
-                    _selectedExistsVersion = InitSelectedExistsVersion;
-                return _selectedExistsVersion;
-            }
-            set
-            {
-                _selectedExistsVersion = value;
+        //        return ExistsVersions[0];
+        //    }
+        //}
+        //private string _selectedExistsVersion;
+        //public string SelectedExistsVersion
+        //{
+        //    get
+        //    {
+        //        if (_selectedExistsVersion == null)
+        //            _selectedExistsVersion = InitSelectedExistsVersion;
+        //        return _selectedExistsVersion;
+        //    }
+        //    set
+        //    {
+        //        _selectedExistsVersion = value;
 
-                // この項目は外部からプログラムで制御することがないため、PropertyChangedを実装しない
+        //        // この項目は外部からプログラムで制御することがないため、PropertyChangedを実装しない
 
-                // Selectedが変わった段階でnew Versionsの候補を出すか否かを更新する
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowNewVers"));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ReverseShowNewVers"));
-            }
-        }
+        //        // Selectedが変わった段階でnew Versionsの候補を出すか否かを更新する
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowNewVers"));
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ReverseShowNewVers"));
+        //    }
+        //}
 
         /// <summary>
         /// New VersionsのComboboxなどを表示するか
         /// </summary>
-        public bool ShowNewVers
-        {
-            get
-            {
-                // 【new Version】が選択されているか
-                return SelectedExistsVersion == ExistsVersions[ExistsVersions.Count - 1];
-            }
-        }
-        public bool ReverseShowNewVers
-        {
-            get
-            {
-                return !ShowNewVers;
-            }
-        }
+        //public bool ShowNewVers
+        //{
+        //    get
+        //    {
+        //        // 【new Version】が選択されているか
+        //        return SelectedExistsVersion == ExistsVersions[ExistsVersions.Count - 1];
+        //    }
+        //}
+        //public bool ReverseShowNewVers
+        //{
+        //    get
+        //    {
+        //        return !ShowNewVers;
+        //    }
+        //}
 
 
         // Worldの表示に関連
@@ -297,10 +309,132 @@ namespace Server_GUI2.Windows.MainWindow
 
         public MainWindowVM()
         {
+            // General
             RunCommand = new RunCommand(this);
-            SettingCommand = new SettingCommand(this);
             DeleteCommand = new DeleteCommand(this);
             CloseCommand = new CloseCommand(this);
+
+
+            // Version
+            ExistsVersions = new ObservableCollection<Version>(AllVers.Where(ver => ver.Exists));
+            ExistsVersions.Add(new VanillaVersion("【new Version】", "", true, false));
+            ExistsVersionIndex = new BindingValue<Version>((Version)AllVers.Select(ver => ver.Name == SaveData.LatestRun.VersionName), () => OnPropertyChanged("ShowNewVersions"));
+            NewVersions = new ObservableCollection<Version>(AllVers.OfType<VanillaVersion>());
+            ShowAll = new BindingValue<bool>(false, () => UpdateNewVersions());
+            ShowSpigot = new BindingValue<bool>(false, () => UpdateNewVersions());
+
+
+            // World
+            Worlds = new ObservableCollection<World>((IEnumerable<World>)AllWorlds);
+            NewWorldName = new BindingValue<string>("Input World Name", () => OnPropertyChanged(""));
+
+            // Window
+            SettingCommand = new SettingCommand(this);
+        }
+
+        private void UpdateNewVersions()
+        {
+            if (ShowSpigot.Value)
+            {
+                NewVersions.ChangeCollection(AllVers.OfType<SpigotVersion>());
+            }
+            else
+            {
+                if (ShowAll.Value)
+                    NewVersions.ChangeCollection(AllVers.OfType<VanillaVersion>());
+                else
+                    NewVersions.ChangeCollection(AllVers.OfType<VanillaVersion>().Where(ver => ver.IsRelease));
+            }
+
+            OnPropertyChanged("NewVersions");
+        }
+    }
+
+    public class ExistsVersionConverter : IValueConverter
+    {
+        public object Convert(object value, System.Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is VanillaVersion vanila)
+            {
+                return vanila.Name;
+            }
+
+            if (value is SpigotVersion spigot)
+            {
+                return $"Spigot {spigot.Name}";
+            }
+
+            return value.ToString();
+        }
+
+        public object ConvertBack(object value, System.Type targetType, object parameter, CultureInfo culture)
+        {
+            // Windowから値が入らないため実装の必要性がない
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class NewVersionConverter : IValueConverter
+    {
+        public object Convert(object value, System.Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is VanillaVersion vanila)
+            {
+                if (vanila.IsLatest)
+                {
+                    if (vanila.IsRelease)
+                        return $"【Latest Release】{vanila.Name}";
+                    else
+                        return $"【Latest SnapShot】{vanila.Name}";
+                }
+                else
+                {
+                    if (vanila.IsRelease)
+                        return $"release {vanila.Name}";
+                    else
+                        return $"snapshot {vanila.Name}";
+                }
+            }
+
+            if (value is SpigotVersion spigot)
+            {
+                return $"Spigot {spigot.Name}";
+            }
+
+            return value.ToString();
+        }
+
+        public object ConvertBack(object value, System.Type targetType, object parameter, CultureInfo culture)
+        {
+            // Windowから値が入らないため実装の必要性がない
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class WorldConverter : IValueConverter
+    {
+        public object Convert(object value, System.Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is World world)
+            {
+                string verName = world.Version.Name;
+                string spigotHead = world.Version is SpigotVersion ? "(Spigot)" : "";
+                string worldName = world.Name;
+                return $"{spigotHead}{verName}/{worldName}";
+            }
+
+            if (value is NewWorld)
+            {
+                return "【new World】";
+            }
+
+            return value.ToString();
+        }
+
+        public object ConvertBack(object value, System.Type targetType, object parameter, CultureInfo culture)
+        {
+            // Windowから値が入らないため実装の必要性がない
+            throw new System.NotImplementedException();
         }
     }
 

@@ -10,43 +10,35 @@ using Server_GUI2.Windows.SystemSettings;
 
 namespace Server_GUI2.Windows.MoreSettings
 {
-    class WorldSettingsVM : INotifyPropertyChanged, IOperateWindows
+    class WorldSettingsVM : GeneralVM
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public Action Show { get; set; }
-        public Action Hide { get; set; }
-        public Action Close { get; set; }
-
+        static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
 
         // 設定項目の表示非表示を操作
-        private int _menuIndex = 0;
-        public int MenuIndex
-        {
-            get
-            {
-                return _menuIndex;
-            }
-            set
-            {
-                _menuIndex = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowProp"));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowSW"));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowAdd"));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowOp"));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowWhite"));
-            }
-        }
-        public bool ShowProp => MenuIndex == 0;
-        public bool ShowSW => MenuIndex == 1;
-        public bool ShowAdd => MenuIndex == 2;
-        public bool ShowOp => MenuIndex == 3;
-        public bool ShowWhite => MenuIndex == 4;
+        public BindingValue<int> MenuIndex { get; private set; }
+        public bool ShowProp => MenuIndex.Value == 0;
+        public bool ShowSW => MenuIndex.Value == 1;
+        public bool ShowAdd => MenuIndex.Value == 2;
+        public bool ShowOp => MenuIndex.Value == 3;   
+        public bool ShowWhite => MenuIndex.Value == 4;
 
+
+
+        // ShareWorld
+        public bool UseSW { get; set; } = true;
 
         //Op
         public ObservableCollection<OpPlayer> OpPlayersList = new ObservableCollection<OpPlayer>();
 
+
+
+        public WorldSettingsVM()
+        {
+            // General
+            MenuIndex = new BindingValue<int>(0, () => OnPropertyChanged(new string[5] { "ShowProp", "ShowSW", "ShowAdd", "ShowOp", "ShowWhite" }));
+            
+
+        }
 
     }
 

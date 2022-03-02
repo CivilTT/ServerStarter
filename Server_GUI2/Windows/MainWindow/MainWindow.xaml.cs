@@ -1,5 +1,6 @@
 ﻿using log4net;
 using Newtonsoft.Json;
+using Server_GUI2.Windows;
 using Server_GUI2.Windows.MoreSettings;
 using Server_GUI2.Windows.ViewModels;
 using System;
@@ -39,7 +40,7 @@ namespace Server_GUI2
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : GeneralCB
     {
         public static string Data_Path { get { return @".\World_Data"; } }
 
@@ -458,22 +459,22 @@ namespace Server_GUI2
         //     new_Version.SelectedIndex = (new_Version.Items.IndexOf(selected_item) == -1) ? 0 : new_Version.Items.IndexOf(selected_item);
         // }
 
-        private void VersionToggle(object sender, RoutedEventArgs e)
-        {
-            string selected_item = new_Version.SelectedItem.ToString();
-            new_Version.Items.Clear();
+        //private void VersionToggle(object sender, RoutedEventArgs e)
+        //{
+        //    string selected_item = new_Version.SelectedItem.ToString();
+        //    new_Version.Items.Clear();
 
-            if (toggleVersions.IsOn)
-            {
-                new_Version = func.Init_new_Versions(new_Version, All_versions);
-            }
-            else
-            {
-                new_Version = func.Init_new_Versions(new_Version, release_versions);
-            }
+        //    if (toggleVersions.IsOn)
+        //    {
+        //        new_Version = func.Init_new_Versions(new_Version, All_versions);
+        //    }
+        //    else
+        //    {
+        //        new_Version = func.Init_new_Versions(new_Version, release_versions);
+        //    }
 
-            new_Version.SelectedIndex = (new_Version.Items.IndexOf(selected_item) == -1) ? 0 : new_Version.Items.IndexOf(selected_item);
-        }
+        //    new_Version.SelectedIndex = (new_Version.Items.IndexOf(selected_item) == -1) ? 0 : new_Version.Items.IndexOf(selected_item);
+        //}
 
         //private void Delete_version(object sender, RoutedEventArgs e)
         //{
@@ -544,27 +545,27 @@ namespace Server_GUI2
         //    }
         //}
 
-        private void Check_WorldName(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            // 起動時にMainWindow.xamlを上から読んでいくと、RunボタンはWorld_nameよりも後の一番最後に読み込まれるため、NullExeptionを回避するために入れている
-            if (Run_button == null)
-            {
-                return;
-            }
+        //private void Check_WorldName(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        //{
+        //    // 起動時にMainWindow.xamlを上から読んでいくと、RunボタンはWorld_nameよりも後の一番最後に読み込まれるため、NullExeptionを回避するために入れている
+        //    if (Run_button == null)
+        //    {
+        //        return;
+        //    }
 
-            if(!Regex.IsMatch(input_box_world.Text, @"^[0-9a-zA-Z-_]+$"))
-            {
-                More_Settings_button.IsEnabled = false;
-                Run_button.IsEnabled = false;
-            }
-            else
-            {
-                More_Settings_button.IsEnabled = true;
-                Run_button.IsEnabled = true;
-            }
+        //    if(!Regex.IsMatch(input_box_world.Text, @"^[0-9a-zA-Z-_]+$"))
+        //    {
+        //        More_Settings_button.IsEnabled = false;
+        //        Run_button.IsEnabled = false;
+        //    }
+        //    else
+        //    {
+        //        More_Settings_button.IsEnabled = true;
+        //        Run_button.IsEnabled = true;
+        //    }
 
-            Data_list.World = input_box_world.Text;
-        }
+        //    Data_list.World = input_box_world.Text;
+        //}
 
         private void Op_Click(object sender, RoutedEventArgs e)
         {
@@ -617,35 +618,35 @@ namespace Server_GUI2
             }
         }
 
-        private void TF_spigot(object sender, RoutedEventArgs e)
-        {
-            new_Version.Items.Clear();
+        //private void TF_spigot(object sender, RoutedEventArgs e)
+        //{
+        //    new_Version.Items.Clear();
 
-            if (Toggle_spigot.IsOn == true)
-            {
-                Data_list.Import_spigot = true;
-                toggleVersions.IsEnabled = false;
-                foreach(var spi_ver in spigot_versions)
-                {
-                    new_Version.Items.Add(spi_ver);
-                }
-            }
-            else
-            {
-                Data_list.Import_spigot = false;
-                toggleVersions.IsEnabled = true;
-                if (toggleVersions.IsOn)
-                {
-                    new_Version = func.Init_new_Versions(new_Version, All_versions);
-                }
-                else
-                {
-                    new_Version = func.Init_new_Versions(new_Version, release_versions);
-                }
-            }
+        //    if (Toggle_spigot.IsOn == true)
+        //    {
+        //        Data_list.Import_spigot = true;
+        //        toggleVersions.IsEnabled = false;
+        //        foreach(var spi_ver in spigot_versions)
+        //        {
+        //            new_Version.Items.Add(spi_ver);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Data_list.Import_spigot = false;
+        //        toggleVersions.IsEnabled = true;
+        //        if (toggleVersions.IsOn)
+        //        {
+        //            new_Version = func.Init_new_Versions(new_Version, All_versions);
+        //        }
+        //        else
+        //        {
+        //            new_Version = func.Init_new_Versions(new_Version, release_versions);
+        //        }
+        //    }
 
-            new_Version.SelectedIndex = 0;
-        }
+        //    new_Version.SelectedIndex = 0;
+        //}
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
