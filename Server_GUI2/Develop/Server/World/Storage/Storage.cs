@@ -154,12 +154,7 @@ namespace Server_GUI2.Develop.Server.World
             var repo = GitStorageRepository.AddRepository(Local,remote);
             var storage = new GitStorage(repo);
             StorageCollection.Instance.Add(storage);
-            return Success<GitStorage, string>(storage);
-        }
-
-        private static Either<T1, T2> Success<T1, T2>(T1 storage)
-        {
-            throw new NotImplementedException();
+            return new Success<GitStorage, string>(storage);
         }
 
         /// <summary>
