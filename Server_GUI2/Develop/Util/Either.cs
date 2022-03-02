@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Server_GUI2.Develop.Util
 {
-    abstract class Either<SUCCESS,FAILURE>
+    public abstract class Either<SUCCESS,FAILURE>
     {
         public abstract bool IsSuccess { get; }
 
@@ -19,7 +19,7 @@ namespace Server_GUI2.Develop.Util
         public abstract FAILURE FailureOrDefault(FAILURE defaultValue);
     }
 
-    class Success<SUCCESS, FAILURE>: Either<SUCCESS, FAILURE>
+    public class Success<SUCCESS, FAILURE>: Either<SUCCESS, FAILURE>
     {
         public override bool IsSuccess { get; } = true;
 
@@ -39,7 +39,7 @@ namespace Server_GUI2.Develop.Util
         public override FAILURE FailureOrDefault(FAILURE defaultValue) => defaultValue;
     }
 
-    class Failure<SUCCESS, FAILURE> : Either<SUCCESS, FAILURE>
+    public class Failure<SUCCESS, FAILURE> : Either<SUCCESS, FAILURE>
     {
         public override bool IsSuccess { get; } = false;
 
