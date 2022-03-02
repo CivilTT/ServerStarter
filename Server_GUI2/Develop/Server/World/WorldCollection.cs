@@ -74,6 +74,12 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private List<RemoteLinkJson> LoadLinkJson()
         {
+            if (!jsonPath.Exists)
+            {
+                var jsonData = new List<RemoteLinkJson>();
+                jsonPath.WriteJson(jsonData);
+                return jsonData;
+            }
             return jsonPath.ReadJson();
         }
 
