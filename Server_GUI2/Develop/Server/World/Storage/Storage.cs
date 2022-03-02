@@ -58,6 +58,9 @@ namespace Server_GUI2.Develop.Server.World
 
         public abstract string RepositoryName { get; }
 
+        // 今後消すかも
+        public abstract string Email { get; }
+
         public bool Available { get; set; }
 
         public virtual void AddWorld(RemoteWorld world)
@@ -119,6 +122,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public override string RepositoryName => Repository.Branch.RemoteBranch.NamedRemote.Remote.Repository;
 
+        public override string Email => "dummy.email@dummy.com";
         /// <summary>
         /// 使用可能なブランチ名かどうかを返す
         /// </summary>
@@ -141,7 +145,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 新しいリポジトリを追加する
         /// </summary>
-        public static GitStorage AddStorage(string account,string repository)
+        public static GitStorage AddStorage(string account, string repository, string email)
         {
             // TODO: ストレージのアカウント系のエラー処置
             //StorageCollection.Instance.Storages
