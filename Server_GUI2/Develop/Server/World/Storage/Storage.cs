@@ -54,6 +54,10 @@ namespace Server_GUI2.Develop.Server.World
 
         public abstract string Id { get; }
 
+        public abstract string AccountName { get; }
+
+        public abstract string RepositoryName { get; }
+
         public bool Available { get; set; }
 
         public virtual void AddWorld(RemoteWorld world)
@@ -110,6 +114,10 @@ namespace Server_GUI2.Develop.Server.World
         public static readonly GitLocal Local = new GitLocal(ServerGuiPath.Instance.GitState.FullName);
 
         public override string Id => $"git/{Repository.Branch.RemoteBranch.NamedRemote.Remote.Account}/{Repository.Branch.RemoteBranch.NamedRemote.Remote.Repository}";
+
+        public override string AccountName => Repository.Branch.RemoteBranch.NamedRemote.Remote.Account;
+
+        public override string RepositoryName => Repository.Branch.RemoteBranch.NamedRemote.Remote.Repository;
 
         /// <summary>
         /// 使用可能なブランチ名かどうかを返す
