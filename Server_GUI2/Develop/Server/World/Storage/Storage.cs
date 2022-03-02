@@ -135,6 +135,8 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public static GitStorage AddStorage(string account,string repository)
         {
+            // TODO: ストレージのアカウント系のエラー処置
+            //StorageCollection.Instance.Storages
             var remote = new GitRemote(account,repository);
             var repo = GitStorageRepository.AddRepository(Local,remote);
             var storage = new GitStorage(repo);

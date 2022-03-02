@@ -106,6 +106,7 @@
     <Compile Include="Develop\Server\World\Storage\GitOperate.cs" />
     <Compile Include="Develop\Server\World\Util\Datapack.cs" />
     <Compile Include="Develop\UserSettings.cs" />
+    <Compile Include="Develop\Util\Either.cs" />
     <Compile Include="Develop\Util\LogExt.cs" />
     <Compile Include="Develop\Util\PortMapping.cs" />
     <Compile Include="Develop\Util\ReadOnlyProperty.cs" />
