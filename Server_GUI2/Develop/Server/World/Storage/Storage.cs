@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Develop.Util;
 using Server_GUI2.Util;
 
 namespace Server_GUI2.Develop.Server.World
@@ -143,9 +144,9 @@ namespace Server_GUI2.Develop.Server.World
         }
 
         /// <summary>
-        /// 新しいリポジトリを追加する
+        /// 新しいリポジトリを生成、ストレージ一覧に追加する
         /// </summary>
-        public static GitStorage AddStorage(string account, string repository, string email)
+        public static Either<GitStorage,string> AddStorage(string account, string repository, string email)
         {
             // TODO: ストレージのアカウント系のエラー処置
             //StorageCollection.Instance.Storages
@@ -153,7 +154,12 @@ namespace Server_GUI2.Develop.Server.World
             var repo = GitStorageRepository.AddRepository(Local,remote);
             var storage = new GitStorage(repo);
             StorageCollection.Instance.Add(storage);
-            return storage;
+            return Success<GitStorage, string>(storage);
+        }
+
+        private static Either<T1, T2> Success<T1, T2>(T1 storage)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
