@@ -111,7 +111,7 @@ namespace Server_GUI2
                     main.Get_op = op;
                     Change_properties();
                     m_settings.Read_properties();
-                    main.Start(false);
+                    //main.Start(false);
                 }
 
                 Console.Write(end_str);

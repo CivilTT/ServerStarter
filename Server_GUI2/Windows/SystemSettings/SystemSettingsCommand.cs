@@ -44,7 +44,7 @@ namespace Server_GUI2.Windows.SystemSettings
             switch (parameter)
             {
                 case "Remote":
-                    GitStorage storage = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value);
+                    GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
                     //var gitList = _vm.RemoteList;
                     //var repo = new Repository(_vm.RepoName.Value)
                     //var gitContent= new AccountInfo(
@@ -102,9 +102,9 @@ namespace Server_GUI2.Windows.SystemSettings
                 case "Remote":
                     var remoteList = _vm.RemoteList;
                     var remoteDeleteItem = _vm.RLIndex.Value;
-                    _vm.AccountName.Value = remoteDeleteItem;
+                    _vm.AccountName.Value = remoteDeleteItem.AccountName;
                     _vm.AccountEmail.Value = remoteDeleteItem.Email;
-                    _vm.RepoName.Value = remoteDeleteItem.Repository;
+                    _vm.RepoName.Value = remoteDeleteItem.RepositoryName;
                     remoteList.Remove(remoteDeleteItem);
                     break;
                 case "Group":
@@ -153,10 +153,13 @@ namespace Server_GUI2.Windows.SystemSettings
             switch (parameter)
             {
                 case "Remote":
-                    var remoteList = _vm.RemoteList;
-                    var remoteDeleteItem = _vm.RLIndex.Value ?? null;
-                    var remoteName = _vm.RLIndex.Value?.Name ?? null;
-                    DeleteContent(remoteList, remoteDeleteItem, remoteName);
+                    //var remoteList = _vm.RemoteList;
+                    //var remoteDeleteItem = _vm.RLIndex.Value ?? null;
+                    //var remoteName = _vm.RLIndex.Value?. ?? null;
+                    MessageBoxResult? result = MW.MessageBox.Show($"{_vm.RLIndex.Value.RepositoryName}を削除しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                        _vm.RLIndex.Value.Delete();
+                    //DeleteContent(remoteList, remoteDeleteItem, remoteName);
                     break;
 
                 case "Player":
