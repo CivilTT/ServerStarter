@@ -189,143 +189,143 @@ namespace Server_GUI2
             Pd.Value = 100;
             Pd.Close();
 
-            var systemSettingWindow = new ShowNewWindow<SystemSettings, SystemSettingsVM>()
-            {
-                Owner = this
-            };
-            var worldSettingWindow = new ShowNewWindow<WorldSettings, WorldSettingsVM>()
-            {
-                Owner = this
-            };
-            DataContext = new MainWindowVM(systemSettingWindow, worldSettingWindow);
-        }
-
-        public void Start(bool gui=true)
-        {
-            logger.Debug("------------------------------------------------------------");
-            logger.Info("Start the Server Opening");
-            Pd = new ProgressDialog
-            {
-                Title = $"the server {Data_list.ReadVersion}/{Data_list.World}"
-            };
-            Pd.Show();
-
-            if(Data_list.Import_spigot && Data_list.World == "ShareWorld")
-            {
-                logger.Info("ShareWorld doesn't correspond to Spigot Server");
-                MW.MessageBox.Show("SpigotサーバーにShareWorldは対応していません。\nShareWorldを使う場合はバニラサーバーにて起動してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
-                Pd.Close();
-                logger.Info("Show MainWindow again");
-                Show();
-                return;
-            }
-
-            dynamic start_func;
-            if (Data_list.Import_spigot)
-            {
-                start_func = new Spigot_Function();
-            }
-            else
-            {
-                start_func = new Functions();
-            }
-
-            start_func.Main = this;
-
-            //bool show = start_func.Define_OpenWorld(World, gui);
-            //if(!show && GUI)
+            //var systemSettingWindow = new ShowNewWindow<SystemSettings, SystemSettingsVM>()
             //{
-            //    Pd.Close();
-            //    logger.Info("Show MainWindow again");
-            //    Show();
-            //    return;
-            //}
-            Pd.Value = 10;
-            Pd.Message = "Define opening World";
-
-            //バージョンについて分岐
-            if (Data_list.Import_NewVersion)
-            {
-                // GUIでは取得していない場合に新規バージョンを追加できないようになっているが、コマンド側から実行された際にエラーを吐くようにしている
-                if (!Set_new_Version)
-                {
-                    string message =
-                        "Minecraftのバージョン一覧を取得していないため、新規バージョンの導入ができません。\n" +
-                        $"新規バージョンの導入を行うためにはServer Starterを再起動してください。\n\n";
-                    MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
-                    throw new ArgumentException("Can not import new Version's server");
-                }
-                Pd.Message = "Download server.jar";
-                jsonReader.Import_server();
-            }
-            else if (Data_list.ReadVersion != Data_list.Info[2])
-            {
-                //infoのVersionを書き換え
-                // ShareWorld内のinfoにバージョンを記録する作業はCheck_ShareWorld()で行う
-                start_func.Change_info(2);
-            }
-            Pd.Value = 20;
-
-            //start_func.Check_copy_world();
-            bool world_copy = start_func.Check_Vdown();
-            logger.Info($"Check copy world (Copy is '{world_copy}')");
-            if (world_copy)
-                start_func.Copy_World();
-            Pd.Value = 30;
-            Pd.Message = "Check copy world";
-
-            //新バージョン導入時は必ずpropertiesの書き換えが入るため、バージョンの分岐とは関係なく設置
-            start_func.Wirte_properties();
-            Pd.Value = 40;
-            Pd.Message = "Write Properties for server.properties";
-
-            //ShareWorldの存在確認や起動済みのサーバーがないかなどを確認
-            if (Data_list.World == "ShareWorld")
-            {
-                start_func.Check_ShareWorld();
-                Pd.Value = 60;
-                Pd.Message = "Finish the process of ShareWorld";
-            }
-
-            start_func.Reset_world_method(Reset_world, Save_world);
-            Pd.Value = 70;
-            Pd.Message = "Check reset and save the world data";
-
-
-            start_func.Import_datapack(m_set_window);
-            start_func.Import_World(m_set_window);
-            start_func.Import_plugins(m_set_window);
-            Pd.Value = 80;
-            Pd.Message = "Check the Datapack, CustomWorld and plugins";
-
-            start_func.Check_op();
-            Pd.Value = 90;
-            Pd.Message = $"Check ops.josn ({Data_list.Info[0]} has op rights, or not)";
-
-            Pd.Value = 100;
-            Pd.Message = $"Start the Server {Data_list.Version}/{Data_list.World}";
-            Pd.Close();
-            // pd.Dispose();
-
-            // これをStart_server()の中に入れると、新規バージョン導入の際にワールドの設定を反映しないままサーバーが起動してしまう
-            if (!File.Exists($@"{Data_Path}\{Data_list.ReadVersion}\eula.txt"))
-            {
-                start_func.Start_server();
-                start_func.Change_eula();
-            }
-            start_func.Start_server();
-
-            if (Data_list.World == "ShareWorld")
-                start_func.Upload_ShareWorld();
-
-            start_func.Write_VW();
-
-            //GUIの終了
-            logger.Info("This System is successfully over");
-            start_func.Shutdown();
-            Close();
-            Application.Current.Shutdown();
+            //    Owner = this
+            //};
+            //var worldSettingWindow = new ShowNewWindow<WorldSettings, WorldSettingsVM>()
+            //{
+            //    Owner = this
+            //};
+            //DataContext = new MainWindowVM(systemSettingWindow, worldSettingWindow);
         }
+
+        //public void Start(bool gui=true)
+        //{
+        //    logger.Debug("------------------------------------------------------------");
+        //    logger.Info("Start the Server Opening");
+        //    Pd = new ProgressDialog
+        //    {
+        //        Title = $"the server {Data_list.ReadVersion}/{Data_list.World}"
+        //    };
+        //    Pd.Show();
+
+        //    if(Data_list.Import_spigot && Data_list.World == "ShareWorld")
+        //    {
+        //        logger.Info("ShareWorld doesn't correspond to Spigot Server");
+        //        MW.MessageBox.Show("SpigotサーバーにShareWorldは対応していません。\nShareWorldを使う場合はバニラサーバーにて起動してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        Pd.Close();
+        //        logger.Info("Show MainWindow again");
+        //        Show();
+        //        return;
+        //    }
+
+        //    dynamic start_func;
+        //    if (Data_list.Import_spigot)
+        //    {
+        //        start_func = new Spigot_Function();
+        //    }
+        //    else
+        //    {
+        //        start_func = new Functions();
+        //    }
+
+        //    start_func.Main = this;
+
+        //    //bool show = start_func.Define_OpenWorld(World, gui);
+        //    //if(!show && GUI)
+        //    //{
+        //    //    Pd.Close();
+        //    //    logger.Info("Show MainWindow again");
+        //    //    Show();
+        //    //    return;
+        //    //}
+        //    Pd.Value = 10;
+        //    Pd.Message = "Define opening World";
+
+        //    //バージョンについて分岐
+        //    if (Data_list.Import_NewVersion)
+        //    {
+        //        // GUIでは取得していない場合に新規バージョンを追加できないようになっているが、コマンド側から実行された際にエラーを吐くようにしている
+        //        if (!Set_new_Version)
+        //        {
+        //            string message =
+        //                "Minecraftのバージョン一覧を取得していないため、新規バージョンの導入ができません。\n" +
+        //                $"新規バージョンの導入を行うためにはServer Starterを再起動してください。\n\n";
+        //            MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+        //            throw new ArgumentException("Can not import new Version's server");
+        //        }
+        //        Pd.Message = "Download server.jar";
+        //        jsonReader.Import_server();
+        //    }
+        //    else if (Data_list.ReadVersion != Data_list.Info[2])
+        //    {
+        //        //infoのVersionを書き換え
+        //        // ShareWorld内のinfoにバージョンを記録する作業はCheck_ShareWorld()で行う
+        //        start_func.Change_info(2);
+        //    }
+        //    Pd.Value = 20;
+
+        //    //start_func.Check_copy_world();
+        //    bool world_copy = start_func.Check_Vdown();
+        //    logger.Info($"Check copy world (Copy is '{world_copy}')");
+        //    if (world_copy)
+        //        start_func.Copy_World();
+        //    Pd.Value = 30;
+        //    Pd.Message = "Check copy world";
+
+        //    //新バージョン導入時は必ずpropertiesの書き換えが入るため、バージョンの分岐とは関係なく設置
+        //    start_func.Wirte_properties();
+        //    Pd.Value = 40;
+        //    Pd.Message = "Write Properties for server.properties";
+
+        //    //ShareWorldの存在確認や起動済みのサーバーがないかなどを確認
+        //    if (Data_list.World == "ShareWorld")
+        //    {
+        //        start_func.Check_ShareWorld();
+        //        Pd.Value = 60;
+        //        Pd.Message = "Finish the process of ShareWorld";
+        //    }
+
+        //    start_func.Reset_world_method(Reset_world, Save_world);
+        //    Pd.Value = 70;
+        //    Pd.Message = "Check reset and save the world data";
+
+
+        //    start_func.Import_datapack(m_set_window);
+        //    start_func.Import_World(m_set_window);
+        //    start_func.Import_plugins(m_set_window);
+        //    Pd.Value = 80;
+        //    Pd.Message = "Check the Datapack, CustomWorld and plugins";
+
+        //    start_func.Check_op();
+        //    Pd.Value = 90;
+        //    Pd.Message = $"Check ops.josn ({Data_list.Info[0]} has op rights, or not)";
+
+        //    Pd.Value = 100;
+        //    Pd.Message = $"Start the Server {Data_list.Version}/{Data_list.World}";
+        //    Pd.Close();
+        //    // pd.Dispose();
+
+        //    // これをStart_server()の中に入れると、新規バージョン導入の際にワールドの設定を反映しないままサーバーが起動してしまう
+        //    if (!File.Exists($@"{Data_Path}\{Data_list.ReadVersion}\eula.txt"))
+        //    {
+        //        start_func.Start_server();
+        //        start_func.Change_eula();
+        //    }
+        //    start_func.Start_server();
+
+        //    if (Data_list.World == "ShareWorld")
+        //        start_func.Upload_ShareWorld();
+
+        //    start_func.Write_VW();
+
+        //    //GUIの終了
+        //    logger.Info("This System is successfully over");
+        //    start_func.Shutdown();
+        //    Close();
+        //    Application.Current.Shutdown();
+        //}
 
         //private void START_Click(object sender, RoutedEventArgs e)
         //{

@@ -37,7 +37,7 @@ namespace Server_GUI2
 
         public virtual ServerType Type { get; }
 
-        public string Name;
+        public string Name { get; }
 
         protected virtual string JarName { get; }
         public virtual string Log4jArgument { get { return ""; } }
