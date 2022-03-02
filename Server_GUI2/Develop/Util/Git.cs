@@ -304,10 +304,23 @@ namespace Server_GUI2.Util
         public string Account;
         public string Repository;
         public string Expression => $"https://{Account}@github.com/{Account}/{Repository}.git";
+
         public GitRemote(string account, string repository)
         {
             Account = account;
             Repository = repository;
+        }
+
+        public bool Equals(GitRemote value)
+        {
+            return value != null && Account == value.Account && Repository == value.Repository;
+        }
+        public static bool operator ==(GitRemote l, GitRemote r)
+        {
+            return  l == null l.Equals(r);
+        }
+        public static bool operator !=(GitRemote l, GitRemote r)
+        {
         }
     }
 
