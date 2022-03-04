@@ -117,7 +117,7 @@ namespace Server_GUI2
             {
                 var withoutPrefix = i.Substring(0, i.Length - 8);
                 var name = withoutPrefix == "1.14-pre5" ? "1.14 Pre-Release 5" : withoutPrefix;
-                VersionIndex[withoutPrefix + "--spigot"] = VersionIndex[name];
+                VersionIndex["Spigot_"+ withoutPrefix] = VersionIndex[name];
             }
         }
 
@@ -169,7 +169,7 @@ namespace Server_GUI2
                     string verName = htmlDatas.InnerHtml;
 
                     // 1.x.x--spigot
-                    verName = verName.Replace(".json", "") + "--spigot";
+                    verName = "Spigot_" + verName.Replace(".json", "");
 
                     if (verName.Substring(0, 2) != "1.")
                         continue;
