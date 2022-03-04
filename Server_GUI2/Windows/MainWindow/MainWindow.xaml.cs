@@ -189,15 +189,15 @@ namespace Server_GUI2
             Pd.Value = 100;
             Pd.Close();
 
-            //var systemSettingWindow = new ShowNewWindow<SystemSettings, SystemSettingsVM>()
-            //{
-            //    Owner = this
-            //};
-            //var worldSettingWindow = new ShowNewWindow<WorldSettings, WorldSettingsVM>()
-            //{
-            //    Owner = this
-            //};
-            //DataContext = new MainWindowVM(systemSettingWindow, worldSettingWindow);
+            var systemSettingWindow = new ShowNewWindow<SystemSettings, SystemSettingsVM>()
+            {
+                Owner = this
+            };
+            var worldSettingWindow = new ShowNewWindow<WorldSettings, WorldSettingsVM>()
+            {
+                Owner = this
+            };
+            DataContext = new MainWindowVM(systemSettingWindow, worldSettingWindow);
         }
 
         //public void Start(bool gui=true)

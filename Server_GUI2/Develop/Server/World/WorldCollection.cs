@@ -27,9 +27,6 @@ namespace Server_GUI2.Develop.Server.World
         {
             var linkJson = LoadLinkJson();
 
-            // new World を追加
-            Worlds.Add(new NewWorld());
-
             //　ローカルワールド一覧とリンク情報を組み合わせてWorldWrapperを構成
             foreach (var local in LocalWorldCollection.Instance.LocalWorlds)
             {
@@ -58,6 +55,9 @@ namespace Server_GUI2.Develop.Server.World
                     Add(world);
                 }
             }
+
+            // new World を追加
+            Worlds.Add(new NewWorld());
         }
 
         /// <summary>
