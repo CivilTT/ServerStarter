@@ -30,7 +30,7 @@ namespace Server_GUI2.Windows.MainWindow
 
 
         // General
-        public bool CanRun => Regex.IsMatch(NewWorldName.Value, @"^[0-9a-zA-Z_-]+$");
+        public bool CanRun => !ShowNewWorld || Regex.IsMatch(NewWorldName.Value, @"^[0-9a-zA-Z_-]+$");
 
 
         // 新規Versionの表示に関連
@@ -84,7 +84,7 @@ namespace Server_GUI2.Windows.MainWindow
         // World
         public ObservableCollection<IWorld> Worlds { get; private set; }
         public BindingValue<IWorld> WorldIndex { get; private set; }
-        public bool ShowNewWorld => (WorldIndex.Value?.Name ?? "") == "【new World】";
+        public bool ShowNewWorld => (WorldIndex.Value?.DisplayName ?? "") == "【new World】";
         public BindingValue<string> NewWorldName { get; private set; }
         // TODO: 仮で実行するワールドを既存のものから選択したものにしている
         // 本実装では新規に対応したものに差し替え
@@ -331,8 +331,8 @@ namespace Server_GUI2.Windows.MainWindow
         public WorldSettingCommand WorldSettingCommand { get; private set; }
 
 
-        //public MainWindowVM(IShowWindowService<SystemSettingsVM> ssWindow, IShowWindowService<WorldSettingsVM> wsWindow)
-        public MainWindowVM()
+        public MainWindowVM(IShowWindowService<SystemSettingsVM> ssWindow, IShowWindowService<WorldSettingsVM> wsWindow)
+        //public MainWindowVM()
         {
             // General
             RunCommand = new RunCommand(this);
@@ -345,11 +345,10 @@ namespace Server_GUI2.Windows.MainWindow
             {
                 new VanillaVersion("【new Version】", "", true, false)
             };
-            // TODO: LatestRunのデータをstringではなく、VersionやIWorldで持つべき？
-            // Defaultについては以前の開設バージョンがなければ、リストの一番上の要素を選択する実装にする
             Version firstSelectVer = SaveData.LatestRun == null ? ExistsVersions[0] : VersionFactory.Instance.GetVersionFromName(SaveData.LatestRun.VersionName);
             ExistsVersionIndex = new BindingValue<Version>(firstSelectVer, () => OnPropertyChanged("ShowNewVersions"));
             NewVersions = new ObservableCollection<Version>(AllVers.OfType<VanillaVersion>());
+            NewVersionIndex = new BindingValue<Version>(NewVersions[0], () => OnPropertyChanged(""));
             ShowAll = new BindingValue<bool>(false, () => UpdateNewVersions());
             ShowSpigot = new BindingValue<bool>(false, () => UpdateNewVersions());
 
@@ -362,15 +361,15 @@ namespace Server_GUI2.Windows.MainWindow
                 LocalWorld targetWorld = LocalWorldCollection.Instance.FindLocalWorld(SaveData.LatestRun.VersionName, SaveData.LatestRun.WorldName);
                 firstSelectWor = AllWorlds.OfType<World>().Where(world => world.LocalWorld == targetWorld).FirstOrDefault();
             }
-            WorldIndex = new BindingValue<IWorld>(firstSelectWor, () => OnPropertyChanged("ShowNewWorld"));
+            WorldIndex = new BindingValue<IWorld>(firstSelectWor, () => OnPropertyChanged(new string[2] { "ShowNewWorld", "CanRun" }));
             NewWorldName = new BindingValue<string>("Input World Name", () => OnPropertyChanged("CanRun"));
 
             // Setting
             ResetWorld = new BindingValue<bool>(false, () => OnPropertyChanged("ShowSaveWorld"));
 
             // Window
-            //SettingCommand = new SettingCommand(this, ssWindow);
-            //WorldSettingCommand = new WorldSettingCommand(this, wsWindow);
+            SettingCommand = new SettingCommand(this, ssWindow);
+            WorldSettingCommand = new WorldSettingCommand(this, wsWindow);
         }
 
         private void UpdateNewVersions()
@@ -388,6 +387,7 @@ namespace Server_GUI2.Windows.MainWindow
             }
 
             OnPropertyChanged("NewVersions");
+            NewVersionIndex.Value = NewVersions[0];
         }
     }
 
