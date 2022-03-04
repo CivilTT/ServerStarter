@@ -434,7 +434,7 @@ namespace Server_GUI2.Windows.MainWindow
 
             if (value is SpigotVersion spigot)
             {
-                return $"Spigot {spigot.Name}";
+                return $"{spigot.Name}";
             }
 
             return value.ToString();
