@@ -29,6 +29,19 @@ namespace Server_GUI2.Develop.Server.World
             GitStorage.GetStorages(storages.Git).ForEach(x => Add(x));
         }
 
+        private void SaveJson()
+        {
+            var json = new StoragesJson();
+            foreach ( var storage in Storages)
+            {
+                if ( storage is GitStorage s)
+                {
+                    json.Git.Add(s.ExportStorageJson());
+                }
+            }
+            ServerGuiPath.Instance.StoragesJson.WriteJson(json);
+        }
+
         /// <summary>
         /// 条件に合うリモートリポジトリを返す
         /// </summary>
@@ -43,6 +56,8 @@ namespace Server_GUI2.Develop.Server.World
             Storages.Add(storage);
             // Storage削除時にリストから排除
             storage.DeleteEvent += new EventHandler((_,__) => Storages.Remove(storage));
+            // Storageの状態を保存
+            SaveJson();
         }
     }
 
@@ -150,7 +165,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public override string RepositoryName => Remote.Repository;
 
-        public override string Email => "dummy.email@dummy.com";
+        public override string Email { get; }
 
         /// <summary>
         /// 使用可能なブランチ名かどうかを返す
@@ -167,7 +182,7 @@ namespace Server_GUI2.Develop.Server.World
             {
                 var remote = new GitRemote(json.Account, json.Repository);
                 var worldstate = GitStorageManager.Instance.ReadWorldState(remote);
-                result.Add(new GitStorage(remote,worldstate));
+                result.Add(new GitStorage(remote,worldstate,json.Email));
             }
             return result;
         }
@@ -185,7 +200,7 @@ namespace Server_GUI2.Develop.Server.World
             // TODO: ストレージのアカウント系のエラー処置
             var remote = new GitRemote(account,repository);
             var state = GitStorageManager.Instance.ReadWorldState(remote);
-            var storage = new GitStorage(remote,state);
+            var storage = new GitStorage(remote,state,email);
             StorageCollection.Instance.Add(storage);
             return new Success<GitStorage, string>(storage);
         }
@@ -212,8 +227,9 @@ namespace Server_GUI2.Develop.Server.World
 
         public GitRemote Remote;
 
-        public GitStorage(GitRemote remote, Dictionary<string, WorldState> worldStates)
+        public GitStorage(GitRemote remote, Dictionary<string, WorldState> worldStates,string email)
         {
+            Email = email;
             Remote = remote;
             var named = GitStorageManager.Instance.NamedRemote(Remote);
             Available = named.IsAvailable;
@@ -272,6 +288,15 @@ namespace Server_GUI2.Develop.Server.World
             }
 
             base.Delete();
+        }
+
+        public GitStorageJson ExportStorageJson()
+        {
+            var json = new GitStorageJson();
+            json.Account = Remote.Account;
+            json.Repository = Remote.Repository;
+            json.Email = Email;
+            return json;
         }
     }
 }
