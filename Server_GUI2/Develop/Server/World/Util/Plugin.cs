@@ -103,6 +103,19 @@ namespace Server_GUI2
             SourcePath = sourcePath;
         }
 
+        public static Plugin TryGenInstance(string sourcePath, bool isZip)
+        {
+            if (Path.GetExtension(sourcePath) == ".jar")
+            {
+                string name = Path.GetFileNameWithoutExtension(sourcePath);
+                return new Plugin(name, sourcePath);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void Import(string path)
         {
             File.Move(SourcePath, path);
