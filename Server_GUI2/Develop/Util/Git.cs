@@ -172,7 +172,7 @@ namespace Server_GUI2.Util
             // git add -A
             GitCommand.ExecuteThrow($"add -A", new GitException($"falied to 'git add -A'"), Path);
             // git commit -m "message"
-            GitCommand.ExecuteThrow($"commit -m \"{message}\"", new GitException($"falied to 'git commit -m \"{message}\"'"), Path);
+            GitCommand.ExecuteThrow($"commit --allow-empty -m \"{message}\"", new GitException($"falied to 'commit --allow-empty -m \"{message}\"'"), Path);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace Server_GUI2.Util
         {
             get
             {
-                var (code,_) = GitCommand.Execute($"git rev-parse --verify {Name}", Local.Path);
+                var (code,_) = GitCommand.Execute($"rev-parse --verify {Name}", Local.Path);
                 return code == 0;
             }
         }
@@ -264,9 +264,9 @@ namespace Server_GUI2.Util
             if (!RemoteBranch.Exists)
                 throw new GitException($"remote branch '{RemoteBranch.Expression}' not exists.");
 
-            LocalBranch.Checkout();
             if (linked)
-            {                
+            {     
+                LocalBranch.Checkout();
                 // git pull
                 GitCommand.ExecuteThrow($"pull", new GitException($"falied to 'git pull'"), LocalBranch.Local.Path);
             }
@@ -277,10 +277,14 @@ namespace Server_GUI2.Util
                     throw new GitException($"local branch '{LocalBranch.Name}' already exists.");
 
                 // git fetch remote_branch
-                GitCommand.ExecuteThrow($"git fetch {RemoteBranch.Expression}", new GitException($"falied to 'git fetch { RemoteBranch.Expression }'"), LocalBranch.Local.Path);
+                GitCommand.ExecuteThrow($"fetch {RemoteBranch.NamedRemote.Name} {RemoteBranch.Name}", new GitException($"falied to 'git fetch { RemoteBranch.Expression }'"), LocalBranch.Local.Path);
 
                 // git branch local_branch --t remote_branch
-                GitCommand.ExecuteThrow($"git branch {LocalBranch.Name} --t {RemoteBranch.Expression}", new GitException($"falied to 'git branch {LocalBranch.Name} --t {RemoteBranch.Expression}'"), LocalBranch.Local.Path);
+                GitCommand.ExecuteThrow($"branch {LocalBranch.Name} --t {RemoteBranch.Expression}", new GitException($"falied to 'git branch {LocalBranch.Name} --t {RemoteBranch.Expression}'"), LocalBranch.Local.Path);
+
+                LocalBranch.Checkout();
+
+                linked = true;
             }
         }
         public void CommitPush(string message)
@@ -412,7 +416,7 @@ namespace Server_GUI2.Util
         /// <returns></returns>
         public GitLinkedLocalBranch CreateLinkedBranch(string name)
         {
-            return new GitLinkedLocalBranch(NamedRemote.Local.GetBranch(name), this);
+            return new GitLinkedLocalBranch(NamedRemote.Local.GetBranch(name), this,false);
         }
 
         /// <summary>
