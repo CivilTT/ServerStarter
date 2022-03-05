@@ -7,6 +7,7 @@ using System.Reflection;
 using System;
 using Newtonsoft.Json;
 using Server_GUI2.Develop.Server;
+using Server_GUI2.Util;
 
 namespace Server_GUI2
 {
@@ -33,7 +34,7 @@ namespace Server_GUI2
 
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        // TODO: vanilla only/ release only / spigot only はViewModelのほうでリアルタイムフィルタ使って実装 https://blog.okazuki.jp/entry/2013/12/07/000341
+        // vanilla only / release only / spigot only はViewModelのほうでリアルタイムフィルタ使って実装 https://blog.okazuki.jp/entry/2013/12/07/000341
         public ObservableCollection<Version> Versions { get; private set; }
 
         public Version SelectedVersion { get; set; }
@@ -50,13 +51,14 @@ namespace Server_GUI2
             // vanillaのサーバーインスタンスを追加
             LoadVanillaVersions(ref versions, spigotList);
 
-            // spigotのみのバージョンのインデックスを互換なvanillaのバージョンのものと同じにする
+            // spigotのバージョンのインデックスを互換なvanillaのバージョンのものと同じにする
             AddSpigotOnlyVersionToVersionIndex(spigotList);
 
             // サーバーをソート
             versions.Sort();
             versions.Reverse();
             Versions = new ObservableCollection<Version>(versions);
+            Versions.WriteLine();
         }
 
         public Version GetVersionFromName(string name)
@@ -115,9 +117,10 @@ namespace Server_GUI2
         {
             foreach (var i in spigotList)
             {
-                var withoutPrefix = i.Substring(0, i.Length - 8);
+                // Spigot_{withoutPrefix}
+                var withoutPrefix = i.Substring(7);
                 var name = withoutPrefix == "1.14-pre5" ? "1.14 Pre-Release 5" : withoutPrefix;
-                VersionIndex[withoutPrefix + "--spigot"] = VersionIndex[name];
+                VersionIndex["Spigot_"+ withoutPrefix] = VersionIndex[name];
             }
         }
 
@@ -168,11 +171,11 @@ namespace Server_GUI2
                 {
                     string verName = htmlDatas.InnerHtml;
 
-                    // 1.x.x--spigot
-                    verName = verName.Replace(".json", "") + "--spigot";
-
                     if (verName.Substring(0, 2) != "1.")
                         continue;
+
+                    // Spigot_1.x.x
+                    verName = "Spigot_" + verName.Replace(".json", "");
 
                     vers.Add(verName);
 

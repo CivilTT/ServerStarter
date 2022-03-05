@@ -2,11 +2,9 @@
 using log4net;
 using System.Reflection;
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Net.Http;
 
@@ -25,6 +23,11 @@ namespace Server_GUI2.Util
 
     class GitCommand
     {
+        public static string ExecuteThrow(string arguments, string directory)
+        {
+             return  ExecuteThrow(arguments, new GitException($"failed to execute \"git {arguments}\""), directory);
+        }
+
         public static string ExecuteThrow(string arguments, Exception exception, string directory)
         {
             var (code, output) = Execute(arguments, directory);
@@ -88,6 +91,12 @@ namespace Server_GUI2.Util
             return code == 0 && System.IO.Path.GetFullPath(output).Equals(System.IO.Path.GetFullPath(Path));
         }
 
+        public void SetUser(string account,string email)
+        {
+            GitCommand.ExecuteThrow($"config --local user.name \"{account}\"", Path);
+            GitCommand.ExecuteThrow($"config --local user.email \"{email}\"", Path);
+        }
+
         /// <summary>
         /// ブランチ一覧
         /// </summary>
@@ -108,7 +117,7 @@ namespace Server_GUI2.Util
 
                 var branchName = splitted[0];
 
-                var branch = new GitLocalBranch(this, branchName, true);
+                var branch = new GitLocalBranch(this, branchName);
 
                 if (splitted.Length == 2)
                 {
@@ -171,7 +180,7 @@ namespace Server_GUI2.Util
         /// </summary>
         public GitLocalBranch GetBranch(string name)
         {
-            return new GitLocalBranch(this, name, false);
+            return new GitLocalBranch(this, name);
         }
 
         /// <summary>
@@ -180,7 +189,7 @@ namespace Server_GUI2.Util
         public GitLocalBranch CreateBranch(string name)
         {
             GitCommand.ExecuteThrow($"branch \"{name}\"", new GitException($"falied to 'git branch \"{name}\"'"), Path);
-            return new GitLocalBranch(this, name, true);
+            return new GitLocalBranch(this, name);
         }
 
         /// <summary>
@@ -199,13 +208,19 @@ namespace Server_GUI2.Util
     {
         public GitLocal Local;
         public string Name;
-        public bool Exists;
-        public GitLocalBranch(GitLocal local, string name, bool exists)
+        public bool Exists
+        {
+            get
+            {
+                var (code,_) = GitCommand.Execute($"git rev-parse --verify {Name}", Local.Path);
+                return code == 0;
+            }
+        }
+
+        public GitLocalBranch(GitLocal local, string name)
         {
             Local = local;
-            Name = name;
-            Exists = exists;
-        }
+            Name = name;        }
 
         public void Checkout()
         {

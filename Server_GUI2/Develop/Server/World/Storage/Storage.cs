@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
 using Server_GUI2.Util;
+using Newtonsoft.Json;
 
 namespace Server_GUI2.Develop.Server.World
 {
@@ -20,8 +21,12 @@ namespace Server_GUI2.Develop.Server.World
 
         private StorageCollection()
         {
+            var storages = ServerGuiPath.Instance.StoragesJson.Exists ?
+                    ServerGuiPath.Instance.StoragesJson.ReadJson() :
+                    new StoragesJson();
+
             // gitのリポジトリを全取得
-            GitStorage.GetStorages().ForEach(x => Add(x));
+            GitStorage.GetStorages(storages.Git).ForEach(x => Add(x));
         }
 
         /// <summary>
@@ -41,6 +46,11 @@ namespace Server_GUI2.Develop.Server.World
         }
     }
 
+    public class StoragesJson
+    {
+        [JsonProperty("git")]
+        public List<GitStorageJson> Git = new List<GitStorageJson>();
+    }
 
     /// <summary>
     /// ワールドの保存先(Gitリポジトリ,Gdrive等)
@@ -110,6 +120,23 @@ namespace Server_GUI2.Develop.Server.World
         }
     }
 
+    public class GitStorageJson
+    {
+        [JsonProperty("account")]
+        public string Account;
+
+        [JsonProperty("repository")]
+        public string Repository;
+
+        [JsonProperty("email")]
+        public string Email;
+
+        /// <summary>
+        /// Newtonsoft.Json用コンストラクタ
+        /// </summary>
+        public GitStorageJson() { }
+    }
+
     /// <summary>
     /// 各gitリモートリポジトリをあらわす
     /// </summary>
@@ -117,13 +144,14 @@ namespace Server_GUI2.Develop.Server.World
     {
         public static readonly GitLocal Local = new GitLocal(ServerGuiPath.Instance.GitState.FullName);
 
-        public override string Id => $"git/{Repository.Branch.RemoteBranch.NamedRemote.Remote.Account}/{Repository.Branch.RemoteBranch.NamedRemote.Remote.Repository}";
+        public override string Id => $"git/{Remote.Account}/{Remote.Repository}";
 
-        public override string AccountName => Repository.Branch.RemoteBranch.NamedRemote.Remote.Account;
+        public override string AccountName => Remote.Account;
 
-        public override string RepositoryName => Repository.Branch.RemoteBranch.NamedRemote.Remote.Repository;
+        public override string RepositoryName => Remote.Repository;
 
         public override string Email => "dummy.email@dummy.com";
+
         /// <summary>
         /// 使用可能なブランチ名かどうかを返す
         /// </summary>
@@ -132,15 +160,21 @@ namespace Server_GUI2.Develop.Server.World
             return Regex.IsMatch(name, "^[a-zA-Z0-9_-]+$") && !usedNames.Contains(name);
         }
 
-        public static List<GitStorage> GetStorages()
+        public static List<GitStorage> GetStorages(List<GitStorageJson> gitStorageJsons)
         {
-            var repos = GitStorageRepository.GetAllGitRepositories(Local);
-            return repos.Select(x => new GitStorage(x)).ToList();
+            var result = new List<GitStorage>();
+            foreach (var json in gitStorageJsons)
+            {
+                var remote = new GitRemote(json.Account, json.Repository);
+                var worldstate = GitStorageManager.Instance.ReadWorldState(remote);
+                result.Add(new GitStorage(remote,worldstate));
+            }
+            return result;
         }
 
         protected override RemoteWorld CreateUnavailableRemoteWorld(string worldId)
         {
-            return new GitRemoteWorld(Repository.Branch.RemoteBranch.NamedRemote.Remote, worldId, null, this, true);
+            return new GitRemoteWorld(Remote, worldId, null, this, true);
         }
 
         /// <summary>
@@ -150,8 +184,8 @@ namespace Server_GUI2.Develop.Server.World
         {
             // TODO: ストレージのアカウント系のエラー処置
             var remote = new GitRemote(account,repository);
-            var repo = GitStorageRepository.AddRepository(Local,remote);
-            var storage = new GitStorage(repo);
+            var state = GitStorageManager.Instance.ReadWorldState(remote);
+            var storage = new GitStorage(remote,state);
             StorageCollection.Instance.Add(storage);
             return new Success<GitStorage, string>(storage);
         }
@@ -162,13 +196,13 @@ namespace Server_GUI2.Develop.Server.World
         public override RemoteWorld CreateRemoteWorld(string worldName)
         {
             // ストレージにアクセスできない場合はエラー
-            if (!Available) throw new RemoteWorldException($"git storage \"{Repository.Branch.RemoteBranch.Expression}\" is not accessible.");
+            if (!Available) throw new RemoteWorldException($"git storage \"{Remote.Expression}\" is not accessible.");
 
             var prop = new ServerProperty();
 
             var id = Guid.NewGuid();
 
-            var remote = Repository.Branch.RemoteBranch.NamedRemote.Remote;
+            var remote = Remote;
             var datapacks = new DatapackCollection(new List<string>());
             var plugins = new PluginCollection(new List<string>());
             var result = new GitRemoteWorld( remote, this,id.ToString(),worldName,false, null, null, prop, datapacks, plugins, true );
@@ -176,31 +210,26 @@ namespace Server_GUI2.Develop.Server.World
             return result;
         }
 
-        public override string ToString()
-        {
-            return $"{ Repository.Branch.LocalBranch.Name}:{ Repository.Branch.RemoteBranch.NamedRemote.Remote.Expression}";
-        }
+        public GitRemote Remote;
 
-        public GitStorageRepository Repository;
-        public GitStorage(GitStorageRepository repository)
+        public GitStorage(GitRemote remote, Dictionary<string, WorldState> worldStates)
         {
-            Repository = repository;
-            Available = repository.Branch.RemoteBranch.NamedRemote.IsAvailable;
+            Remote = remote;
+            var named = GitStorageManager.Instance.NamedRemote(Remote);
+            Available = named.IsAvailable;
 
             var newUsedNames = new HashSet<string>();
 
-            foreach ( var kv in Repository.Branch.RemoteBranch.NamedRemote.GetBranchs())
+            foreach ( var kv in named.GetBranchs())
             {
                 newUsedNames.Add(kv.Key);
             }
-
-            worldStates = Repository.GetGitWorldstate();
 
             foreach ( var worldState in worldStates)
             {
                 if (newUsedNames.Contains(worldState.Key))
                 {
-                    var remoteWorld = new GitRemoteWorld(repository.Branch.RemoteBranch.NamedRemote.Remote, worldState.Key, worldState.Value, this, true);
+                    var remoteWorld = new GitRemoteWorld(Remote, worldState.Key, worldState.Value, this, true);
                     RemoteWorlds.Add(remoteWorld);
                     // 削除イベントを追加
                     remoteWorld.DeleteEvent += new EventHandler((_, __) => RemoteWorlds.Remove(remoteWorld));
@@ -224,7 +253,7 @@ namespace Server_GUI2.Develop.Server.World
             if (Available)
             {
                 // 存在しているリモートだけをフィルタして保存
-                Repository.SaveGitWorldstate(RemoteWorlds.Where(x => x.Exist == true).ToDictionary(x => x.Id, x => x.ExportWorldState()));
+                GitStorageManager.Instance.WriteWorldState(Remote, Email, RemoteWorlds.Where(x => x.Exist == true).ToDictionary(x => x.Id, x => x.ExportWorldState()));
             }
         }
 
@@ -234,7 +263,7 @@ namespace Server_GUI2.Develop.Server.World
         public override void Delete()
         {
             // リポジトリの登録を削除
-            Repository.RemoveGitRepository();
+            GitStorageManager.Instance.RemoveRemote(Remote);
 
             // 紐づいたリモートワールドを削除
             foreach(var world in RemoteWorlds)
