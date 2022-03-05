@@ -138,10 +138,11 @@
         <!--//Properties//-->
         <Style TargetType="TextBlock" x:Key="PropertyIndex" BasedOn="{StaticResource BlockSource}">
             <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="Margin" Value="0,20,20,0"/>
+            <Setter Property="Margin" Value="0,15,20,0"/>
         </Style>
         <Style TargetType="ComboBox" x:Key="PropertyCombo" BasedOn="{StaticResource ComboSource}">
             <Setter Property="Width" Value="145"/>
+            <Setter Property="Margin" Value="10,15,0,0"/>
         </Style>
         <Style TargetType="TextBox" x:Key="PropertyBox" BasedOn="{StaticResource BoxSource}">
             <Setter Property="Width" Value="145"/>
@@ -201,13 +202,13 @@
 
         <Grid Grid.RowSpan="1" Grid.ColumnSpan="3">
             <TextBlock Text="World Settings" Margin="30,15,0,0" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
-            <TextBlock Text="Binding (1.18.1 / World)" Margin="20 23" FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+            <TextBlock Text="{Binding RunInfo}" Margin="20 23" FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
             <Line X1="30" X2="570" Y1="70" Y2="70" Grid.Column="1" Style="{StaticResource LineStyle}"/>
         </Grid>
 
         <Grid Style="{StaticResource SideMenu}">
             <StackPanel Margin="0 0 0 50">
-                <ListView x:Name="SideMenuLV" Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedIndex="{Binding MenuIndex}">
+                <ListView x:Name="SideMenuLV" Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedIndex="{Binding MenuIndex.Value}">
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
@@ -250,10 +251,11 @@
         <Line X1="3" X2="3" Y1="10" Y2="430" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
 
         <!--//PropertiesContents//-->
-        <Grid Visibility="Hidden" Style="{StaticResource SettingContent}">
+        <Grid Visibility="{Binding ShowProp, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <!--<Grid Style="{StaticResource SettingContent}">-->
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
-                <Button Content="Save as Default" Style="{StaticResource OtherStyle}"/>
-                <Button Content="Set Default" Style="{StaticResource OtherStyle}"/>
+                <Button Content="Save as Default" Command="{Binding SetAsDefaultProperties}" Style="{StaticResource OtherStyle}"/>
+                <Button Content="Set Default" Command="{Binding SetDefaultProperties}" Style="{StaticResource OtherStyle}"/>
             </StackPanel>
             <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,45,0,5">
                 <Grid>
@@ -264,17 +266,19 @@
                             <TextBlock Text="hardcore" Style="{StaticResource PropertyIndex}"/>
                             <TextBlock Text="gamemode" Style="{StaticResource PropertyIndex}"/>
                             <TextBlock Text="white-list" Style="{StaticResource PropertyIndex}"/>
+                            <TextBlock Text="level-type" Style="{StaticResource PropertyIndex}"/>
                             <TextBlock Text="OTHER Settings" HorizontalAlignment="Left" Height="33" Margin="25,30,0,0" FontSize="24" FontWeight="Bold"/>
-                            <ComboBox x:Name="true_false" Margin="35,20,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox x:Name="input_text" Margin="35,20,0,40" Width="160" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox SelectedItem="{Binding SelectedTFIndex.Value}" ItemsSource="{Binding OtherTFPropertyIndexs}" Margin="35,20,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox SelectedItem="{Binding SelectedPropIndex.Value}" ItemsSource="{Binding OtherPropertyIndexs}" Margin="35,20,0,40" Width="160" Style="{StaticResource PropertyCombo}"/>
                         </StackPanel>
                         <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
-                            <ComboBox x:Name="difficulty" Margin="10,63,0,0" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox x:Name="hardcore" Margin="10,20,0,0" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox x:Name="gamemode" Margin="10,20,0,0" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox x:Name="white_list" Margin="10,20,0,0" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox x:Name="true_false_combo" Margin="10,83,0,0" Style="{StaticResource PropertyCombo}"/>
-                            <TextBox x:Name="input_text_txt" Margin="10,20,0,40" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource PropertyBox}"/>
+                            <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,56,0,0" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Hardcore}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Gamemode}" ItemsSource="{Binding GamemodeCombo}" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox SelectedItem="{Binding PropertyIndexs.Value.WhiteList}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox SelectedItem="{Binding PropertyIndexs.Value.LevelType}" ItemsSource="{Binding TypeCombo}" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox SelectedItem="{Binding SelectedTFProperty}" ItemsSource="{Binding BoolCombo}" Margin="10,84,0,0" Style="{StaticResource PropertyCombo}"/>
+                            <TextBox Text="{Binding OtherStringProperty}" Margin="10,15,0,0" HorizontalAlignment="Left" Style="{StaticResource PropertyBox}"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -303,8 +307,8 @@
         </Grid>
 
         <!--//AdditionalContents//-->
-        <!--<Grid Visibility="{Binding ShowAdd, Converter={StaticResource BoolToVisible}}" Margin="0 -10" Style="{StaticResource SettingContent}">-->
-        <Grid Margin="0 -10" Style="{StaticResource SettingContent}">
+        <Grid Visibility="{Binding ShowAdd, Converter={StaticResource BoolToVisible}}" Margin="0 -10" Style="{StaticResource SettingContent}">
+        <!--<Grid Margin="0 -10" Style="{StaticResource SettingContent}">-->
             <TabControl>
                 <TabControl.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

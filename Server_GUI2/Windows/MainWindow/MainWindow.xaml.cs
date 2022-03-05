@@ -48,19 +48,11 @@ namespace Server_GUI2
 
         //インスタンス変数を宣言
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly bool GUI = true;
 
         public static ProgressDialog Pd { get; set; }
         public static bool Set_new_Version { get; set; } = true;
-
-
-        private readonly List<string> release_versions = new List<string>();
-        private readonly List<string> snapshot_versions = new List<string>();
-        private readonly List<string> spigot_versions = new List<string>();
         public List<string> All_versions { get; set; } = new List<string>();
         private readonly Functions func = new Functions();
-        private readonly ReadJson jsonReader = new ReadJson();
-        private readonly ReadHTML htmlReader = new ReadHTML();
 
         public bool Reset_world { get; set; } = false;
         public bool Save_world { get; set; } = false;
@@ -68,11 +60,9 @@ namespace Server_GUI2
 
 
         private readonly Data_list data = new Data_list();
-        private readonly Spigot_Function spi_func = new Spigot_Function();
-        private More_Settings m_set_window = new More_Settings();
 
 
-        public MainWindow(bool gui)
+        public MainWindow()
         {
             // 想定外のエラーを処理する
             AppDomain.CurrentDomain.UnhandledException += (sender, eventargs) =>
@@ -94,7 +84,6 @@ namespace Server_GUI2
             logger.Info("The system of Server Starter is started.");
             InitializeComponent();
             //Loaded += MainWindow_Loaded;
-            GUI = gui;
 
             Pd = new ProgressDialog
             {

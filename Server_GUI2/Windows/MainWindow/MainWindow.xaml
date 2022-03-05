@@ -202,7 +202,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <StackPanel Orientation="Horizontal" Margin="0 5">
-                <ui:ToggleSwitch Header="Show Versions" OffContent="Release" OnContent="All" FontSize="18" Width="140" Visibility="{Binding ShowNewVersions, Converter={StaticResource BoolToVisible}}" IsEnabled="{Binding ShowSpigot, Converter={StaticResource InverseBool}}" IsOn="{Binding ShowAll.Value}"/>
+                <ui:ToggleSwitch Header="Show Versions" OffContent="Release" OnContent="All" FontSize="18" Width="140" Visibility="{Binding ShowNewVersions, Converter={StaticResource BoolToVisible}}" IsEnabled="{Binding ShowSpigot.Value, Converter={StaticResource InverseBool}}" IsOn="{Binding ShowAll.Value}"/>
                 <ui:ToggleSwitch Header="Import Spigot" OffContent="No" OnContent="Yes" FontSize="18" Visibility="{Binding ShowNewVersions, Converter={StaticResource BoolToVisible}}" IsOn="{Binding ShowSpigot.Value}"/>
             </StackPanel>
         </StackPanel>

@@ -146,8 +146,7 @@ namespace Server_GUI2.Windows.MoreSettings
             // ServerProperty
             SetDefaultProperties = new SetDefaultProperties(this);
             SetAsDefaultProperties = new SetAsDefaultProperties(this);
-            ServerProperty properties = RunWorld.Property;
-            PropertyIndexs = new BindingValue<ServerProperty>(properties, () => OnPropertyChanged("PropertyIndexs"));
+            PropertyIndexs = new BindingValue<ServerProperty>(RunWorld.Property, () => OnPropertyChanged("PropertyIndexs"));
             SelectedTFIndex = new BindingValue<string>(OtherTFPropertyIndexs[0], () => OnPropertyChanged("SelectedTFProperty"));
             SelectedPropIndex = new BindingValue<string>(OtherPropertyIndexs[0], () => OnPropertyChanged("OtherStringProperty"));
 
@@ -155,20 +154,24 @@ namespace Server_GUI2.Windows.MoreSettings
             // TODO: 既存ワールドをリモート化するときには【new Remote Data】しか選べないようにする
             UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => OnPropertyChanged(""));
             Accounts = Storages.Storages;
-            AccountIndex = new BindingValue<Storage>(Accounts[0], () => OnPropertyChanged("RemoteDataList"));
-            RemoteDataList = AccountIndex.Value.RemoteWorlds;
+            AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
+            RemoteDataList = AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<RemoteWorld>();
 
             // Additionals
             ImportAdditionalsCommand = new ImportAdditionalsCommand(this);
             DeleteAdditionalsCommand = new DeleteAdditionalsCommand(this);
             // Datapack
             Datapacks = RunWorld.Datapacks;
-            SelectedDatapack = new BindingValue<ADatapack>(Datapacks.Datapacks[0], () => OnPropertyChanged(""));
+            SelectedDatapack = new BindingValue<ADatapack>(Datapacks.Datapacks.FirstOrDefault(), () => OnPropertyChanged(""));
             // Plugin
-            Plugins = RunWorld.Plugins;
-            SelectedPlugin = new BindingValue<APlugin>(Plugins.Plugins[0], () => OnPropertyChanged(""));
-            // TODO: 所定のpluginを使用する設定になっていれば初期値をtrueにする
-            IsCrossPlay = new BindingValue<bool>(false, () => CrossPlay());
+            if (RunVersion is SpigotVersion)
+            {
+                Plugins = RunWorld.Plugins;
+                SelectedPlugin = new BindingValue<APlugin>(Plugins.Plugins.FirstOrDefault(), () => OnPropertyChanged(""));
+
+                // TODO: 所定のpluginを使用する設定になっていれば初期値をtrueにする
+                IsCrossPlay = new BindingValue<bool>(false, () => CrossPlay());
+            }
             // Custom Map
 
 

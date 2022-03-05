@@ -36,7 +36,7 @@ namespace Server_GUI2
             if (e.Args.Length == 0)
             {
                 // GUIを立ち上げる
-                MainWindow main = new MainWindow(true);
+                MainWindow main = new MainWindow();
                 main.Show();
                 return;
             }
@@ -99,7 +99,7 @@ namespace Server_GUI2
 
                 Data_delete(delete_data);
                 
-                MainWindow main = new MainWindow(false);
+                MainWindow main = new MainWindow();
                 More_Settings m_settings = new More_Settings();
                 main.Reset_world = reset_data;
                 main.Save_world = save_data;
