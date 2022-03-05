@@ -1,4 +1,5 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using Server_GUI2.Develop.Server.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,36 @@ using MW = ModernWpf;
 
 namespace Server_GUI2.Windows.MoreSettings
 {
-
-    class ImportCommand : GeneralCommand<WorldSettingsVM>
+    class SetDefaultProperties : GeneralCommand<WorldSettingsVM>
     {
-        public ImportCommand(WorldSettingsVM vm)
+        public SetDefaultProperties(WorldSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class SetAsDefaultProperties : GeneralCommand<WorldSettingsVM>
+    {
+        public SetAsDefaultProperties(WorldSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    class ImportAdditionalsCommand : GeneralCommand<WorldSettingsVM>
+    {
+        public ImportAdditionalsCommand(WorldSettingsVM vm)
         {
             _vm = vm;
         }
@@ -23,35 +50,100 @@ namespace Server_GUI2.Windows.MoreSettings
             {
                 case "Datapack":
                     bool isZip = _vm.IsZipDatapack;
-                    using (var cofd = new CommonOpenFileDialog()
-                    {
-                        Title = "フォルダを選択してください",
-                        //InitialDirectory = $@"{_vm.RunWorld.LocalWorld.Path}\datapacks",
-                        // フォルダ選択モードにする
-                        IsFolderPicker = isZip,
-                    })
-                    {
-                        if (cofd.ShowDialog() != CommonFileDialogResult.Ok)
-                            return;
+                    string path = ShowDialog(isZip);
 
-                        // datapackとして有効かを確認
-                        Datapack datapack = Datapack.TryGenInstance(cofd.FileName, isZip);
-                        if (datapack == null)
-                        {
-                            MW.MessageBox.Show($"この{(isZip ? "ファイル" : "フォルダ")}はデータパックとして無効です。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
+                    if (path == null)
+                        return;
 
-                        // FileNameで選択されたフォルダを取得する
-                        _vm.Datapacks.Add(datapack);
-                        //string datapack_name = Path.GetFileName(cofd.FileName);
-                        //Imported.Items.Remove("(None)");
-                        //Imported.Items.Add("【new】" + datapack_name);
-                        // MessageBox.Show($"{cofd.FileName}を選択しました");
+                    // datapackとして有効かを確認
+                    Datapack datapack = Datapack.TryGenInstance(path, isZip);
+                    if (datapack == null)
+                    {
+                        MW.MessageBox.Show($"この{(isZip ? "ファイル" : "フォルダ")}はデータパックとして無効です。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
+
+                    // FileNameで選択されたフォルダを取得する
+                    _vm.Datapacks.Add(datapack);
+                    break;
+                case "Plugin":
+                    path = ShowDialog(false);
+
+                    if (path == null)
+                        return;
+
+                    Plugin plugin = Plugin.TryGenInstance(path, false);
+                    if (plugin == null)
+                    {
+                        MW.MessageBox.Show("Pluginとして無効なファイルです。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    _vm.Plugins.Add(plugin);
+                    break;
+                case "CustomMap":
+                    isZip = _vm.IsZipMap;
+                    path = ShowDialog(isZip);
+
+                    if (path == null)
+                        return;
+
+                    CustomMap custom = CustomMap.TryGetInstance(path, isZip);
+                    if (custom == null)
+                    {
+                        MW.MessageBox.Show($"この{(isZip ? "ファイル" : "フォルダ")}は配布ワールドとして無効です。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    _vm.RunWorld.CustomMap = custom;
                     break;
                 default:
                     throw new ArgumentException("Unknown Import Parameter");
+            }
+        }
+
+        /// <summary>
+        /// ファイル選択のダイアログを表示
+        /// ファイルが選択された場合、そのパスを返し、選択されなかった場合はnullを返す
+        /// </summary>
+        private string ShowDialog(bool isZip)
+        {
+            using (var cofd = new CommonOpenFileDialog()
+            {
+                Title = "フォルダを選択してください",
+                IsFolderPicker = isZip
+            })
+            {
+                if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
+                    return cofd.FileName;
+
+                return null;
+            }
+        }
+    }
+
+    class DeleteAdditionalsCommand : GeneralCommand<WorldSettingsVM>
+    {
+        public DeleteAdditionalsCommand(WorldSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            switch (parameter)
+            {
+                case "Datapack":
+                    _vm.Datapacks.Remove(_vm.SelectedDatapack.Value);
+                    break;
+                case "Plugin":
+                    _vm.Plugins.Remove(_vm.SelectedPlugin.Value);
+                    break;
+                case "CustomMap":
+                    _vm.CustomMap = null;
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -65,6 +157,7 @@ namespace Server_GUI2.Windows.MoreSettings
 
         public override void Execute(object parameter)
         {
+            // TODO: 必要に応じてSave処理を記述する
             _vm.Close();
         }
     }

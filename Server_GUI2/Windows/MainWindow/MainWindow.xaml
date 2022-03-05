@@ -10,6 +10,7 @@
         xmlns:basevm="clr-namespace:Server_GUI2.Windows.ViewModels"
         xmlns:base="clr-namespace:Server_GUI2.Windows"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:MainWindowVM}"
         ResizeMode="CanMinimize"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="Server Starter" Height="630" Width="630" WindowStartupLocation="CenterScreen">
