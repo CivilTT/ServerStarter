@@ -153,6 +153,7 @@ namespace Server_GUI2.Develop.Server
         public JsonFile<ServerGuiPath, List<RemoteLinkJson>> RemotesJson;
         public JsonFile<ServerGuiPath, VanillaVersonsJson> ManifestJson;
         public JsonFile<ServerGuiPath, List<string>> SpigotVersionJson;
+        public JsonFile<ServerGuiPath, StoragesJson> StoragesJson;
         private ServerGuiPath(DirectoryInfo directory) : base(directory)
         {
             WorldData = new WorldDataPath(SubDirectory("World_Data"),this);
@@ -160,6 +161,7 @@ namespace Server_GUI2.Develop.Server
             GitState = new GitStatePath(SubDirectory("git_state"), this);
             ManifestJson = new JsonFile<ServerGuiPath, VanillaVersonsJson>(SubFile("version_manifest_v2.json"), this);
             SpigotVersionJson = new JsonFile<ServerGuiPath,List<string>>(SubFile("spigot_versions.json"), this);
+            StoragesJson = new JsonFile<ServerGuiPath,StoragesJson>(SubFile("stoarges.json"), this);
         }
     }
 
