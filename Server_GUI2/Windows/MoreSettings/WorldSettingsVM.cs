@@ -32,6 +32,8 @@ namespace Server_GUI2.Windows.MoreSettings
         public SaveCommand SaveCommand { get; private set; }
 
         // ServerProperty
+        public SetDefaultProperties SetDefaultProperties { get; private set; }
+        public SetAsDefaultProperties SetAsDefaultProperties { get; private set; }
         public bool[] BoolCombo => new bool[2] { true, false };
         public string[] DifficultyCombo => new string[4] { "peaceful", "easy", "normal", "hard" };
         public string[] GamemodeCombo => new string[4] { "survival", "creative", "adventure", "spectator" };
@@ -103,16 +105,32 @@ namespace Server_GUI2.Windows.MoreSettings
         public string RemoteName { get; set; }
         public bool ShowNewRemoteData => RemoteIndex.Value == /*//TODO: 何とイコールにすればよい？//*/null;
 
-
+        // Additionals
+        public ImportAdditionalsCommand ImportAdditionalsCommand { get; private set; }
+        public DeleteAdditionalsCommand DeleteAdditionalsCommand { get; private set; }
         // DataPack
         public bool IsZipDatapack { get; set; } = true;
         public DatapackCollection Datapacks { get; private set; }
+        public BindingValue<ADatapack> SelectedDatapack { get; private set; }
+        // Plugin
+        public bool ShowPluginTab => RunVersion is SpigotVersion;
+        public PluginCollection Plugins { get; private set; }
+        public BindingValue<APlugin> SelectedPlugin { get; private set; }
+        public BindingValue<bool> IsCrossPlay { get; private set; }
+        // Custom Map
+        public bool IsZipMap { get; set; } = true;
+        public CustomMap CustomMap { get; set; }
+        public string ServerResourcePack
+        {
+            get => PropertyIndexs.Value.StringOption["resource-pack"];
+            set => PropertyIndexs.Value.StringOption["resource-pack"] = value;
+        }
 
 
 
 
         //Op
-        public ObservableCollection<OpPlayer> OpPlayersList = new ObservableCollection<OpPlayer>();
+        public ObservableCollection<OpPlayer> OpPlayersList { get; private set; }
 
 
 
@@ -126,6 +144,8 @@ namespace Server_GUI2.Windows.MoreSettings
             SaveCommand = new SaveCommand(this);
 
             // ServerProperty
+            SetDefaultProperties = new SetDefaultProperties(this);
+            SetAsDefaultProperties = new SetAsDefaultProperties(this);
             ServerProperty properties = RunWorld.Property;
             PropertyIndexs = new BindingValue<ServerProperty>(properties, () => OnPropertyChanged("PropertyIndexs"));
             SelectedTFIndex = new BindingValue<string>(OtherTFPropertyIndexs[0], () => OnPropertyChanged("SelectedTFProperty"));
@@ -138,12 +158,41 @@ namespace Server_GUI2.Windows.MoreSettings
             AccountIndex = new BindingValue<Storage>(Accounts[0], () => OnPropertyChanged("RemoteDataList"));
             RemoteDataList = AccountIndex.Value.RemoteWorlds;
 
-
+            // Additionals
+            ImportAdditionalsCommand = new ImportAdditionalsCommand(this);
+            DeleteAdditionalsCommand = new DeleteAdditionalsCommand(this);
             // Datapack
             Datapacks = RunWorld.Datapacks;
+            SelectedDatapack = new BindingValue<ADatapack>(Datapacks.Datapacks[0], () => OnPropertyChanged(""));
+            // Plugin
+            Plugins = RunWorld.Plugins;
+            SelectedPlugin = new BindingValue<APlugin>(Plugins.Plugins[0], () => OnPropertyChanged(""));
+            // TODO: 所定のpluginを使用する設定になっていれば初期値をtrueにする
+            IsCrossPlay = new BindingValue<bool>(false, () => CrossPlay());
+            // Custom Map
+
+
+            // Op
+            OpPlayersList = new ObservableCollection<OpPlayer>();
+
+
+            // WhiteList
 
 
 
+        }
+
+        private void CrossPlay()
+        {
+            if (IsCrossPlay.Value)
+            {
+                // TODO: 導入するプラグインを一覧に追加する
+                // ダウンロード処理については実行時に行う？
+            }
+            else
+            {
+                // TODO: クロスプレイに必要なプラグインを削除する
+            }
         }
 
     }
