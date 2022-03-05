@@ -267,9 +267,9 @@
                             <TextBlock Text="gamemode" Style="{StaticResource PropertyIndex}"/>
                             <TextBlock Text="white-list" Style="{StaticResource PropertyIndex}"/>
                             <TextBlock Text="level-type" Style="{StaticResource PropertyIndex}"/>
-                            <TextBlock Text="OTHER Settings" HorizontalAlignment="Left" Height="33" Margin="25,30,0,0" FontSize="24" FontWeight="Bold"/>
-                            <ComboBox SelectedItem="{Binding SelectedTFIndex.Value}" ItemsSource="{Binding OtherTFPropertyIndexs}" Margin="35,20,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox SelectedItem="{Binding SelectedPropIndex.Value}" ItemsSource="{Binding OtherPropertyIndexs}" Margin="35,20,0,40" Width="160" Style="{StaticResource PropertyCombo}"/>
+                            <TextBlock Text="OTHER Settings" HorizontalAlignment="Left" Height="33" Margin="25,24,0,0" FontSize="24" FontWeight="Bold"/>
+                            <ComboBox SelectedItem="{Binding SelectedTFIndex.Value}" ItemsSource="{Binding OtherTFPropertyIndexs}" Margin="35,15,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
+                            <ComboBox SelectedItem="{Binding SelectedPropIndex.Value}" ItemsSource="{Binding OtherPropertyIndexs}" Margin="35,15,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
                         </StackPanel>
                         <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
                             <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,56,0,0" Style="{StaticResource PropertyCombo}"/>
@@ -277,8 +277,8 @@
                             <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Gamemode}" ItemsSource="{Binding GamemodeCombo}" Style="{StaticResource PropertyCombo}"/>
                             <ComboBox SelectedItem="{Binding PropertyIndexs.Value.WhiteList}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
                             <ComboBox SelectedItem="{Binding PropertyIndexs.Value.LevelType}" ItemsSource="{Binding TypeCombo}" Style="{StaticResource PropertyCombo}"/>
-                            <ComboBox SelectedItem="{Binding SelectedTFProperty}" ItemsSource="{Binding BoolCombo}" Margin="10,84,0,0" Style="{StaticResource PropertyCombo}"/>
-                            <TextBox Text="{Binding OtherStringProperty}" Margin="10,15,0,0" HorizontalAlignment="Left" Style="{StaticResource PropertyBox}"/>
+                            <ComboBox SelectedItem="{Binding SelectedTFProperty}" ItemsSource="{Binding BoolCombo}" Margin="10,73,0,0" Style="{StaticResource PropertyCombo}"/>
+                            <TextBox Text="{Binding OtherStringProperty}" Margin="10,15,0,0"  HorizontalAlignment="Left" Style="{StaticResource PropertyBox}"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -326,8 +326,8 @@
                     <StackPanel Margin="20 0" Orientation="Vertical">
                         <TextBlock Text="Import New Datapack" Style="{StaticResource AddBlock}"/>
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <ui:ToggleSwitch Header="Data Kinds" OnContent="Folder" OffContent="Zip" FontSize="18"/>
-                            <Button Content="Import" Command="{Binding ImportCommand}" CommandParameter="Datapack" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
+                            <ui:ToggleSwitch Header="Data Kinds" OnContent="Zip" OffContent="Folder" IsOn="{Binding IsZipDatapack.Value}" FontSize="18"/>
+                            <Button Content="Import" Command="{Binding ImportAdditionalsCommand}" CommandParameter="Datapack" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
                         </StackPanel>
                         <Line X1="0" Y1="20" X2="365" Y2="20" Style="{StaticResource LineStyle}"/>
                         <TextBlock Text="Imported" Style="{StaticResource AddBlock}"/>
@@ -348,7 +348,7 @@
                 </TabItem>
                 
                 <!--//Plugin//-->
-                <TabItem>
+                <TabItem IsEnabled="{Binding ShowPluginTab}">
                     <TabItem.Header>
                         <TextBlock Text="Plugins"/>
                     </TabItem.Header>
@@ -356,7 +356,7 @@
                     <StackPanel Margin="20 0" Orientation="Vertical">
                         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0 20 0 0">
                             <TextBlock Text="Import New Plugin" Margin="0 0 20 0" Style="{StaticResource AddBlock}"/>
-                            <Button Content="Import" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
+                            <Button Content="Import" Command="{Binding ImportAdditionalsCommand}" CommandParameter="Plugin" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
                         </StackPanel>
                         <Line X1="0" Y1="20" X2="365" Y2="20" Style="{StaticResource LineStyle}"/>
                         <TextBlock Text="Imported" Style="{StaticResource AddBlock}"/>
@@ -374,7 +374,7 @@
 
                         </ListBox>
 
-                        <CheckBox Content="Cross-play with Bedlock Edition" Margin="0 10" FontSize="18"/>
+                        <CheckBox Content="Cross-play with Bedlock Edition" IsChecked="{Binding IsCrossPlay.Value}" Margin="0 10" FontSize="18"/>
                     </StackPanel>
 
                 </TabItem>
@@ -388,13 +388,13 @@
                     <StackPanel Margin="20 0" Orientation="Vertical">
                         <TextBlock Text="Import New Custom Map" Style="{StaticResource AddBlock}"/>
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <ui:ToggleSwitch Header="Data Kinds" OnContent="Folder" OffContent="Zip" FontSize="18"/>
-                            <Button Content="Import" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
+                            <ui:ToggleSwitch Header="Data Kinds" OnContent="Zip" OffContent="Folder" IsOn="{Binding IsZipMap}" FontSize="18"/>
+                            <Button Content="Import" Command="{Binding ImportAdditionalsCommand}" CommandParameter="CustomMap" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="25 20 0 0">
                             <TextBlock Text="Map Name   :   " FontSize="18"/>
-                            <TextBlock Text="Binding Name" FontSize="18" Width="180"/>
-                            <Button Width="33" Height="33" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="Map">
+                            <TextBlock Text="{Binding RunWorld.CustomMap.Name}" FontSize="18" Width="180"/>
+                            <Button Width="33" Height="33" Padding="3" Command="{Binding DeleteAdditionalsCommand}" CommandParameter="CustomMap">
                                 <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                                 <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                             </Button>

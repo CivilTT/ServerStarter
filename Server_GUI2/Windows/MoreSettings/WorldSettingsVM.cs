@@ -109,7 +109,7 @@ namespace Server_GUI2.Windows.MoreSettings
         public ImportAdditionalsCommand ImportAdditionalsCommand { get; private set; }
         public DeleteAdditionalsCommand DeleteAdditionalsCommand { get; private set; }
         // DataPack
-        public bool IsZipDatapack { get; set; } = true;
+        public BindingValue<bool> IsZipDatapack { get; private set; }
         public DatapackCollection Datapacks { get; private set; }
         public BindingValue<ADatapack> SelectedDatapack { get; private set; }
         // Plugin
@@ -161,6 +161,7 @@ namespace Server_GUI2.Windows.MoreSettings
             ImportAdditionalsCommand = new ImportAdditionalsCommand(this);
             DeleteAdditionalsCommand = new DeleteAdditionalsCommand(this);
             // Datapack
+            IsZipDatapack = new BindingValue<bool>(true, () => OnPropertyChanged("IsZipDatapack"));
             Datapacks = RunWorld.Datapacks;
             SelectedDatapack = new BindingValue<ADatapack>(Datapacks.Datapacks.FirstOrDefault(), () => OnPropertyChanged(""));
             // Plugin

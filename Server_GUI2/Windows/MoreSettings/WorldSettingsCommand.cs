@@ -51,7 +51,7 @@ namespace Server_GUI2.Windows.MoreSettings
             switch (parameter)
             {
                 case "Datapack":
-                    bool isZip = _vm.IsZipDatapack;
+                    bool isZip = _vm.IsZipDatapack.Value;
                     string path = ShowDialog(isZip);
 
                     if (path == null)
@@ -107,6 +107,7 @@ namespace Server_GUI2.Windows.MoreSettings
         /// <summary>
         /// ファイル選択のダイアログを表示
         /// ファイルが選択された場合、そのパスを返し、選択されなかった場合はnullを返す
+        /// TODO: GUIでisZipを変更しても、それが反映されない
         /// </summary>
         private string ShowDialog(bool isZip)
         {
