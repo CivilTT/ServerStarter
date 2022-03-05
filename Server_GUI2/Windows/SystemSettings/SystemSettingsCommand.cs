@@ -334,6 +334,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
+            // TODO: これではここに書かれていない保存情報が消失してしまう
             UserSettingsJson saveData = new UserSettingsJson
             {
                 PlayerName = _vm.UserName.Value,

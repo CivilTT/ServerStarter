@@ -9,6 +9,7 @@
         xmlns:basevm="clr-namespace:Server_GUI2.Windows.ViewModels"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:SystemSettingsVM}"
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="Infomation" Height="550" Width="600" WindowStartupLocation="CenterScreen">
@@ -260,9 +261,9 @@
         <vm:MemberListConverter x:Key="MemberListConverter"/>
     </Window.Resources>
     
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <vm:SystemSettingsVM/>
-    </Window.DataContext>
+    </Window.DataContext>-->
     
     <Grid>
         <Grid.ColumnDefinitions>

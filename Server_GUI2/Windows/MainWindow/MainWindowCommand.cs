@@ -38,10 +38,8 @@ namespace Server_GUI2.Windows.MainWindow
         public override void Execute(object parameter)
         {
             _vm.Hide?.Invoke();
-            //var systemSettingWindow = new SystemSettingsVM();
-            //SSwindow.ShowDialog(systemSettingWindow);
-            var window = new Server_GUI2.SystemSettings();
-            window.ShowDialog();
+            var systemSettingWindow = new SystemSettingsVM();
+            SSwindow.ShowDialog(systemSettingWindow);
             _vm.Show?.Invoke();
         }
     }

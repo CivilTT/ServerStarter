@@ -19,7 +19,8 @@ namespace Server_GUI2.Windows.MoreSettings
 
         public override void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            _vm.PropertyIndexs.Value = UserSettings.Instance.userSettings.DefaultProperties;
+            MW.MessageBox.Show("既定のサーバープロパティを適用しました。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 
@@ -32,7 +33,8 @@ namespace Server_GUI2.Windows.MoreSettings
 
         public override void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            UserSettings.Instance.userSettings.DefaultProperties = _vm.PropertyIndexs.Value;
+            MW.MessageBox.Show("既定のサーバープロパティとして保存されました。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 
