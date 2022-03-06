@@ -1,7 +1,9 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Util;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,7 +54,7 @@ namespace Server_GUI2.Windows.MoreSettings
             {
                 case "Datapack":
                     bool isZip = _vm.IsZipDatapack.Value;
-                    string path = ShowDialog(isZip);
+                    string path = ShowDialog(isZip, new CommonFileDialogFilter("圧縮ファイル", "*.zip"));
 
                     if (path == null)
                         return;
@@ -69,7 +71,7 @@ namespace Server_GUI2.Windows.MoreSettings
                     _vm.Datapacks.Add(datapack);
                     break;
                 case "Plugin":
-                    path = ShowDialog(false);
+                    path = ShowDialog(true, new CommonFileDialogFilter("プラグインファイル", "*.jar"));
 
                     if (path == null)
                         return;
@@ -85,7 +87,7 @@ namespace Server_GUI2.Windows.MoreSettings
                     break;
                 case "CustomMap":
                     isZip = _vm.IsZipMap;
-                    path = ShowDialog(isZip);
+                    path = ShowDialog(isZip, new CommonFileDialogFilter("圧縮ファイル", "*.zip"));
 
                     if (path == null)
                         return;
@@ -109,14 +111,18 @@ namespace Server_GUI2.Windows.MoreSettings
         /// ファイルが選択された場合、そのパスを返し、選択されなかった場合はnullを返す
         /// TODO: GUIでisZipを変更しても、それが反映されない
         /// </summary>
-        private string ShowDialog(bool isZip)
+        private string ShowDialog(bool isFile, CommonFileDialogFilter filter=null)
         {
             using (var cofd = new CommonOpenFileDialog()
             {
                 Title = "フォルダを選択してください",
-                IsFolderPicker = isZip
+                RestoreDirectory = true,
+                IsFolderPicker = !isFile
             })
             {
+                if (isFile && filter != null)
+                    cofd.Filters.Add(filter);
+
                 if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
                     return cofd.FileName;
 
@@ -148,6 +154,118 @@ namespace Server_GUI2.Windows.MoreSettings
                 default:
                     break;
             }
+        }
+    }
+
+    class AddOpPlayerCommand : GeneralCommand<WorldSettingsVM>
+    {
+        public AddOpPlayerCommand(WorldSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            int opLevel = _vm.OpLevelIndex;
+            bool addedP = AddPlayer(opLevel);
+            bool addedG = AddGroup(opLevel);
+            if (!(addedP || addedG))
+                MW.MessageBox.Show("選択されたプレイヤーとグループはすでに登録されています。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        /// <summary>
+        /// PlayerをListに追加した場合にtrueを返し、追加しなかった場合にfalseを返す
+        /// </summary>
+        private bool AddPlayer(int opLevel)
+        {
+            // PlayerがNULLになることはない（Addボタンを押せないはずだから）が、一応実装している
+            if (_vm.OpPlayerIndex == null)
+                return false;
+
+            OpPlayer opPlayer = new OpPlayer(_vm.OpPlayerIndex, opLevel);
+            if (!_vm.OpPlayersList.Contains(opPlayer))
+            {
+                _vm.OpPlayersList.Add(opPlayer);
+                return true;
+            }
+            return false;
+        }
+
+        private bool AddGroup(int opLevel)
+        {
+            if (_vm.OpGroupIndex == null)
+                return false;
+
+            bool added = false;
+            ObservableCollection<Player> players = _vm.OpGroupIndex.PlayerList;
+            foreach (Player player in players)
+            {
+                OpPlayer opPlayer = new OpPlayer(player, opLevel);
+                if (!_vm.OpPlayersList.Contains(opPlayer))
+                {
+                    _vm.OpPlayersList.Add(opPlayer);
+                    added = true;
+                }
+            }
+
+            return added;
+        }
+    }
+
+    class DeleteOpPlayerCommand : GeneralCommand<WorldSettingsVM>
+    {
+        public DeleteOpPlayerCommand(WorldSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            _vm.OpPlayersList.Remove(_vm.OpPlayersListIndex);
+        }
+    }
+
+    //class AddWhiteCommand : GeneralCommand<WorldSettingsVM>
+    //{
+    //    public AddWhiteCommand(WorldSettingsVM vm)
+    //    {
+    //        _vm = vm;
+    //    }
+
+    //    public override void Execute(object parameter)
+    //    {
+    //        AddPlayer();
+    //        AddGroup();
+    //    }
+
+    //    private void AddPlayer()
+    //    {
+    //        _vm.;
+    //    }
+
+    //    private void AddGroup()
+    //    {
+    //        ObservableCollection<Player> players = _vm.OpGroupIndex.PlayerList;
+    //        foreach (Player player in players)
+    //        {
+    //            string name = player.Name;
+    //            OpPlayer opPlayer = new OpPlayer(name, opLevel);
+    //            if (!_vm.OpPlayersList.Contains(opPlayer))
+    //                _vm.OpPlayersList.Add(opPlayer);
+    //        }
+    //    }
+    //}
+
+    class DeleteWhiteCommand : GeneralCommand<WorldSettingsVM>
+    {
+        public DeleteWhiteCommand(WorldSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+
         }
     }
 

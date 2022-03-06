@@ -260,7 +260,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
         <vm:MemberListConverter x:Key="MemberListConverter"/>
     </Window.Resources>
-    
+       
     <!--<Window.DataContext>
         <vm:SystemSettingsVM/>
     </Window.DataContext>-->

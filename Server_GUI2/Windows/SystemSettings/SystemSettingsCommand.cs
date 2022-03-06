@@ -30,7 +30,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     return;
                 }
 
-                // Containsを作動させるためには該当のクラス（型）でIEquatable<>を実装している必要性あり
+                // Containsを作動させるためには該当のクラス（型）でIEquatable<T>を実装している必要性あり
                 if (list.Contains(content))
                 {
                     MW.MessageBox.Show(alreadyContainMessage, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -58,6 +58,7 @@ namespace Server_GUI2.Windows.SystemSettings
                 case "Player":
                     var playerList = _vm.PlayerList;
                     var playerContent = new Player(_vm.PlayerName.Value);
+                    playerContent.GetUuid();
                     if (playerContent.UUID == "")
                     {
                         MW.MessageBox.Show("このプレイヤー名は存在しません。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -334,19 +335,14 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
-            // TODO: これではここに書かれていない保存情報が消失してしまう
-            UserSettingsJson saveData = new UserSettingsJson
-            {
-                PlayerName = _vm.UserName.Value,
-                Language = "English",
-                //RemoteContents = _vm.RemoteList.ToList(),
-                DefaultProperties = _vm.PropertyIndexs.Value,
-                Players = _vm.PlayerList.ToList(),
-                PlayerGroups = _vm.GroupList.ToList(),
-                PortStatus = _vm.PortStatus.Value.StatusEnum.Value == PortStatus.Status.Open ? _vm.PortStatus.Value : null
-            };
+            // 既存のデータを変更する形で処理
+            UserSettings.Instance.userSettings.PlayerName = _vm.UserName.Value;
+            UserSettings.Instance.userSettings.Language = "English;";
+            UserSettings.Instance.userSettings.DefaultProperties = _vm.PropertyIndexs.Value;
+            UserSettings.Instance.userSettings.Players = _vm.PlayerList.ToList();
+            UserSettings.Instance.userSettings.PlayerGroups = _vm.GroupList.ToList();
+            UserSettings.Instance.userSettings.PortStatus = _vm.PortStatus.Value.StatusEnum.Value == PortStatus.Status.Open ? _vm.PortStatus.Value : null;
 
-            UserSettings.Instance.userSettings = saveData;
             UserSettings.Instance.WriteFile();
 
             _vm.Close();
