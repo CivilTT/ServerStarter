@@ -181,20 +181,21 @@ namespace Server_GUI2
     public class Player : IEquatable<Player>, IComparable<Player>
     {
         readonly WebClient wc;
+        [JsonProperty("Name")]
         public string Name { get; private set; }
-        public string UUID { get; private set; }
+        [JsonProperty("UUID")]
+        public string UUID { get; protected set; }
 
         public Player(string name)
         {
             wc = new WebClient();
             Name = name;
             UUID = "";
-            UUID = GetUuid(name);
         }
 
-        private string GetUuid(string name)
+        public string GetUuid()
         {
-            string url = $@"https://api.mojang.com/users/profiles/minecraft/{name}";
+            string url = $@"https://api.mojang.com/users/profiles/minecraft/{Name}";
             string jsonStr = wc.DownloadString(url);
 
             dynamic root = JsonConvert.DeserializeObject(jsonStr);

@@ -16,8 +16,8 @@ namespace Server_GUI2.Windows.MoreSettings
         static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
         static readonly StorageCollection Storages = StorageCollection.Instance;
 
-        public Version RunVersion;
-        public IWorld RunWorld;
+        public Version RunVersion { get; private set; }
+        public IWorld RunWorld { get; private set; }
 
         // 設定項目の表示非表示を操作
         public BindingValue<int> MenuIndex { get; private set; }
@@ -126,11 +126,18 @@ namespace Server_GUI2.Windows.MoreSettings
             set => PropertyIndexs.Value.StringOption["resource-pack"] = value;
         }
 
-
-
-
         //Op
+        public List<Player> Players { get; private set; }
+        public Player OpPlayerIndex { get; set; }
+        public List<PlayerGroup> Groups { get; private set; }
+        public PlayerGroup OpGroupIndex { get; set; }
+        public int[] OpLevels => new int[4] { 1, 2, 3, 4 };
+        public int OpLevelIndex { get; set; } = 4;
+        public bool CanAddOpPlayer => OpPlayerIndex != null;
+        public AddOpPlayerCommand AddOpPlayerCommand { get; private set; }
+        public DeleteOpPlayerCommand DeleteOpPlayerCommand { get; private set; }
         public ObservableCollection<OpPlayer> OpPlayersList { get; private set; }
+        public OpPlayer OpPlayersListIndex { get; set; }
 
 
 
@@ -177,8 +184,14 @@ namespace Server_GUI2.Windows.MoreSettings
 
 
             // Op
+            Players = SaveData.Players;
+            OpPlayerIndex = Players.FirstOrDefault();
+            Groups = SaveData.PlayerGroups;
+            OpGroupIndex = Groups.FirstOrDefault();
+            AddOpPlayerCommand = new AddOpPlayerCommand(this);
+            DeleteOpPlayerCommand = new DeleteOpPlayerCommand(this);
+            // TODO: （@txkodo）WorldインスタンスにOpとWhiteListの情報を持ってほしい
             OpPlayersList = new ObservableCollection<OpPlayer>();
-
 
             // WhiteList
 
@@ -201,15 +214,21 @@ namespace Server_GUI2.Windows.MoreSettings
 
     }
 
-    public class OpPlayer : Player
+    public class OpPlayer : Player, IEquatable<OpPlayer>
     {
-        public int OpLevel;
-        public bool BypassesPlayerLimit;
+        public int OpLevel { get; set; }
+        public bool BypassesPlayerLimit { get; set; }
 
-        public OpPlayer(string name, int opLevel, bool bypassesPlayerLimit=false) : base(name)
+        public OpPlayer(Player player, int opLevel, bool bypassesPlayerLimit=false) : base(player.Name)
         {
+            UUID = player.UUID;
             OpLevel = opLevel;
             BypassesPlayerLimit = bypassesPlayerLimit;
+        }
+
+        public bool Equals(OpPlayer other)
+        {
+            return other.UUID == UUID;
         }
     }
 }
