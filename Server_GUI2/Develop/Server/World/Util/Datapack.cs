@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Server_GUI2
+namespace Server_GUI2.Develop.Server.World
 {
     public class DatapackCollection
     {

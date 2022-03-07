@@ -4,6 +4,7 @@ using Server_GUI2.Develop.Server;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
 using Server_GUI2.Windows.SystemSettings;
+using Server_GUI2.Windows.WelcomeWindow;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -62,22 +63,12 @@ namespace Server_GUI2
 
         /// <summary>
         /// 個人設定入力用のUIを開く
-        /// 現状ではInfo_builderに該当
         /// </summary>
         private void ShowBuilder()
         {
-            // TODO: 個人設定入力用UIの表示を行う
-            // 現状のInfo_builderも変更する
+            WelcomeWindow window = new WelcomeWindow();
+            window.ShowDialog();
         }
-
-        ///// <summary>
-        ///// usersettings.jsonを作成する
-        ///// 基本的にReadFile()からしか呼ばれない？
-        ///// </summary>
-        //private void CreateFile()
-        //{
-
-        //}
 
         public void WriteFile()
         {

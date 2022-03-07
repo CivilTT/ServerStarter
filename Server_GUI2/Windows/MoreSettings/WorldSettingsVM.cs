@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Develop.Server.World;
 
-namespace Server_GUI2.Windows.MoreSettings
+namespace Server_GUI2.Windows.WorldSettings
 {
     class WorldSettingsVM : GeneralVM
     {
@@ -103,7 +103,7 @@ namespace Server_GUI2.Windows.MoreSettings
         public ObservableCollection<RemoteWorld> RemoteDataList { get; private set; }
         public BindingValue<RemoteWorld> RemoteIndex { get; private set; }
         public string RemoteName { get; set; }
-        public bool ShowNewRemoteData => RemoteIndex.Value == /*//TODO: 何とイコールにすればよい？//*/null;
+        public bool ShowNewRemoteData => RemoteIndex?.Value == /*//TODO: 何とイコールにすればよい？//*/null;
 
         // Additionals
         public ImportAdditionalsCommand ImportAdditionalsCommand { get; private set; }
@@ -139,6 +139,14 @@ namespace Server_GUI2.Windows.MoreSettings
         public ObservableCollection<OpPlayer> OpPlayersList { get; private set; }
         public OpPlayer OpPlayersListIndex { get; set; }
 
+        // WhiteList
+        public Player WhitePlayerIndex { get; set; }
+        public PlayerGroup WhiteGroupIndex { get; set; }
+        public bool CanAddWhitePlayer => WhitePlayerIndex != null;
+        public AddWhiteCommand AddWhiteCommand { get; private set; }
+        public DeleteWhiteCommand DeleteWhiteCommand { get; private set; }
+        public ObservableCollection<Player> WhitePlayersList { get; private set; }
+        public Player WhitePlayersListIndex { get; set; }
 
 
         public WorldSettingsVM(Version runVer, IWorld runWor)
@@ -159,6 +167,7 @@ namespace Server_GUI2.Windows.MoreSettings
 
             // ShareWorld
             // TODO: 既存ワールドをリモート化するときには【new Remote Data】しか選べないようにする
+            // TODO: (@txkodo) Worldと同じく【new Remote Data】をStoragesに持たせておけないか
             UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => OnPropertyChanged(""));
             Accounts = Storages.Storages;
             AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
@@ -187,6 +196,7 @@ namespace Server_GUI2.Windows.MoreSettings
             Players = SaveData.Players;
             OpPlayerIndex = Players.FirstOrDefault();
             Groups = SaveData.PlayerGroups;
+            Groups.Add(new PlayerGroup("(No Group)", null));
             OpGroupIndex = Groups.FirstOrDefault();
             AddOpPlayerCommand = new AddOpPlayerCommand(this);
             DeleteOpPlayerCommand = new DeleteOpPlayerCommand(this);
@@ -194,7 +204,12 @@ namespace Server_GUI2.Windows.MoreSettings
             OpPlayersList = new ObservableCollection<OpPlayer>();
 
             // WhiteList
-
+            WhitePlayerIndex = Players.FirstOrDefault();
+            WhiteGroupIndex = Groups.FirstOrDefault();
+            AddWhiteCommand = new AddWhiteCommand(this);
+            DeleteWhiteCommand = new DeleteWhiteCommand(this);
+            WhitePlayersList = new ObservableCollection<Player>();
+            //WhitePlayersList = RunWorld.WhiteList; -> みたいな感じにしたい
 
 
         }
@@ -205,6 +220,9 @@ namespace Server_GUI2.Windows.MoreSettings
             {
                 // TODO: 導入するプラグインを一覧に追加する
                 // ダウンロード処理については実行時に行う？
+                // World/Pluginにフラグを持たせておいて、処理を実行時にさせる？
+                // クロスプレイには19132番(UDP)のポート開放を25565と合わせて行う必要性あり
+                // 注意事項（導入するプラグインの一覧とそれらの利用規約に同意したとする・19132番を開放させる必要性がある（AutoPortMappingを利用する場合は自動で開放する））に同意させる
             }
             else
             {

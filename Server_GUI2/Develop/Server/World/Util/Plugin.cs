@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Server_GUI2
+namespace Server_GUI2.Develop.Server.World
 {
     public class PluginCollection
     {

@@ -2,9 +2,9 @@
 using Newtonsoft.Json;
 using Server_GUI2.Windows;
 using Server_GUI2.Windows.MainWindow;
-using Server_GUI2.Windows.MoreSettings;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.ViewModels;
+using Server_GUI2.Windows.WorldSettings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -131,9 +131,9 @@ namespace Server_GUI2
             //Pd.Value = 60;
 
             // 環境の確認
-            data.Set_env();
-            Pd.Message = "Check the environment of this PC";
-            Pd.Value = 70;
+            //data.Set_env();
+            //Pd.Message = "Check the environment of this PC";
+            //Pd.Value = 70;
 
             //追加バージョンの読み込み
             //logger.Info("Read the new NewVersions");
