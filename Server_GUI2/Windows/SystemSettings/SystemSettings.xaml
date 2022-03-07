@@ -1,4 +1,4 @@
-﻿<Window x:Class="Server_GUI2.SystemSettings"
+﻿<base:GeneralCB x:Class="Server_GUI2.Windows.SystemSettings.SystemSettings"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,6 +6,7 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:Server_GUI2"
         xmlns:vm="clr-namespace:Server_GUI2.Windows.SystemSettings"
+        xmlns:base="clr-namespace:Server_GUI2.Windows"
         xmlns:basevm="clr-namespace:Server_GUI2.Windows.ViewModels"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         mc:Ignorable="d"
@@ -707,4 +708,4 @@
         </Grid>
         
     </Grid>
-</Window>
+</base:GeneralCB>

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using MW = ModernWpf;
 
-namespace Server_GUI2.Windows.MoreSettings
+namespace Server_GUI2.Windows.WorldSettings
 {
     class SetDefaultProperties : GeneralCommand<WorldSettingsVM>
     {
@@ -193,7 +193,7 @@ namespace Server_GUI2.Windows.MoreSettings
 
         private bool AddGroup(int opLevel)
         {
-            if (_vm.OpGroupIndex == null)
+            if (_vm.OpGroupIndex == null || _vm.OpGroupIndex.GroupName == "(No Group)")
                 return false;
 
             bool added = false;
@@ -225,36 +225,55 @@ namespace Server_GUI2.Windows.MoreSettings
         }
     }
 
-    //class AddWhiteCommand : GeneralCommand<WorldSettingsVM>
-    //{
-    //    public AddWhiteCommand(WorldSettingsVM vm)
-    //    {
-    //        _vm = vm;
-    //    }
+    class AddWhiteCommand : GeneralCommand<WorldSettingsVM>
+    {
+        public AddWhiteCommand(WorldSettingsVM vm)
+        {
+            _vm = vm;
+        }
 
-    //    public override void Execute(object parameter)
-    //    {
-    //        AddPlayer();
-    //        AddGroup();
-    //    }
+        public override void Execute(object parameter)
+        {
+            bool addedP = AddPlayer();
+            bool addedG = AddGroup();
+            if (!(addedP || addedG))
+                MW.MessageBox.Show("選択されたプレイヤーとグループはすでに登録されています。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
 
-    //    private void AddPlayer()
-    //    {
-    //        _vm.;
-    //    }
+        private bool AddPlayer()
+        {
+            // PlayerがNULLになることはない（Addボタンを押せないはずだから）が、一応実装している
+            if (_vm.WhitePlayerIndex == null)
+                return false;
 
-    //    private void AddGroup()
-    //    {
-    //        ObservableCollection<Player> players = _vm.OpGroupIndex.PlayerList;
-    //        foreach (Player player in players)
-    //        {
-    //            string name = player.Name;
-    //            OpPlayer opPlayer = new OpPlayer(name, opLevel);
-    //            if (!_vm.OpPlayersList.Contains(opPlayer))
-    //                _vm.OpPlayersList.Add(opPlayer);
-    //        }
-    //    }
-    //}
+            Player player = _vm.WhitePlayerIndex;
+            if (!_vm.WhitePlayersList.Contains(player))
+            {
+                _vm.WhitePlayersList.Add(player);
+                return true;
+            }
+            return false;
+        }
+
+        private bool AddGroup()
+        {
+            if (_vm.WhiteGroupIndex == null || _vm.WhiteGroupIndex.GroupName == "(No Group)")
+                return false;
+
+            bool added = false;
+            ObservableCollection<Player> players = _vm.WhiteGroupIndex.PlayerList;
+            foreach (Player player in players)
+            {
+                if (!_vm.WhitePlayersList.Contains(player))
+                {
+                    _vm.WhitePlayersList.Add(player);
+                    added = true;
+                }
+            }
+
+            return added;
+        }
+    }
 
     class DeleteWhiteCommand : GeneralCommand<WorldSettingsVM>
     {
