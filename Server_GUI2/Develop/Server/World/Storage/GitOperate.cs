@@ -64,7 +64,7 @@ namespace Server_GUI2.Develop.Server.World
             var branch = GetRemoteBranch(remote);
             branch.LocalBranch.Checkout();
             branch.Pull();
-            var worldState = stateDirectory.WorldStateJson.ReadJson();
+            var worldState = stateDirectory.WorldStateJson.ReadJson().SuccessOrDefault(new Dictionary<string, WorldState>());
             return worldState;
         }
 
