@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using log4net;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using MW = ModernWpf;
@@ -17,19 +19,27 @@ namespace Server_GUI2
         private static string JarName;
         private static string Log4jArgument;
 
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// server.jarを実際に起動する
         /// </summary>
         public static void Start(string path, string jarName, string log4jArgument, ServerProperty property)
         {
+            logger.Info("[Start] start");
             // TODO: ServerPropertyの書き出し
             Path = path;
             JarName = jarName;
             Log4jArgument = log4jArgument;
 
+            logger.Info("[Start] check eura");
             CheckEula();
 
+            logger.Info("[Start] start run");
+
             Run();
+            logger.Info("[Start] end run");
+            logger.Info("[Start] end");
         }
 
         private static void Run()

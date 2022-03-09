@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Server_GUI2.Develop.Util;
+using log4net;
+using System.Reflection;
 
 namespace Server_GUI2.Develop.Server.World
 {
@@ -57,6 +59,8 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     public class LocalWorld : IWorldBase
     {
+        protected readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public WorldPath Path { get; private set; }
 
         public DatapackCollection Datapacks { get; private set; }
@@ -257,14 +261,23 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public void WrapRun(Action<ServerProperty> runFunc)
         {
+            logger.Info("[WrapRun] start");
             // levelname を変更
             Property.LevelName = Path.World.FullName;
+
             // 起動
+            logger.Info("[WrapRun] start runfunc");
             runFunc(Property);
+            logger.Info("[WrapRun] end runfunc");
+
             // levelname を空白に戻す
             Property.LevelName = "";
+
             // ServerPropertyを保存
+            logger.Info("[WrapRun] save server.properties");
             Path.ServerProperties.WriteAllText(Property.ExportProperty());
+
+            logger.Info("[WrapRun] end");
         }
 
         /// <summary>
