@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Develop.Util;
 
 namespace Server_GUI2.Develop.Server
 {
@@ -13,6 +14,7 @@ namespace Server_GUI2.Develop.Server
         {
             Directory = directory;
         }
+
         public DirectoryInfo Directory;
         public bool Exists => Directory.Exists;
         public string Name => Directory.Name;
@@ -66,16 +68,31 @@ namespace Server_GUI2.Develop.Server
         public bool Exists => File.Exists;
         public string Name => File.Name;
         public string FullName => File.FullName;
-        protected string _ReadAllText()
+        protected Either<string, Exception> _ReadAllText()
         {
-            var stream = File.OpenRead();
-            var result = new StreamReader(stream).ReadToEnd();
-            stream.Close();
-            return result;
+            try
+            {
+                var stream = File.OpenRead();
+                var result = new StreamReader(stream).ReadToEnd();
+                stream.Close();
+                return new Success<string, Exception>(result);
+            }
+            catch (Exception e)
+            {
+                return new Failure<string, Exception>(e);
+            }
         }
-        protected void _WriteAllText(string content)
+        protected Either<EitherVoid, Exception> _WriteAllText(string content)
         {
-            System.IO.File.WriteAllText(FullName,content);
+            try
+            {
+                System.IO.File.WriteAllText(FullName, content);
+                return new Success<EitherVoid, Exception>(EitherVoid.Instance);
+            }
+            catch (Exception e)
+            {
+                return new Failure<EitherVoid, Exception>(e);
+            }
         }
         protected void _MoveTo(FileInfo destination)
         {
@@ -113,14 +130,14 @@ namespace Server_GUI2.Develop.Server
             _MoveTo(destination);
         }
 
-        public string ReadAllText()
+        public Either<string, Exception> ReadAllText()
         {
             return _ReadAllText();
         }
 
-        public void WriteAllText(string content)
+        public Either<EitherVoid, Exception> WriteAllText(string content)
         {
-            _WriteAllText(content);
+            return _WriteAllText(content);
         }
     }
 
@@ -136,9 +153,16 @@ namespace Server_GUI2.Develop.Server
             _MoveTo(destination);
         }
 
-        public S ReadJson()
+        public Either<S, Exception> ReadJson()
         {
-           return JsonConvert.DeserializeObject<S>(_ReadAllText());
+            try
+            {
+                return _ReadAllText().SuccessFunc(x => JsonConvert.DeserializeObject<S>(x));
+            }
+            catch (Exception e)
+            {
+                return new Failure<S, Exception>(e);
+            }
         }
 
         public void WriteJson(S content, bool indented = false, bool ignoreDefault = false )
