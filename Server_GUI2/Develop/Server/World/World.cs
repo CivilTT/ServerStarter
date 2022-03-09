@@ -278,6 +278,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public void WrapRun(Version version, Action<ServerProperty> runFunc)
         {
+            logger.Info("<WrapRun>");
             // リモートがない場合
             if (!HasRemote)
                 WrapRun_Unlinked(version, runFunc);
@@ -287,6 +288,7 @@ namespace Server_GUI2.Develop.Server.World
             // 新しくローカルをリンクする場合
             else
                 WrapRun_NewLink(version, runFunc);
+            logger.Info("</WrapRun>");
         }
 
         /// <summary>
@@ -302,17 +304,23 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public void WrapRun_Unlinked(Version version, Action<ServerProperty> runFunc)
         {
+            logger.Info("<WrapRun_Unlinked>");
+
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
 
             // データパックの導入
+            logger.Info("Import datapacks");
             Datapacks.Evaluate(LocalWorld.Path.FullName);
 
             // プラグインの導入
+            logger.Info("Import plugins");
             Plugins.Evaluate(LocalWorld.Path.FullName);
 
             // 実行
             LocalWorld.WrapRun(runFunc);
+
+            logger.Info("</WrapRun_Unlinked>");
         }
 
         /// <summary>
@@ -321,6 +329,8 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void WrapRun_NewLink(Version version, Action<ServerProperty> runFunc)
         {
+            logger.Info("ready newly linked world data");
+
             // ワールドのリンク先を固定する
             CanCahngeRemote = false;
 
@@ -362,6 +372,8 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void WrapRun_Linked(Version version, Action<ServerProperty> runFunc)
         {
+            logger.Info("ready already linked world data");
+
             // 起動中フラグを立てる
             Using = true;
 
@@ -404,6 +416,8 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void TryImportCustomMapAndChangeVersion(LocalWorld local, Version version)
         {
+            logger.Info("<TryImportCustomMapAndChangeVersion>");
+
             if (HasCustomMap)
             {
                 CustomMap.Import(local.Path.World.FullName);
@@ -433,6 +447,8 @@ namespace Server_GUI2.Develop.Server.World
                 var newPath = version.Path.GetWorldDirectory(local.Path.Name);
                 local.Move(newPath, version, version.Type, local.Property, local.Datapacks, local.Plugins, addSuffixWhenNameCollided: true);
             }
+
+            logger.Info("</TryImportCustomMapAndChangeVersion>");
         }
     }
 }
