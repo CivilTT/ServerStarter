@@ -84,11 +84,12 @@ namespace Server_GUI2.Develop.Server.World
             Version version,
             ServerType? type,
             ServerProperty property,
-            DatapackCollection datapacks
+            DatapackCollection datapacks,
+            PluginCollection plugins
             )
         {
             WhenVersionDeleted = new EventHandler((_, __) => Delete());
-            ReConstruct(path, version, type, property, datapacks);
+            ReConstruct(path, version, type, property, datapacks, plugins);
         }
 
         /// <summary>
@@ -116,6 +117,7 @@ namespace Server_GUI2.Develop.Server.World
             Property = LoadProperties();
             Type = GetServerType();
             Datapacks = LoadDatapacks();
+            Plugins = LoadPlugins();
             Version = version;
 
             // 新しいバージョンにイベントを登録
@@ -130,7 +132,8 @@ namespace Server_GUI2.Develop.Server.World
             Version version,
             ServerType? type,
             ServerProperty property,
-            DatapackCollection datapacks
+            DatapackCollection datapacks,
+            PluginCollection plugins
             )
         {
             // 元のバージョンからイベントを削除
@@ -157,6 +160,7 @@ namespace Server_GUI2.Develop.Server.World
             Property = property;
             SaveProperties();
             Datapacks = datapacks;
+            Plugins = plugins;
 
             // 新しいバージョンにイベントを登録
             version.DeleteEvent += WhenVersionDeleted;
@@ -172,12 +176,12 @@ namespace Server_GUI2.Develop.Server.World
                 type = ServerType.Spigot;
             else
                 throw new ArgumentException($"\"{version.GetType()}\" is unknowen version.");
-            return new LocalWorld(Path, version, type, Property, Datapacks);
+            return new LocalWorld(Path, version, type, Property, Datapacks, Plugins);
         }
 
         public LocalWorld ToSpigot()
         {
-            return new LocalWorld(Path, Version, ServerType.Vanilla, Property, Datapacks);
+            return new LocalWorld(Path, Version, ServerType.Vanilla, Property, Datapacks, Plugins);
         }
 
         /// <summary>
@@ -189,6 +193,7 @@ namespace Server_GUI2.Develop.Server.World
             ServerType? type,
             ServerProperty property,
             DatapackCollection datapacks,
+            PluginCollection plugins,
             bool addSuffixWhenNameCollided = false
             )
         {
@@ -205,7 +210,7 @@ namespace Server_GUI2.Develop.Server.World
                 }
             }
             Path.MoveTo(newPath);
-            ReConstruct(newPath, version, type, property, datapacks);
+            ReConstruct(newPath, version, type, property, datapacks, plugins);
         }
 
         /// <summary>
@@ -213,7 +218,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public void Move(WorldPath path,  bool addSuffixWhenNameCollided = false)
         {
-            Move(path, Version, Type, Property, Datapacks, addSuffixWhenNameCollided);
+            Move(path, Version, Type, Property, Datapacks, Plugins, addSuffixWhenNameCollided);
         }
 
 
@@ -301,11 +306,9 @@ namespace Server_GUI2.Develop.Server.World
         {
             if (Path.World.Datapccks.Exists)
             {
-                Console.WriteLine(Path.World.Datapccks.FullName);
                 var collection = new List<string>();
                 foreach (var datapack in Path.World.Datapccks.GetDatapackDirectories())
                 {
-                    Console.WriteLine(datapack.FullName);
                     if (datapack.Mcmeta.Exists && datapack.Data.Exists)
                         collection.Add(datapack.Name);
                 }
@@ -314,6 +317,24 @@ namespace Server_GUI2.Develop.Server.World
             else
             {
                 return new DatapackCollection(new List<string>());
+            }
+        }
+
+
+        private PluginCollection LoadPlugins()
+        {
+            if (Path.World.Plugins.Exists)
+            {
+                var collection = new List<string>();
+                foreach (var plugin in Path.World.Plugins.GetPluginDirectories())
+                {
+                    collection.Add(plugin.Name);
+                }
+                return new PluginCollection(collection);
+            }
+            else
+            {
+                return new PluginCollection(new List<string>());
             }
         }
 

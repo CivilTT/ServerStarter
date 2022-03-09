@@ -88,6 +88,18 @@ namespace Server_GUI2.Develop.Server
             File.Delete();
         }
     }
+    public class BytesFile<T> : FilePath where T : DirectoryPath
+    {
+        public T Parent;
+        internal BytesFile(FileInfo file, T parent) : base(file)
+        {
+            Parent = parent;
+        }
+        public void MoveTo(FileInfo destination)
+        {
+            _MoveTo(destination);
+        }
+    }
 
     public class TextFile<T> : FilePath where T : DirectoryPath
     {
@@ -252,12 +264,14 @@ namespace Server_GUI2.Develop.Server
         public WorldDIMPath DIM1;
         public WorldDIMPath DIM_1;
         public DatapacksPath Datapccks;
+        public PluginsPath Plugins;
 
         internal WorldWorldPath(DirectoryInfo directory, WorldPath parent) : base(directory,parent)
         {
             DIM1 = new WorldDIMPath(SubDirectory("DIM1"), this);
             DIM_1 = new WorldDIMPath(SubDirectory("DIM-1"), this);
             Datapccks = new DatapacksPath(SubDirectory("datapacks"), this);
+            Plugins = new PluginsPath(SubDirectory("plugins"), this);
         }
     }
 
@@ -311,6 +325,19 @@ namespace Server_GUI2.Develop.Server
             Parent = parent;
             Data = new DatapackDataPath(SubDirectory("data"), this);
             Mcmeta = new TextFile<DatapackPath>(SubFile("pack.mcmeta"), this);
+        }
+    }
+
+    public class PluginsPath : SubDirectoryPath<WorldWorldPath>
+    {
+        internal PluginsPath(DirectoryInfo directory, WorldWorldPath parent) : base(directory, parent) { }
+        public BytesFile<PluginsPath>[] GetPluginDirectories()
+        {
+            return Directory.GetFiles().Select(x => new BytesFile<PluginsPath>(x,this)).ToArray();
+        }
+        public BytesFile<PluginsPath> GetPluginDirectory(string name)
+        {
+            return new BytesFile<PluginsPath>(SubFile(name), this);
         }
     }
 

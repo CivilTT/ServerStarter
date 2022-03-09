@@ -408,7 +408,7 @@ namespace Server_GUI2.Develop.Server.World
             {
                 CustomMap.Import(local.Path.World.FullName);
                 // LocalWorldの中身に変更を反映(VtoSコンバート等も含む)
-                local.ReConstruct(local.Path, version, version.Type, local.Property, local.Datapacks);
+                local.ReConstruct(local.Path, version, version.Type, local.Property, local.Datapacks, local.Plugins);
             }
 
             //versionのダウングレードを確認して警告表示
@@ -431,7 +431,7 @@ namespace Server_GUI2.Develop.Server.World
                 Console.WriteLine($"local.path: {local.Path}");
                 Console.WriteLine($"local.path: {version}");
                 var newPath = version.Path.GetWorldDirectory(local.Path.Name);
-                local.Move(newPath, version, version.Type, local.Property, local.Datapacks, addSuffixWhenNameCollided: true);
+                local.Move(newPath, version, version.Type, local.Property, local.Datapacks, local.Plugins, addSuffixWhenNameCollided: true);
             }
         }
     }
