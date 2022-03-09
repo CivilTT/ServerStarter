@@ -14,7 +14,7 @@
         ResizeMode="CanMinimize"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="Server Starter" Height="630" Width="630" WindowStartupLocation="CenterScreen">
-        <!--d:DataContext="{d:DesignInstance vm:MainWindowVM, IsDesignTimeCreatable=True}"-->
+    
     <Window.Resources>
         <Style TargetType="Button" x:Key="RunStyle" BasedOn="{StaticResource {x:Type Button}}">
             <Style.Setters>
@@ -84,7 +84,6 @@
         <Style TargetType="Button" x:Key="MiniButton" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Width" Value="33"/>
             <Setter Property="Height" Value="33"/>
-            <Setter Property="FontSize" Value="18"/>
             <Setter Property="Padding" Value="3"/>
         </Style>
         <Style TargetType="ComboBox" x:Key="ComboStyle" BasedOn="{StaticResource {x:Type ComboBox}}">
@@ -165,26 +164,6 @@
 
         <Line Stroke="White" StrokeThickness="2" X1="30" Y1="65" X2="595" Y2="65" Grid.Column="1"/>
 
-
-        <!--<StackPanel x:Name="version_main" HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Margin="30,200" Orientation="Vertical"  Grid.Column="1">
-            <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="Server Version" VerticalAlignment="Top" Width="140" FontSize="20"/>
-            <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="Version" HorizontalAlignment="Left" Margin="0,0,20,0" DropDownClosed="World_reload" ItemsSource="{Binding ExistsVersions}" Style="{StaticResource ComboStyle}"/>
-                <Button x:Name="Delete_v" Width="33" Height="33" FontSize="18" Margin="0 0" Padding="3" Command="{Binding DeleteCommand}" CommandParameter="version">
-                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
-                </Button>
-            </StackPanel>
-        </StackPanel>
-        <StackPanel x:Name="world_main" HorizontalAlignment="Right" Height="70" VerticalAlignment="Top" Margin="30,200" Orientation="Vertical"  Grid.Column="1">
-            <TextBlock HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="World Name" VerticalAlignment="Top" Width="140" FontSize="20"/>
-            <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="World" HorizontalAlignment="Left" Margin="0,0,20,0" DropDownClosed="Name_reload" Style="{StaticResource ComboStyle}"/>
-                <Button x:Name="Delete_w" Width="33" Height="33" Padding="3" Click="Delete_world">
-                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
-                </Button>
-            </StackPanel>
-        </StackPanel>-->
-
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,200" Width="253" Orientation="Vertical" Grid.Column="1">
             <TextBlock Text="Server Version" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="140" FontSize="20"/>
             <StackPanel Orientation="Horizontal">
@@ -202,7 +181,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <StackPanel Orientation="Horizontal" Margin="0 5">
-                <ui:ToggleSwitch Header="Show Versions" OffContent="Release" OnContent="All" FontSize="18" Width="140" Visibility="{Binding ShowNewVersions, Converter={StaticResource BoolToVisible}}" IsEnabled="{Binding ShowSpigot, Converter={StaticResource InverseBool}}" IsOn="{Binding ShowAll.Value}"/>
+                <ui:ToggleSwitch Header="Show Versions" OffContent="Release" OnContent="All" FontSize="18" Width="140" Visibility="{Binding ShowNewVersions, Converter={StaticResource BoolToVisible}}" IsEnabled="{Binding ShowSpigot.Value, Converter={StaticResource InverseBool}}" IsOn="{Binding ShowAll.Value}"/>
                 <ui:ToggleSwitch Header="Import Spigot" OffContent="No" OnContent="Yes" FontSize="18" Visibility="{Binding ShowNewVersions, Converter={StaticResource BoolToVisible}}" IsOn="{Binding ShowSpigot.Value}"/>
             </StackPanel>
         </StackPanel>
@@ -235,9 +214,11 @@
         <Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="61" Y1="448" X2="91" Y2="448" Grid.Column="1"/>
 
 
-        <Button Content="Info" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="60" Margin="30,0,0,10" Grid.Column="1" Command="{Binding SettingCommand}" Style="{StaticResource OtherStyle}"/>
+        <Button VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40" Margin="30,0,0,10" Grid.Column="1" Command="{Binding SettingCommand}" Style="{StaticResource OtherStyle}">
+            <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/setting.svg" Margin="4"/>
+        </Button>
         <StackPanel HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Margin="0,0,0,10" Orientation="Horizontal" Grid.Column="1">
-            <Button Content="More Settings" Command="{Binding WorldSettingCommand}" IsEnabled="{Binding CanRun}" Style="{StaticResource OtherStyle}"/>
+            <Button Content="World Settings" Command="{Binding WorldSettingCommand}" IsEnabled="{Binding CanRun}" Style="{StaticResource OtherStyle}"/>
             <Button Content="Close" Margin="10,0,30,0" Command="{Binding CloseCommand}" Style="{StaticResource OtherStyle}"/>
         </StackPanel>
     </Grid>

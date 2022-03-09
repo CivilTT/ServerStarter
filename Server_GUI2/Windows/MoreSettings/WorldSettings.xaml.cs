@@ -12,12 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Server_GUI2.Windows.MoreSettings
+namespace Server_GUI2.Windows.WorldSettings
 {
     /// <summary>
     /// WorldSettings.xaml の相互作用ロジック
     /// </summary>
-    public partial class WorldSettings : Window
+    public partial class WorldSettings : GeneralCB
     {
         public WorldSettings()
         {

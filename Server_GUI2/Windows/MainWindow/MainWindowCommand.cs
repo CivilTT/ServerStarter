@@ -1,6 +1,6 @@
-﻿using Server_GUI2.Windows.MoreSettings;
-using Server_GUI2.Windows.SystemSettings;
+﻿using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.ViewModels;
+using Server_GUI2.Windows.WorldSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,10 +38,8 @@ namespace Server_GUI2.Windows.MainWindow
         public override void Execute(object parameter)
         {
             _vm.Hide?.Invoke();
-            //var systemSettingWindow = new SystemSettingsVM();
-            //SSwindow.ShowDialog(systemSettingWindow);
-            var window = new Server_GUI2.SystemSettings();
-            window.ShowDialog();
+            var systemSettingWindow = new SystemSettingsVM();
+            SSwindow.ShowDialog(systemSettingWindow);
             _vm.Show?.Invoke();
         }
     }
