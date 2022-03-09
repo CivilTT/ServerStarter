@@ -186,7 +186,7 @@ namespace Server_GUI2.Windows.WorldSettings
                 SelectedPlugin = new BindingValue<APlugin>(Plugins.Plugins.FirstOrDefault(), () => OnPropertyChanged(""));
 
                 // TODO: 所定のpluginを使用する設定になっていれば初期値をtrueにする
-                IsCrossPlay = new BindingValue<bool>(false, () => CrossPlay());
+                //IsCrossPlay = new BindingValue<bool>(false, () => CrossPlay());
             }
             // Custom Map
 
@@ -222,6 +222,8 @@ namespace Server_GUI2.Windows.WorldSettings
                 // World/Pluginにフラグを持たせておいて、処理を実行時にさせる？
                 // クロスプレイには19132番(UDP)のポート開放を25565と合わせて行う必要性あり
                 // 注意事項（導入するプラグインの一覧とそれらの利用規約に同意したとする・19132番を開放させる必要性がある（AutoPortMappingを利用する場合は自動で開放する））に同意させる
+
+                // クロスプレイについては一旦保留にし、実装する場合は、ImportにURLを渡せる形にし、チェックボックスを入れたら自動でプラグインが導入されるようにする
             }
             else
             {

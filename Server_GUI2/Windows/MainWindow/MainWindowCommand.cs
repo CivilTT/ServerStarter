@@ -20,7 +20,7 @@ namespace Server_GUI2.Windows.MainWindow
         public override void Execute(object parameter)
         {
             MessageBox.Show(_vm.ShowAll.ToString());
-            //StartServer.Run(_vm.RunVersion, (Develop.Server.World.World)_vm.RunWorld);
+            StartServer.Run(_vm.RunVersion, _vm.RunWorld);
         }
     }
 
