@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Server_GUI2;
 using Server_GUI2.Util;
 using Newtonsoft.Json;
+using Server_GUI2.Develop.Util;
 
 namespace Server_GUI2.Develop.Server.World
 {
@@ -78,7 +79,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// worldstateをpull
         /// </summary>
-        public void RemoveRemote(GitRemote remote)
+        public Either<EitherVoid, string> RemoveRemote(GitRemote remote)
         {
             var id = GetId(remote);
 
@@ -91,6 +92,8 @@ namespace Server_GUI2.Develop.Server.World
             gitLocal.GetBranch(id).Remove();
             // git branch -d {account}.{repository}
             gitLocal.GetNamedRemotes()[id].Remove();
+
+            return new Success<EitherVoid, string>(EitherVoid.Instance);
         }
 
 
