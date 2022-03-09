@@ -21,9 +21,7 @@ namespace Server_GUI2.Develop.Server.World
 
         private StorageCollection()
         {
-            var storages = ServerGuiPath.Instance.StoragesJson.Exists ?
-                    ServerGuiPath.Instance.StoragesJson.ReadJson() :
-                    new StoragesJson();
+            var storages = ServerGuiPath.Instance.StoragesJson.ReadJson().SuccessOrDefault(new StoragesJson());
 
             // gitのリポジトリを全取得
             GitStorage.GetStorages(storages.Git).ForEach(x => Add(x));

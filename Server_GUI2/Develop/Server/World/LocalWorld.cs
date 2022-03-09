@@ -288,10 +288,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private ServerProperty LoadProperties()
         {
-            if (Path.ServerProperties.Exists)
-                return new ServerProperty(Path.ServerProperties.ReadAllText());
-            else
-                return new ServerProperty();
+            return Path.ServerProperties.ReadAllText().SuccessFunc(x => new ServerProperty(x)).SuccessOrDefault(new ServerProperty());
         }
 
         /// <summary>
