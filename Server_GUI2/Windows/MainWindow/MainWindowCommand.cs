@@ -1,5 +1,4 @@
 ﻿using Server_GUI2.Windows.SystemSettings;
-using Server_GUI2.Windows.ViewModels;
 using Server_GUI2.Windows.WorldSettings;
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ namespace Server_GUI2.Windows.MainWindow
         public override void Execute(object parameter)
         {
             MessageBox.Show(_vm.ShowAll.ToString());
-            //Server.Run(_vm.RunWorld);
+            //StartServer.Run(_vm.RunVersion, (Develop.Server.World.World)_vm.RunWorld);
         }
     }
 

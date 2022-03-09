@@ -1,6 +1,5 @@
 ﻿using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Windows.SystemSettings;
-using Server_GUI2.Windows.ViewModels;
 using Server_GUI2.Windows.WorldSettings;
 using System;
 using System.Collections.Generic;
@@ -76,7 +75,6 @@ namespace Server_GUI2.Windows.MainWindow
 
 
         public MainWindowVM(IShowWindowService<SystemSettingsVM> ssWindow, IShowWindowService<WorldSettingsVM> wsWindow)
-        //public MainWindowVM()
         {
             // General
             RunCommand = new RunCommand(this);

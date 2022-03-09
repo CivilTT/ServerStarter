@@ -12,7 +12,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace Server_GUI2.Windows.ViewModels
+namespace Server_GUI2.Windows
 {
     abstract class GeneralVM : INotifyPropertyChanged, IOperateWindows
     {
