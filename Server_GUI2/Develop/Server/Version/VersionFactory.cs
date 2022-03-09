@@ -145,7 +145,7 @@ namespace Server_GUI2
             else
             {
                 // jsonをローカルから読み込み
-                versions = ServerGuiPath.Instance.ManifestJson.ReadJson();
+                versions = ServerGuiPath.Instance.ManifestJson.ReadJson().SuccessOrDefault(new VanillaVersonsJson());
             }
             return versions;
         }
@@ -189,7 +189,7 @@ namespace Server_GUI2
             else
             {
                 // ローカルから読み込み
-                vers = ServerGuiPath.Instance.SpigotVersionJson.ReadJson();
+                vers = ServerGuiPath.Instance.SpigotVersionJson.ReadJson().SuccessOrDefault(new List<string>());
             }
 
             foreach (var ver in vers)

@@ -80,7 +80,7 @@ namespace Server_GUI2.Develop.Server.World
                 jsonPath.WriteJson(jsonData);
                 return jsonData;
             }
-            return jsonPath.ReadJson();
+            return jsonPath.ReadJson().SuccessOrDefault(new List<RemoteLinkJson>());
         }
 
         /// <summary>
