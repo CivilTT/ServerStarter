@@ -10,13 +10,13 @@ namespace Server_GUI2
     static class StartServer
     {
         private static Version Version;
-        private static World World;
+        private static IWorld World;
 
         /// <summary>
         /// Runボタンが押された時に呼ばれる処理
         /// TODO: Op、WhiteListの登録、実行VersionとWorldをinfo.jsonに記入、自動シャットダウン、AutoPortMappingに基づいたポート開放＆閉鎖の実行
         /// </summary>
-        public static void Run(Version version, World world)
+        public static void Run(Version version, IWorld world)
         {
             Version = version;
             World = world;
