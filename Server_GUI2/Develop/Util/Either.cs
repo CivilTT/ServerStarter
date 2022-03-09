@@ -14,9 +14,9 @@ namespace Server_GUI2.Develop.Util
 
         public abstract Either<SUCCESS, T> FailureFunc<T>(Func<FAILURE, T> func);
         
-        public abstract void SuccessAction(Action<SUCCESS> action);
+        public abstract Either<EitherVoid, FAILURE> SuccessAction(Action<SUCCESS> action);
 
-        public abstract void FailureAction(Action<FAILURE> action);
+        public abstract Either<SUCCESS, EitherVoid> FailureAction(Action<FAILURE> action);
 
         public abstract SUCCESS SuccessOrDefault(SUCCESS defaultValue);
 
@@ -42,9 +42,12 @@ namespace Server_GUI2.Develop.Util
 
         public override FAILURE FailureOrDefault(FAILURE defaultValue) => defaultValue;
 
-        public override void SuccessAction(Action<SUCCESS> action) { action(Value); }
+        public override Either<EitherVoid, FAILURE> SuccessAction(Action<SUCCESS> action) {
+            action(Value);
+            return new Success<EitherVoid, FAILURE>(EitherVoid.Instance);
+        }
 
-        public override void FailureAction(Action<FAILURE> action) { }
+        public override Either<SUCCESS, EitherVoid> FailureAction(Action<FAILURE> action) => new Success<SUCCESS, EitherVoid>(Value);
     }
 
     public class Failure<SUCCESS, FAILURE> : Either<SUCCESS, FAILURE>
@@ -66,9 +69,18 @@ namespace Server_GUI2.Develop.Util
 
         public override FAILURE FailureOrDefault(FAILURE defaultValue) => Value;
 
-        public override void SuccessAction(Action<SUCCESS> action) { }
+        public override Either<EitherVoid, FAILURE> SuccessAction(Action<SUCCESS> action) => new Failure<EitherVoid, FAILURE>(Value);
 
-        public override void FailureAction(Action<FAILURE> action) { action(Value); }
+        public override Either<SUCCESS, EitherVoid> FailureAction(Action<FAILURE> action)
+        {
+            action(Value);
+            return new Failure<SUCCESS, EitherVoid>(EitherVoid.Instance);
+        }
+    }
 
+    public class EitherVoid
+    {
+        public static EitherVoid Instance { get; } = new EitherVoid();
+        private EitherVoid() { }
     }
 }

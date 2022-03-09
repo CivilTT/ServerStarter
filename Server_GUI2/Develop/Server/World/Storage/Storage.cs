@@ -279,15 +279,15 @@ namespace Server_GUI2.Develop.Server.World
         public override void Delete()
         {
             // リポジトリの登録を削除
-            GitStorageManager.Instance.RemoveRemote(Remote);
+            GitStorageManager.Instance.RemoveRemote(Remote).SuccessAction( x => {
 
-            // 紐づいたリモートワールドを削除
-            foreach(var world in RemoteWorlds)
-            {
-                world.Delete();
-            }
-
-            base.Delete();
+                // 紐づいたリモートワールドを削除
+                foreach (var world in RemoteWorlds)
+                {
+                    world.Delete();
+                }
+                base.Delete();
+            });
         }
 
         public GitStorageJson ExportStorageJson()
