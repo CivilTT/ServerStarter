@@ -96,6 +96,8 @@
     <Compile Include="Develop\Server\World\World.cs" />
     <Compile Include="Develop\Server\World\IWorldBase.cs" />
     <Compile Include="Develop\Server\World\RemoteWorld.cs" />
+    <Compile Include="Windows\WelcomeWindow\WelcomeWindowCommand.cs" />
+    <Compile Include="Windows\WelcomeWindow\WelcomeWindowVM.cs" />
     <Content Include="Develop\Server\World\WorldWrapper.txt" />
     <Compile Include="Develop\Server\ServerType.cs" />
     <Compile Include="Develop\Server\World\LocalWorld.cs" />
@@ -119,7 +121,7 @@
     <Compile Include="Windows\WelcomeWindow\WelcomeWindow.xaml.cs">
       <DependentUpon>WelcomeWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\MoreSettings\WorldSettingsCommand.cs" />
+    <Compile Include="Windows\WorldSettings\WorldSettingsCommand.cs" />
     <Compile Include="Windows\ShowNewWindow.cs" />
     <Compile Include="Windows\SystemSettings\SystemSettingsCommand.cs" />
     <Compile Include="Windows\SystemSettings\SystemSettingsVM.cs" />
@@ -134,11 +136,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\MoreSettings\Datapack\dp_Settings.xaml">
+    <Page Include="Windows\WorldSettings\Datapack\dp_Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MoreSettings\CustomMap\haihu.xaml">
+    <Page Include="Windows\WorldSettings\CustomMap\haihu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -160,26 +162,26 @@
     <Compile Include="Develop\SetUp.cs" />
     <Compile Include="Develop\Server\Version\Version.cs" />
     <Compile Include="Develop\Server\Version\VersionFactory.cs" />
-    <Compile Include="Windows\MoreSettings\Datapack\dp_Settings.xaml.cs">
+    <Compile Include="Windows\WorldSettings\Datapack\dp_Settings.xaml.cs">
       <DependentUpon>dp_Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\Exception.cs" />
     <Compile Include="Core\Functions.cs" />
     <Compile Include="Core\Git.cs" />
-    <Compile Include="Windows\MoreSettings\CustomMap\haihu.xaml.cs">
+    <Compile Include="Windows\WorldSettings\CustomMap\haihu.xaml.cs">
       <DependentUpon>haihu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\SystemSettings\SystemSettings.xaml.cs">
       <DependentUpon>SystemSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\MoreSettings\WorldSettings.xaml.cs">
+    <Compile Include="Windows\WorldSettings\WorldSettings.xaml.cs">
       <DependentUpon>WorldSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\MoreSettings\WorldSettingsVM.cs" />
+    <Compile Include="Windows\WorldSettings\WorldSettingsVM.cs" />
     <Compile Include="Windows\ProgressBar\Progress_Bar.xaml.cs">
       <DependentUpon>Progress_Bar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\MoreSettings\Plugin\Spigot.xaml.cs">
+    <Compile Include="Windows\WorldSettings\Plugin\Spigot.xaml.cs">
       <DependentUpon>Spigot.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\Spigot_Function.cs" />
@@ -189,11 +191,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\MoreSettings\More_Settings.xaml">
+    <Page Include="Windows\WorldSettings\More_Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MoreSettings\WorldSettings.xaml">
+    <Page Include="Windows\WorldSettings\WorldSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -201,13 +203,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MoreSettings\Plugin\Spigot.xaml">
+    <Page Include="Windows\WorldSettings\Plugin\Spigot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Windows\MoreSettings\More_Settings.xaml.cs">
+    <Compile Include="Windows\WorldSettings\More_Settings.xaml.cs">
       <DependentUpon>More_Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">

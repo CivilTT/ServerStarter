@@ -1,5 +1,4 @@
-﻿using Server_GUI2.Windows.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -192,10 +191,10 @@ namespace Server_GUI2.Windows.WorldSettings
             // Custom Map
 
 
-            // Op
-            Players = SaveData.Players;
+            // Op (new することで参照渡しにならないようにする)
+            Players = new List<Player>(SaveData.Players);
             OpPlayerIndex = Players.FirstOrDefault();
-            Groups = SaveData.PlayerGroups;
+            Groups = new List<PlayerGroup>(SaveData.PlayerGroups);
             Groups.Add(new PlayerGroup("(No Group)", null));
             OpGroupIndex = Groups.FirstOrDefault();
             AddOpPlayerCommand = new AddOpPlayerCommand(this);

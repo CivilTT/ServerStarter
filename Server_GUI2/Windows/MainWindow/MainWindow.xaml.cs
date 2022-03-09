@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Server_GUI2.Windows;
 using Server_GUI2.Windows.MainWindow;
 using Server_GUI2.Windows.SystemSettings;
-using Server_GUI2.Windows.ViewModels;
 using Server_GUI2.Windows.WorldSettings;
 using System;
 using System.Collections.Generic;
@@ -59,7 +58,7 @@ namespace Server_GUI2
         public bool Get_op { get; set; }
 
 
-        private readonly Data_list data = new Data_list();
+        //private readonly Data_list data = new Data_list();
 
 
         public MainWindow()

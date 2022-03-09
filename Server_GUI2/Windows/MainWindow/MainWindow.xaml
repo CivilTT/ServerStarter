@@ -7,7 +7,6 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:Server_GUI2"
         xmlns:vm="clr-namespace:Server_GUI2.Windows.MainWindow"
-        xmlns:basevm="clr-namespace:Server_GUI2.Windows.ViewModels"
         xmlns:base="clr-namespace:Server_GUI2.Windows"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:MainWindowVM}"
@@ -139,12 +138,12 @@
         <vm:ExistsVersionConverter x:Key="ExistsConverter"/>
         <vm:NewVersionConverter x:Key="NewConverter"/>
         <vm:WorldConverter x:Key="WorldConverter"/>
-        <basevm:InverseBoolConverter x:Key="InverseBool"/>
+        <base:InverseBoolConverter x:Key="InverseBool"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
-        <basevm:ValueConverterGroup x:Key="InverseBoolToVisible">
-            <basevm:InverseBoolConverter/>
+        <base:ValueConverterGroup x:Key="InverseBoolToVisible">
+            <base:InverseBoolConverter/>
             <BooleanToVisibilityConverter/>
-        </basevm:ValueConverterGroup>
+        </base:ValueConverterGroup>
     </Window.Resources>
 
     <!--<Window.DataContext>
