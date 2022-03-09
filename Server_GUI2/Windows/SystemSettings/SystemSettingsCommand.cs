@@ -1,7 +1,6 @@
 ﻿using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
 using Server_GUI2.Util;
-using Server_GUI2.Windows.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

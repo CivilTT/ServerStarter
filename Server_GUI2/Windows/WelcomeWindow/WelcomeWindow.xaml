@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:local="clr-namespace:Server_GUI2"
+        xmlns:vm="clr-namespace:Server_GUI2.Windows.WelcomeWindow"
         xmlns:base="clr-namespace:Server_GUI2.Windows"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:WelcomeWindowVM}"
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="Server Starter" Height="480" Width="450" Topmost="True">
+        Title="Server Starter" Height="480" Width="450" Topmost="True" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style TargetType="Button" x:Key="RunStyle" BasedOn="{StaticResource {x:Type Button}}">
@@ -49,6 +51,11 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="FontSize" Value="20"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.2"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style TargetType="TextBox" x:Key="BoxStyle" BasedOn="{StaticResource {x:Type TextBox}}">
             <Style.Setters>
@@ -57,14 +64,21 @@
                 <Setter Property="VerticalAlignment" Value="Top"/>
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="FontSize" Value="18"/>
-                <Setter Property="BorderBrush" Value="#EBEBEB"/>
+                <Setter Property="BorderBrush" Value="Gray"/>
                 <Setter Property="Background" Value="#EBEBEB"/>
                 <Setter Property="Foreground" Value="Black"/>
-                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="BorderThickness" Value="1"/>
             </Style.Setters>
         </Style>
+        
+        <!--//Converter//-->
+        <base:InverseBoolConverter x:Key="InverseBool"/>
     </Window.Resources>
 
+    <!--<Window.DataContext>
+        <vm:WelcomeWindowVM/>
+    </Window.DataContext>-->
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="120"/>
@@ -79,17 +93,17 @@
         <TextBlock Text="Server Starter will help your Minecraft Life!" Margin="40 70 0 0" Style="{StaticResource BlockStyle}"/>
 
         <TextBlock Text="1. Regist Your Name in Minecraft" Grid.Row="1" Margin="40 0 0 0" Style="{StaticResource BlockStyle}"/>
-        <TextBox Text="Your Name" Grid.Row="1" Margin="60 40" Style="{StaticResource BoxStyle}"/>
-        <Button Content="Check" Grid.Row="1" Margin="270 40 0 0" Width="100" Style="{StaticResource RunStyle}"/>
-        <TextBlock Text="UUID : " Grid.Row="1" Margin="60 80 0 0" FontSize="16" Style="{StaticResource BlockStyle}"/>
-        <TextBlock Text="4bff145d-05b2-4bf5-b1c8-2978b6bd4f0f" Grid.Row="1" Margin="110 80 0 0" FontSize="16" Style="{StaticResource BlockStyle}"/>
-        <CheckBox Content="Don't regist your name" VerticalAlignment="Top" Margin="60 110 0 0" Grid.Row="1" FontSize="16"/>
+        <TextBox Text="{Binding PlayerName.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding NotRegistName.Value, Converter={StaticResource InverseBool}}" Grid.Row="1" Margin="60 40" Style="{StaticResource BoxStyle}"/>
+        <Button Content="Check" Command="{Binding CheckValidNameCommand}" IsEnabled="{Binding NotRegistName.Value, Converter={StaticResource InverseBool}}" Grid.Row="1" Margin="270 40 0 0" Width="100" Style="{StaticResource RunStyle}"/>
+        <TextBlock Text="UUID : " IsEnabled="{Binding NotRegistName.Value, Converter={StaticResource InverseBool}}" Grid.Row="1" Margin="60 80 0 0" FontSize="16" Style="{StaticResource BlockStyle}"/>
+        <TextBlock Text="{Binding UUID.Value}" IsEnabled="{Binding NotRegistName.Value, Converter={StaticResource InverseBool}}" Grid.Row="1" Margin="110 80 0 0" FontSize="16" Style="{StaticResource BlockStyle}"/>
+        <CheckBox Content="Don't regist your name" IsChecked="{Binding NotRegistName.Value}" VerticalAlignment="Top" Margin="60 110 0 0" Grid.Row="1" FontSize="16"/>
         <!--<TextBlock HorizontalAlignment="Left" Margin="40,21,0,0" TextWrapping="Wrap" Text="Info Builder" VerticalAlignment="Top" Height="48" Width="300" FontSize="28" FontWeight="Bold"/>-->
 
         <TextBlock Text="2. Agreement" Grid.Row="2" Margin="40 0 0 0" Style="{StaticResource BlockStyle}"/>
         <ui:HyperlinkButton Content="Access to the Terms of Use" NavigateUri="" FontSize="18" Grid.Row="2" VerticalAlignment="Top" Margin="60 30 0 0"/>
-        <CheckBox Content="I agree to the Terms of Use" VerticalAlignment="Top" Margin="60 70 0 0" Grid.Row="2" FontSize="18"/>
+        <CheckBox Content="I agree to the Terms of Use" IsChecked="{Binding Agreed.Value}" VerticalAlignment="Top" Margin="60 70 0 0" Grid.Row="2" FontSize="18"/>
 
-        <Button Content="START !" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15" Style="{StaticResource RunStyle}"/>
+        <Button Content="START !" Command="{Binding StartCommand}" IsEnabled="{Binding CanStart}" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15" Style="{StaticResource RunStyle}"/>
     </Grid>
 </base:GeneralCB>

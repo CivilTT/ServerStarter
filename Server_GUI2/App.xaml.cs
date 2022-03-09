@@ -28,6 +28,7 @@ namespace Server_GUI2
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
+            // TODO: 実装の整理
             // base.OnStartup(e);
             bool reset_data = false;
             bool save_data = false;
@@ -38,6 +39,7 @@ namespace Server_GUI2
                 // GUIを立ち上げる
                 MainWindow main = new MainWindow();
                 main.Show();
+                main.Activate();
                 return;
             }
 

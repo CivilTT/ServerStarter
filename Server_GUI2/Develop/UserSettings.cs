@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Server_GUI2.Develop.Server;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
+using Server_GUI2.Windows;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.WelcomeWindow;
 using System;
@@ -54,6 +55,7 @@ namespace Server_GUI2
                 
                 List<string> info = ReadContents.ReadOldInfo(OldInfoPath);
                 // TODO: info.txtから読み込んだ情報を新システムに登録
+                // info.txtのユーザー名が正しいか確認の意味でもShowBuilderするべき？
             }
             else
             {
@@ -120,6 +122,9 @@ namespace Server_GUI2
 
         [JsonProperty("PortMapping")]
         public PortStatus PortStatus = null;
+
+        [JsonProperty("Agreement")]
+        public Agreement Agreement = new Agreement();
     }
 
     public class LatestRun
@@ -171,27 +176,26 @@ namespace Server_GUI2
 
     public class Player : IEquatable<Player>, IComparable<Player>
     {
-        readonly WebClient wc;
         [JsonProperty("Name")]
         public string Name { get; private set; }
         [JsonProperty("UUID")]
         public string UUID { get; protected set; }
 
-        public Player(string name)
+        public Player(string name, string uuid="")
         {
-            wc = new WebClient();
             Name = name;
-            UUID = "";
+            UUID = uuid;
         }
 
-        public string GetUuid()
+        public void GetUuid()
         {
             string url = $@"https://api.mojang.com/users/profiles/minecraft/{Name}";
+            WebClient wc = new WebClient();
             string jsonStr = wc.DownloadString(url);
 
             dynamic root = JsonConvert.DeserializeObject(jsonStr);
             if (root == null)
-                return "";
+                return;
 
             string uuid = root.id;
             Name = root.name;
@@ -203,7 +207,7 @@ namespace Server_GUI2
             string uuid_5 = uuid.Substring(20);
             uuid = uuid_1 + "-" + uuid_2 + "-" + uuid_3 + "-" + uuid_4 + "-" + uuid_5;
 
-            return uuid;
+            UUID = uuid;
         }
 
         public bool Equals(Player other)
@@ -215,5 +219,14 @@ namespace Server_GUI2
         {
             return Name.CompareTo(other.Name);
         }
+    }
+
+    public class Agreement
+    {
+        [JsonProperty("SystemTerms")]
+        public bool SystemTerms;
+
+        // ServerStarterとして保持しておくべき同意事項を保持する
+
     }
 }
