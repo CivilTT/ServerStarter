@@ -7,7 +7,6 @@
         xmlns:local="clr-namespace:Server_GUI2"
         xmlns:vm="clr-namespace:Server_GUI2.Windows.SystemSettings"
         xmlns:base="clr-namespace:Server_GUI2.Windows"
-        xmlns:basevm="clr-namespace:Server_GUI2.Windows.ViewModels"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:SystemSettingsVM}"
@@ -257,7 +256,7 @@
         </Style>
         
         <!--//Converter//-->
-        <basevm:InverseBoolConverter x:Key="InverseBoolConverter"/>
+        <base:InverseBoolConverter x:Key="InverseBoolConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
         <vm:MemberListConverter x:Key="MemberListConverter"/>
     </Window.Resources>

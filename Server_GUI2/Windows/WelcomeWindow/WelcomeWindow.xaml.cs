@@ -14,6 +14,8 @@ namespace Server_GUI2.Windows.WelcomeWindow
         public WelcomeWindow()
         {
             InitializeComponent();
+
+            DataContext = new WelcomeWindowVM(this);
         }
     }
 }
