@@ -16,36 +16,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Server_GUI2
+namespace Server_GUI2.Windows.SystemSettings
 {
     /// <summary>
     /// SystemSettings.xaml の相互作用ロジック
     /// </summary>
-    public partial class SystemSettings : Window
+    public partial class SystemSettings : GeneralCB
     {
         public SystemSettings()
         {
             InitializeComponent();
-            Loaded += WindowLoaded;
-        }
-
-        private void WindowLoaded(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is IOperateWindows vm)
-            {
-                vm.Close += () =>
-                {
-                    Close();
-                };
-                vm.Hide += () =>
-                {
-                    Hide();
-                };
-                vm.Show += () =>
-                {
-                    Show();
-                };
-            }
         }
     }
 }

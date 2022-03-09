@@ -146,6 +146,7 @@ namespace Server_GUI2.Windows.SystemSettings
         public bool CanAddition_Po => ValidPortNumber && CanWritePortNumber && !AlreadyOpened;
         public AddPortCommand AddPortCommand { get; private set; }
         readonly WebClient wc = new WebClient();
+        // TODO: IPの取得にはやや時間がかかるため、awaitにするべき？
         public string IP { get { return wc.DownloadString("https://ipv4.icanhazip.com/").Replace("\\r\\n", "").Replace("\\n", "").Trim(); } }
         public ClipbordCommand ClipbordCommand { get; private set; }
         public BindingValue<PortStatus> PortStatus { get; private set; }

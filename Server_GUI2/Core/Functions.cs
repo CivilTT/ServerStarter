@@ -31,30 +31,30 @@ namespace Server_GUI2
         readonly WebClient wc = new WebClient();
         readonly Data_list data = new Data_list();
 
-        public void Build_info()
-        {
-            logger.Info("Check the info.txt");
-            var window = new info_builder();
+        //public void Build_info()
+        //{
+        //    logger.Info("Check the info.txt");
+        //    var window = new info_builder();
 
-            //本来あるべきinfoの行数
-            int all_line_num = Data_list.Info_index.Count;
+        //    //本来あるべきinfoの行数
+        //    int all_line_num = Data_list.Info_index.Count;
 
-            //ファイルが存在し、かつ、ファイルの行数が正しいときはbuildしない
-            if (File.Exists($@"{MainWindow.Data_Path}\info.txt"))
-            {
-                string[] lines = File.ReadAllLines($@"{MainWindow.Data_Path}\info.txt");
-                if (lines.Length == all_line_num)
-                {
-                    return;
-                }
-            }
+        //    //ファイルが存在し、かつ、ファイルの行数が正しいときはbuildしない
+        //    if (File.Exists($@"{MainWindow.Data_Path}\info.txt"))
+        //    {
+        //        string[] lines = File.ReadAllLines($@"{MainWindow.Data_Path}\info.txt");
+        //        if (lines.Length == all_line_num)
+        //        {
+        //            return;
+        //        }
+        //    }
 
-            bool? res = window.ShowDialog();
-            if (res == false)
-            {
-                throw new UserSelectException("Stop building the info.txt by user");
-            }
-        }
+        //    bool? res = window.ShowDialog();
+        //    if (res == false)
+        //    {
+        //        throw new UserSelectException("Stop building the info.txt by user");
+        //    }
+        //}
 
         public System.Windows.Controls.ComboBox Init_new_Versions(System.Windows.Controls.ComboBox new_Version, List<string> list_versions)
         {
