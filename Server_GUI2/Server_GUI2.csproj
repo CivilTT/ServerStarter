@@ -96,6 +96,7 @@
     <Compile Include="Develop\Server\World\World.cs" />
     <Compile Include="Develop\Server\World\IWorldBase.cs" />
     <Compile Include="Develop\Server\World\RemoteWorld.cs" />
+    <Compile Include="Develop\Util\ManageSystemVersion.cs" />
     <Compile Include="Windows\WelcomeWindow\WelcomeWindowCommand.cs" />
     <Compile Include="Windows\WelcomeWindow\WelcomeWindowVM.cs" />
     <Content Include="Develop\Server\World\WorldWrapper.txt" />

@@ -151,7 +151,7 @@ namespace Server_GUI2.Windows.SystemSettings
         public BindingValue<PortStatus> PortStatus { get; private set; }
 
         // Others
-        public string SystemVersion { get { return SetUp.StarterVersion; } }
+        public string SystemVersion { get { return ManageSystemVersion.StarterVersion; } }
         public BindingValue<string> UserName { get; private set; }
         public TwitterCommand TwitterCommand { get; private set; }
         public GitCommandVM GitCommandVM { get; private set; }

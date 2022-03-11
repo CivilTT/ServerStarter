@@ -1,4 +1,5 @@
 ﻿using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Develop.Util;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.WorldSettings;
 using System;
@@ -17,7 +18,7 @@ namespace Server_GUI2.Windows.MainWindow
         static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
 
         // 一般
-        public string StarterVersion { get { return $"ver {SetUp.StarterVersion}"; } }
+        public string StarterVersion { get { return $"ver {ManageSystemVersion.StarterVersion}"; } }
         public string PlayerName { get { return UserSettings.Instance.userSettings.PlayerName; } }
         public string OpContents { get { return $"{PlayerName} has op rights in this version's server"; } }
         readonly ObservableCollection<Version> AllVers = VersionFactory.Instance.Versions;

@@ -80,23 +80,23 @@ namespace Server_GUI2
                 }
             };
 
-            logger.Info("The system of Server Starter is started.");
+            //logger.Info("The system of Server Starter is started.");
             InitializeComponent();
             //Loaded += MainWindow_Loaded;
 
-            Pd = new ProgressDialog
-            {
-                //ダイアログのタイトルを設定
-                Title = "Server Starter"
-            };
-            //進行状況ダイアログを表示する
-            Pd.Show();
+            //Pd = new ProgressDialog
+            //{
+            //    //ダイアログのタイトルを設定
+            //    Title = "Server Starter"
+            //};
+            ////進行状況ダイアログを表示する
+            //Pd.Show();
 
             
 
-            func.Check_data_folder();
-            Pd.Message = "Check existence of World_Data Folder";
-            Pd.Value = 10;
+            //func.Check_data_folder();
+            //Pd.Message = "Check existence of World_Data Folder";
+            //Pd.Value = 10;
 
             //func.Build_info();
             //Pd.Message = "Check the info.txt";
@@ -111,9 +111,9 @@ namespace Server_GUI2
             //Pd.Value = 30;
 
             // 読み取ったinfo.txtの情報をもとにバージョンアップの必要性があるか否かを判別
-            func.Check_versionUP();
-            Pd.Message = "Check the versionUP about this system, Server Starter";
-            Pd.Value = 40;
+            //func.Check_versionUP();
+            //Pd.Message = "Check the versionUP about this system, Server Starter";
+            //Pd.Value = 40;
 
             //右上 & opの仕様の変更
             //name.Text = Data_list.Info[0];
@@ -174,8 +174,8 @@ namespace Server_GUI2
             //    // }
             //    Pd.Message = "Read the local Worlds";
             //}
-            Pd.Value = 100;
-            Pd.Close();
+            //Pd.Value = 100;
+            //Pd.Close();
 
             var systemSettingWindow = new ShowNewWindow<SystemSettings, SystemSettingsVM>()
             {

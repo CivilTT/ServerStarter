@@ -46,30 +46,17 @@ namespace Server_GUI2
                 userSettings = ReadContents.ReadlocalJson<UserSettingsJson>(JsonPath, errorMessage);
                 if (userSettings.JsonVersion != UserSettingsJson.LatestJsonVer)
                 {
-                    // TODO: jsonの中身を変更した場合にはここにバージョン変換の実装を書く
+                    // TODO: jsonの中身を変更した場合にはここにバージョン変換の実装を書く（必要であれば）
                 }
             }
-            else if (File.Exists(OldInfoPath))
-            {
-                logger.Info("Read the local info.txt data");
+            //else if (File.Exists(OldInfoPath))
+            //{
+            //    logger.Info("Read the local info.txt data");
                 
-                List<string> info = ReadContents.ReadOldInfo(OldInfoPath);
-                // TODO: info.txtから読み込んだ情報を新システムに登録
-                // info.txtのユーザー名が正しいか確認の意味でもShowBuilderするべき？
-            }
-            else
-            {
-                ShowBuilder();
-            }
-        }
-
-        /// <summary>
-        /// 個人設定入力用のUIを開く
-        /// </summary>
-        private void ShowBuilder()
-        {
-            WelcomeWindow window = new WelcomeWindow();
-            window.ShowDialog();
+            //    List<string> info = ReadContents.ReadOldInfo(OldInfoPath);
+            //    // TODO: info.txtから読み込んだ情報を新システムに登録（そのくらいもう一度自分でWelcomeWindowにて登録してもらう？）
+            //    // info.txtのユーザー名が正しいか確認の意味でもShowBuilderするべき？
+            //}
         }
 
         public void WriteFile()
@@ -224,7 +211,7 @@ namespace Server_GUI2
     public class Agreement
     {
         [JsonProperty("SystemTerms")]
-        public bool SystemTerms;
+        public bool SystemTerms = false;
 
         // ServerStarterとして保持しておくべき同意事項を保持する
 
