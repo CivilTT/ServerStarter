@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using MW = ModernWpf;
 
 namespace Server_GUI2.Windows.WelcomeWindow
@@ -57,6 +58,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
 
             UserSettings.Instance.WriteFile();
 
+            _vm.OwnerWindow.DialogResult = true;
             _vm.Close();
         }
     }

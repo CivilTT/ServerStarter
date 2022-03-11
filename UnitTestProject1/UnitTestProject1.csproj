@@ -98,6 +98,7 @@
     <Compile Include="Logtest.cs" />
     <Compile Include="EitherTest.cs" />
     <Compile Include="OpenCommonDialogTest.cs" />
+    <Compile Include="ReadJsonTest.cs" />
     <Compile Include="UPnP.cs" />
     <Compile Include="WorldTest.cs" />
     <Compile Include="VersionListTest.cs" />

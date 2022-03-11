@@ -17,8 +17,6 @@ namespace Server_GUI2
         [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
         public static extern bool AttachConsole(int processId);
 
-        private readonly SetUp setUp = new SetUp();
-
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private Dictionary<string, string> prop_dict = new Dictionary<string, string>();
         private string prop_dict_str = null;
@@ -28,6 +26,9 @@ namespace Server_GUI2
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
+            // TODO: Initialize()を実行するとなぜかMainWindowが起動しない（ifブロックには入っていそうなlogを見せてる）
+            //SetUp.Initialize();
+
             // TODO: 実装の整理
             // base.OnStartup(e);
             bool reset_data = false;
@@ -37,6 +38,7 @@ namespace Server_GUI2
             if (e.Args.Length == 0)
             {
                 // GUIを立ち上げる
+                logger.Info("Opening Main Window");
                 MainWindow main = new MainWindow();
                 main.Show();
                 main.Activate();

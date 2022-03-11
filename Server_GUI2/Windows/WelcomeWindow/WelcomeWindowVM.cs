@@ -9,6 +9,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
     class WelcomeWindowVM : GeneralVM
     {
         // General
+        public WelcomeWindow OwnerWindow { get; private set; }
         public bool CanStart => (check || NotRegistName.Value) && Agreed.Value;
         public StartCommand StartCommand { get; private set; }
 
@@ -29,6 +30,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
         public WelcomeWindowVM(WelcomeWindow ownerWindow)
         {
             // General
+            OwnerWindow = ownerWindow;
             StartCommand = new StartCommand(this);
 
             // 1.
