@@ -180,7 +180,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
             // Server
             ServerProperty defaultProperties = SaveData.DefaultProperties;
-            PropertyIndexs = new BindingValue<ServerProperty>(defaultProperties, () => OnPropertyChanged("PropertyIndexs"));
+            PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(defaultProperties), () => OnPropertyChanged("PropertyIndexs"));
             SelectedTFIndex = new BindingValue<string>(OtherTFPropertyIndexs[0], () => OnPropertyChanged("SelectedTFProperty"));
             SelectedPropIndex = new BindingValue<string>(OtherPropertyIndexs[0], () => OnPropertyChanged("OtherStringProperty"));
 

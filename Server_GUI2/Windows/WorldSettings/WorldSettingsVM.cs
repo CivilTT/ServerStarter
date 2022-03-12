@@ -29,6 +29,7 @@ namespace Server_GUI2.Windows.WorldSettings
         // General
         public string RunInfo => $"{RunVersion.Name} / {RunWorld.Name}";
         public SaveCommand SaveCommand { get; private set; }
+        public bool Saved = false;
 
         // ServerProperty
         public SetDefaultProperties SetDefaultProperties { get; private set; }
@@ -160,7 +161,7 @@ namespace Server_GUI2.Windows.WorldSettings
             // ServerProperty
             SetDefaultProperties = new SetDefaultProperties(this);
             SetAsDefaultProperties = new SetAsDefaultProperties(this);
-            PropertyIndexs = new BindingValue<ServerProperty>(RunWorld.Property, () => OnPropertyChanged("PropertyIndexs"));
+            PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(RunWorld.Property), () => OnPropertyChanged("PropertyIndexs"));
             SelectedTFIndex = new BindingValue<string>(OtherTFPropertyIndexs[0], () => OnPropertyChanged("SelectedTFProperty"));
             SelectedPropIndex = new BindingValue<string>(OtherPropertyIndexs[0], () => OnPropertyChanged("OtherStringProperty"));
 
