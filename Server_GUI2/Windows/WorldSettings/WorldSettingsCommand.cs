@@ -300,6 +300,12 @@ namespace Server_GUI2.Windows.WorldSettings
             // TODO: 必要に応じてSave処理を記述する
             //_vm.RunWorld.Property = new ServerProperty(_vm.PropertyIndexs.Value);
 
+            // RunWorldを変更した場合、その関連処理はどこで反映するのか
+
+            //_vm.RunWorld.Datapacks = new DatapackCollection(_vm.Datapacks);
+            //_vm.RunWorld.Plugins = new PluginCollection(_vm.Plugins);
+
+            // OPとWhiteListの設定についても保存処理を書く
 
             _vm.Close();
         }
