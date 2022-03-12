@@ -17,6 +17,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
         public BindingValue<string> PlayerName { get; private set; }
         public string checkedName = "";
         private bool check => PlayerName.Value == checkedName;
+        public BindingValue<bool> IsActive { get; private set; }
         public BindingValue<string> UUID { get; private set; }
         public CheckValidNameCommand CheckValidNameCommand { get; private set; }
         public BindingValue<bool> NotRegistName { get; private set; }
@@ -35,6 +36,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
 
             // 1.
             PlayerName = new BindingValue<string>("Your Name", () => OnPropertyChanged(new string[2] { "PlayerName", "CanStart" }));
+            IsActive = new BindingValue<bool>(false, () => OnPropertyChanged("IsActive"));
             UUID = new BindingValue<string>("", () => OnPropertyChanged("UUID"));
             CheckValidNameCommand = new CheckValidNameCommand(this, ownerWindow);
             NotRegistName = new BindingValue<bool>(false, () => OnPropertyChanged("CanStart"));

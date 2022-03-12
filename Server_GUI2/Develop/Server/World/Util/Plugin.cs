@@ -18,6 +18,11 @@ namespace Server_GUI2.Develop.Server.World
             Plugins = new ObservableCollection<APlugin>(pluginNames.Select(x => new ExistPlugin(x)));
         }
 
+        public PluginCollection(PluginCollection plugins)
+        {
+            Plugins = new ObservableCollection<APlugin>(plugins.Plugins);
+        }
+
         public List<string> ExportList()
         {
             return Plugins.Select(x => x.Name).ToList();

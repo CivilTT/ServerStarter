@@ -92,7 +92,7 @@ namespace Server_GUI2
             ////進行状況ダイアログを表示する
             //Pd.Show();
 
-            
+
 
             //func.Check_data_folder();
             //Pd.Message = "Check existence of World_Data Folder";
@@ -139,7 +139,7 @@ namespace Server_GUI2
             //release_versions = jsonReader.Import_version("release");
             //All_versions = jsonReader.Import_version("all");
             //spigot_versions = htmlReader.Get_SpigotVers();
-            
+
             // new_Version = func.Init_new_Versions(new_Version, release_versions);
             // new_Version.SelectedIndex = 0;
             //Pd.Message = "Read the new NewVersions";
@@ -667,50 +667,50 @@ namespace Server_GUI2
         }
     }
 
-    [JsonObject("Ops")]
-    class Ops
-    {
-        [JsonProperty("uuid")]
-        public string Uuid { get; set; }
+    //[JsonObject("Ops")]
+    //class Ops
+    //{
+    //    [JsonProperty("uuid")]
+    //    public string Uuid { get; set; }
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+    //    [JsonProperty("name")]
+    //    public string Name { get; set; }
 
-        [JsonProperty("level")]
-        public int Level { get; set; }
+    //    [JsonProperty("level")]
+    //    public int Level { get; set; }
 
-        [JsonProperty("bypassesPlayerLimit")]
-        public bool BypassesPlayerLimit { get; set; }
-    }
+    //    [JsonProperty("bypassesPlayerLimit")]
+    //    public bool BypassesPlayerLimit { get; set; }
+    //}
 
 
-    [JsonObject("All_VW")]
-    class All_VW
-    {
-        [JsonProperty("format")]
-        public string Format { get; set; }
+    //[JsonObject("All_VW")]
+    //class All_VW
+    //{
+    //    [JsonProperty("format")]
+    //    public string Format { get; set; }
 
-        [JsonProperty("versions")]
-        public List<All_VW_Ver> Versions { get; set; }
+    //    [JsonProperty("versions")]
+    //    public List<All_VW_Ver> Versions { get; set; }
         
-        [JsonProperty("all_vers")]
-        public List<string> All_vers { get; set; }
-    }
+    //    [JsonProperty("all_vers")]
+    //    public List<string> All_vers { get; set; }
+    //}
 
-    [JsonObject("All_VW_Ver")]
-    class All_VW_Ver
-    {
-        [JsonProperty("version")]
-        public string Version { get; set; }
-        [JsonProperty("worlds")]
-        public List<All_VW_Wor> Worlds { get; set; }
-    }
+    //[JsonObject("All_VW_Ver")]
+    //class All_VW_Ver
+    //{
+    //    [JsonProperty("version")]
+    //    public string Version { get; set; }
+    //    [JsonProperty("worlds")]
+    //    public List<All_VW_Wor> Worlds { get; set; }
+    //}
 
-    [JsonObject("All_VW_Wor")]
-    class All_VW_Wor
-    {
-        [JsonProperty("name")]
-        public string Name { get; set; }
-    }
+    //[JsonObject("All_VW_Wor")]
+    //class All_VW_Wor
+    //{
+    //    [JsonProperty("name")]
+    //    public string Name { get; set; }
+    //}
 
 }

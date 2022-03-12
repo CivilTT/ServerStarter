@@ -1004,118 +1004,118 @@ namespace Server_GUI2
 
         }
 
-        public void Check_op()
-        {
-            if (Main.Get_op)
-            {
-                Make_op();
-            }
-        }
+        //public void Check_op()
+        //{
+        //    if (Main.Get_op)
+        //    {
+        //        Make_op();
+        //    }
+        //}
 
-        private string Get_uuid(string username)
-        {
-            string url = $@"https://api.mojang.com/users/profiles/minecraft/{username}";
-            string jsonStr = wc.DownloadString(url);
+        //private string Get_uuid(string username)
+        //{
+        //    string url = $@"https://api.mojang.com/users/profiles/minecraft/{username}";
+        //    string jsonStr = wc.DownloadString(url);
 
-            dynamic root = JsonConvert.DeserializeObject(jsonStr);
-            string uuid = root.id;
+        //    dynamic root = JsonConvert.DeserializeObject(jsonStr);
+        //    string uuid = root.id;
 
-            string uuid_1 = uuid.Substring(0, 8);
-            string uuid_2 = uuid.Substring(8, 4);
-            string uuid_3 = uuid.Substring(12, 4);
-            string uuid_4 = uuid.Substring(16, 4);
-            string uuid_5 = uuid.Substring(20);
-            uuid = uuid_1 + "-" + uuid_2 + "-" + uuid_3 + "-" + uuid_4 + "-" + uuid_5;
+        //    string uuid_1 = uuid.Substring(0, 8);
+        //    string uuid_2 = uuid.Substring(8, 4);
+        //    string uuid_3 = uuid.Substring(12, 4);
+        //    string uuid_4 = uuid.Substring(16, 4);
+        //    string uuid_5 = uuid.Substring(20);
+        //    uuid = uuid_1 + "-" + uuid_2 + "-" + uuid_3 + "-" + uuid_4 + "-" + uuid_5;
 
-            return uuid;
-        }
+        //    return uuid;
+        //}
 
-        private void Make_op(int level = 4, bool bypassesPlayerLimit = false)
-        {
-            logger.Info($"Check ops.josn ({Data_list.Info[0]} has op rights, or not)");
-            string ops_path = $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ops.json";
-            string ops_line = (File.Exists(ops_path)) ? File.ReadAllText(ops_path) : "[]";
-            if (ops_line != "[]")
-            {
-                // すでにopsが登録されている場合は、処理を行わずに抜ける
-                return;
-            }
+        //private void Make_op(int level = 4, bool bypassesPlayerLimit = false)
+        //{
+        //    logger.Info($"Check ops.josn ({Data_list.Info[0]} has op rights, or not)");
+        //    string ops_path = $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ops.json";
+        //    string ops_line = (File.Exists(ops_path)) ? File.ReadAllText(ops_path) : "[]";
+        //    if (ops_line != "[]")
+        //    {
+        //        // すでにopsが登録されている場合は、処理を行わずに抜ける
+        //        return;
+        //    }
 
-            logger.Info($"Give op rights for {Data_list.Info[0]}");
-            string username = Data_list.Info[0];
-            string uuid = Get_uuid(username);
-            Ops ops = new Ops
-            {
-                Uuid = uuid,
-                Name = username,
-                Level = level,
-                BypassesPlayerLimit = bypassesPlayerLimit
-            };
+        //    logger.Info($"Give op rights for {Data_list.Info[0]}");
+        //    string username = Data_list.Info[0];
+        //    string uuid = Get_uuid(username);
+        //    Ops ops = new Ops
+        //    {
+        //        Uuid = uuid,
+        //        Name = username,
+        //        Level = level,
+        //        BypassesPlayerLimit = bypassesPlayerLimit
+        //    };
 
-            try
-            {
-                var jsonData = JsonConvert.SerializeObject(ops);
-                jsonData = "[" + jsonData + "]";
+        //    try
+        //    {
+        //        var jsonData = JsonConvert.SerializeObject(ops);
+        //        jsonData = "[" + jsonData + "]";
 
-                using (var sw = new StreamWriter(ops_path, false, Encoding.UTF8))
-                {
-                    sw.Write(jsonData);
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Warn($"Failed op process (Error Code : {ex.Message})");
-                MessageBoxResult? result = MW.MessageBox.Show($"op権限の処理に失敗しました。\nこのままサーバーを開設して良いですか？", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Cancel)
-                {
-                    throw new UserSelectException("User interrupt the opening server by op process failed");
-                }
-            }
-        }
+        //        using (var sw = new StreamWriter(ops_path, false, Encoding.UTF8))
+        //        {
+        //            sw.Write(jsonData);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        logger.Warn($"Failed op process (Error Code : {ex.Message})");
+        //        MessageBoxResult? result = MW.MessageBox.Show($"op権限の処理に失敗しました。\nこのままサーバーを開設して良いですか？", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+        //        if (result == MessageBoxResult.Cancel)
+        //        {
+        //            throw new UserSelectException("User interrupt the opening server by op process failed");
+        //        }
+        //    }
+        //}
 
-        public void Write_VW()
-        {
-            if (!Properties.Settings.Default.Output_VW)
-            {
-                return;
-            }
+        //public void Write_VW()
+        //{
+        //    if (!Properties.Settings.Default.Output_VW)
+        //    {
+        //        return;
+        //    }
 
 
-            All_VW vw = new All_VW
-            {
-                Format = "gamma"
-            };
+        //    All_VW vw = new All_VW
+        //    {
+        //        Format = "gamma"
+        //    };
 
-            List<All_VW_Ver> ver_list = new List<All_VW_Ver>();
-            foreach (KeyValuePair<string, List<string>> kvp in Data_list.VerWor_list)
-            {
-                All_VW_Ver ver = new All_VW_Ver
-                {
-                    Version = kvp.Key
-                };
+        //    List<All_VW_Ver> ver_list = new List<All_VW_Ver>();
+        //    foreach (KeyValuePair<string, List<string>> kvp in Data_list.VerWor_list)
+        //    {
+        //        All_VW_Ver ver = new All_VW_Ver
+        //        {
+        //            Version = kvp.Key
+        //        };
 
-                List<All_VW_Wor> wor_list = new List<All_VW_Wor>();
-                foreach (string key in kvp.Value)
-                {
-                    All_VW_Wor wor = new All_VW_Wor
-                    {
-                        Name = key
-                    };
-                    wor_list.Add(wor);
-                }
-                ver.Worlds = wor_list;
-                ver_list.Add(ver);
-            }
-            vw.Versions = ver_list;
+        //        List<All_VW_Wor> wor_list = new List<All_VW_Wor>();
+        //        foreach (string key in kvp.Value)
+        //        {
+        //            All_VW_Wor wor = new All_VW_Wor
+        //            {
+        //                Name = key
+        //            };
+        //            wor_list.Add(wor);
+        //        }
+        //        ver.Worlds = wor_list;
+        //        ver_list.Add(ver);
+        //    }
+        //    vw.Versions = ver_list;
 
-            vw.All_vers = Main.All_versions;
+        //    vw.All_vers = Main.All_versions;
 
-            string jsonData = JsonConvert.SerializeObject(vw);
-            using (var sw = new StreamWriter($@"{Directory.GetCurrentDirectory()}\All-VerWor.json", false, Encoding.UTF8))
-            {
-                sw.Write(jsonData);
-            }
-        }
+        //    string jsonData = JsonConvert.SerializeObject(vw);
+        //    using (var sw = new StreamWriter($@"{Directory.GetCurrentDirectory()}\All-VerWor.json", false, Encoding.UTF8))
+        //    {
+        //        sw.Write(jsonData);
+        //    }
+        //}
 
         public void Shutdown()
         {

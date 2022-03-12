@@ -11,7 +11,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Server_GUI2.Windows;
 using MW = ModernWpf;
+using Server_GUI2.Windows.SystemSettings;
 
 namespace Server_GUI2
 {

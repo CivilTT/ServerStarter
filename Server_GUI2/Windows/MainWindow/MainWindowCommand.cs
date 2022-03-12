@@ -1,4 +1,5 @@
-﻿using Server_GUI2.Windows.SystemSettings;
+﻿using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.WorldSettings;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace Server_GUI2.Windows.MainWindow
 
         public override void Execute(object parameter)
         {
-            MessageBox.Show(_vm.ShowAll.ToString());
+            //MessageBox.Show(_vm.ShowAll.ToString());
             _vm.Close();
             StartServer.Run(_vm.RunVersion, _vm.RunWorld);
         }
@@ -74,12 +75,12 @@ namespace Server_GUI2.Windows.MainWindow
         {
             switch (parameter.ToString())
             {
-                // TODO: バージョンとワールドの削除機能
                 case "version":
-                    Console.WriteLine("VERSION");
+                    _vm.ExistsVersionIndex.Value.Remove();
                     break;
                 case "world":
-                    Console.WriteLine("WORLD");
+                    World selected = (World)_vm.WorldIndex.Value;
+                    selected.Delete();
                     break;
                 default:
                     break;
