@@ -21,7 +21,7 @@ namespace Server_GUI2.Windows.WorldSettings
 
         public override void Execute(object parameter)
         {
-            _vm.PropertyIndexs.Value = UserSettings.Instance.userSettings.DefaultProperties;
+            _vm.PropertyIndexs.Value = new ServerProperty(UserSettings.Instance.userSettings.DefaultProperties);
             MW.MessageBox.Show("既定のサーバープロパティを適用しました。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
@@ -35,7 +35,7 @@ namespace Server_GUI2.Windows.WorldSettings
 
         public override void Execute(object parameter)
         {
-            UserSettings.Instance.userSettings.DefaultProperties = _vm.PropertyIndexs.Value;
+            UserSettings.Instance.userSettings.DefaultProperties = new ServerProperty(_vm.PropertyIndexs.Value);
             MW.MessageBox.Show("既定のサーバープロパティとして保存されました。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
@@ -298,6 +298,9 @@ namespace Server_GUI2.Windows.WorldSettings
         public override void Execute(object parameter)
         {
             // TODO: 必要に応じてSave処理を記述する
+            //_vm.RunWorld.Property = new ServerProperty(_vm.PropertyIndexs.Value);
+
+
             _vm.Close();
         }
     }

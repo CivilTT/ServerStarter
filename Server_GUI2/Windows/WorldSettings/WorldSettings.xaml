@@ -12,6 +12,7 @@
         d:DataContext="{d:DesignInstance vm:WorldSettingsVM}"
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True"
+        Closing="OnClosing"
         Title="WorldSettings" Height="550" Width="600" WindowStartupLocation="CenterScreen">
     
     <Window.Resources>

@@ -30,6 +30,15 @@ namespace Server_GUI2
         }
 
         /// <summary>
+        /// 参照渡しを切って新しいインスタンスの生成
+        /// </summary>
+        public ServerProperty(ServerProperty property)
+        {
+            BoolOption = new SortedDictionary<string, bool>(property.BoolOption);
+            StringOption = new SortedDictionary<string, string>(property.StringOption);
+        }
+
+        /// <summary>
         /// server.propertiesの内容を引数にとる
         /// </summary>
         private void ReadProperty(string content)

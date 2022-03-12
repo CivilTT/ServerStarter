@@ -11,6 +11,9 @@ namespace Server_GUI2.Develop.Server.World
     {
         DatapackCollection Datapacks { get; }
         PluginCollection Plugins { get; }
+        // TODO: Propertyにgetしか持たせない理由とは？
+        // WorldSettingでプロパティを設定し、設定の終わったインスタンスをワールドのこれに直接割り当てられない
+        // こんな場合にどのようにPropertyを反映させることを想定している？
         ServerProperty Property { get; }
         ServerType? Type { get; }
         string Name { get; }
