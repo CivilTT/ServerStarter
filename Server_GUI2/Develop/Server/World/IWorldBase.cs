@@ -14,6 +14,10 @@ namespace Server_GUI2.Develop.Server.World
         // TODO: Propertyにgetしか持たせない理由とは？
         // WorldSettingでプロパティを設定し、設定の終わったインスタンスをワールドのこれに直接割り当てられない
         // こんな場合にどのようにPropertyを反映させることを想定している？
+        // 参照渡しをそのまま使ってGUIに反映させるとユーザーが変更をキャンセルした場合の処理が面倒。
+        // だから、GUIを表示するときに新しくインスタンスを生成 --> それらを編集 --> 保存するときに生成・編集したインスタンス群を元のWorldのインスタンス群に割り当てる
+        // ような形に現状の実装はなってる
+        // DatapackやPluginなんかも同じようにどうすれば良いか困ってる
         ServerProperty Property { get; }
         ServerType? Type { get; }
         string Name { get; }
