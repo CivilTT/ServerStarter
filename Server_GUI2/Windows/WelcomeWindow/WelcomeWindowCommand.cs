@@ -1,6 +1,7 @@
 ﻿using Server_GUI2.Util;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
     class CheckValidNameCommand : GeneralCommand<WelcomeWindowVM>
     {
         private Window Owner;
+        private Player Player;
 
         public CheckValidNameCommand(WelcomeWindowVM vm, Window owner)
         {
@@ -22,9 +24,25 @@ namespace Server_GUI2.Windows.WelcomeWindow
 
         public override void Execute(object parameter)
         {
-            Player player = new Player(_vm.PlayerName.Value);
-            player.GetUuid();
-            if (player.UUID == "")
+            Player = new Player(_vm.PlayerName.Value);
+
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += Search;
+            worker.RunWorkerCompleted += SearchCompleted;
+            worker.RunWorkerAsync();
+
+            _vm.IsActive.Value = true;
+            
+        }
+
+        private void Search(object sender, DoWorkEventArgs e)
+        {
+            Player.GetUuid();
+        }
+
+        private void SearchCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (Player.UUID == "")
             {
                 MW.MessageBox.Show(Owner, "このプレイヤー名は存在しません。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 _vm.checkedName = "";
@@ -33,10 +51,11 @@ namespace Server_GUI2.Windows.WelcomeWindow
             else
             {
                 // checkedNameを先に代入しないと、checkが狙った値を返さない
-                _vm.checkedName = player.Name;
-                _vm.PlayerName.Value = player.Name;
-                _vm.UUID.Value = player.UUID;
+                _vm.checkedName = Player.Name;
+                _vm.PlayerName.Value = Player.Name;
+                _vm.UUID.Value = Player.UUID;
             }
+            _vm.IsActive.Value = false;
         }
     }
 
@@ -55,6 +74,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
 
             UserSettings.Instance.userSettings.PlayerName = playerName;
             UserSettings.Instance.userSettings.Players.Add(player);
+            UserSettings.Instance.userSettings.Agreement.SystemTerms = _vm.Agreed.Value;
 
             UserSettings.Instance.WriteFile();
 

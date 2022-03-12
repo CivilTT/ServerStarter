@@ -26,8 +26,11 @@ namespace Server_GUI2
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            // TODO: Initialize()を実行するとなぜかMainWindowが起動しない（ifブロックには入っていそうなlogを見せてる）
-            //SetUp.Initialize();
+            // 手動でShutdown()が呼ばれるまでアプリを終了しない（MainWindowの前にWelcomeWindowを呼んだ際に、アプリが落ちてしまう現象を回避）
+            Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            // システムの初期設定（処理）を行う
+            SetUp.Initialize();
 
             // TODO: 実装の整理
             // base.OnStartup(e);

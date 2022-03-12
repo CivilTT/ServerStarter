@@ -168,7 +168,7 @@ namespace Server_GUI2.Windows.WorldSettings
             // TODO: 既存ワールドをリモート化するときには【new Remote Data】しか選べないようにする
             // TODO: (@txkodo) Worldと同じく【new Remote Data】をStoragesに持たせておけないか
             UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => OnPropertyChanged(""));
-            Accounts = Storages.Storages;
+            Accounts = new ObservableCollection<Storage>(Storages.Storages);
             AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
             RemoteDataList = AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<RemoteWorld>();
 
@@ -177,12 +177,12 @@ namespace Server_GUI2.Windows.WorldSettings
             DeleteAdditionalsCommand = new DeleteAdditionalsCommand(this);
             // Datapack
             IsZipDatapack = new BindingValue<bool>(true, () => OnPropertyChanged("IsZipDatapack"));
-            Datapacks = RunWorld.Datapacks;
+            Datapacks = new DatapackCollection(RunWorld.Datapacks);
             SelectedDatapack = new BindingValue<ADatapack>(Datapacks.Datapacks.FirstOrDefault(), () => OnPropertyChanged(""));
             // Plugin
             if (RunVersion is SpigotVersion)
             {
-                Plugins = RunWorld.Plugins;
+                Plugins = new PluginCollection(RunWorld.Plugins);
                 SelectedPlugin = new BindingValue<APlugin>(Plugins.Plugins.FirstOrDefault(), () => OnPropertyChanged(""));
 
                 // TODO: 所定のpluginを使用する設定になっていれば初期値をtrueにする

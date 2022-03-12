@@ -15,7 +15,7 @@ namespace Server_GUI2.Develop.Util
 {
     public class PortMapping
     {
-        public async Task<bool> AddPort(int portNum)
+        public static async Task<bool> AddPort(int portNum)
         {
             NatDiscoverer discoverer = new NatDiscoverer();
             NatDevice device = await discoverer.DiscoverDeviceAsync();
@@ -38,7 +38,7 @@ namespace Server_GUI2.Develop.Util
             return false;
         }
 
-        public async Task<bool> DeletePort(int portNum)
+        public static async Task<bool> DeletePort(int portNum)
         {
             NatDiscoverer discoverer = new NatDiscoverer();
             NatDevice device = await discoverer.DiscoverDeviceAsync();
@@ -58,7 +58,7 @@ namespace Server_GUI2.Develop.Util
             return true;
         }
 
-        public async Task<List<Mapping>> GetPorts()
+        public static async Task<List<Mapping>> GetPorts()
         {
             NatDiscoverer discoverer = new NatDiscoverer();
             NatDevice device = await discoverer.DiscoverDeviceAsync();

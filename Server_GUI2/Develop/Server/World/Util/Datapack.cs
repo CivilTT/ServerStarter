@@ -23,6 +23,11 @@ namespace Server_GUI2.Develop.Server.World
             Datapacks = new ObservableCollection<ADatapack>(datapackNames.Select(x => new ExistDatapack(x)));
         }
 
+        public DatapackCollection(DatapackCollection datapacks)
+        {
+            Datapacks = new ObservableCollection<ADatapack>(datapacks.Datapacks);
+        }
+
         public List<string> ExportList()
         {
             return Datapacks.Select(x => x.Name).ToList();

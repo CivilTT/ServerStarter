@@ -95,6 +95,7 @@
         <TextBlock Text="1. Regist Your Name in Minecraft" Grid.Row="1" Margin="40 0 0 0" Style="{StaticResource BlockStyle}"/>
         <TextBox Text="{Binding PlayerName.Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding NotRegistName.Value, Converter={StaticResource InverseBool}}" Grid.Row="1" Margin="60 40" Style="{StaticResource BoxStyle}"/>
         <Button Content="Check" Command="{Binding CheckValidNameCommand}" IsEnabled="{Binding NotRegistName.Value, Converter={StaticResource InverseBool}}" Grid.Row="1" Margin="270 40 0 0" Width="100" Style="{StaticResource RunStyle}"/>
+        <ui:ProgressRing IsActive="{Binding IsActive.Value}" Grid.Row="1" Margin="20 40" Height="33" Width="33" HorizontalAlignment="Right" VerticalAlignment="Top"/>
         <TextBlock Text="UUID : " IsEnabled="{Binding NotRegistName.Value, Converter={StaticResource InverseBool}}" Grid.Row="1" Margin="60 80 0 0" FontSize="16" Style="{StaticResource BlockStyle}"/>
         <TextBlock Text="{Binding UUID.Value}" IsEnabled="{Binding NotRegistName.Value, Converter={StaticResource InverseBool}}" Grid.Row="1" Margin="110 80 0 0" FontSize="16" Style="{StaticResource BlockStyle}"/>
         <CheckBox Content="Don't regist your name" IsChecked="{Binding NotRegistName.Value}" VerticalAlignment="Top" Margin="60 110 0 0" Grid.Row="1" FontSize="16"/>

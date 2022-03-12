@@ -14,8 +14,7 @@ namespace UnitTestProject1
         [TestMethod]
         public async Task TestMethod1()
         {
-            PortMapping mapping = new PortMapping();
-            List<Mapping> mappings = await mapping.GetPorts();
+            List<Mapping> mappings = await PortMapping.GetPorts();
             //uPnP.AddPort();
             //uPnP.DeletePort();
 

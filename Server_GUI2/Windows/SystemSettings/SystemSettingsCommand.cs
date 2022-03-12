@@ -228,7 +228,6 @@ namespace Server_GUI2.Windows.SystemSettings
     class PortSetting
     {
         readonly SystemSettingsVM _vm;
-        readonly PortMapping PortMapping = new PortMapping();
 
         public PortSetting(SystemSettingsVM vm)
         {
@@ -343,6 +342,7 @@ namespace Server_GUI2.Windows.SystemSettings
             UserSettings.Instance.userSettings.PortStatus = _vm.PortStatus.Value.StatusEnum.Value == PortStatus.Status.Open ? _vm.PortStatus.Value : null;
 
             UserSettings.Instance.WriteFile();
+            _vm.Saved = true;
 
             _vm.Close();
         }

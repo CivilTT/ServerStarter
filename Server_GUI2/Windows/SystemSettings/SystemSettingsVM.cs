@@ -159,6 +159,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
         // END Process
         public SaveCommand SaveCommand { get; private set; }
+        public bool Saved = false;
 
 
         public SystemSettingsVM()
@@ -213,7 +214,6 @@ namespace Server_GUI2.Windows.SystemSettings
 
             // END Process
             SaveCommand = new SaveCommand(this);
-            // TODO: ×ボタンによってWindowを終了する場合、info.jsonへの保存は行わない旨の警告を出す。（ただし、PortMappingに関しては、ポートを開放している場合、保存しない場合であっても閉鎖する）
         }
 
         /// <summary>
