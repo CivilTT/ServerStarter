@@ -81,6 +81,7 @@ namespace Server_GUI2.Windows.MainWindow
             RunCommand = new RunCommand(this);
             DeleteCommand = new DeleteCommand(this);
             CloseCommand = new CloseCommand(this);
+            SetUp.InitProgressBar.AddMessage("Set General Commands in Main Window");
 
 
             // Version
@@ -94,6 +95,7 @@ namespace Server_GUI2.Windows.MainWindow
             NewVersionIndex = new BindingValue<Version>(NewVersions[0], () => OnPropertyChanged(""));
             ShowAll = new BindingValue<bool>(false, () => UpdateNewVersions());
             ShowSpigot = new BindingValue<bool>(false, () => UpdateNewVersions());
+            SetUp.InitProgressBar.AddMessage("Set Minecraft Versions in Main Window");
 
 
             // World
@@ -106,6 +108,7 @@ namespace Server_GUI2.Windows.MainWindow
             }
             WorldIndex = new BindingValue<IWorld>(firstSelectWor, () => OnPropertyChanged(new string[2] { "ShowNewWorld", "CanRun" }));
             NewWorldName = new BindingValue<string>("Input World Name", () => OnPropertyChanged("CanRun"));
+            SetUp.InitProgressBar.AddMessage("Set Minecraft Worlds in Main Window");
 
             // Setting
             ResetWorld = new BindingValue<bool>(false, () => OnPropertyChanged("ShowSaveWorld"));
@@ -113,6 +116,8 @@ namespace Server_GUI2.Windows.MainWindow
             // Window
             SettingCommand = new SettingCommand(this, ssWindow);
             WorldSettingCommand = new WorldSettingCommand(this, wsWindow);
+            SetUp.InitProgressBar.AddMessage("Finished to ready Main Window");
+            SetUp.InitProgressBar.Close();
         }
 
         private void UpdateNewVersions()

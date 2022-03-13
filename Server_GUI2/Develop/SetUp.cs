@@ -21,59 +21,48 @@ namespace Server_GUI2
 {
     public static class SetUp
     {
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         //TODO: リリース時にはCurrentDirectoryの記述を変更する
         //public static string CurrentDirectory => Environment.GetEnvironmentVariable("SERVER_STERTER_TEST");
         public static string CurrentDirectory => AppDomain.CurrentDomain.BaseDirectory;
         public static string DataPath => Path.Combine(CurrentDirectory, "World_Data");
 
+        // Initialize()より前には呼ばない前提
+        public static ProgressBar InitProgressBar;
+
+
         public static void Initialize()
         {
-            var progressBar = new ShowNewWindow<ProgressBarDialog, ProgressBarDialogVM>();
-            var progressvm = new ProgressBarDialogVM("TEST", 6);
-            Thread thread = new Thread(new ParameterizedThreadStart(Show))
-            {
-                IsBackground = true,
-                
-            };
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start(progressvm);
-
-            progressvm.AddCount();
-            Thread.Sleep(1000);
-            progressvm.AddCount();
-            Thread.Sleep(1000);
-            progressvm.AddCount();
-            Thread.Sleep(1000);
-            progressvm.AddCount();
-            Thread.Sleep(1000);
-            progressvm.AddCount();
-            Thread.Sleep(1000);
-            progressvm.AddCount();
-
-            progressvm.ShowCounter();
-            progressvm.Close();
-
             // 利用規約に同意しているか
+            logger.Info("Check to already agree the system terms");
             if (!UserSettings.Instance.userSettings.Agreement.SystemTerms)
             {
+                logger.Info("Started Welcome Window");
                 WelcomeWindow window = new WelcomeWindow();
                 bool? result = window.ShowDialog();
                 if (result != true)
                     Environment.Exit(0);
             }
 
+            // ProgressBarを表示する
+            InitProgressBar = new ProgressBar("Ready to Server Starter", 9);
+            InitProgressBar.AddMessage("Checked first User Settings");
+
             // 仕様変更が必要な場合に実装
             ChangeSpecification();
+            InitProgressBar.AddMessage("Checked ChangeSpecification");
 
             // SystemVersionの確認＆バージョンアップ
             ManageSystemVersion.CheckVersion();
+            InitProgressBar.AddMessage("Checked the versionUP about this system, Server Starter");
         }
 
-        private static void Show(object param)
-        {
-            var progressBar = new ShowNewWindow<ProgressBarDialog, ProgressBarDialogVM>();
-            progressBar.ShowDialog((ProgressBarDialogVM)param);
-        }
+        //private static void Show(object vm)
+        //{
+        //    var progressBar = new ShowNewWindow<ProgressBarDialog, ProgressBarDialogVM>();
+        //    progressBar.ShowDialog((ProgressBarDialogVM)vm);
+        //}
 
         /// <summary>
         /// TODO: システムが使用するディレクトリが変更された場合、ここに書いていく

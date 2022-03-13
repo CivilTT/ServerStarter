@@ -24,12 +24,13 @@ namespace Server_GUI2.Develop.Util
 
         public static void CheckVersion()
         {
-            logger.Info("Check the versionUP about this system, Server Starter");
+            SetUp.InitProgressBar.AddMessage("Check the versionUP about this system, Server Starter");
 
             GitReleaseJson result = ReadJsonFromGit();
 
             if (result != null && StarterVersion != result.VersionName)
             {
+                SetUp.InitProgressBar.Close();
                 //.exeをアップデート
                 StarterVersionUP(result);
             }

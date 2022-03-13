@@ -41,12 +41,13 @@ namespace Server_GUI2
             if (e.Args.Length == 0)
             {
                 // GUIを立ち上げる
-                logger.Info("Opening Main Window");
+                SetUp.InitProgressBar.AddMessage("Opening Main Window");
                 MainWindow main = new MainWindow();
                 main.Show();
                 main.Activate();
                 return;
             }
+            SetUp.InitProgressBar.Close();
 
 
             AttachConsole(-1);
