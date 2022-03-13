@@ -107,7 +107,7 @@ namespace Server_GUI2
                 Data_delete(delete_data);
                 
                 MainWindow main = new MainWindow();
-                More_Settings m_settings = new More_Settings();
+                //More_Settings m_settings = new More_Settings();
                 main.Reset_world = reset_data;
                 main.Save_world = save_data;
 
@@ -117,7 +117,7 @@ namespace Server_GUI2
                 {
                     main.Get_op = op;
                     Change_properties();
-                    m_settings.Read_properties();
+                    //m_settings.Read_properties();
                     //main.Start(false);
                 }
 

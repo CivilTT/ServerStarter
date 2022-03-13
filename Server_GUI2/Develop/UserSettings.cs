@@ -97,8 +97,6 @@ namespace Server_GUI2
         public bool ShutdownPC;
 
         [JsonProperty("DefaultProperty")]
-        // あくまでデフォルトはシステムで保持しておき、それから変更したものを通常設定としたい場合の部分のみこれで保持する
-        // { "difficulty" : "hard" }
         public ServerProperty DefaultProperties = new ServerProperty();
 
         [JsonProperty("Players")]

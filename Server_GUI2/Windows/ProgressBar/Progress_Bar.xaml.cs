@@ -12,7 +12,7 @@ namespace Server_GUI2
         /// </summary>
         private bool disposedValue;
         // private System.ComponentModel.Container components = null;
-
+        
         public ProgressForm()
         {
             //
@@ -121,9 +121,9 @@ namespace Server_GUI2
         // #endregion
     }
 
-    /// <summary>
-    /// 進行状況ダイアログを表示するためのクラス
-    /// </summary>
+    ///// <summary>
+    ///// 進行状況ダイアログを表示するためのクラス
+    ///// </summary>
     public class ProgressDialog
     {
         //キャンセルボタンがクリックされたか
