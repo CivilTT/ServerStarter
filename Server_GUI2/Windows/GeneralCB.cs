@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace Server_GUI2.Windows
 {
@@ -21,7 +22,9 @@ namespace Server_GUI2.Windows
             {
                 vm.Close += () =>
                 {
-                    Close();
+                    //Close();
+                    // ProgressBarが別スレッドで動くため、それに対応した実装
+                    Dispatcher.Invoke(new MethodInvoker(Close));
                 };
                 vm.Hide += () =>
                 {

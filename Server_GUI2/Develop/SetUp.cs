@@ -14,18 +14,45 @@ using System.Windows;
 using Server_GUI2.Windows;
 using MW = ModernWpf;
 using Server_GUI2.Windows.SystemSettings;
+using Server_GUI2.Windows.ProgressBar;
+using System.Threading;
 
 namespace Server_GUI2
 {
-    public class SetUp
+    public static class SetUp
     {
         //TODO: リリース時にはCurrentDirectoryの記述を変更する
-        //public static string CurrentDirectory { get { return Environment.GetEnvironmentVariable("SERVER_STERTER_TEST"); } }
-        public static string CurrentDirectory { get { return AppDomain.CurrentDomain.BaseDirectory; } }
-        public static string DataPath { get { return Path.Combine(CurrentDirectory, "World_Data"); } }
+        //public static string CurrentDirectory => Environment.GetEnvironmentVariable("SERVER_STERTER_TEST");
+        public static string CurrentDirectory => AppDomain.CurrentDomain.BaseDirectory;
+        public static string DataPath => Path.Combine(CurrentDirectory, "World_Data");
 
         public static void Initialize()
         {
+            var progressBar = new ShowNewWindow<ProgressBarDialog, ProgressBarDialogVM>();
+            var progressvm = new ProgressBarDialogVM("TEST", 6);
+            Thread thread = new Thread(new ParameterizedThreadStart(Show))
+            {
+                IsBackground = true,
+                
+            };
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start(progressvm);
+
+            progressvm.AddCount();
+            Thread.Sleep(1000);
+            progressvm.AddCount();
+            Thread.Sleep(1000);
+            progressvm.AddCount();
+            Thread.Sleep(1000);
+            progressvm.AddCount();
+            Thread.Sleep(1000);
+            progressvm.AddCount();
+            Thread.Sleep(1000);
+            progressvm.AddCount();
+
+            progressvm.ShowCounter();
+            progressvm.Close();
+
             // 利用規約に同意しているか
             if (!UserSettings.Instance.userSettings.Agreement.SystemTerms)
             {
@@ -40,6 +67,12 @@ namespace Server_GUI2
 
             // SystemVersionの確認＆バージョンアップ
             ManageSystemVersion.CheckVersion();
+        }
+
+        private static void Show(object param)
+        {
+            var progressBar = new ShowNewWindow<ProgressBarDialog, ProgressBarDialogVM>();
+            progressBar.ShowDialog((ProgressBarDialogVM)param);
         }
 
         /// <summary>

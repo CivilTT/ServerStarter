@@ -752,48 +752,48 @@ namespace Server_GUI2
             }
         }
 
-        public void Import_datapack(More_Settings m_set_window)
-        {
-            logger.Info("Check the datapacks");
-            if (m_set_window.Dp_window == null || !m_set_window.Dp_window.import_dp)
-            {
-                logger.Info("There are not datapack necessary");
-                return;
-            }
+        //public void Import_datapack(More_Settings m_set_window)
+        //{
+        //    logger.Info("Check the datapacks");
+        //    if (m_set_window.Dp_window == null || !m_set_window.Dp_window.import_dp)
+        //    {
+        //        logger.Info("There are not datapack necessary");
+        //        return;
+        //    }
 
-            m_set_window.Dp_window.Add_data();
-            m_set_window.Dp_window.Remove_data();
-        }
+        //    m_set_window.Dp_window.Add_data();
+        //    m_set_window.Dp_window.Remove_data();
+        //}
 
-        public void Import_World(More_Settings m_set_window)
-        {
-            logger.Info("Check the Custom Map");
-            if (m_set_window.Haihu_window == null || !m_set_window.Haihu_window.import_haihu)
-            {
-                logger.Info("There are not Custom Map necessary");
-                return;
-            }
+        //public void Import_World(More_Settings m_set_window)
+        //{
+        //    logger.Info("Check the Custom Map");
+        //    if (m_set_window.Haihu_window == null || !m_set_window.Haihu_window.import_haihu)
+        //    {
+        //        logger.Info("There are not Custom Map necessary");
+        //        return;
+        //    }
 
-            m_set_window.Haihu_window.Add_data();
-        }
+        //    m_set_window.Haihu_window.Add_data();
+        //}
 
-        public void Import_plugins(More_Settings m_set_window)
-        {
-            logger.Info("Check the plugins");
-            if (m_set_window.Spigot_window == null || !m_set_window.Spigot_window.Import_plugin)
-            {
-                logger.Info("There are not plugins necessary");
-                return;
-            }
+        //public void Import_plugins(More_Settings m_set_window)
+        //{
+        //    logger.Info("Check the plugins");
+        //    if (m_set_window.Spigot_window == null || !m_set_window.Spigot_window.Import_plugin)
+        //    {
+        //        logger.Info("There are not plugins necessary");
+        //        return;
+        //    }
 
-            if (!Directory.Exists($@"{MainWindow.Data_Path}Spigot_{Data_list.Version}\plugins"))
-            {
-                logger.Info("Create plugins folder");
-                Directory.CreateDirectory($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\plugins");
-            }
-            m_set_window.Spigot_window.Remove_data();
-            m_set_window.Spigot_window.Add_data();
-        }
+        //    if (!Directory.Exists($@"{MainWindow.Data_Path}Spigot_{Data_list.Version}\plugins"))
+        //    {
+        //        logger.Info("Create plugins folder");
+        //        Directory.CreateDirectory($@"{MainWindow.Data_Path}\Spigot_{Data_list.Version}\plugins");
+        //    }
+        //    m_set_window.Spigot_window.Remove_data();
+        //    m_set_window.Spigot_window.Add_data();
+        //}
 
         private void Delete_folders()
         {

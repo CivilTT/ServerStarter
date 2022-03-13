@@ -17,7 +17,7 @@ namespace Server_GUI2.Windows.ProgressBar
     /// <summary>
     /// ProgressBarDialog.xaml の相互作用ロジック
     /// </summary>
-    public partial class ProgressBarDialog : Window
+    public partial class ProgressBarDialog : GeneralCB
     {
         public ProgressBarDialog()
         {
