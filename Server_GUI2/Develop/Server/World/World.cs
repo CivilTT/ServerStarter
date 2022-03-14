@@ -61,11 +61,11 @@ namespace Server_GUI2.Develop.Server.World
 
         public bool HasCustomMap => CustomMap != null;
 
-        public DatapackCollection Datapacks { get; } = new DatapackCollection(new List<string>());
+        public DatapackCollection Datapacks { get; set; } = new DatapackCollection(new List<string>());
 
-        public PluginCollection Plugins { get; } = new PluginCollection(new List<string>());
+        public PluginCollection Plugins { get; set; } = new PluginCollection(new List<string>());
 
-        public ServerProperty Property { get; } = new ServerProperty();
+        public ServerProperty Property { get; set; } = new ServerProperty();
 
         public ServerType? Type { get; } = null;
 
@@ -187,10 +187,20 @@ namespace Server_GUI2.Develop.Server.World
 
         public bool HasCustomMap => CustomMap != null;
 
-        public DatapackCollection Datapacks => world.Datapacks;
-        public PluginCollection Plugins => world.Plugins;
-
-        public ServerProperty Property => world.Property;
+        public DatapackCollection Datapacks {
+            get => world.Datapacks;
+            set { world.Datapacks = value; }
+        }
+        public PluginCollection Plugins {
+            get => world.Plugins;
+            set { world.Plugins = value; }
+        }
+        
+        public ServerProperty Property
+        {
+            get => world.Property;
+            set { world.Property = value; }
+        }
 
         public ServerType? Type => world.Type;
 
