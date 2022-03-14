@@ -126,7 +126,7 @@ namespace Server_GUI2.Windows.ProgressBar
         /// デバッグ用のメソッド
         /// Close時のこの回数をmaxCountに入れると全体が100％になるように計算される
         /// </summary>
-        public void ShowCounter()
+        public void AddCounter()
         {
             MessageBox.Show($"Counter : {Counter} times");
         }
