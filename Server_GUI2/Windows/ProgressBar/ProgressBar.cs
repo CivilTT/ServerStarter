@@ -24,14 +24,14 @@ namespace Server_GUI2.Windows.ProgressBar
 
         private int Percent = 0;
         private int Counter = 0;
-        private readonly int MaxCount = 0;
+        private readonly int AllCount = 0;
 
         private string oldMessage = "";
 
-        public ProgressBar(string title, int maxCount, int maxV = 100, int minV = 0)
+        public ProgressBar(string title, int allCount, int maxV = 100, int minV = 0)
         {
             Title = title;
-            MaxCount = maxCount;
+            AllCount = allCount;
             MaxV = maxV;
             MinV = minV;
 
@@ -66,7 +66,7 @@ namespace Server_GUI2.Windows.ProgressBar
         public void AddCount()
         {
             Counter++;
-            Percent = Counter * 100 / MaxCount;
+            Percent = Counter * 100 / AllCount;
             ProgressVM.ProgressValue.Value = Percent;
         }
 
@@ -74,7 +74,7 @@ namespace Server_GUI2.Windows.ProgressBar
         /// 進行状況のメッセージを追加する
         /// 進行状況の数字も進む
         /// </summary>
-        /// <param name="addCount">falseの時、カウントを増やさない</param>
+        /// <param name="addCount">falseの時、カウントを増やさず、メッセージのみ追記する</param>
         public void AddMessage(string message, bool addCount=true)
         {
             if (message == null)
@@ -126,7 +126,7 @@ namespace Server_GUI2.Windows.ProgressBar
         /// デバッグ用のメソッド
         /// Close時のこの回数をmaxCountに入れると全体が100％になるように計算される
         /// </summary>
-        public void AddCounter()
+        public void ShowCount()
         {
             MessageBox.Show($"Counter : {Counter} times");
         }
