@@ -63,11 +63,11 @@ namespace Server_GUI2.Develop.Server.World
 
         public WorldPath Path { get; private set; }
 
-        public DatapackCollection Datapacks { get; private set; }
+        public DatapackCollection Datapacks { get; set; }
 
-        public PluginCollection Plugins { get; private set; }
+        public PluginCollection Plugins { get; set; }
         
-        public ServerProperty Property { get; private set; }
+        public ServerProperty Property { get; set; }
 
         public ServerType? Type { get; private set; }
 

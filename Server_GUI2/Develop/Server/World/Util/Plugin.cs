@@ -21,6 +21,7 @@ namespace Server_GUI2.Develop.Server.World
         public PluginCollection(PluginCollection plugins)
         {
             Plugins = new ObservableCollection<APlugin>(plugins.Plugins);
+            operations = new List<Action<string>>(plugins.operations);
         }
 
         public List<string> ExportList()
