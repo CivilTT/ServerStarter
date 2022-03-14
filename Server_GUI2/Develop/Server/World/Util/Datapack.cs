@@ -26,6 +26,7 @@ namespace Server_GUI2.Develop.Server.World
         public DatapackCollection(DatapackCollection datapacks)
         {
             Datapacks = new ObservableCollection<ADatapack>(datapacks.Datapacks);
+            operations = new List<Action<string>>(datapacks.operations);
         }
 
         public List<string> ExportList()
