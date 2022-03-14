@@ -132,8 +132,11 @@ namespace Server_GUI2
         private VanillaVersonsJson GetVanillaVersionJson()
         {
             string url = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
+            string message =
+                "Vanilaのバージョン一覧の取得に失敗しました。\n" +
+                "新しいバージョンのサーバーの導入はできません";
 
-            VanillaVersonsJson versions = ReadContents.ReadJson<VanillaVersonsJson>(url);
+            VanillaVersonsJson versions = ReadContents.ReadJson<VanillaVersonsJson>(url, message);
 
             VanillaImportable = versions != null;
 

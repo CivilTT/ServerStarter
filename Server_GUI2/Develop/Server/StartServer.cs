@@ -24,6 +24,9 @@ namespace Server_GUI2
             // versionの導入
             var ( path, jarName ) = Version.ReadyVersion();
 
+            // Port Mapping
+            
+
             //サーバー実行
             World.WrapRun(
                 Version,

@@ -35,7 +35,7 @@ namespace Server_GUI2
         public static void Initialize()
         {
             // 利用規約に同意しているか
-            logger.Info("Check to already agree the system terms");
+            logger.Info("Check to already agree to the system terms");
             if (!UserSettings.Instance.userSettings.Agreement.SystemTerms)
             {
                 logger.Info("Started Welcome Window");
@@ -44,6 +44,8 @@ namespace Server_GUI2
                 if (result != true)
                     Environment.Exit(0);
             }
+
+            //CheckConnetNet();
 
             // ProgressBarを表示する
             InitProgressBar = new ProgressBar("Ready to Server Starter", 9);
@@ -58,10 +60,20 @@ namespace Server_GUI2
             InitProgressBar.AddMessage("Checked the versionUP about this system, Server Starter");
         }
 
-        //private static void Show(object vm)
+        /// <summary>
+        /// ネットワークに接続されているか調べる
+        /// これを実装しなくてもネットがないことを想定して処理されてるところ多め
+        /// </summary>
+        //private static void CheckConnetNet()
         //{
-        //    var progressBar = new ShowNewWindow<ProgressBarDialog, ProgressBarDialogVM>();
-        //    progressBar.ShowDialog((ProgressBarDialogVM)vm);
+        //    if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+        //    {
+        //        string message =
+        //            "本システムはインターネット環境下のみで動作します。\n" +
+        //            "インターネットに接続したうえで、再度起動してください。";
+        //        MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        Environment.Exit(0);
+        //    }
         //}
 
         /// <summary>
@@ -79,10 +91,5 @@ namespace Server_GUI2
             infoTxt.Delete();
 
         }
-
-        //public void ShowProgressBar()
-        //{
-
-        //}
     }
 }

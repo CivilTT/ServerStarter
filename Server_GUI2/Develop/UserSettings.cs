@@ -105,6 +105,9 @@ namespace Server_GUI2
         [JsonProperty("PlayerGroups")]
         public List<PlayerGroup> PlayerGroups = new List<PlayerGroup>();
 
+        [JsonProperty("UsingPortMapping")]
+        public bool UsingPortMapping = false;
+
         [JsonProperty("PortMapping")]
         public PortStatus PortStatus = null;
 

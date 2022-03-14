@@ -137,6 +137,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
 
         // Network
+        // TODO: UsingPortMappingのONOFFでAutoを行うかを決める（現状ではStatusがNULLか否かで決めているが、これを廃止？してポート番号とONOFFのみを保管？）
         public BindingValue<bool> UsingPortMapping { get; private set; }
         public BindingValue<string> PortNumber { get; private set; }
         public bool CanWritePortNumber => UsingPortMapping != null && UsingPortMapping.Value;
