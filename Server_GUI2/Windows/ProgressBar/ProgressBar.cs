@@ -75,7 +75,7 @@ namespace Server_GUI2.Windows.ProgressBar
         /// 進行状況の数字も進む
         /// </summary>
         /// <param name="addCount">falseの時、カウントを増やさず、メッセージのみ追記する</param>
-        public void AddMessage(string message, bool addCount=true)
+        public void AddMessage(string message, bool moving=false, bool addCount=true)
         {
             if (message == null)
                 return;
@@ -87,6 +87,12 @@ namespace Server_GUI2.Windows.ProgressBar
             Match percent = Regex.Match(message, @"\d+%");
             bool percentBool = percent.Success;
             string percentStr = percent.Value;
+
+            if (moving)
+            {
+                ProgressVM.Moving.Value = true;
+                ProgressVM.SubMessage.Value = message;
+            }
 
             if (headerBool && percentBool)
             {
