@@ -25,10 +25,15 @@ namespace Server_GUI2
             World = world;
 
             // ProgressBarの表示
-            RunProgressBar = new ProgressBar($"Ready to start the server ({version.Name}/{world.Name})", 10);
+            RunProgressBar = new ProgressBar($"Starting {version.Name} / {world.Name}", 10);
             //RunProgressBar.AddMessage("これは追加の例");
-            //RunProgressBar.AddMessage("これは追加の例", false); -> これはメッセージを追加するが数字を進めない
+            //RunProgressBar.AddMessage("これは追加の例", addCount:false); -> これはメッセージを追加するが数字を進めない
             //RunProgressBar.AddCount(); -> これはメッセージを追加せずに数字だけ進める
+            //RunProgressBar.AddMessage("これは追加の例", moving:true); -> これはビルド時やダウンロード時など、長時間値が進まないが処理を行う必要性のある場合に使用する
+
+            // 最新の起動記録を保存
+            RecordLatestVerWor();
+            RunProgressBar.AddMessage("Recorded Latest Version and World");
 
             // versionの導入
             var ( path, jarName ) = Version.ReadyVersion();
@@ -46,6 +51,14 @@ namespace Server_GUI2
                     serverProperty
                     )
                 );
+        }
+
+        private static void RecordLatestVerWor()
+        {
+            UserSettings.Instance.userSettings.LatestRun.VersionName = Version.Name;
+            UserSettings.Instance.userSettings.LatestRun.VersionType = Version is VanillaVersion ? "vanilla" : "spigot";
+            UserSettings.Instance.userSettings.LatestRun.WorldName = World.Name;
+            UserSettings.Instance.WriteFile();
         }
     }
 }
