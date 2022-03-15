@@ -13,6 +13,7 @@ using System.Net;
 using System.Diagnostics;
 using Microsoft.VisualBasic.FileIO;
 using Server_GUI2.Develop.Server;
+using Server_GUI2.Util;
 
 namespace Server_GUI2
 {
@@ -299,16 +300,19 @@ namespace Server_GUI2
             base.SetNewVersion();
 
             logger.Info("Import Spigot Server");
+            Path.FullName.WriteLine();
+            Path.Directory.Exists.WriteLine();
             Path.Create();
 
             try
             {
                 wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36");
-                wc.DownloadFile("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar", $@"{Path}\BuildTools.jar");
+                wc.DownloadFile("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar", $@"{Path.FullName}\BuildTools.jar");
                 wc.Dispose();
             }
             catch (Exception ex)
             {
+                Path.Delete();
                 string message =
                         "Spigot サーバーのビルドファイルのダウンロードに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
@@ -317,11 +321,15 @@ namespace Server_GUI2
             }
 
             CreateBuildBat();
-            Process p = Process.Start($@"{Path}\build.bat");
+            Process p = Process.Start($@"{Path.FullName}\build.bat");
             p.WaitForExit();
 
             // 余計なファイルの削除
-            Path.Delete();
+            foreach (var x in Path.GetWorldDirectories())
+                x.Delete();
+            Path.SubTextFile<VersionPath>("build.bat").Delete();
+            Path.SubTextFile<VersionPath>("BuildTools.jar").Delete();
+
             MoveLogFile();
 
             if (p.ExitCode != 0)
@@ -354,7 +362,7 @@ namespace Server_GUI2
             logger.Info("Generate build.bat");
             try
             {
-                using (var writer = new StreamWriter($@"{Path}\build.bat", false))
+                using (var writer = new StreamWriter($@"{Path.FullName}\build.bat", false))
                 {
                     writer.WriteLine("@echo off");
                     writer.WriteLine("cd %~dp0");
@@ -389,15 +397,10 @@ namespace Server_GUI2
         /// </summary>
         private void MoveLogFile()
         {
-            Directory.CreateDirectory("log");
-            if (File.Exists(@".\log\BuildTools.log.txt"))
-            {
-                // ファイルがすでに存在すると移動できないため、削除したうえで、再度移動させる
-                File.Delete(@".\log\BuildTools.log.txt");
-            }
-
-            File.Move($@"{Path}\BuildTools.log.txt", @".\log\BuildTools.log.txt");
-
+            Path.SubTextFile<VersionPath>("BuildTools.log.txt").MoveTo(
+                ServerGuiPath.Instance.Logs.BuildToolsLog.File,
+                true
+                );
         }
     }
 }
