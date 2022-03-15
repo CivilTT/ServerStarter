@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Util;
+using Server_GUI2.Develop.Server;
 
 namespace Server_GUI2
 {
@@ -25,18 +27,35 @@ namespace Server_GUI2
             var ( path, jarName ) = Version.ReadyVersion();
 
             // Port Mapping
-            
+
+
+            ////サーバー実行
+            //World.WrapRun(
+            //    Version,
+            //    serverProperty => Server.Start(
+            //        path.FullName,
+            //        jarName,
+            //        Version.Log4jArgument,
+            //        serverProperty
+            //        )
+            //    );
 
             //サーバー実行
             World.WrapRun(
                 Version,
-                serverProperty => Server.Start(
-                    path.FullName,
+                serverProperty => DummyRun(
+                    path,
                     jarName,
                     Version.Log4jArgument,
                     serverProperty
                     )
                 );
+
+        }
+
+        static void DummyRun(VersionPath path, string jarName, string log4jArgument, ServerProperty property)
+        {
+            path.ServerProperties.WriteAllText(property.ExportProperty());
         }
     }
 }

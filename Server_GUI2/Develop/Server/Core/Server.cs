@@ -26,20 +26,20 @@ namespace Server_GUI2
         /// </summary>
         public static void Start(string path, string jarName, string log4jArgument, ServerProperty property)
         {
-            logger.Info("[Start] start");
+            logger.Info("<Start>");
             // TODO: ServerPropertyの書き出し
             Path = path;
             JarName = jarName;
             Log4jArgument = log4jArgument;
 
-            logger.Info("[Start] check eura");
+            logger.Info("<Start> check eura");
             CheckEula();
 
-            logger.Info("[Start] start run");
+            logger.Info("<Start> start run");
 
             Run();
-            logger.Info("[Start] end run");
-            logger.Info("[Start] end");
+            logger.Info("<Start> end run");
+            logger.Info("</Start>");
         }
 
         private static void Run()

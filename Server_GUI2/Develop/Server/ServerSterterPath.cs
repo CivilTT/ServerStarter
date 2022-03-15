@@ -25,6 +25,21 @@ namespace Server_GUI2.Develop.Server
             return new FileInfo(Path.Combine(FullName, name));
         }
 
+        public BytesFile<T> SubBytesFile<T>(string name) where T : DirectoryPath
+        {
+            return new BytesFile<T>(SubFile(name), (T)this);
+        }
+
+        public TextFile<T> SubTextFile<T>(string name) where T : DirectoryPath
+        {
+            return new TextFile<T>(SubFile(name),(T)this);
+        }
+
+        public JsonFile<T,S> SubJsonFile<T, S>(string name) where T : DirectoryPath
+        {
+            return new JsonFile<T, S>(SubFile(name),(T)this);
+        }
+
         protected DirectoryInfo SubDirectory(string name)
         {
             return new DirectoryInfo(Path.Combine(FullName, name));
@@ -40,7 +55,7 @@ namespace Server_GUI2.Develop.Server
         {
             if (deletedOk && !Exists)
                 return;
-            Directory.Delete();
+            Directory.Delete(true);
         }
         protected void _MoveTo(DirectoryInfo destination)
         {
@@ -94,8 +109,10 @@ namespace Server_GUI2.Develop.Server
                 return new Failure<EitherVoid, Exception>(e);
             }
         }
-        protected void _MoveTo(FileInfo destination)
+        protected void _MoveTo(FileInfo destination,bool force = false)
         {
+            if (force && destination.Exists)
+                destination.Delete();
             File.MoveTo(destination.FullName);
         }
         public void Delete(bool deletedOk = false)
@@ -112,9 +129,9 @@ namespace Server_GUI2.Develop.Server
         {
             Parent = parent;
         }
-        public void MoveTo(FileInfo destination)
+        public void MoveTo(FileInfo destination, bool force = false)
         {
-            _MoveTo(destination);
+            _MoveTo(destination, force);
         }
     }
 
@@ -125,9 +142,9 @@ namespace Server_GUI2.Develop.Server
         {
             Parent = parent;
         }
-        public void MoveTo(FileInfo destination)
+        public void MoveTo(FileInfo destination, bool force = false)
         {
-            _MoveTo(destination);
+            _MoveTo(destination, force);
         }
 
         public Either<string, Exception> ReadAllText()
@@ -148,9 +165,9 @@ namespace Server_GUI2.Develop.Server
         {
             Parent = parent;
         }
-        public void MoveTo(FileInfo destination)
+        public void MoveTo(FileInfo destination, bool force = false)
         {
-            _MoveTo(destination);
+            _MoveTo(destination, force);
         }
 
         public Either<S, Exception> ReadJson()
@@ -183,6 +200,7 @@ namespace Server_GUI2.Develop.Server
         public static ServerGuiPath Instance = new ServerGuiPath(new DirectoryInfo(SetUp.CurrentDirectory));
 
         public WorldDataPath WorldData;
+        public LogsPath Logs;
         public GitStatePath GitState;
         public JsonFile<ServerGuiPath, List<RemoteLinkJson>> RemotesJson;
         public JsonFile<ServerGuiPath, VanillaVersonsJson> ManifestJson;
@@ -191,6 +209,7 @@ namespace Server_GUI2.Develop.Server
         private ServerGuiPath(DirectoryInfo directory) : base(directory)
         {
             WorldData = new WorldDataPath(SubDirectory("World_Data"),this);
+            Logs = new LogsPath(SubDirectory("log"),this);
             RemotesJson = new JsonFile<ServerGuiPath, List<RemoteLinkJson>>(SubFile("remotes.json"), this);
             GitState = new GitStatePath(SubDirectory("git_state"), this);
             ManifestJson = new JsonFile<ServerGuiPath, VanillaVersonsJson>(SubFile("version_manifest_v2.json"), this);
@@ -198,6 +217,18 @@ namespace Server_GUI2.Develop.Server
             StoragesJson = new JsonFile<ServerGuiPath,StoragesJson>(SubFile("stoarges.json"), this);
         }
     }
+
+    public class LogsPath : SubDirectoryPath<ServerGuiPath>
+    {
+        public TextFile<LogsPath> ServerStarterLog;
+        public TextFile<LogsPath> BuildToolsLog;
+        internal LogsPath(DirectoryInfo directory, ServerGuiPath parent) : base(directory, parent)
+        {
+            ServerStarterLog = new TextFile<LogsPath>(SubFile("Server_Starter.log"), this);
+            BuildToolsLog = new TextFile<LogsPath>(SubFile("BuildTools.log.txt"), this);
+        }
+    }
+
 
     public class GitStatePath : SubDirectoryPath<ServerGuiPath>
     {
@@ -225,9 +256,11 @@ namespace Server_GUI2.Develop.Server
     {
         //TODO : Add eura.txt server.jar server.properties ...
         public VersionLogsPath Logs;
+        public TextFile<VersionPath> ServerProperties;
         internal VersionPath(DirectoryInfo directory, WorldDataPath parent) : base(directory,parent)
         {
             Logs = new VersionLogsPath(SubDirectory("logs"), this);
+            ServerProperties = new TextFile<VersionPath>(SubFile("server.properties"), this);
         }
         public WorldPath[] GetWorldDirectories()
         {
