@@ -288,11 +288,13 @@ namespace Server_GUI2
     public class SpigotVersion: Version
     {
         protected override string JarName { get { return $"spigot-{Name}.jar"; } }
+
+        private string NameWithoutPrefix { get; }
         public override ServerType Type => ServerType.Spigot;
 
         public SpigotVersion(string name, bool available) : base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name), available)
         {
-            // Initialize
+            NameWithoutPrefix = name.Replace("Spigot_", "");
         }
 
         protected override void SetNewVersion()
@@ -366,7 +368,7 @@ namespace Server_GUI2
                 {
                     writer.WriteLine("@echo off");
                     writer.WriteLine("cd %~dp0");
-                    writer.WriteLine($"java -jar BuildTools.jar --rev {Name}");
+                    writer.WriteLine($"java -jar BuildTools.jar --rev {NameWithoutPrefix}");
                     writer.WriteLine("del /f \"%~dp0%~nx0\"");
                 }
             }
