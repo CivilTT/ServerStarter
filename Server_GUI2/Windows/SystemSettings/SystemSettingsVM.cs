@@ -19,7 +19,7 @@ using Server_GUI2.Develop.Server.World;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
-    class SystemSettingsVM : GeneralVM
+    class SystemSettingsVM : GeneralVM, IDataErrorInfo
     {
         static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
         static readonly StorageCollection Storages = StorageCollection.Instance;
@@ -139,9 +139,18 @@ namespace Server_GUI2.Windows.SystemSettings
         // Network
         // TODO: UsingPortMappingのONOFFでAutoを行うかを決める（現状ではStatusがNULLか否かで決めているが、これを廃止？してポート番号とONOFFのみを保管？）
         public BindingValue<bool> UsingPortMapping { get; private set; }
-        public BindingValue<string> PortNumber { get; private set; }
+        private string _portNumber;
+        public string PortNumber
+        {
+            get => _portNumber;
+            set
+            {
+                _portNumber = value;
+                OnPropertyChanged("CanAddition_Po");
+            }
+        }
         public bool CanWritePortNumber => UsingPortMapping != null && UsingPortMapping.Value;
-        public bool ValidPortNumber => int.TryParse(PortNumber.Value, out int port) && (0 < port && port < 65535);
+        public bool ValidPortNumber => int.TryParse(PortNumber, out int port) && (0 < port && port < 65535);
         public bool AlreadyOpened => (PortStatus.Value?.StatusEnum.Value) != null && PortStatus.Value.StatusEnum.Value == Develop.Util.PortStatus.Status.Open;
         public bool CanAddition_Po => ValidPortNumber && CanWritePortNumber && !AlreadyOpened;
         public AddPortCommand AddPortCommand { get; private set; }
@@ -161,6 +170,11 @@ namespace Server_GUI2.Windows.SystemSettings
         // END Process
         public SaveCommand SaveCommand { get; private set; }
         public bool Saved = false;
+
+
+        // ErrorProcess
+        public string Error { get { return null; } }
+        public string this[string columnName] => CheckInputBox(columnName);
 
 
         public SystemSettingsVM()
@@ -200,13 +214,12 @@ namespace Server_GUI2.Windows.SystemSettings
 
 
             // Network
-            UsingPortMapping = new BindingValue<bool>(SaveData.PortStatus != null, () => UpdateUsingPortMapping());
-            PortNumber = new BindingValue<string>(SaveData.PortStatus?.PortNumber.ToString() ?? "25565", () => OnPropertyChanged("CanAddition_Po"));
+            int portNum = SaveData.PortSettings.PortNumber;
+            UsingPortMapping = new BindingValue<bool>(SaveData.PortSettings.UsingPortMapping, () => OnPropertyChanged(new string[4] { "OtherPropertyIndexs", "UsingPortMapping", "CanWritePortNumber", "CanAddition_Po" }));
+            PortNumber = portNum.ToString();
             AddPortCommand = new AddPortCommand(this);
             ClipbordCommand = new ClipbordCommand(this);
-            PortStatus status = SaveData.PortStatus;
-            PortStatus defaultStatus = new PortStatus(int.Parse(defaultProperties.ServerPort), Develop.Util.PortStatus.Status.Ready);
-            PortStatus = new BindingValue<PortStatus>(UsingPortMapping.Value && status.StatusEnum.Value == Develop.Util.PortStatus.Status.Open ? status : defaultStatus, () => OnPropertyChanged("PortStatus"));
+            PortStatus = new BindingValue<PortStatus>(new PortStatus(portNum, Develop.Util.PortStatus.Status.Ready), () => OnPropertyChanged("PortStatus"));
 
             // Others
             UserName = new BindingValue<string>(UserSettings.Instance.userSettings.PlayerName, () => OnPropertyChanged("UserName"));
@@ -232,15 +245,19 @@ namespace Server_GUI2.Windows.SystemSettings
             MemberList.RemoveAll(player => !PlayerList.Contains(player));
         }
 
-        private void UpdateUsingPortMapping()
+        private string CheckInputBox(string propertyName)
         {
-            OnPropertyChanged(new string[4] { "OtherPropertyIndexs", "UsingPortMapping", "CanWritePortNumber", "CanAddition_Po" });
+            switch (propertyName)
+            {
+                case "PortNumber":
+                    if (!ValidPortNumber)
+                        return "This Port Number is not valid";
+                    break;
+                default:
+                    break;
+            }
 
-            if (UsingPortMapping == null || UsingPortMapping.Value)
-                return;
-
-            PortSetting portSetting = new PortSetting(this);
-            _ = portSetting.DeletePort();
+            return "";
         }
     }
 

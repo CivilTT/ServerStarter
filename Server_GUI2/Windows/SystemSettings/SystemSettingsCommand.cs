@@ -236,7 +236,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public async Task AddPort()
         {
-            int portNum = int.Parse(_vm.PortNumber.Value);
+            int portNum = int.Parse(_vm.PortNumber);
             _vm.PortStatus.Value = new PortStatus(portNum, PortStatus.Status.Registering);
 
             bool isSuccess = await PortMapping.AddPort(portNum);
@@ -249,7 +249,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public async Task DeletePort()
         {
-            int portNum = int.Parse(_vm.PortNumber.Value);
+            int portNum = int.Parse(_vm.PortNumber);
             PortStatus status = _vm.PortStatus.Value;
 
             // そもそもポート開放していない場合は何もしない
@@ -333,18 +333,49 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
+            // Auto Port Mappingの設定確認
+            WarningPort();
+            RemovePort();
+
             // 既存のデータを変更する形で処理
             UserSettings.Instance.userSettings.PlayerName = _vm.UserName.Value;
             UserSettings.Instance.userSettings.Language = "English;";
             UserSettings.Instance.userSettings.DefaultProperties = _vm.PropertyIndexs.Value;
             UserSettings.Instance.userSettings.Players = _vm.PlayerList.ToList();
             UserSettings.Instance.userSettings.PlayerGroups = _vm.GroupList.ToList();
-            UserSettings.Instance.userSettings.PortStatus = _vm.PortStatus.Value.StatusEnum.Value == PortStatus.Status.Open ? _vm.PortStatus.Value : null;
 
             UserSettings.Instance.WriteFile();
             _vm.Saved = true;
 
             _vm.Close();
+        }
+
+        private void WarningPort()
+        {
+            if (!_vm.ValidPortNumber)
+            {
+                string message =
+                    "指定されたポート番号が不正な値です。\n" +
+                    "Auto Port Mappingを使用しない設定に変更します。";
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = false;
+                UserSettings.Instance.userSettings.PortSettings.PortNumber = 25565;
+            }
+            else
+            {
+                UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = _vm.UsingPortMapping.Value;
+                UserSettings.Instance.userSettings.PortSettings.PortNumber = int.Parse(_vm.PortNumber);
+            }
+        }
+
+        private void RemovePort()
+        {
+            if (_vm.PortStatus.Value.StatusEnum.Value == PortStatus.Status.Open)
+            {
+
+                PortSetting portSetting = new PortSetting(_vm);
+                _ = portSetting.DeletePort();
+            }
         }
     }
 }

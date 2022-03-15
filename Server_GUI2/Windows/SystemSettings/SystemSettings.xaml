@@ -226,6 +226,13 @@
         </Style>
         
         <!--//NetWork//-->
+        <Style TargetType="TextBox" x:Key="PortBox" BasedOn="{StaticResource PropertyBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="TextBlock" x:Key="NetStatusBlock" BasedOn="{StaticResource PropertyIndex}">
             <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
@@ -592,6 +599,7 @@
         
         <!--//NetWork//-->
         <Grid Visibility="{Binding ShowNet, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <!--<Grid Style="{StaticResource SettingContent}">-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="200"/>
                 <RowDefinition/>
@@ -604,9 +612,10 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="30 80 0 0">
                 <TextBlock Text="Port Number" Style="{StaticResource PropertyIndex}"/>
-                <TextBox Name="PortNumber" Text="{Binding PortNumber.Value, UpdateSourceTrigger=PropertyChanged}" Margin="47 15" IsEnabled="{Binding CanWritePortNumber}" Style="{StaticResource PropertyBox}"/>
+                <!--<TextBox Text="{Binding PortNumber.Value, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="47 15" IsEnabled="{Binding CanWritePortNumber}" Style="{StaticResource PortBox}"/>-->
+                <TextBox Text="{Binding PortNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="47 15" IsEnabled="{Binding CanWritePortNumber}" Style="{StaticResource PortBox}"/>
             </StackPanel>
-            <Button Content="Mapping" Width="100" HorizontalAlignment="Right" Margin="30 15" IsEnabled="{Binding CanAddition_Po}" Command="{Binding AddPortCommand}" Style="{StaticResource RunStyle}"/>
+            <Button Content="Mapping Test" HorizontalAlignment="Right" Margin="30 15" IsEnabled="{Binding CanAddition_Po}" Command="{Binding AddPortCommand}" Style="{StaticResource RunStyle}"/>
 
             <TextBlock Text="Status" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="20 30 0 0">
