@@ -105,11 +105,8 @@ namespace Server_GUI2
         [JsonProperty("PlayerGroups")]
         public List<PlayerGroup> PlayerGroups = new List<PlayerGroup>();
 
-        [JsonProperty("UsingPortMapping")]
-        public bool UsingPortMapping = false;
-
-        [JsonProperty("PortMapping")]
-        public PortStatus PortStatus = null;
+        [JsonProperty("PortSettings")]
+        public PortSettings PortSettings = new PortSettings();
 
         [JsonProperty("Agreement")]
         public Agreement Agreement = new Agreement();
@@ -207,6 +204,15 @@ namespace Server_GUI2
         {
             return Name.CompareTo(other.Name);
         }
+    }
+
+    public class PortSettings
+    {
+        [JsonProperty("UsingPortMapping")]
+        public bool UsingPortMapping = false;
+
+        [JsonProperty("PortNumber")]
+        public int PortNumber = 25565;
     }
 
     public class Agreement
