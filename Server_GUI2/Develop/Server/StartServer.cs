@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Server_GUI2.Develop.Server;
 using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Windows.ProgressBar;
 
 namespace Server_GUI2
 {
@@ -71,10 +73,10 @@ namespace Server_GUI2
 
         private static void RecordLatestVerWor()
         {
-            UserSettings.Instance.userSettings.LatestRun.VersionName = Version.Name;
-            UserSettings.Instance.userSettings.LatestRun.VersionType = Version is VanillaVersion ? "vanilla" : "spigot";
-            UserSettings.Instance.userSettings.LatestRun.WorldName = World.Name;
-            UserSettings.Instance.WriteFile();
+            //UserSettings.Instance.userSettings.LatestRun.VersionName = Version.Name;
+            //UserSettings.Instance.userSettings.LatestRun.VersionType = Version is VanillaVersion ? "vanilla" : "spigot";
+            //UserSettings.Instance.userSettings.LatestRun.WorldName = World.Name;
+            //UserSettings.Instance.WriteFile();
         }
     }
 }
