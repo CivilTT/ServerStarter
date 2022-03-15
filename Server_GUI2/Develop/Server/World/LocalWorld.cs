@@ -26,7 +26,7 @@ namespace Server_GUI2.Develop.Server.World
                     foreach (var worldDir in verDir.GetWorldDirectories())
                     {
                         // ログフォルダは無視
-                        if (worldDir.Name == "logs")
+                        if (worldDir.Name == "logs" || worldDir.Name == "crash-reports")
                             continue;
                         var world = new LocalWorld(worldDir, version);
                         // コレクションに追加
@@ -201,6 +201,10 @@ namespace Server_GUI2.Develop.Server.World
             bool addSuffixWhenNameCollided = false
             )
         {
+            // パスが同じだった場合何もしない
+            if (Path.FullName == path.FullName)
+                return;
+
             var name = path.Name;
             var newPath = path;
             // 名前が衝突したら filename(x) と名前を変更
@@ -263,7 +267,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             logger.Info("[WrapRun] start");
             // levelname を変更
-            Property.LevelName = Path.World.FullName;
+            Property.LevelName = $"{Path.Name}/{Path.World.Name}";
 
             // 起動
             logger.Info("[WrapRun] start runfunc");
