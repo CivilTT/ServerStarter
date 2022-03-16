@@ -101,6 +101,7 @@
     <Compile Include="Develop\Server\World\World.cs" />
     <Compile Include="Develop\Server\World\IWorldBase.cs" />
     <Compile Include="Develop\Server\World\RemoteWorld.cs" />
+    <Compile Include="Develop\Util\Java.cs" />
     <Compile Include="Develop\Util\ManageSystemVersion.cs" />
     <Compile Include="Windows\ProgressBar\ProgressBar.cs" />
     <Compile Include="Windows\ProgressBar\Back\ProgressBarDialog.xaml.cs">

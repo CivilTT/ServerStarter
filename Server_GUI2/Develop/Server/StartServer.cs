@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 using Server_GUI2.Develop.Server;
 using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Develop.Util;
 using Server_GUI2.Windows.ProgressBar;
 
 namespace Server_GUI2
 {
     static class StartServer
     {
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private static Version Version;
         private static IWorld World;
 
@@ -22,6 +27,7 @@ namespace Server_GUI2
         /// </summary>
         public static void Run(Version version, IWorld world)
         {
+            logger.Info($"<Run>");
             Version = version;
             World = world;
 
@@ -37,7 +43,10 @@ namespace Server_GUI2
             RunProgressBar.AddMessage("Recorded Latest Version and World");
 
             // versionの導入
-            var ( path, jarName ) = Version.ReadyVersion();
+            var ( path, jarName, javaVersion) = Version.ReadyVersion();
+            logger.Info($"best java version ({javaVersion})");
+            var javaPath = Java.GetBestJavaPath(javaVersion);
+            logger.Info($"use java path ({javaPath})");
 
             // Port Mapping
 
@@ -47,6 +56,7 @@ namespace Server_GUI2
                 Version,
                 (serverProperty,arg) => Server.Start(
                     path,
+                    javaPath,
                     jarName,
                     Version.Log4jArgument,
                     serverProperty,
@@ -64,6 +74,7 @@ namespace Server_GUI2
             //        serverProperty
             //        )
             //    );
+            logger.Info($"</Run>");
         }
 
         static void DummyRun(VersionPath path, string jarName, string log4jArgument, ServerSettings settings)

@@ -14,6 +14,7 @@ using System.Diagnostics;
 using Microsoft.VisualBasic.FileIO;
 using Server_GUI2.Develop.Server;
 using Server_GUI2.Util;
+using Server_GUI2.Develop.Util;
 
 namespace Server_GUI2
 {
@@ -22,7 +23,7 @@ namespace Server_GUI2
         public VersionException(string message):base(message){ }
     }
 
-    public class Version : IComparable<Version>, INotifyPropertyChanged
+    public abstract class Version : IComparable<Version>, INotifyPropertyChanged
     {
         protected ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static WebClient wc = new WebClient();
@@ -88,12 +89,14 @@ namespace Server_GUI2
         /// サーバー起動前に実行
         /// 必要があれば新しいバージョンの導入を行い、versionのパスと.jarの名称を返す
         /// </summary>
-        public (VersionPath, string) ReadyVersion()
+        public (VersionPath, string, int) ReadyVersion()
         {
             if (!Exists)
                 SetNewVersion();
-            return (Path,JarName);
+            return (Path,JarName, GetJavaVersion());
         }
+
+        public abstract int GetJavaVersion();
 
         /// <summary>
         /// 新しいバージョンの導入を行う
@@ -158,26 +161,26 @@ namespace Server_GUI2
         }
     }
 
-    /// <summary>
-    /// ローカルに存在するがDLリンクがわからないバージョン
-    /// TODO: まだ未使用なので対応
-    /// </summary>
-    public class UnknownVersion : Version
-    {
-        protected override string JarName { get { return "server.jar"; } }
-        public override ServerType Type => ServerType.Vanilla;
+    ///// <summary>
+    ///// ローカルに存在するがDLリンクがわからないバージョン
+    ///// TODO: まだ未使用なので対応
+    ///// </summary>
+    //public class UnknownVersion : Version
+    //{
+    //    protected override string JarName { get { return "server.jar"; } }
+    //    public override ServerType Type => ServerType.Vanilla;
 
-        public override string Log4jArgument => "";
+    //    public override string Log4jArgument => "";
 
-        public UnknownVersion(string name, bool available = true) :
-            base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name), available) { }
+    //    public UnknownVersion(string name, bool available = true) :
+    //        base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name), available) { }
 
-        protected override void SetNewVersion()
-        {
-            base.SetNewVersion();
-            logger.Info("Import vanila Server");
-        }
-    }
+    //    protected override void SetNewVersion()
+    //    {
+    //        base.SetNewVersion();
+    //        logger.Info("Import vanila Server");
+    //    }
+    //}
 
 
     public class VanillaVersion: Version
@@ -239,6 +242,16 @@ namespace Server_GUI2
         }
 
 
+        public override int GetJavaVersion()
+        {
+            //サーバーダウンロードのurlが記されたjsonをダウンロード
+            string new_jsonStr = wc.DownloadString(DownloadURL);
+
+            dynamic root2 = Newtonsoft.Json.JsonConvert.DeserializeObject(new_jsonStr);
+            int version = root2.javaVersion.majorVersion;
+            return version;
+        }
+
         protected override void SetNewVersion()
         {
             base.SetNewVersion();
@@ -280,8 +293,13 @@ namespace Server_GUI2
                 throw new DownloadException($"Failed to download server.jar (Error Message : {ex.Message})");
             }
 
+            var javaVersion = GetJavaVersion();
+            logger.Info($"best java version ({javaVersion})");
+            var javaPath = Java.GetBestJavaPath(javaVersion);
+            logger.Info($"use java path ({javaPath})");
+
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Server.StartWithoutEula(Path, JarName, Log4jArgument,new ServerProperty());
+            Server.StartWithoutEula(Path, javaPath, JarName, Log4jArgument, new ServerProperty());
         }
     }
 
@@ -295,6 +313,12 @@ namespace Server_GUI2
         public SpigotVersion(string name, bool available) : base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name), available)
         {
             NameWithoutPrefix = name.Replace("Spigot_", "");
+        }
+
+        public override int GetJavaVersion()
+        {
+            int version = VersionFactory.Instance.Versions.Where(x => x is VanillaVersion && x.CompareTo(this) == 0).First().GetJavaVersion();
+            return version;
         }
 
         protected override void SetNewVersion()
@@ -313,8 +337,7 @@ namespace Server_GUI2
             catch (Exception ex)
             {
                 Path.Delete();
-                string message =
-                        "Spigot サーバーのビルドファイルのダウンロードに失敗しました。\n\n" +
+                string message = "Spigot サーバーのビルドファイルのダウンロードに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})");
@@ -353,8 +376,13 @@ namespace Server_GUI2
                 throw new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})");
             }
 
+            var javaVersion = GetJavaVersion();
+            logger.Info($"best java version ({javaVersion})");
+            var javaPath = Java.GetBestJavaPath(javaVersion);
+            logger.Info($"use java path ({javaPath})");
+
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Server.StartWithoutEula(Path, JarName, Log4jArgument,new ServerProperty());
+            Server.StartWithoutEula(Path, javaPath, JarName, Log4jArgument,new ServerProperty());
         }
 
         private void CreateBuildBat()

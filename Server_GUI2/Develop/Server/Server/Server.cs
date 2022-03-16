@@ -18,6 +18,7 @@ namespace Server_GUI2
         /// </summary>
         private static VersionPath Path;
         
+        private static string JavaPath;
         private static string JarName;
         private static string Log4jArgument;
         private static string WorldContainerArgument;
@@ -28,7 +29,7 @@ namespace Server_GUI2
         /// server.jarをeula.txtなしで起動する
         /// 実行は失敗しeula.txt等のファイルが生成される
         /// </summary>
-        public static void StartWithoutEula(VersionPath path, string jarName, string log4jArgument, ServerProperty property, string worldContainerArgument = "")
+        public static void StartWithoutEula(VersionPath path, string javaPath, string jarName, string log4jArgument, ServerProperty property, string worldContainerArgument = "")
         {
             logger.Info("<StartWithoutEula>");
 
@@ -36,6 +37,7 @@ namespace Server_GUI2
             path.ServerProperties.WriteAllText(property.ExportProperty());
 
             Path = path;
+            JavaPath = javaPath;
             JarName = jarName;
             Log4jArgument = log4jArgument;
             WorldContainerArgument = worldContainerArgument;
@@ -50,7 +52,7 @@ namespace Server_GUI2
         /// <summary>
         /// server.jarを実際に起動する
         /// </summary>
-        public static void Start(VersionPath path, string jarName, string log4jArgument, ServerSettings settings, string worldContainerArgument = "")
+        public static void Start(VersionPath path, string javaPath, string jarName, string log4jArgument, ServerSettings settings, string worldContainerArgument = "")
         {
             logger.Info("<Start>");
 
@@ -58,6 +60,7 @@ namespace Server_GUI2
             settings.Save(path);
 
             Path = path;
+            JavaPath = javaPath;
             JarName = jarName;
             Log4jArgument = log4jArgument;
             WorldContainerArgument = worldContainerArgument;
@@ -82,7 +85,7 @@ namespace Server_GUI2
             logger.Info("<Run>");
             var process = new Process()
             {
-                StartInfo = new ProcessStartInfo("java")
+                StartInfo = new ProcessStartInfo(JavaPath)
                 {
                     Arguments = argumnets,
                     WorkingDirectory = Path.FullName,
@@ -90,7 +93,7 @@ namespace Server_GUI2
                 }
             };
 
-            logger.Info($"<process/> java {argumnets}");
+            logger.Info($"<process/> {JavaPath} {argumnets}");
             process.Start();
             process.WaitForExit();
 
