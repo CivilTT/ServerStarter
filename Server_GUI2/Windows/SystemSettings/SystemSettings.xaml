@@ -254,6 +254,14 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="Button" x:Key="CopyButton">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#7CBB00"/>
+                    <Setter Property="ToolTip" Value="Copyed!"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         
         <!--//Others//-->
         <Style TargetType="Button" x:Key="OthersMiniButton" BasedOn="{StaticResource MiniButton}">
@@ -621,20 +629,16 @@
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="20 30 0 0">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="IP Address" Style="{StaticResource PropertyIndex}"/>
-                    <!--<TextBlock Text="Upload Speed" Style="{StaticResource PropertyIndex}"/>
-                    <TextBlock Text="Download Speed" Style="{StaticResource PropertyIndex}"/>-->
                     <TextBlock Text="Auto Port Mapping" IsEnabled="{Binding UsingPortMapping.Value}" Style="{StaticResource PropertyIndex}"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <TextBox Text="{Binding IP, Mode=OneWay}" Style="{StaticResource ShowIP}"/>
-                    <!--<TextBlock Text="{Binding UploadSpeed.Value}" Style="{StaticResource NetStatusBlock}"/>
-                    <TextBlock Text="{Binding DownloadSpeed.Value}" Style="{StaticResource NetStatusBlock}"/>-->
                     <TextBlock Text="{Binding PortStatus.Value.DisplayStatus}" IsEnabled="{Binding UsingPortMapping.Value}" Foreground="Green" FontWeight="Bold" Style="{StaticResource NetStatusBlock}"/>
                 </StackPanel>
             </StackPanel>
             
             <!--//TODO: ボタンを押したら背景色が変わるようにする//-->
-            <Button Command="{Binding ClipbordCommand}" Margin="20 43" Style="{StaticResource MiniButton}">
+            <Button Command="{Binding ClipbordCommand}" Margin="20 43" Style="{StaticResource CopyButton}">
                 <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                 <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/copy-solid.svg"/>
                 <ToolTipService.ToolTip>

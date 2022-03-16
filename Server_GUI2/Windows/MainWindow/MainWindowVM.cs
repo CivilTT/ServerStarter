@@ -1,5 +1,6 @@
 ﻿using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
+using Server_GUI2.Util;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.WorldSettings;
 using System;
@@ -13,7 +14,7 @@ using System.Windows.Data;
 
 namespace Server_GUI2.Windows.MainWindow
 {
-    class MainWindowVM : GeneralVM
+    class MainWindowVM : GeneralVM, IDataErrorInfo
     {
         static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
 
@@ -26,7 +27,8 @@ namespace Server_GUI2.Windows.MainWindow
 
 
         // General
-        public bool CanRun => !ShowNewWorld || Regex.IsMatch(NewWorldName.Value, @"^[0-9a-zA-Z_-]+$");
+        // TODO: NewWorldの名前チェックはNewWorld.IsUseableName()を使用する
+        public bool CanRun => !ShowNewWorld || ValidWorldName;
 
 
         // 新規Versionの表示に関連
@@ -51,10 +53,28 @@ namespace Server_GUI2.Windows.MainWindow
         public ObservableCollection<IWorld> Worlds { get; private set; }
         public BindingValue<IWorld> WorldIndex { get; private set; }
         public bool ShowNewWorld => (WorldIndex.Value?.DisplayName ?? "") == "【new World】";
-        public BindingValue<string> NewWorldName { get; private set; }
+        //public BindingValue<string> NewWorldName { get; private set; }
+        private string _newWorldName;
+        public string NewWorldName
+        {
+            get => _newWorldName;
+            set
+            {
+                _newWorldName = value;
+                UpdateNewWorld();
+            }
+        }
+        private bool ValidWorldName
+        {
+            get
+            {
+                if (WorldIndex.Value is NewWorld world)
+                    return world.IsUseableName(NewWorldName);
+                return true;
+            }
+        }
         // TODO: 仮で実行するワールドを既存のものから選択したものにしている
         // 本実装では新規に対応したものに差し替え
-        //public World RunWorld => ShowNewWorld ? new NewWorld() : WorldIndex.Value;
         public IWorld RunWorld => WorldIndex.Value;
 
         // Setting
@@ -74,6 +94,10 @@ namespace Server_GUI2.Windows.MainWindow
         public SettingCommand SettingCommand { get; private set; }
         public WorldSettingCommand WorldSettingCommand { get; private set; }
 
+
+        // Error Process
+        public string Error { get { return null; } }
+        public string this[string columnName] => CheckInputBox(columnName);
 
         public MainWindowVM(IShowWindowService<SystemSettingsVM> ssWindow, IShowWindowService<WorldSettingsVM> wsWindow)
         {
@@ -107,7 +131,7 @@ namespace Server_GUI2.Windows.MainWindow
                 firstSelectWor = AllWorlds.OfType<World>().Where(world => world.LocalWorld == targetWorld).FirstOrDefault();
             }
             WorldIndex = new BindingValue<IWorld>(firstSelectWor, () => OnPropertyChanged(new string[2] { "ShowNewWorld", "CanRun" }));
-            NewWorldName = new BindingValue<string>("Input World Name", () => OnPropertyChanged("CanRun"));
+            NewWorldName = "InputWorldName";
             SetUp.InitProgressBar.AddMessage("Set Minecraft Worlds in Main Window");
 
             // Setting
@@ -136,6 +160,37 @@ namespace Server_GUI2.Windows.MainWindow
 
             OnPropertyChanged("NewVersions");
             NewVersionIndex.Value = NewVersions[0];
+        }
+
+        private void UpdateNewWorld()
+        {
+            OnPropertyChanged("CanRun");
+
+            if (WorldIndex.Value is NewWorld world)
+            {
+                try
+                {
+                    world.Name = NewWorldName;
+                }
+                catch (WorldException ex)
+                {
+                }
+            }
+        }
+
+        private string CheckInputBox(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case "NewWorldName":
+                    if (!ValidWorldName)
+                        return "You can use only capital and small letters";
+                    break;
+                default:
+                    break;
+            }
+
+            return "";
         }
     }
 

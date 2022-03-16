@@ -195,7 +195,7 @@
                 </Button>
             </StackPanel>
 
-            <TextBox Text="{Binding NewWorldName.Value, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ShowNewWorld, Converter={StaticResource BoolToVisible}}" Margin="0 10" Style="{StaticResource BoxStyle}"/>
+            <TextBox Text="{Binding NewWorldName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Visibility="{Binding ShowNewWorld, Converter={StaticResource BoolToVisible}}" Margin="0 10" Style="{StaticResource BoxStyle}"/>
         </StackPanel>
 
         <Button Command="{Binding RunCommand}" Content="Run" Margin="0,335,30,0" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" IsEnabled="{Binding CanRun}" Style="{StaticResource RunStyle}"/>
