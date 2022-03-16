@@ -90,7 +90,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public bool IsUseableName(string name)
         {
-            return Regex.IsMatch(name, @"^[0-9a-zA-Z_-]$");
+            return Regex.IsMatch(name, @"^[0-9a-zA-Z_-]+$");
         }
 
         public Version Version { get; } = null;
