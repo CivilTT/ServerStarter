@@ -51,6 +51,7 @@ namespace Server_GUI2.Util
                 {
                     Arguments = arguments,
                     UseShellExecute = false,
+                    CreateNoWindow = true,
                     RedirectStandardOutput = true,
                     StandardOutputEncoding = Encoding.UTF8,
                     WorkingDirectory = directory
