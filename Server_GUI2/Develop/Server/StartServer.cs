@@ -66,9 +66,9 @@ namespace Server_GUI2
             //    );
         }
 
-        static void DummyRun(VersionPath path, string jarName, string log4jArgument, ServerProperty property)
+        static void DummyRun(VersionPath path, string jarName, string log4jArgument, ServerSettings settings)
         {
-            path.ServerProperties.WriteAllText(property.ExportProperty());
+            settings.Save(path);
         }
 
         private static void RecordLatestVerWor()

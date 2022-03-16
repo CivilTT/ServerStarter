@@ -211,7 +211,7 @@ namespace Server_GUI2.Develop.Server.World
             // ストレージにアクセスできない場合はエラー
             if (!Available) throw new RemoteWorldException($"git storage \"{Remote.Expression}\" is not accessible.");
 
-            var prop = new ServerProperty();
+            var prop = new ServerSettings();
 
             var id = Guid.NewGuid();
 
