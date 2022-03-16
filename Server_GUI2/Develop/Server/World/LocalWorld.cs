@@ -263,25 +263,37 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public void WrapRun(Action<ServerProperty> runFunc)
+        public void WrapRun(Version version, Action<ServerProperty, string> runFunc)
         {
-            logger.Info("[WrapRun] start");
-            // levelname を変更
-            Property.LevelName = $"{Path.Name}/{Path.World.Name}";
+            logger.Info("<WrapRun>");
+
+            logger.Info($"<WrapRun> change levelname to '{Path.Name}/{Path.World.Name}'");
+
+            string arg = "";
+
+            // level-name を変更
+            switch (version.Type)
+            {
+                // vanillaの場合はlevel-nameを{worldname}/worldに
+                case ServerType.Vanilla:
+                    Property.LevelName = $"{Path.Name}/{Path.World.Name}";
+                    break;
+                // spigotの場合は起動時引数に level-nameをworldに
+                case ServerType.Spigot:
+                    Property.LevelName = Path.World.Name;
+                    arg = $" --world-container {Path.Name}";
+                    break;
+            }
 
             // 起動
-            logger.Info("[WrapRun] start runfunc");
-            runFunc(Property);
-            logger.Info("[WrapRun] end runfunc");
+            runFunc(Property,arg);
+
+            logger.Info("<WrapRun> delete levelname");
 
             // levelname を空白に戻す
             Property.LevelName = "";
 
-            // ServerPropertyを保存
-            logger.Info("[WrapRun] save server.properties");
-            Path.ServerProperties.WriteAllText(Property.ExportProperty());
-
-            logger.Info("[WrapRun] end");
+            logger.Info("<WrapRun>");
         }
 
         /// <summary>

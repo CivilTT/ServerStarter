@@ -281,13 +281,13 @@ namespace Server_GUI2
             }
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Server.Start(Path.FullName, JarName, Log4jArgument,new ServerProperty());
+            Server.Start(Path, JarName, Log4jArgument,new ServerProperty());
         }
     }
 
     public class SpigotVersion: Version
     {
-        protected override string JarName { get { return $"spigot-{Name}.jar"; } }
+        protected override string JarName { get { return $"spigot-{NameWithoutPrefix}.jar"; } }
 
         private string NameWithoutPrefix { get; }
         public override ServerType Type => ServerType.Spigot;
@@ -302,8 +302,6 @@ namespace Server_GUI2
             base.SetNewVersion();
 
             logger.Info("Import Spigot Server");
-            Path.FullName.WriteLine();
-            Path.Directory.Exists.WriteLine();
             Path.Create();
 
             try
@@ -328,15 +326,15 @@ namespace Server_GUI2
 
             // 余計なファイルの削除
             foreach (var x in Path.GetWorldDirectories())
-                x.Delete();
-            Path.SubTextFile<VersionPath>("build.bat").Delete();
+                x.Delete(force: true);
             Path.SubTextFile<VersionPath>("BuildTools.jar").Delete();
+            //Path.SubTextFile<VersionPath>("build.bat").Delete();
 
             MoveLogFile();
 
             if (p.ExitCode != 0)
             {
-                Path.Delete();
+                //Path.Delete(force:true);
 
                 string message;
                 switch (p.ExitCode)
@@ -356,7 +354,7 @@ namespace Server_GUI2
             }
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Server.Start(Path.FullName, JarName, Log4jArgument,new ServerProperty());
+            Server.Start(Path, JarName, Log4jArgument,new ServerProperty());
         }
 
         private void CreateBuildBat()
@@ -368,8 +366,10 @@ namespace Server_GUI2
                 {
                     writer.WriteLine("@echo off");
                     writer.WriteLine("cd %~dp0");
-                    writer.WriteLine($"java -jar BuildTools.jar --rev {NameWithoutPrefix}");
-                    writer.WriteLine("del /f \"%~dp0%~nx0\"");
+                    //writer.WriteLine($"java -jar BuildTools.jar --rev {NameWithoutPrefix}");
+                    writer.WriteLine($"echo dummy > BuildTools.log.txt");
+                    writer.WriteLine("cd ..");
+                    writer.WriteLine($"copy \"spigot-1.18.2.jar\" \"Spigot_1.18.2/spigot-1.18.2.jar\"");
                 }
             }
             catch (Exception ex)
@@ -379,18 +379,6 @@ namespace Server_GUI2
                         $"【エラー要因】\n{ex.Message}";
                 MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new IOException($"Failed to write build.bat (Error Message : {ex.Message})");
-            }
-        }
-
-        /// <summary>
-        /// pathで指定したフォルダ内のディレクトリを全て削除する
-        /// </summary>
-        private void DeleteInnerDirectory(string path, DeleteDirectoryOption deleteDirectoryOption)
-        {
-            foreach (string dirPath in Directory.GetDirectories(path))
-            {
-                FileSystem.DeleteDirectory(dirPath, deleteDirectoryOption);
-                logger.Info($"Delete Directory at {dirPath}");
             }
         }
 
