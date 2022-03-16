@@ -37,7 +37,7 @@ namespace Server_GUI2.Develop.Server.World
 
         void Link(RemoteWorld remote);
 
-        void WrapRun(Version version, Action<ServerProperty> runFunc);
+        void WrapRun(Version version, Action<ServerProperty,string> runFunc);
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ namespace Server_GUI2.Develop.Server.World
             RemoteWorld = remote;
         }
 
-        public void WrapRun(Version version, Action<ServerProperty> runFunc)
+        public void WrapRun(Version version, Action<ServerProperty, string> runFunc)
         {
             // ローカルワールドを生成
             var localWorld = new LocalWorld( version.Path.GetWorldDirectory(Name), version );
@@ -286,7 +286,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public void WrapRun(Version version, Action<ServerProperty> runFunc)
+        public void WrapRun(Version version, Action<ServerProperty, string> runFunc)
         {
             logger.Info("<WrapRun>");
             // リモートがない場合
@@ -312,7 +312,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public void WrapRun_Unlinked(Version version, Action<ServerProperty> runFunc)
+        public void WrapRun_Unlinked(Version version, Action<ServerProperty, string> runFunc)
         {
             logger.Info("<WrapRun_Unlinked>");
 
@@ -328,7 +328,7 @@ namespace Server_GUI2.Develop.Server.World
             Plugins.Evaluate(LocalWorld.Path.FullName);
 
             // 実行
-            LocalWorld.WrapRun(runFunc);
+            LocalWorld.WrapRun(version, runFunc);
 
             logger.Info("</WrapRun_Unlinked>");
         }
@@ -337,7 +337,7 @@ namespace Server_GUI2.Develop.Server.World
         /// 起動関数を引数に取って起動
         /// 新規リモートワールドにPush
         /// </summary>
-        private void WrapRun_NewLink(Version version, Action<ServerProperty> runFunc)
+        private void WrapRun_NewLink(Version version, Action<ServerProperty,string> runFunc)
         {
             logger.Info("ready newly linked world data");
 
@@ -361,7 +361,7 @@ namespace Server_GUI2.Develop.Server.World
             Plugins.Evaluate(LocalWorld.Path.FullName);
 
             // 実行
-            LocalWorld.WrapRun(runFunc);
+            LocalWorld.WrapRun(version, runFunc);
 
             // Push
             RemoteWorld.FromLocal(LocalWorld);
@@ -380,7 +380,7 @@ namespace Server_GUI2.Develop.Server.World
         /// 起動関数を引数に取って起動
         /// 既存リモートワールドにPush
         /// </summary>
-        private void WrapRun_Linked(Version version, Action<ServerProperty> runFunc)
+        private void WrapRun_Linked(Version version, Action<ServerProperty, string> runFunc)
         {
             logger.Info("ready already linked world data");
 
@@ -404,7 +404,7 @@ namespace Server_GUI2.Develop.Server.World
             Plugins.Evaluate(LocalWorld.Path.FullName);
 
             // 実行
-            LocalWorld.WrapRun(runFunc);
+            LocalWorld.WrapRun(version,runFunc);
 
             // Push
             RemoteWorld.FromLocal(LocalWorld);

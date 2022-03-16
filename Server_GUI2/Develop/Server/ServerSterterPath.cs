@@ -51,15 +51,33 @@ namespace Server_GUI2.Develop.Server
                 return;
             Directory.Create();
         }
-        public void Delete(bool deletedOk = false)
+        public void Delete(bool deletedOk = false,bool force = false)
         {
             if (deletedOk && !Exists)
                 return;
+            if (force)
+                RemoveReadonlyAttribute(Directory);
             Directory.Delete(true);
         }
         protected void _MoveTo(DirectoryInfo destination)
         {
             Directory.MoveTo(destination.FullName);
+        }
+
+        private static void RemoveReadonlyAttribute(DirectoryInfo dirInfo)
+        {
+            //基のフォルダの属性を変更
+            if ((dirInfo.Attributes & FileAttributes.ReadOnly) ==
+                FileAttributes.ReadOnly)
+                dirInfo.Attributes = FileAttributes.Normal;
+            //フォルダ内のすべてのファイルの属性を変更
+            foreach (FileInfo fi in dirInfo.GetFiles())
+                if ((fi.Attributes & FileAttributes.ReadOnly) ==
+                    FileAttributes.ReadOnly)
+                    fi.Attributes = FileAttributes.Normal;
+            //サブフォルダの属性を再帰的に変更
+            foreach (DirectoryInfo di in dirInfo.GetDirectories())
+                RemoveReadonlyAttribute(di);
         }
     }
 
@@ -115,13 +133,24 @@ namespace Server_GUI2.Develop.Server
                 destination.Delete();
             File.MoveTo(destination.FullName);
         }
-        public void Delete(bool deletedOk = false)
+        public void Delete(bool deletedOk = false,bool force = false)
         {
             if (deletedOk && !Exists)
                 return;
+            if (force)
+                RemoveReadonlyAttribute(File);
             File.Delete();
         }
+
+        private static void RemoveReadonlyAttribute(FileInfo fileInfo)
+        {
+            //属性を変更
+            if ((fileInfo.Attributes & FileAttributes.ReadOnly) ==
+                FileAttributes.ReadOnly)
+                fileInfo.Attributes = FileAttributes.Normal;
+        }
     }
+
     public class BytesFile<T> : FilePath where T : DirectoryPath
     {
         public T Parent;

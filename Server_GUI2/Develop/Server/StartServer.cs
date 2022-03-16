@@ -42,28 +42,28 @@ namespace Server_GUI2
             // Port Mapping
 
 
+            //サーバー実行
+            World.WrapRun(
+                Version,
+                (serverProperty,arg) => Server.Start(
+                    path,
+                    jarName,
+                    Version.Log4jArgument,
+                    serverProperty,
+                    arg
+                    )
+                );
+
             ////サーバー実行
             //World.WrapRun(
             //    Version,
-            //    serverProperty => Server.Start(
-            //        path.FullName,
+            //    serverProperty => DummyRun(
+            //        path,
             //        jarName,
             //        Version.Log4jArgument,
             //        serverProperty
             //        )
             //    );
-
-            //サーバー実行
-            World.WrapRun(
-                Version,
-                serverProperty => DummyRun(
-                    path,
-                    jarName,
-                    Version.Log4jArgument,
-                    serverProperty
-                    )
-                );
-
         }
 
         static void DummyRun(VersionPath path, string jarName, string log4jArgument, ServerProperty property)
