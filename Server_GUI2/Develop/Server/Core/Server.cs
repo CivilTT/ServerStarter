@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using MW = ModernWpf;
 
@@ -15,7 +16,7 @@ namespace Server_GUI2
         /// <summary>
         /// カレントディレクトリのパス
         /// </summary>
-        private static string Path;
+        private static VersionPath Path;
         
         private static string JarName;
         private static string Log4jArgument;
@@ -33,7 +34,7 @@ namespace Server_GUI2
             logger.Info("<Start> save server.properties");
             path.ServerProperties.WriteAllText(property.ExportProperty());
 
-            Path = path.FullName;
+            Path = path;
             JarName = jarName;
             Log4jArgument = log4jArgument;
             WorldContainerArgument = worldContainerArgument;
@@ -53,7 +54,7 @@ namespace Server_GUI2
                 StartInfo = new ProcessStartInfo("java")
                 {
                     Arguments = argumnets,
-                    WorkingDirectory = Path,
+                    WorkingDirectory = Path.FullName,
                     UseShellExecute = false
                 }
             };
@@ -73,66 +74,79 @@ namespace Server_GUI2
             }
         }
 
-        private static void AgreeEula(List<string> eulaContents)
+        private static bool AgreeEula(bool eulaState,string euraURL)
         {
             logger.Info("<AgreeEula>");
 
-            if (eulaContents[eulaContents.Count - 1] == "eula=true")
+            if ( eulaState )
             {
                 logger.Info("</AgreeEula> already true");
-                return;
+                return true;
             }
 
-            string html = eulaContents[0].Substring(eulaContents[0].IndexOf("(") + 1);
-            html = html.Replace(").", "");
-            
             var result = MW.MessageBox.Show(
                 $"以下のURLに示されているサーバー利用に関する注意事項に同意しますか？\n\n" +
-                $"【EULAのURL】\n{html}", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+                $"【EULAのURL】\n{euraURL}", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Information);
 
             if (result == MessageBoxResult.Cancel)
             {
                 UserSelectException ex = new UserSelectException("User didn't agree eula");
                 logger.Info("</AgreeEula> not agreed");
-                throw new ServerStarterException<UserSelectException>(ex);
+                return false;
             }
-
-            eulaContents[eulaContents.Count - 1] = "eula=true";
-
             logger.Info("</AgreeEula>");
+            return true;
         }
 
         private static void CheckEula()
         {
             logger.Info("<CheckEula>");
             string eulaPath = $@"{Path}\eula.txt";
-
-            // 新規導入の際など、そもそもeula.txtがない場合
-            if (!File.Exists(eulaPath))
-            {
-                logger.Info("</CheckEula> not exists");
-                return;
-            }
-
-            logger.Info("<CheckEula> load eura.text");
-            List<string> eulaContents = new List<string>();
-            using (StreamReader sr = new StreamReader(eulaPath))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    eulaContents.Add(sr.ReadLine());
-                }
-            }
             
-            AgreeEula(eulaContents);
+            logger.Info("<CheckEula> load eura.text");
+            Path.Eula.ReadAllText()
+                // Euraがない場合
+                .FailureAction(
+                x => logger.Info("</CheckEula> not exists")
+                )
+                // Euraがある場合
+                .SuccessAction(
+                euracontent =>
+                {
+                    var eulaValue = false;
 
-            logger.Info("<CheckEula> save eura.text");
-            var stream = new FileInfo(eulaPath).CreateText();
-            stream.Write(string.Join("\n", eulaContents));
-            stream.Close();
+                    var eulaValueMatch = Regex.Match(euracontent, @"(?<=[^|\n]\s*eula\s*=\s*)true|True|TRUE|false|False|FALSE(?=\s*[\n|$])");
+                    if (!eulaValueMatch.Success)
+                        logger.Info("<CheckEula> eula.txt has no segment \"eura=(true|false)\"");
+                    else
+                    {
+                        eulaValue = eulaValueMatch.Value.ToLower() == "true";
+                        logger.Info($"<CheckEula> eula.txt has segment \"eura={eulaValue.ToString().ToLower()}\"");
+                    }
 
-            logger.Info("</CheckEula>");
+                    var match = Regex.Match(euracontent, @"https://[a-zA-Z0-9\._/-]+");
+                    bool result;
+                    if (match.Success)
+                    {
+                        result = AgreeEula(eulaValue, match.Value);
+                    }
+                    else
+                    {
+                        result = AgreeEula(eulaValue, "リンクが見つかりません");
+                    }
+
+                    if (result != eulaValue)
+                    {
+                        logger.Info("<CheckEula> rewrite eula.txt");
+                        Path.Eula.WriteAllText(Regex.Replace(euracontent,@"(?<=[^|\n]\s*eula\s*=\s*)true|false(?=\s*[\n|$])",result.ToString().ToLower()));
+                    }
+                    else
+                    {
+                        logger.Info("<CheckEula> eula.txt not changes");
+                    }
+                    logger.Info("</CheckEula>");
+                }
+                );
         }
     }
 }
