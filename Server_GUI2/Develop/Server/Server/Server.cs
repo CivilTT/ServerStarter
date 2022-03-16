@@ -50,12 +50,12 @@ namespace Server_GUI2
         /// <summary>
         /// server.jarを実際に起動する
         /// </summary>
-        public static void Start(VersionPath path, string jarName, string log4jArgument, ServerProperty property, string worldContainerArgument = "")
+        public static void Start(VersionPath path, string jarName, string log4jArgument, ServerSettings settings, string worldContainerArgument = "")
         {
             logger.Info("<Start>");
 
-            logger.Info("<Start> save server.properties");
-            path.ServerProperties.WriteAllText(property.ExportProperty());
+            logger.Info("<Start> save server settings");
+            settings.Save(path);
 
             Path = path;
             JarName = jarName;

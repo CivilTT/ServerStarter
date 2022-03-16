@@ -49,7 +49,7 @@ namespace Server_GUI2.Windows.WorldSettings
         {
             get
             {
-                ServerProperty properties = RunWorld.Settings;
+                ServerProperty properties = RunWorld.Settings.ServerProperties;
                 string[] removeIndex = new string[2] { "hardcore", "white-list" };
                 List<string> allindex = properties.BoolOption.Keys.ToList();
                 allindex.RemoveAll(index => removeIndex.Contains(index));
@@ -67,7 +67,7 @@ namespace Server_GUI2.Windows.WorldSettings
         {
             get
             {
-                ServerProperty properties = RunWorld.Settings;
+                ServerProperty properties = RunWorld.Settings.ServerProperties;
                 string[] removeIndex = new string[4] { "difficulty", "gamemode", "level-type", "level-name" };
                 List<string> allindex = properties.StringOption.Keys.ToList();
                 allindex.RemoveAll(index => removeIndex.Contains(index));
@@ -161,7 +161,7 @@ namespace Server_GUI2.Windows.WorldSettings
             // ServerProperty
             SetDefaultProperties = new SetDefaultProperties(this);
             SetAsDefaultProperties = new SetAsDefaultProperties(this);
-            PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(RunWorld.Settings), () => OnPropertyChanged("PropertyIndexs"));
+            PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(RunWorld.Settings.ServerProperties), () => OnPropertyChanged("PropertyIndexs"));
             SelectedTFIndex = new BindingValue<string>(OtherTFPropertyIndexs[0], () => OnPropertyChanged("SelectedTFProperty"));
             SelectedPropIndex = new BindingValue<string>(OtherPropertyIndexs[0], () => OnPropertyChanged("OtherStringProperty"));
 
