@@ -267,7 +267,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             logger.Info("<WrapRun>");
 
-            logger.Info($"<WrapRun> change levelname to '{Path.Name}/{Path.World.Name}'");
+            logger.Info($"change levelname to '{Path.Name}/{Path.World.Name}'");
 
             string arg = "";
 
@@ -288,12 +288,12 @@ namespace Server_GUI2.Develop.Server.World
             // 起動
             runFunc(Property,arg);
 
-            logger.Info("<WrapRun> delete levelname");
+            logger.Info("delete levelname");
 
             // levelname を空白に戻す
             Property.LevelName = "";
 
-            logger.Info("<WrapRun>");
+            logger.Info("</WrapRun>");
         }
 
         /// <summary>
@@ -345,8 +345,6 @@ namespace Server_GUI2.Develop.Server.World
                 return new DatapackCollection(new List<string>());
             }
         }
-
-
         private PluginCollection LoadPlugins()
         {
             if (Path.World.Plugins.Exists)
