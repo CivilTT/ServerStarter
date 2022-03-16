@@ -37,7 +37,7 @@ namespace Server_GUI2.Develop.Server.World
 
         void Link(RemoteWorld remote);
 
-        void WrapRun(Version version, Action<ServerProperty,string> runFunc);
+        void WrapRun(Version version, Action<ServerSettings, string> runFunc);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public PluginCollection Plugins { get; set; } = new PluginCollection(new List<string>());
 
-        public ServerProperty Property { get; set; } = new ServerProperty();
+        public ServerSettings Settings { get; set; } = new ServerSettings();
 
         public ServerType? Type { get; } = null;
 
@@ -121,7 +121,7 @@ namespace Server_GUI2.Develop.Server.World
             RemoteWorld = remote;
         }
 
-        public void WrapRun(Version version, Action<ServerProperty, string> runFunc)
+        public void WrapRun(Version version, Action<ServerSettings, string> runFunc)
         {
             // ローカルワールドを生成
             var localWorld = new LocalWorld( version.Path.GetWorldDirectory(Name), version );
@@ -196,10 +196,10 @@ namespace Server_GUI2.Develop.Server.World
             set { world.Plugins = value; }
         }
         
-        public ServerProperty Property
+        public ServerSettings Settings
         {
-            get => world.Property;
-            set { world.Property = value; }
+            get => world.Settings;
+            set { world.Settings = value; }
         }
 
         public ServerType? Type => world.Type;
@@ -286,7 +286,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public void WrapRun(Version version, Action<ServerProperty, string> runFunc)
+        public void WrapRun(Version version, Action<ServerSettings, string> runFunc)
         {
             logger.Info("<WrapRun>");
             // リモートがない場合
@@ -312,7 +312,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public void WrapRun_Unlinked(Version version, Action<ServerProperty, string> runFunc)
+        public void WrapRun_Unlinked(Version version, Action<ServerSettings, string> runFunc)
         {
             logger.Info("<WrapRun_Unlinked>");
 
@@ -337,7 +337,7 @@ namespace Server_GUI2.Develop.Server.World
         /// 起動関数を引数に取って起動
         /// 新規リモートワールドにPush
         /// </summary>
-        private void WrapRun_NewLink(Version version, Action<ServerProperty,string> runFunc)
+        private void WrapRun_NewLink(Version version, Action<ServerSettings, string> runFunc)
         {
             logger.Info("ready newly linked world data");
 
@@ -380,7 +380,7 @@ namespace Server_GUI2.Develop.Server.World
         /// 起動関数を引数に取って起動
         /// 既存リモートワールドにPush
         /// </summary>
-        private void WrapRun_Linked(Version version, Action<ServerProperty, string> runFunc)
+        private void WrapRun_Linked(Version version, Action<ServerSettings, string> runFunc)
         {
             logger.Info("ready already linked world data");
 
@@ -432,7 +432,7 @@ namespace Server_GUI2.Develop.Server.World
             {
                 CustomMap.Import(local.Path.World.FullName);
                 // LocalWorldの中身に変更を反映(VtoSコンバート等も含む)
-                local.ReConstruct(local.Path, version, version.Type, local.Property, local.Datapacks, local.Plugins);
+                local.ReConstruct(local.Path, version, version.Type, local.Settings, local.Datapacks, local.Plugins);
             }
 
             //versionのダウングレードを確認して警告表示
@@ -455,7 +455,7 @@ namespace Server_GUI2.Develop.Server.World
                 Console.WriteLine($"local.path: {local.Path}");
                 Console.WriteLine($"local.path: {version}");
                 var newPath = version.Path.GetWorldDirectory(local.Path.Name);
-                local.Move(newPath, version, version.Type, local.Property, local.Datapacks, local.Plugins, addSuffixWhenNameCollided: true);
+                local.Move(newPath, version, version.Type, local.Settings, local.Datapacks, local.Plugins, addSuffixWhenNameCollided: true);
             }
 
             logger.Info("</TryImportCustomMapAndChangeVersion>");

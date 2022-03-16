@@ -25,7 +25,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public DatapackCollection Datapacks  { get; set; }
 
-        public ServerProperty Property { get; set; }
+        public ServerSettings Settings { get; set; }
 
         public PluginCollection Plugins { get; set; }
 
@@ -71,7 +71,7 @@ namespace Server_GUI2.Develop.Server.World
             Id = id;
             Version = VersionFactory.Instance.GetVersionFromName(state.Version);
             Type = ServerTypeExt.FromStr(state.Type);
-            Property = state.ServerProperty;
+            Settings = state.ServerSetting;
             Datapacks = new DatapackCollection(state.Datapacks);
             Plugins = new PluginCollection(state.Plugins);
             Using = false;
@@ -85,7 +85,7 @@ namespace Server_GUI2.Develop.Server.World
             bool exist,
             Version version,
             ServerType? type,
-            ServerProperty property,
+            ServerSettings settings,
             DatapackCollection datapacks,
             PluginCollection plugins,
             bool available
@@ -97,7 +97,7 @@ namespace Server_GUI2.Develop.Server.World
             Id = id;
             Version = version;
             Type = type;
-            Property = property;
+            Settings = settings;
             Datapacks = datapacks;
             Plugins = plugins;
             Using = false;
@@ -134,7 +134,7 @@ namespace Server_GUI2.Develop.Server.World
         public WorldState ExportWorldState()
         {
             if (!Exist) throw new WorldException("non-exist world must not export worldstate");
-            return new WorldState(Name,Type.ToString(),Version.Name,Using,Datapacks.ExportList(),Plugins.ExportList(), Property);
+            return new WorldState(Name,Type.ToString(),Version.Name,Using,Datapacks.ExportList(),Plugins.ExportList(), Settings);
         }
     }
 
@@ -156,11 +156,11 @@ namespace Server_GUI2.Develop.Server.World
             bool exist,
             Version version,
             ServerType? type,
-            ServerProperty property,
+            ServerSettings settings,
             DatapackCollection datapacks,
             PluginCollection plugins,
             bool available
-            ) :base( storage,id,name,exist,version,type,property,datapacks, plugins, available)
+            ) :base( storage,id,name,exist,version,type,settings,datapacks, plugins, available)
         {
             this.remote = remote;
         }

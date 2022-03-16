@@ -25,6 +25,29 @@ namespace Server_GUI2
         private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// server.jarをeula.txtなしで起動する
+        /// 実行は失敗しeula.txt等のファイルが生成される
+        /// </summary>
+        public static void StartWithoutEula(VersionPath path, string jarName, string log4jArgument, ServerProperty property, string worldContainerArgument = "")
+        {
+            logger.Info("<Start>");
+
+            logger.Info("<Start> save server.properties");
+            path.ServerProperties.WriteAllText(property.ExportProperty());
+
+            Path = path;
+            JarName = jarName;
+            Log4jArgument = log4jArgument;
+            WorldContainerArgument = worldContainerArgument;
+
+            logger.Info("delete eula.txt");
+            Path.Eula.Delete(true);
+            
+            Run();
+            logger.Info("</Start>");
+        }
+
+        /// <summary>
         /// server.jarを実際に起動する
         /// </summary>
         public static void Start(VersionPath path, string jarName, string log4jArgument, ServerProperty property, string worldContainerArgument = "")
@@ -39,9 +62,17 @@ namespace Server_GUI2
             Log4jArgument = log4jArgument;
             WorldContainerArgument = worldContainerArgument;
 
-            CheckEula();
+            var euraResult = CheckEula();
 
-            Run();
+            if (euraResult)
+            {
+                Run();
+            }
+            else
+            {
+                logger.Info("cannot start server without eula agreement");
+            }
+
             logger.Info("</Start>");
         }
 
@@ -98,18 +129,20 @@ namespace Server_GUI2
             return true;
         }
 
-        private static void CheckEula()
+        private static bool CheckEula()
         {
             logger.Info("<CheckEula>");
             string eulaPath = $@"{Path}\eula.txt";
+
+            var result = false;
             
             logger.Info("<CheckEula> load eura.text");
             Path.Eula.ReadAllText()
-                // Euraがない場合
+                // eula.txtがない場合
                 .FailureAction(
                 x => logger.Info("</CheckEula> not exists")
                 )
-                // Euraがある場合
+                // eula.txtがある場合
                 .SuccessAction(
                 euracontent =>
                 {
@@ -125,7 +158,6 @@ namespace Server_GUI2
                     }
 
                     var match = Regex.Match(euracontent, @"https://[a-zA-Z0-9\._/-]+");
-                    bool result;
                     if (match.Success)
                     {
                         result = AgreeEula(eulaValue, match.Value);
@@ -147,6 +179,7 @@ namespace Server_GUI2
                     logger.Info("</CheckEula>");
                 }
                 );
+            return result;
         }
     }
 }

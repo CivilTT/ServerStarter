@@ -67,7 +67,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public PluginCollection Plugins { get; set; }
         
-        public ServerProperty Property { get; set; }
+        public ServerSettings Settings { get; set; }
 
         public ServerType? Type { get; private set; }
 
@@ -87,13 +87,13 @@ namespace Server_GUI2.Develop.Server.World
             WorldPath path,
             Version version,
             ServerType? type,
-            ServerProperty property,
+            ServerSettings settings,
             DatapackCollection datapacks,
             PluginCollection plugins
             )
         {
             WhenVersionDeleted = new EventHandler((_, __) => Delete());
-            ReConstruct(path, version, type, property, datapacks, plugins);
+            ReConstruct(path, version, type, settings, datapacks, plugins);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Server_GUI2.Develop.Server.World
             // フォルダ存在しない場合は新規作成
             if (!Path.Exists)
                 CreateWorldData();
-            Property = LoadProperties();
+            Settings = new ServerSettings(Path);
             Type = GetServerType();
             Datapacks = LoadDatapacks();
             Plugins = LoadPlugins();
@@ -135,7 +135,7 @@ namespace Server_GUI2.Develop.Server.World
             WorldPath path,
             Version version,
             ServerType? type,
-            ServerProperty property,
+            ServerSettings setting,
             DatapackCollection datapacks,
             PluginCollection plugins
             )
@@ -161,8 +161,8 @@ namespace Server_GUI2.Develop.Server.World
                 StoV();
 
             Type = type;
-            Property = property;
-            SaveProperties();
+            Settings = setting;
+            SaveSettings();
             Datapacks = datapacks;
             Plugins = plugins;
 
@@ -180,12 +180,12 @@ namespace Server_GUI2.Develop.Server.World
                 type = ServerType.Spigot;
             else
                 throw new ArgumentException($"\"{version.GetType()}\" is unknowen version.");
-            return new LocalWorld(Path, version, type, Property, Datapacks, Plugins);
+            return new LocalWorld(Path, version, type, Settings, Datapacks, Plugins);
         }
 
         public LocalWorld ToSpigot()
         {
-            return new LocalWorld(Path, Version, ServerType.Vanilla, Property, Datapacks, Plugins);
+            return new LocalWorld(Path, Version, ServerType.Vanilla, Settings, Datapacks, Plugins);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace Server_GUI2.Develop.Server.World
             WorldPath path,
             Version version,
             ServerType? type,
-            ServerProperty property,
+            ServerSettings settings,
             DatapackCollection datapacks,
             PluginCollection plugins,
             bool addSuffixWhenNameCollided = false
@@ -218,7 +218,7 @@ namespace Server_GUI2.Develop.Server.World
                 }
             }
             Path.MoveTo(newPath);
-            ReConstruct(newPath, version, type, property, datapacks, plugins);
+            ReConstruct(newPath, version, type, settings, datapacks, plugins);
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public void Move(WorldPath path,  bool addSuffixWhenNameCollided = false)
         {
-            Move(path, Version, Type, Property, Datapacks, Plugins, addSuffixWhenNameCollided);
+            Move(path, Version, Type, Settings, Datapacks, Plugins, addSuffixWhenNameCollided);
         }
 
 
@@ -263,10 +263,10 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public void WrapRun(Version version, Action<ServerProperty, string> runFunc)
+        public void WrapRun(Version version, Action<ServerSettings, string> runFunc)
         {
             logger.Info("<WrapRun>");
-
+            
             logger.Info($"change levelname to '{Path.Name}/{Path.World.Name}'");
 
             string arg = "";
@@ -276,22 +276,25 @@ namespace Server_GUI2.Develop.Server.World
             {
                 // vanillaの場合はlevel-nameを{worldname}/worldに
                 case ServerType.Vanilla:
-                    Property.LevelName = $"{Path.Name}/{Path.World.Name}";
+                    Settings.ServerProperties.LevelName = $"{Path.Name}/{Path.World.Name}";
                     break;
                 // spigotの場合は起動時引数に level-nameをworldに
                 case ServerType.Spigot:
-                    Property.LevelName = Path.World.Name;
+                    Settings.ServerProperties.LevelName = Path.World.Name;
                     arg = $" --world-container {Path.Name}";
                     break;
             }
 
             // 起動
-            runFunc(Property,arg);
-
-            logger.Info("delete levelname");
+            runFunc(Settings, arg);
 
             // levelname を空白に戻す
-            Property.LevelName = "";
+            logger.Info("delete levelname");
+            Settings.ServerProperties.LevelName = "";
+
+            // 設定データを保存
+            logger.Info("save world settings");
+            Settings.Save(Path);
 
             logger.Info("</WrapRun>");
         }
@@ -323,9 +326,9 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         // server.propertiesを保存する
         /// </summary>
-        private void SaveProperties()
+        private void SaveSettings()
         {
-            Path.ServerProperties.WriteAllText(Property.ExportProperty());
+            Settings.Save(Path);
         }
 
         private DatapackCollection LoadDatapacks()
@@ -397,7 +400,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public WorldState ExportWorldState()
         {
-            return new WorldState(Name, Type.ToString(), Version.Name, false, Datapacks.ExportList(), Plugins.ExportList(), Property);
+            return new WorldState(Name, Type.ToString(), Version.Name, false, Datapacks.ExportList(), Plugins.ExportList(), Settings);
         }
     }
 }

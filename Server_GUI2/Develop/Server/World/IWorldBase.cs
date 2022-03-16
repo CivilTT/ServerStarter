@@ -18,7 +18,7 @@ namespace Server_GUI2.Develop.Server.World
         // だから、GUIを表示するときに新しくインスタンスを生成 --> それらを編集 --> 保存するときに生成・編集したインスタンス群を元のWorldのインスタンス群に割り当てる
         // ような形に現状の実装はなってる
         // DatapackやPluginなんかも同じようにどうすれば良いか困ってる
-        ServerProperty Property { get; set; }
+        ServerSettings Settings { get; set; }
         ServerType? Type { get; }
         string Name { get; }
         Version Version { get; }
@@ -51,10 +51,10 @@ namespace Server_GUI2.Develop.Server.World
 
         [JsonProperty("properties")]
         [DefaultValue(null)]
-        public ServerProperty ServerProperty { get; set; } = null;
+        public ServerSettings ServerSetting { get; set; } = null;
 
         public WorldState(){ }
-        public WorldState(string name,string type,string version,bool isUsing,List<string> datapacks, List<string> plugins, ServerProperty serverProperty)
+        public WorldState(string name,string type,string version,bool isUsing,List<string> datapacks, List<string> plugins, ServerSettings serverSettings)
         {
             Name = name;
             Type = type;
@@ -62,7 +62,7 @@ namespace Server_GUI2.Develop.Server.World
             Using = isUsing;
             Datapacks = datapacks;
             Plugins = plugins;
-            ServerProperty = serverProperty;
+            ServerSetting = serverSettings;
         }
     }
 }
