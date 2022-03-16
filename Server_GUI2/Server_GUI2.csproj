@@ -91,6 +91,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Develop\Server\Server\BannedPlayers.cs" />
+    <Compile Include="Develop\Server\Server\BannedIps.cs" />
     <Compile Include="Develop\Server\Server\ServerSettings.cs" />
     <Compile Include="Develop\Server\Server\Player.cs" />
     <Compile Include="Develop\Server\Server\Ops.cs" />

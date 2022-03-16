@@ -12,17 +12,16 @@ namespace Server_GUI2.Util
 {
     public class GitException : Exception
     {
-        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public GitException(string message) : base(message)
         {
-            logger.Info(message);
             Console.WriteLine(App.end_str);
         }
     }
 
     class GitCommand
     {
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static string ExecuteThrow(string arguments, string directory)
         {
              return  ExecuteThrow(arguments, new GitException($"failed to execute \"git {arguments}\""), directory);
@@ -45,6 +44,7 @@ namespace Server_GUI2.Util
 
         public static (int, string) Execute(string arguments, string directory)
         {
+            logger.Info($"<GitCommand> git {arguments} ({directory})");
             var process = new Process()
             {
                 StartInfo = new ProcessStartInfo("git")
@@ -56,12 +56,10 @@ namespace Server_GUI2.Util
                     WorkingDirectory = directory
                 }
             };
-            Console.WriteLine($"path: {directory}" );
-            Console.WriteLine("git " + (directory == null ? arguments : $"-C \"{directory}\" {arguments}"));
             process.Start();
             process.WaitForExit();
             string output = process.StandardOutput.ReadToEnd();
-
+            logger.Info($"</GitCommand> exitcode: {process.ExitCode}");
             return (process.ExitCode, output);
         }
     }
@@ -133,7 +131,7 @@ namespace Server_GUI2.Util
 
             }
 
-            Console.WriteLine("               GetBranchs");
+            Console.WriteLine("GetBranchs");
             foreach (var jk in branchMap)
             {
                 Console.WriteLine(jk.Key);
@@ -220,7 +218,8 @@ namespace Server_GUI2.Util
         public GitLocalBranch(GitLocal local, string name)
         {
             Local = local;
-            Name = name;        }
+            Name = name;
+        }
 
         public void Checkout()
         {

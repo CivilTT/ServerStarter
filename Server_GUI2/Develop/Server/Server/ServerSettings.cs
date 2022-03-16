@@ -28,26 +28,26 @@ namespace Server_GUI2
         public List<Player> WhiteList;
 
         [JsonProperty("banned_players")]
-        public string BannedPlayers;
+        public List<BannedPlayerRecord> BannedPlayers;
 
         [JsonProperty("banned_ips")]
-        public string BannedIps;
+        public List<BannedIpRecord> BannedIps;
 
         public ServerSettings()
         {
             ServerProperties = new ServerProperty();
             Ops = new List<OpsRecord>();
             WhiteList = new List<Player>();
-            BannedPlayers = "";
-            BannedIps = "";
+            BannedPlayers = new List<BannedPlayerRecord>();
+            BannedIps = new List<BannedIpRecord>();
         }
 
         public ServerSettings(WorldPath path) {
             ServerProperties = path.ServerProperties.ReadAllText().SuccessFunc( x => new ServerProperty(x)).SuccessOrDefault(new ServerProperty());
             Ops = path.Ops.ReadJson().SuccessOrDefault(new List<OpsRecord>());
             WhiteList = path.WhiteList.ReadJson().SuccessOrDefault(new List<Player>());
-            BannedPlayers = path.BannedPlayers.ReadAllText().SuccessOrDefault("");
-            BannedIps = path.BannedIps.ReadAllText().SuccessOrDefault("");
+            BannedPlayers = path.BannedPlayers.ReadJson().SuccessOrDefault(new List<BannedPlayerRecord>());
+            BannedIps = path.BannedIps.ReadJson().SuccessOrDefault(new List<BannedIpRecord>());
         }
 
         public void Save(VersionPath path)
@@ -55,8 +55,8 @@ namespace Server_GUI2
             path.ServerProperties.WriteAllText(ServerProperties.ExportProperty());
             path.Ops.WriteJson(Ops,indented:true);
             path.WhiteList.WriteJson(WhiteList,indented:true);
-            path.BannedPlayers.WriteAllText(BannedPlayers);
-            path.BannedIps.WriteAllText(BannedIps);
+            path.BannedPlayers.WriteJson(BannedPlayers);
+            path.BannedIps.WriteJson(BannedIps);
         }
 
         public void Save(WorldPath path)
@@ -64,8 +64,8 @@ namespace Server_GUI2
             path.ServerProperties.WriteAllText(ServerProperties.ExportProperty());
             path.Ops.WriteJson(Ops, indented: true);
             path.WhiteList.WriteJson(WhiteList, indented: true);
-            path.BannedPlayers.WriteAllText(BannedPlayers);
-            path.BannedIps.WriteAllText(BannedIps);
+            path.BannedPlayers.WriteJson(BannedPlayers);
+            path.BannedIps.WriteJson(BannedIps);
         }
     }
 }
