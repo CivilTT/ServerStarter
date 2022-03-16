@@ -137,8 +137,8 @@ namespace Server_GUI2.Windows.SystemSettings
 
 
         // Network
-        // TODO: UsingPortMappingのONOFFでAutoを行うかを決める（現状ではStatusがNULLか否かで決めているが、これを廃止？してポート番号とONOFFのみを保管？）
         public BindingValue<bool> UsingPortMapping { get; private set; }
+        // Error処理をする場合は対象の変数がget, set両方を持っている必要があるため、このような実装にしている
         private string _portNumber;
         public string PortNumber
         {
