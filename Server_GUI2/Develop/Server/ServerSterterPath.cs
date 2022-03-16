@@ -281,6 +281,7 @@ namespace Server_GUI2.Develop.Server
             return new VersionPath(SubDirectory(name), this);
         }
     }
+
     public class VersionPath : SubDirectoryPath<WorldDataPath>
     {
         public VersionLogsPath Logs;
