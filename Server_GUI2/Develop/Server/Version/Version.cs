@@ -281,7 +281,7 @@ namespace Server_GUI2
             }
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Server.Start(Path, JarName, Log4jArgument,new ServerProperty());
+            Server.StartWithoutEula(Path, JarName, Log4jArgument,new ServerProperty());
         }
     }
 
@@ -354,7 +354,7 @@ namespace Server_GUI2
             }
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Server.Start(Path, JarName, Log4jArgument,new ServerProperty());
+            Server.StartWithoutEula(Path, JarName, Log4jArgument,new ServerProperty());
         }
 
         private void CreateBuildBat()
