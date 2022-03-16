@@ -283,13 +283,15 @@ namespace Server_GUI2.Develop.Server
     }
     public class VersionPath : SubDirectoryPath<WorldDataPath>
     {
-        //TODO : Add eura.txt server.jar server.properties ...
+        //TODO : Add eula.txt server.jar server.properties ...
         public VersionLogsPath Logs;
         public TextFile<VersionPath> ServerProperties;
+        public TextFile<VersionPath> Eula;
         internal VersionPath(DirectoryInfo directory, WorldDataPath parent) : base(directory,parent)
         {
             Logs = new VersionLogsPath(SubDirectory("logs"), this);
             ServerProperties = new TextFile<VersionPath>(SubFile("server.properties"), this);
+            Eula = new TextFile<VersionPath>(SubFile("eula.txt"), this);
         }
         public WorldPath[] GetWorldDirectories()
         {
@@ -318,7 +320,7 @@ namespace Server_GUI2.Develop.Server
             ServerProperties = new TextFile<WorldPath>(SubFile("server.properties"), this);
             World = new WorldWorldPath(SubDirectory("world"), this);
             Nether = new WorldNetherPath(SubDirectory("world_nether"), this);
-            End = new WorldEndPath(SubDirectory("world_end"), this);
+            End = new WorldEndPath(SubDirectory("world_the_end"), this);
         }
         public void MoveTo(WorldPath destination)
         {
@@ -364,7 +366,7 @@ namespace Server_GUI2.Develop.Server
         public WorldDIMPath DIM_1;
         internal WorldNetherPath(DirectoryInfo directory, WorldPath parent) : base(directory,parent)
         {
-            DIM_1 = new WorldDIMPath(SubDirectory("DIM_1"), this);
+            DIM_1 = new WorldDIMPath(SubDirectory("DIM-1"), this);
         }
     }
 
