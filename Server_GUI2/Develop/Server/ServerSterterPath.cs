@@ -288,8 +288,8 @@ namespace Server_GUI2.Develop.Server
         public TextFile<VersionPath> ServerProperties;
         public JsonFile<VersionPath,List<OpsRecord>> Ops;
         public JsonFile<VersionPath,List<Player>> WhiteList;
-        public TextFile<VersionPath> BannedPlayers;
-        public TextFile<VersionPath> BannedIps;
+        public JsonFile<VersionPath, List<BannedPlayerRecord>> BannedPlayers;
+        public JsonFile<VersionPath, List<BannedIpRecord>> BannedIps;
 
         public TextFile<VersionPath> Eula;
 
@@ -300,8 +300,8 @@ namespace Server_GUI2.Develop.Server
             ServerProperties = new TextFile<VersionPath>(SubFile("server.properties"), this);
             Ops = new JsonFile<VersionPath, List<OpsRecord>>(SubFile("ops.json"), this);
             WhiteList = new JsonFile<VersionPath, List<Player>>(SubFile("whitelist.json"), this);
-            BannedPlayers = new TextFile<VersionPath>(SubFile("banned-players.json"), this);
-            BannedIps = new TextFile<VersionPath>(SubFile("banned-ips.json"), this);
+            BannedPlayers = new JsonFile<VersionPath, List<BannedPlayerRecord>>(SubFile("banned-players.json"), this);
+            BannedIps = new JsonFile<VersionPath, List<BannedIpRecord>>(SubFile("banned-ips.json"), this);
             Eula = new TextFile<VersionPath>(SubFile("eula.txt"), this);
         }
         public WorldPath[] GetWorldDirectories()
@@ -324,8 +324,8 @@ namespace Server_GUI2.Develop.Server
         public TextFile<WorldPath> ServerProperties;
         public JsonFile<WorldPath, List<OpsRecord>> Ops;
         public JsonFile<WorldPath, List<Player>> WhiteList;
-        public TextFile<WorldPath> BannedPlayers;
-        public TextFile<WorldPath> BannedIps;
+        public JsonFile<WorldPath, List<BannedPlayerRecord>> BannedPlayers;
+        public JsonFile<WorldPath, List<BannedIpRecord>> BannedIps;
 
         public WorldWorldPath World;
         public WorldNetherPath Nether;
@@ -337,8 +337,8 @@ namespace Server_GUI2.Develop.Server
             ServerProperties = new TextFile<WorldPath>(SubFile("server.properties"), this);
             Ops = new JsonFile<WorldPath, List<OpsRecord>>(SubFile("ops.json"), this);
             WhiteList = new JsonFile<WorldPath, List<Player>>(SubFile("whitelist.json"), this);
-            BannedPlayers = new TextFile<WorldPath>(SubFile("banned-players.json"), this);
-            BannedIps = new TextFile<WorldPath>(SubFile("banned-ips.json"), this);
+            BannedPlayers = new JsonFile<WorldPath, List<BannedPlayerRecord>>(SubFile("banned-players.json"), this);
+            BannedIps = new JsonFile<WorldPath, List<BannedIpRecord>>(SubFile("banned-ips.json"), this);
 
             World = new WorldWorldPath(SubDirectory("world"), this);
             Nether = new WorldNetherPath(SubDirectory("world_nether"), this);

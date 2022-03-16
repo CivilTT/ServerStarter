@@ -7,21 +7,24 @@ using Newtonsoft.Json;
 
 namespace Server_GUI2
 {
-    /// <summary>
-    /// ops.jsonのレコード
-    /// </summary>
-    public class OpsRecord
+    public class BannedPlayerRecord
     {
         [JsonProperty("uuid")]
         public string UUID;
-        
+
         [JsonProperty("name")]
         public string Name;
 
-        [JsonProperty("level")]
-        public int Level;
+        [JsonProperty("created")]
+        public string Created;
 
-        [JsonProperty("BypassesPlayerLimit")]
-        public bool bypassesPlayerLimit;
+        [JsonProperty("source")]
+        public string Source;
+
+        [JsonProperty("expires")]
+        public string Expires;
+
+        [JsonProperty("reason")]
+        public string Reason;
     }
 }

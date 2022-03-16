@@ -8,6 +8,8 @@ using Server_GUI2;
 using Server_GUI2.Util;
 using Newtonsoft.Json;
 using Server_GUI2.Develop.Util;
+using log4net;
+using System.Reflection;
 
 namespace Server_GUI2.Develop.Server.World
 {
@@ -16,6 +18,7 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     public class GitStorageManager
     {
+        private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static GitStorageManager Instance { get; } = new GitStorageManager();
 
         private readonly GitLocal gitLocal;
@@ -24,10 +27,12 @@ namespace Server_GUI2.Develop.Server.World
 
         private GitStorageManager()
         {
+            logger.Info("<GitStorageManager>");
             stateDirectory = ServerGuiPath.Instance.GitState;
             gitLocal = new GitLocal(stateDirectory.FullName);
             // ディレクトリ生成
             CreateDirectory();
+            logger.Info("</GitStorageManager>");
         }
 
         /// <summary>
@@ -35,13 +40,18 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void CreateDirectory()
         {
+            logger.Info("<CreateDirectory>");
             if (stateDirectory.Exists)
+            {
+                logger.Info("</CreateDirectory> already exists");
                 return;
+            }
             stateDirectory.Create(true);
             // git init
             gitLocal.Init();
             // git commit --allow-empty -m "empty"
             gitLocal.AddAllAndCommit("first commit");
+            logger.Info("</CreateDirectory> successfully created");
         }
 
         /// <summary>
@@ -49,11 +59,13 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public void WriteWorldState(GitRemote remote, string email, Dictionary<string, WorldState> worldState)
         {
+            logger.Info("<WriteWorldState>");
             var branch = GetRemoteBranch(remote);
             branch.LocalBranch.Checkout();
             stateDirectory.WorldStateJson.WriteJson(worldState);
             branch.LocalBranch.Local.SetUser(remote.Account, email);
             branch.CommitPush("update worldstate.json");
+            logger.Info("</WriteWorldState>");
         }
 
         /// <summary>
@@ -61,10 +73,12 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public Dictionary<string, WorldState> ReadWorldState(GitRemote remote)
         {
+            logger.Info("<ReadWorldState>");
             var branch = GetRemoteBranch(remote);
             branch.LocalBranch.Checkout();
             branch.Pull();
             var worldState = stateDirectory.WorldStateJson.ReadJson().SuccessOrDefault(new Dictionary<string, WorldState>());
+            logger.Info("</ReadWorldState>");
             return worldState;
         }
 
@@ -103,6 +117,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <param name="remote"></param>
         private GitLinkedLocalBranch GetRemoteBranch(GitRemote remote)
         {
+            logger.Info("<GetRemoteBranch>");
             var id = GetId(remote);
 
             // 既に存在する場合
@@ -110,9 +125,11 @@ namespace Server_GUI2.Develop.Server.World
             {
                 var namedRemote = new GitNamedRemote(gitLocal, remote, id);
                 var branch = new GitRemoteBranch(namedRemote, "#state", true);
+                logger.Info("</GetRemoteBranch> #state branch already exists on local");
                 return new GitLinkedLocalBranch(gitLocal.GetBranch(id), branch);
             }
 
+            logger.Info("#state branch not exists on local");
             // 新規作成する場合
             // git remote add {id}
             var named = gitLocal.AddRemote(remote, id);
@@ -122,6 +139,7 @@ namespace Server_GUI2.Develop.Server.World
             // 1. まっさらなリポジトリである場合(#stateブランチがない場合)
             if (!remoteBranchs.Keys.Contains("#state"))
             {
+                logger.Info("#state branch is not exists on remote");
                 // 新規ブランチを作成 git branch {account}.{repository}
                 var branch = gitLocal.CreateBranch(id);
 
@@ -140,20 +158,27 @@ namespace Server_GUI2.Develop.Server.World
                 // git add -A
                 // git commit -m "initialized"
                 // git push -u {account}.{repository} {account}.{repository}:#state
+                logger.Info("create #state branch");
                 var linked = branch.CreateLinkedBranch(named, "#state");
+                logger.Info("push #state branch");
                 linked.CommitPush("initialized");
+                logger.Info("</GetRemoteBranch>");
                 return linked;
             }
             // 2. #stateブランチがある場合
             else
             {
+                logger.Info("#state branch already exists on remote");
+
                 var statebranch = remoteBranchs["#state"];
 
                 // git branch {account}.{repository} --track {account}.{repository}/#state
                 // git checkout {account}.{repository}
                 var branch = statebranch.CreateLinkedBranch(id);
+                logger.Info("pull #state branch");
                 branch.Pull();
                 branch.LocalBranch.Checkout();
+                logger.Info("</GetRemoteBranch>");
                 return branch;
             }
         }

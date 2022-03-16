@@ -30,9 +30,9 @@ namespace Server_GUI2
         /// </summary>
         public static void StartWithoutEula(VersionPath path, string jarName, string log4jArgument, ServerProperty property, string worldContainerArgument = "")
         {
-            logger.Info("<Start>");
+            logger.Info("<StartWithoutEula>");
 
-            logger.Info("<Start> save server.properties");
+            logger.Info("save server.properties");
             path.ServerProperties.WriteAllText(property.ExportProperty());
 
             Path = path;
@@ -44,7 +44,7 @@ namespace Server_GUI2
             Path.Eula.Delete(true);
             
             Run();
-            logger.Info("</Start>");
+            logger.Info("</StartWithoutEula>");
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Server_GUI2
         {
             logger.Info("<Start>");
 
-            logger.Info("<Start> save server settings");
+            logger.Info("save server settings");
             settings.Save(path);
 
             Path = path;
@@ -136,7 +136,7 @@ namespace Server_GUI2
 
             var result = false;
             
-            logger.Info("<CheckEula> load eura.text");
+            logger.Info("load eura.text");
             Path.Eula.ReadAllText()
                 // eula.txtがない場合
                 .FailureAction(
@@ -150,11 +150,11 @@ namespace Server_GUI2
 
                     var eulaValueMatch = Regex.Match(euracontent, @"(?<=[^|\n]\s*eula\s*=\s*)true|True|TRUE|false|False|FALSE(?=\s*[\n|$])");
                     if (!eulaValueMatch.Success)
-                        logger.Info("<CheckEula> eula.txt has no segment \"eura=(true|false)\"");
+                        logger.Info("eula.txt has no segment \"eura=(true|false)\"");
                     else
                     {
                         eulaValue = eulaValueMatch.Value.ToLower() == "true";
-                        logger.Info($"<CheckEula> eula.txt has segment \"eura={eulaValue.ToString().ToLower()}\"");
+                        logger.Info($"eula.txt has segment \"eura={eulaValue.ToString().ToLower()}\"");
                     }
 
                     var match = Regex.Match(euracontent, @"https://[a-zA-Z0-9\._/-]+");
@@ -169,12 +169,12 @@ namespace Server_GUI2
 
                     if (result != eulaValue)
                     {
-                        logger.Info("<CheckEula> rewrite eula.txt");
+                        logger.Info("rewrite eula.txt");
                         Path.Eula.WriteAllText(Regex.Replace(euracontent,@"(?<=[^|\n]\s*eula\s*=\s*)true|false(?=\s*[\n|$])",result.ToString().ToLower()));
                     }
                     else
                     {
-                        logger.Info("<CheckEula> eula.txt not changes");
+                        logger.Info("eula.txt not changes");
                     }
                     logger.Info("</CheckEula>");
                 }

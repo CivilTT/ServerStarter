@@ -25,6 +25,7 @@ namespace Server_GUI2.Develop.Server.World
 
         private WorldCollection()
         {
+            Console.WriteLine(StorageCollection.Instance);
             var linkJson = LoadLinkJson();
 
             //　ローカルワールド一覧とリンク情報を組み合わせてWorldWrapperを構成
