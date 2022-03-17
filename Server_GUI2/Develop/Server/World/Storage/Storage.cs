@@ -79,7 +79,7 @@ namespace Server_GUI2.Develop.Server.World
     public abstract class Storage
     {
         protected static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        public ObservableCollection<RemoteWorld> RemoteWorlds = new ObservableCollection<RemoteWorld>();
+        public ObservableCollection<IRemoteWorld> RemoteWorlds = new ObservableCollection<IRemoteWorld>();
         protected Dictionary<string, WorldState> worldStates = new Dictionary<string, WorldState>();
         public event EventHandler DeleteEvent;
 
@@ -111,7 +111,7 @@ namespace Server_GUI2.Develop.Server.World
             if (Available)
             {
                 logger.Info($"</FindRemoteWorld> available");
-                return RemoteWorlds.Where(x => x.Id == worldId).First();
+                return RemoteWorlds.OfType<RemoteWorld>().Where(x => x.Id == worldId).First();
             }
             else
             {
@@ -245,8 +245,8 @@ namespace Server_GUI2.Develop.Server.World
             var id = Guid.NewGuid();
 
             var remote = Remote;
-            var datapacks = new DatapackCollection(new List<string>());
-            var plugins = new PluginCollection(new List<string>());
+            var datapacks = new DatapackCollection();
+            var plugins = new PluginCollection();
             var result = new GitRemoteWorld( remote, this,id.ToString(),worldName,false, null, null, prop, datapacks, plugins, true );
             AddWorld(result);
 
@@ -286,12 +286,9 @@ namespace Server_GUI2.Develop.Server.World
                     // 削除イベントを追加
                     remoteWorld.DeleteEvent += new EventHandler((_, __) => RemoteWorlds.Remove(remoteWorld));
                 }
-                else
-                {
-                    // 存在しなくなったブランチはworldstateから削除
-                    worldStates.Remove(worldState.Key);
-                }
             }
+
+            RemoteWorlds.Add(new NewRemoteWorld(this));
 
             usedNames.UnionWith(newUsedNames);
             logger.Info($"</GitStorage>");
@@ -325,12 +322,13 @@ namespace Server_GUI2.Develop.Server.World
         private Dictionary<string,WorldState> ExportWorldStates()
         {
             return RemoteWorlds
+                    .OfType<RemoteWorld>()
                     .Where(x => x.Exist == true)
                     .ToDictionary(x => x.Id, x => x.ExportWorldState());
         }
 
         /// <summary>
-        /// TODO: ストレージ登録情報を削除
+        /// ストレージ登録情報を削除
         /// </summary>
         public override void Delete()
         {
@@ -338,7 +336,7 @@ namespace Server_GUI2.Develop.Server.World
             GitStorageManager.Instance.RemoveRemote(Remote).SuccessAction( x => {
 
                 // 紐づいたリモートワールドを削除
-                foreach (var world in RemoteWorlds)
+                foreach (var world in RemoteWorlds.OfType<RemoteWorld>())
                 {
                     world.Delete();
                 }

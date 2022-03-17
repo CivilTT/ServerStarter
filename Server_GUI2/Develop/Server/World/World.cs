@@ -61,9 +61,9 @@ namespace Server_GUI2.Develop.Server.World
 
         public bool HasCustomMap => CustomMap != null;
 
-        public DatapackCollection Datapacks { get; set; } = new DatapackCollection(new List<string>());
+        public DatapackCollection Datapacks { get; set; } = new DatapackCollection();
 
-        public PluginCollection Plugins { get; set; } = new PluginCollection(new List<string>());
+        public PluginCollection Plugins { get; set; } = new PluginCollection();
 
         public ServerSettings Settings { get; set; } = new ServerSettings();
 

@@ -19,7 +19,7 @@ namespace UnitTestProject1
                 Console.WriteLine(i.DisplayName);
             }
             var ver = VersionFactory.Instance.GetVersionFromName("1.18.1");
-            WorldCollection.Instance.Worlds[1].WrapRun(ver, x => { });
+            //WorldCollection.Instance.Worlds[1].WrapRun(ver, x => { });
         }
     }
 }
