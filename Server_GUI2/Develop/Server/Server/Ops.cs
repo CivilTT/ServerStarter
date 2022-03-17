@@ -13,16 +13,16 @@ namespace Server_GUI2
     public class OpsRecord
     {
         [JsonProperty("uuid")]
-        public string UUID;
+        public string UUID { get; set; }
         
         [JsonProperty("name")]
-        public string Name;
+        public string Name { get; set; }
 
         [JsonProperty("level")]
-        public int Level;
+        public int Level { get; set; }
 
         [JsonProperty("BypassesPlayerLimit")]
-        public bool BypassesPlayerLimit;
+        public bool BypassesPlayerLimit { get; set; }
 
         public OpsRecord(Player player, int opLevel, bool bypassesPlayerLimit = false)
         {

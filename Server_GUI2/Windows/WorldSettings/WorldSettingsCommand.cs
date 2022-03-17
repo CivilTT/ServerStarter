@@ -140,16 +140,39 @@ namespace Server_GUI2.Windows.WorldSettings
 
         public override void Execute(object parameter)
         {
+            void DeleteContent(Action DeleteAction, string name, string nullMessage = "削除したい行を選択してください。")
+            {
+                if (name == null)
+                {
+                    MW.MessageBox.Show(nullMessage, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                MessageBoxResult? result = MW.MessageBox.Show($"{name}を削除しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                    DeleteAction();
+            }
+
             switch (parameter)
             {
                 case "Datapack":
-                    _vm.Datapacks.Remove(_vm.SelectedDatapack.Value);
+                    ADatapack datapack = _vm.SelectedDatapack.Value;
+                    DeleteContent(() => _vm.Datapacks.Remove(datapack), datapack.Name);                    
                     break;
                 case "Plugin":
-                    _vm.Plugins.Remove(_vm.SelectedPlugin.Value);
+                    APlugin plugin = _vm.SelectedPlugin.Value;
+                    DeleteContent(() => _vm.Plugins.Remove(plugin), plugin.Name);
                     break;
                 case "CustomMap":
                     _vm.CustomMap = null;
+                    break;
+                case "Op":
+                    OpsRecord ops = _vm.OpPlayersListIndex;
+                    DeleteContent(() => _vm.OpPlayersList.Remove(ops), ops.Name);
+                    break;
+                case "WhiteList":
+                    Player player = _vm.WhitePlayersListIndex;
+                    DeleteContent(() => _vm.WhitePlayersList.Remove(player), player.Name);
                     break;
                 default:
                     break;
@@ -212,19 +235,6 @@ namespace Server_GUI2.Windows.WorldSettings
         }
     }
 
-    class DeleteOpPlayerCommand : GeneralCommand<WorldSettingsVM>
-    {
-        public DeleteOpPlayerCommand(WorldSettingsVM vm)
-        {
-            _vm = vm;
-        }
-
-        public override void Execute(object parameter)
-        {
-            _vm.OpPlayersList.Remove(_vm.OpPlayersListIndex);
-        }
-    }
-
     class AddWhiteCommand : GeneralCommand<WorldSettingsVM>
     {
         public AddWhiteCommand(WorldSettingsVM vm)
@@ -275,19 +285,6 @@ namespace Server_GUI2.Windows.WorldSettings
         }
     }
 
-    class DeleteWhiteCommand : GeneralCommand<WorldSettingsVM>
-    {
-        public DeleteWhiteCommand(WorldSettingsVM vm)
-        {
-            _vm = vm;
-        }
-
-        public override void Execute(object parameter)
-        {
-
-        }
-    }
-
     class SaveCommand : GeneralCommand<WorldSettingsVM>
     {
         public SaveCommand(WorldSettingsVM vm)
@@ -297,15 +294,18 @@ namespace Server_GUI2.Windows.WorldSettings
 
         public override void Execute(object parameter)
         {
-            // TODO: 必要に応じてSave処理を記述する
-            //_vm.RunWorld.Property = new ServerProperty(_vm.PropertyIndexs.Value);
+            _vm.RunWorld.Settings.ServerProperties = new ServerProperty(_vm.PropertyIndexs.Value);
 
-            // RunWorldを変更した場合、その関連処理はどこで反映するのか
+            // TODO: ShareWorldについて保存処理を記載
 
-            //_vm.RunWorld.Datapacks = new DatapackCollection(_vm.Datapacks);
-            //_vm.RunWorld.Plugins = new PluginCollection(_vm.Plugins);
+            _vm.RunWorld.Datapacks = new DatapackCollection(_vm.Datapacks);
+            _vm.RunWorld.Plugins = new PluginCollection(_vm.Plugins);
+            _vm.RunWorld.CustomMap = _vm.CustomMap;
 
-            // OPとWhiteListの設定についても保存処理を書く
+            _vm.RunWorld.Settings.Ops = new List<OpsRecord>(_vm.OpPlayersList);
+            _vm.RunWorld.Settings.WhiteList = new List<Player>(_vm.WhitePlayersList);
+
+            _vm.Saved = true;
 
             _vm.Close();
         }

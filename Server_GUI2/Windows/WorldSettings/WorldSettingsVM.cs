@@ -135,7 +135,6 @@ namespace Server_GUI2.Windows.WorldSettings
         public int OpLevelIndex { get; set; } = 4;
         public bool CanAddOpPlayer => OpPlayerIndex != null;
         public AddOpPlayerCommand AddOpPlayerCommand { get; private set; }
-        public DeleteOpPlayerCommand DeleteOpPlayerCommand { get; private set; }
         public ObservableCollection<OpsRecord> OpPlayersList { get; private set; }
         public OpsRecord OpPlayersListIndex { get; set; }
 
@@ -144,7 +143,6 @@ namespace Server_GUI2.Windows.WorldSettings
         public PlayerGroup WhiteGroupIndex { get; set; }
         public bool CanAddWhitePlayer => WhitePlayerIndex != null;
         public AddWhiteCommand AddWhiteCommand { get; private set; }
-        public DeleteWhiteCommand DeleteWhiteCommand { get; private set; }
         public ObservableCollection<Player> WhitePlayersList { get; private set; }
         public Player WhitePlayersListIndex { get; set; }
 
@@ -199,18 +197,13 @@ namespace Server_GUI2.Windows.WorldSettings
             Groups.Add(new PlayerGroup("(No Group)", null));
             OpGroupIndex = Groups.FirstOrDefault();
             AddOpPlayerCommand = new AddOpPlayerCommand(this);
-            DeleteOpPlayerCommand = new DeleteOpPlayerCommand(this);
             OpPlayersList = new ObservableCollection<OpsRecord>(RunWorld.Settings.Ops);
 
             // WhiteList
             WhitePlayerIndex = Players.FirstOrDefault();
             WhiteGroupIndex = Groups.FirstOrDefault();
             AddWhiteCommand = new AddWhiteCommand(this);
-            DeleteWhiteCommand = new DeleteWhiteCommand(this);
-            WhitePlayersList = new ObservableCollection<Player>();
-            //WhitePlayersList = RunWorld.WhiteList; -> みたいな感じにしたい
-
-
+            WhitePlayersList = new ObservableCollection<Player>(RunWorld.Settings.WhiteList);
         }
 
         private void CrossPlay()
@@ -231,23 +224,5 @@ namespace Server_GUI2.Windows.WorldSettings
             }
         }
 
-    }
-
-    public class OpPlayer : Player, IEquatable<OpPlayer>
-    {
-        public int OpLevel { get; set; }
-        public bool BypassesPlayerLimit { get; set; }
-
-        public OpPlayer(Player player, int opLevel, bool bypassesPlayerLimit=false) : base(player.Name)
-        {
-            UUID = player.UUID;
-            OpLevel = opLevel;
-            BypassesPlayerLimit = bypassesPlayerLimit;
-        }
-
-        public bool Equals(OpPlayer other)
-        {
-            return other.UUID == UUID;
-        }
     }
 }

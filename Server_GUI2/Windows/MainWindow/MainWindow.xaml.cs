@@ -632,40 +632,40 @@ namespace Server_GUI2
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    class DataSource : IDataErrorInfo
-    {
-        //IDはDataContexのプロパティ
-        public String ID { get; set; }
+    //class DataSource : IDataErrorInfo
+    //{
+    //    //IDはDataContexのプロパティ
+    //    public String ID { get; set; }
 
-        // 今回は使わないが、IDataErrorInfoインターフェースでは実装しなければならない
-        public string Error { get { return null; } }
+    //    // 今回は使わないが、IDataErrorInfoインターフェースでは実装しなければならない
+    //    public string Error { get { return null; } }
 
-        // これも実装必須のプロパティで、各プロパティに対応するエラーメッセージを返す
-        public string this[string propertyName]
-        {
-            get
-            {
-                string result = null;
+    //    // これも実装必須のプロパティで、各プロパティに対応するエラーメッセージを返す
+    //    public string this[string propertyName]
+    //    {
+    //        get
+    //        {
+    //            string result = null;
 
-                switch (propertyName)
-                {
-                    case "ID":
-                        // if (!Regex.IsMatch(ID, @"[1-9]\.[0-9]+\.[0-9]+") && !Regex.IsMatch(ID, "[0-9]+(?i)[A-Z][0-9]+(?i)[A-Z]"))
-                        // {
-                        //     result = "Please enter the Version as 1.16.5 or 21w10a";
-                        //     break;
-                        // }
-                        if (!Regex.IsMatch(ID, @"^[0-9a-zA-Z_-]+$"))
-                        {
-                            result = @"You can use only capital and small letters";
-                            break;
-                        }
-                        break;
-                }
-                return result;
-            }
-        }
-    }
+    //            switch (propertyName)
+    //            {
+    //                case "ID":
+    //                    // if (!Regex.IsMatch(ID, @"[1-9]\.[0-9]+\.[0-9]+") && !Regex.IsMatch(ID, "[0-9]+(?i)[A-Z][0-9]+(?i)[A-Z]"))
+    //                    // {
+    //                    //     result = "Please enter the Version as 1.16.5 or 21w10a";
+    //                    //     break;
+    //                    // }
+    //                    if (!Regex.IsMatch(ID, @"^[0-9a-zA-Z_-]+$"))
+    //                    {
+    //                        result = @"You can use only capital and small letters";
+    //                        break;
+    //                    }
+    //                    break;
+    //            }
+    //            return result;
+    //        }
+    //    }
+    //}
 
     //[JsonObject("Ops")]
     //class Ops
