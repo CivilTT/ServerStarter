@@ -40,10 +40,9 @@ namespace Server_GUI2.Develop.Server.World
         static private bool IsValidDirectory(string sourcePath, string name)
         {
             // フォルダの直下(or一つ下)に ○○ が存在しているかを確認する
-            // TODO: 有効性判定をどのファイルの存在で確認するか決定する
-            string dirPath = System.IO.Directory.Exists($@"{sourcePath}\{name}") ? $@"{sourcePath}\{name}" : sourcePath;
+            string dirPath = Directory.Exists($@"{sourcePath}\{name}") ? $@"{sourcePath}\{name}" : sourcePath;
 
-            return System.IO.Directory.Exists($@"{dirPath}\data") && File.Exists($@"{dirPath}\pack.mcmeta");
+            return Directory.Exists($@"{dirPath}\data");
         }
 
         /// <summary>
@@ -56,13 +55,11 @@ namespace Server_GUI2.Develop.Server.World
             using (ZipArchive zipArchive = ZipFile.OpenRead(sourcePath))
             {
                 // フォルダの直下(or一つ下)に ○○ が存在しているかを確認する
-                // TODO: 有効性判定をどのファイルの存在で確認するか決定する
                 string dirPath = (zipArchive.GetEntry(name) == null) ? $@"{name}/" : "";
 
-                ZipArchiveEntry metaEntry = zipArchive.GetEntry($"{dirPath}pack.mcmeta");
                 ZipArchiveEntry dataEntry = zipArchive.GetEntry($"{dirPath}data/");
 
-                result = metaEntry != null && dataEntry != null;
+                result = dataEntry != null;
             }
 
             return result;
@@ -96,7 +93,7 @@ namespace Server_GUI2.Develop.Server.World
             }
 
             // 一層深くなっているときは、それを上げる処理をする
-            if (System.IO.Directory.Exists($@"{path}\{Name}"))
+            if (Directory.Exists($@"{path}\{Name}"))
             {
                 var dir = new DirectoryInfo($@"{path}\{Name}");
                 dir.MoveTo("temp");
