@@ -502,8 +502,8 @@
         </Grid>
 
         <!--//WhiteListContents//-->
-        <!--<Grid Visibility="{Binding ShowWhite, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">-->
-        <Grid Style="{StaticResource SettingContent}">
+        <Grid Visibility="{Binding ShowWhite, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <!--<Grid Style="{StaticResource SettingContent}">-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="200"/>
                 <RowDefinition/>
