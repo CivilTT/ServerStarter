@@ -161,28 +161,6 @@ namespace Server_GUI2
         }
     }
 
-    ///// <summary>
-    ///// ローカルに存在するがDLリンクがわからないバージョン
-    ///// TODO: まだ未使用なので対応
-    ///// </summary>
-    //public class UnknownVersion : Version
-    //{
-    //    protected override string JarName { get { return "server.jar"; } }
-    //    public override ServerType Type => ServerType.Vanilla;
-
-    //    public override string Log4jArgument => "";
-
-    //    public UnknownVersion(string name, bool available = true) :
-    //        base(name, ServerGuiPath.Instance.WorldData.GetVersionDirectory(name), available) { }
-
-    //    protected override void SetNewVersion()
-    //    {
-    //        base.SetNewVersion();
-    //        logger.Info("Import vanila Server");
-    //    }
-    //}
-
-
     public class VanillaVersion: Version
     {
         protected override string JarName { get { return "server.jar"; } }

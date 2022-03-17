@@ -13,10 +13,43 @@ namespace Server_GUI2.Develop.Server.World
         public RemoteWorldException( string message) : base(message) { }
     }
 
+    public interface IRemoteWorld : IWorldBase
+    {
+        Storage Storage { get; }
+    }
+
+    public class NewRemoteWorld : IRemoteWorld
+    {
+        public DatapackCollection Datapacks { get; set; } = new DatapackCollection();
+
+        public PluginCollection Plugins { get; set; } = new PluginCollection();
+
+        public ServerSettings Settings { get; set; } = new ServerSettings();
+
+        public ServerType? Type { get; } = null;
+
+        // TODO: 使用できない名前だったらはじく
+        public string Name { get; set; }
+
+        public Version Version { get; } = null;
+
+        public Storage Storage { get; private set; }
+
+        public WorldState ExportWorldState()
+        {
+            throw new NotImplementedException();
+        }
+
+        public NewRemoteWorld(Storage storage)
+        {
+            Storage = storage;
+        }
+    }
+
     /// <summary>
     /// リモートにある/(作る予定の)ワールドの情報
     /// </summary>
-    public abstract class RemoteWorld : IWorldBase
+    public abstract class RemoteWorld : IRemoteWorld
     {
         public event EventHandler DeleteEvent;
         public bool Exist;
@@ -59,7 +92,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public Version Version  { get; private set; }
 
-        public Storage Storage;
+        public Storage Storage { get; private set; }
 
         /// <summary>
         /// WorldStateからRemotoworldを構成する

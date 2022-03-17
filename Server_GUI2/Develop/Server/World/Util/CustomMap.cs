@@ -76,7 +76,7 @@ namespace Server_GUI2.Develop.Server.World
 
 
         /// <summary>
-        /// TODO: パスのディレクトリにワールドを展開/移動する。ディレクトリは上書きではなくマージする。
+        /// パスのディレクトリにワールドを展開/移動する。
         /// </summary>
         public void Import(string path)
         {
@@ -98,8 +98,11 @@ namespace Server_GUI2.Develop.Server.World
             // 一層深くなっているときは、それを上げる処理をする
             if (System.IO.Directory.Exists($@"{path}\{Name}"))
             {
-                // TODO: この処理が本当に動くのか要検証
-                FileSystem.MoveDirectory($@"{path}\{Name}", path);
+                var dir = new DirectoryInfo($@"{path}\{Name}");
+                dir.MoveTo("temp");
+                FileSystem.DeleteDirectory(path, DeleteDirectoryOption.DeleteAllContents);
+                var tmp = new DirectoryInfo("temp");
+                tmp.MoveTo(path);
             }
         }
     }

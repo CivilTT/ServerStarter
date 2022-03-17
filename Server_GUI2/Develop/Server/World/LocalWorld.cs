@@ -345,7 +345,7 @@ namespace Server_GUI2.Develop.Server.World
             }
             else
             {
-                return new DatapackCollection(new List<string>());
+                return new DatapackCollection();
             }
         }
         private PluginCollection LoadPlugins()
@@ -361,7 +361,7 @@ namespace Server_GUI2.Develop.Server.World
             }
             else
             {
-                return new PluginCollection(new List<string>());
+                return new PluginCollection();
             }
         }
 

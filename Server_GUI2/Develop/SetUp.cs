@@ -23,9 +23,8 @@ namespace Server_GUI2
     {
         private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        //TODO: リリース時にはCurrentDirectoryの記述を変更する
-        //public static string CurrentDirectory => Environment.GetEnvironmentVariable("SERVER_STERTER_TEST");
         public static string CurrentDirectory => AppDomain.CurrentDomain.BaseDirectory;
+
         public static string DataPath => Path.Combine(CurrentDirectory, "World_Data");
 
         // Initialize()より前には呼ばない前提
