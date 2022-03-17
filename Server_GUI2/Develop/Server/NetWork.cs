@@ -19,7 +19,7 @@ namespace Server_GUI2.Develop.Server
         private static bool? accessible = null;
         private static DateTime? lastGetTime = null;
 
-        // インターネットに接続可能かを再取得ための時間差(秒)
+        // インターネットに接続可能かを再取得するための時間差(秒)
         private static readonly int reCheckTimeSpan = 60;
 
         public static bool Accessible
@@ -27,10 +27,11 @@ namespace Server_GUI2.Develop.Server
             get
             {
                 var now = DateTime.Now;
-                if (lastGetTime.HasValue && (now - lastGetTime.Value).TotalSeconds > reCheckTimeSpan)
-                if (!accessible.HasValue)
+                if (!accessible.HasValue || (now - lastGetTime.Value).TotalSeconds > reCheckTimeSpan)
+                {
+                    lastGetTime = now;
                     CheckAccess();
-                lastGetTime = now;
+                }
                 return accessible.Value;
             }
         }
