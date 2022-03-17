@@ -205,7 +205,7 @@ namespace Server_GUI2.Windows.SystemSettings
             PlayerName = new BindingValue<string>("", () => OnPropertyChanged("CanAddition_Pl"));
             PlayerList = new ObservableCollection<Player>(SaveData.Players);
             // Group
-            GroupName = new BindingValue<string>("", () => OnPropertyChanged("CanAddition_Gr"));
+            GroupName = new BindingValue<string>("", () => OnPropertyChanged(new string[2] { "GroupName", "CanAddition_Gr" }));
             PlayerList_Group = new ObservableCollection<Player>(SaveData.Players);
             PLGIndex = new BindingValue<Player>(null, () => OnPropertyChanged("CanAddition_Gr"));
             MemberList = new ObservableCollection<Player>();

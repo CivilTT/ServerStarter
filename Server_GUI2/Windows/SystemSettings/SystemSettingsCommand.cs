@@ -2,6 +2,7 @@
 using Server_GUI2.Develop.Util;
 using Server_GUI2.Util;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -74,7 +75,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     break;
 
                 case "Group":
-                    var memberList2 = _vm.MemberList;
+                    var memberList2 = new ObservableCollection<Player>(_vm.MemberList);
                     var groupList = _vm.GroupList;
                     string groupName = _vm.GroupName.Value;
                     var groupContent = new PlayerGroup(groupName, memberList2);
@@ -116,6 +117,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     }
                     // TODO: 編集ボタンを押してもMembersに追記されない
                     _vm.MemberList.ChangeCollection(groupIndex.PlayerList);
+                    _vm.GroupName.Value = groupIndex.GroupName;
                     _vm.UpdateGroupPlayersAndMembers();
                     groupList.Remove(groupIndex);
                     break;
@@ -341,7 +343,7 @@ namespace Server_GUI2.Windows.SystemSettings
             UserSettings.Instance.userSettings.Language = "English";
             UserSettings.Instance.userSettings.DefaultProperties = _vm.PropertyIndexs.Value;
             UserSettings.Instance.userSettings.Players = _vm.PlayerList.ToList();
-            UserSettings.Instance.userSettings.PlayerGroups = _vm.GroupList.ToList();
+            UserSettings.Instance.userSettings.PlayerGroups = new List<PlayerGroup>(_vm.GroupList);
 
             UserSettings.Instance.WriteFile();
             _vm.Saved = true;
