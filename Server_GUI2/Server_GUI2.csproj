@@ -91,6 +91,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Develop\Server\NetWork.cs" />
     <Compile Include="Develop\Server\Server\BannedPlayers.cs" />
     <Compile Include="Develop\Server\Server\BannedIps.cs" />
     <Compile Include="Develop\Server\Server\ServerSettings.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Windows\MainWindow\MainWindowCommand.cs" />
     <Compile Include="Windows\GeneralVM.cs" />
     <Compile Include="Windows\MainWindow\MainWindowVM.cs" />
+    <None Include="Planning\storages.json" />
     <Resource Include="Resources\MainWindow\setting.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

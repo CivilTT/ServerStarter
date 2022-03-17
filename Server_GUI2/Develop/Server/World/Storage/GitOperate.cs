@@ -57,29 +57,33 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// worldstateをpush
         /// </summary>
-        public void WriteWorldState(GitRemote remote, string email, Dictionary<string, WorldState> worldState)
+        public Either<EitherVoid,Exception> WriteWorldState(GitRemote remote, string email, Dictionary<string, WorldState> worldState)
         {
             logger.Info("<WriteWorldState>");
-            var branch = GetRemoteBranch(remote);
-            branch.LocalBranch.Checkout();
-            stateDirectory.WorldStateJson.WriteJson(worldState);
-            branch.LocalBranch.Local.SetUser(remote.Account, email);
-            branch.CommitPush("update worldstate.json");
-            logger.Info("</WriteWorldState>");
+            return GetRemoteBranch(remote).SuccessFunc(branch => { 
+                branch.LocalBranch.Checkout();
+                stateDirectory.WorldStateJson.WriteJson(worldState);
+                branch.LocalBranch.Local.SetUser(remote.Account, email);
+                branch.CommitPush("update worldstate.json");
+                logger.Info("</WriteWorldState>");
+                return EitherVoid.Instance;
+            });
         }
 
         /// <summary>
         /// worldstateをpull
         /// </summary>
-        public Dictionary<string, WorldState> ReadWorldState(GitRemote remote)
+        public Either<Dictionary<string, WorldState>,Exception> ReadWorldState(GitRemote remote)
         {
             logger.Info("<ReadWorldState>");
-            var branch = GetRemoteBranch(remote);
-            branch.LocalBranch.Checkout();
-            branch.Pull();
-            var worldState = stateDirectory.WorldStateJson.ReadJson().SuccessOrDefault(new Dictionary<string, WorldState>());
-            logger.Info("</ReadWorldState>");
-            return worldState;
+            return GetRemoteBranch(remote).SuccessFunc(branch =>
+            {
+                branch.LocalBranch.Checkout();
+                branch.Pull();
+                var worldState = stateDirectory.WorldStateJson.ReadJson().SuccessOrDefault(new Dictionary<string, WorldState>());
+                logger.Info("</ReadWorldState>");
+                return worldState;
+            });
         }
 
         public string GetId(GitRemote remote) => $"{remote.Account}.{remote.Repository}";
@@ -115,9 +119,15 @@ namespace Server_GUI2.Develop.Server.World
         /// #stateブランチを返す。無ければ生成する
         /// </summary>
         /// <param name="remote"></param>
-        private GitLinkedLocalBranch GetRemoteBranch(GitRemote remote)
+        private Either<GitLinkedLocalBranch,Exception> GetRemoteBranch(GitRemote remote)
         {
             logger.Info("<GetRemoteBranch>");
+
+            if (!NetWork.Accessible)
+            {
+                logger.Info("</GetRemoteBranch> network error");
+                return new Failure<GitLinkedLocalBranch, Exception>(new NetWorkException());
+            }
             var id = GetId(remote);
 
             // 既に存在する場合
@@ -126,7 +136,7 @@ namespace Server_GUI2.Develop.Server.World
                 var namedRemote = new GitNamedRemote(gitLocal, remote, id);
                 var branch = new GitRemoteBranch(namedRemote, "#state", true);
                 logger.Info("</GetRemoteBranch> #state branch already exists on local");
-                return new GitLinkedLocalBranch(gitLocal.GetBranch(id), branch);
+                return new Success<GitLinkedLocalBranch, Exception>(new GitLinkedLocalBranch(gitLocal.GetBranch(id), branch));
             }
 
             logger.Info("#state branch not exists on local");
@@ -163,7 +173,7 @@ namespace Server_GUI2.Develop.Server.World
                 logger.Info("push #state branch");
                 linked.CommitPush("initialized");
                 logger.Info("</GetRemoteBranch>");
-                return linked;
+                return new Success<GitLinkedLocalBranch, Exception>(linked);
             }
             // 2. #stateブランチがある場合
             else
@@ -179,7 +189,7 @@ namespace Server_GUI2.Develop.Server.World
                 branch.Pull();
                 branch.LocalBranch.Checkout();
                 logger.Info("</GetRemoteBranch>");
-                return branch;
+                return new Success<GitLinkedLocalBranch, Exception>(branch);
             }
         }
     }
