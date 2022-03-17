@@ -302,6 +302,28 @@ namespace Server_GUI2.Develop.Server.World
         }
 
         /// <summary>
+        /// 前回起動時にpush出来なかったworldをpushする
+        /// </summary>
+        public void UploadWorld()
+        {
+            if (RemoteWorld.Available)
+            {
+                try
+                {
+                    RemoteWorld.FromLocal(LocalWorld);
+                }
+                catch (GitException)
+                {
+                    // リモートのワールドデータを更新し、ロック解除
+                    RemoteWorld.Using = false;
+                    RemoteWorld.UpdateWorldState();
+                    // 起動中フラグを回収
+                    Using = false;
+                }
+            }
+        }
+
+        /// <summary>
         /// remotes.jsonを保存する際に使う
         /// </summary>
         public RemoteLinkJson ExportLinkJson()
@@ -347,7 +369,8 @@ namespace Server_GUI2.Develop.Server.World
             // 起動中フラグを立てる
             Using = true;
 
-            // リモートワールドを複数人が同時に開かないようにロック
+            // リモートワールドを複数人が同時に開かないようにロックし、最終使用者を更新
+            RemoteWorld.LastUser = UserSettings.Instance.userSettings.PlayerName ?? "";
             RemoteWorld.Using = true;
             RemoteWorld.UpdateWorldState();
 
@@ -364,15 +387,21 @@ namespace Server_GUI2.Develop.Server.World
             LocalWorld.WrapRun(version, runFunc);
 
             // Push
-            RemoteWorld.FromLocal(LocalWorld);
+            try
+            {
+                RemoteWorld.FromLocal(LocalWorld);
+            }
+            catch (GitException)
+            {
+                // リモートのワールドデータを更新し、ロック解除
+                RemoteWorld.Using = false;
+                RemoteWorld.UpdateWorldState();
+                // 起動中フラグを回収
+                Using = false;
+            }
 
-            // リモートのワールドデータを更新し、ロック解除
-            RemoteWorld.Using = false;
-            RemoteWorld.UpdateWorldState();
-
-            // 起動中フラグを回収
-            // TODO: Pushが成功しなかった場合はフラグを立てたままにする
-            Using = false;
+            // LinkJsonを更新
+            WorldCollection.Instance.SaveLinkJson();
         }
 
         /// <summary>
@@ -407,15 +436,18 @@ namespace Server_GUI2.Develop.Server.World
             LocalWorld.WrapRun(version,runFunc);
 
             // Push
-            RemoteWorld.FromLocal(LocalWorld);
-
-            // リモートのワールドデータを更新し、ロック解除
-            RemoteWorld.Using = false;
-            RemoteWorld.UpdateWorldState();
-
-            // 起動中フラグを回収
-            // TODO: Pushが成功しなかった場合はフラグを立てたままにする
-            Using = false;
+            try
+            {
+                RemoteWorld.FromLocal(LocalWorld);
+            }
+            catch (GitException)
+            {
+                // リモートのワールドデータを更新し、ロック解除
+                RemoteWorld.Using = false;
+                RemoteWorld.UpdateWorldState();
+                // 起動中フラグを回収
+                Using = false;
+            }
 
             // LinkJsonを更新
             WorldCollection.Instance.SaveLinkJson();

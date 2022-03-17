@@ -320,7 +320,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private ServerProperty LoadProperties()
         {
-            return Path.ServerProperties.ReadAllText().SuccessFunc(x => new ServerProperty(x)).SuccessOrDefault(new ServerProperty());
+            return Path.ServerProperties.ReadAllText().SuccessFunc(x => new ServerProperty(x)).SuccessOrDefault(ServerProperty.GetUserDefault());
         }
 
         /// <summary>
@@ -400,7 +400,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public WorldState ExportWorldState()
         {
-            return new WorldState(Name, Type.ToString(), Version.Name, false, Datapacks.ExportList(), Plugins.ExportList(), Settings);
+            throw new NotImplementedException("local world is not intended to export worldstate");
         }
     }
 }
