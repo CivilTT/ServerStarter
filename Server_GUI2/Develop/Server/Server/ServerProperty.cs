@@ -39,6 +39,19 @@ namespace Server_GUI2
         }
 
         /// <summary>
+        /// ユーザー設定のデフォルト設定のコピーインスタンスを返す
+        /// </summary>
+        public static ServerProperty GetUserDefault()
+        {
+            return UserSettings.Instance.userSettings.DefaultProperties.Copy();
+        }
+
+        public ServerProperty Copy()
+        {
+            return new ServerProperty(this);
+        }
+
+        /// <summary>
         /// server.propertiesの内容を引数にとる
         /// </summary>
         private void ReadProperty(string content)

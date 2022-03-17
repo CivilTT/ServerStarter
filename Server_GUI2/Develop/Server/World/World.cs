@@ -369,7 +369,8 @@ namespace Server_GUI2.Develop.Server.World
             // 起動中フラグを立てる
             Using = true;
 
-            // リモートワールドを複数人が同時に開かないようにロック
+            // リモートワールドを複数人が同時に開かないようにロックし、最終使用者を更新
+            RemoteWorld.LastUser = UserSettings.Instance.userSettings.PlayerName ?? "";
             RemoteWorld.Using = true;
             RemoteWorld.UpdateWorldState();
 

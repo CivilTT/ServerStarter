@@ -28,6 +28,7 @@ namespace Server_GUI2
         public UserSettingsJson userSettings = new UserSettingsJson();
 
         public static string JsonPath => "info.json";
+
         public string OldInfoPath => $@"{SetUp.DataPath}\info.txt";
 
         private UserSettings()

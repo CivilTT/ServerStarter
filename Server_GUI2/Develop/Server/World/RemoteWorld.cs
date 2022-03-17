@@ -21,6 +21,7 @@ namespace Server_GUI2.Develop.Server.World
         public event EventHandler DeleteEvent;
         public bool Exist;
         public bool Using;
+        public string LastUser;
         public bool Available;
 
         public DatapackCollection Datapacks  { get; set; }
@@ -134,7 +135,7 @@ namespace Server_GUI2.Develop.Server.World
         public WorldState ExportWorldState()
         {
             if (!Exist) throw new WorldException("non-exist world must not export worldstate");
-            return new WorldState(Name,Type.ToString(),Version.Name,Using,Datapacks.ExportList(),Plugins.ExportList(), Settings);
+            return new WorldState(Name,Type.ToString(),Version.Name,Using, LastUser, Datapacks.ExportList(),Plugins.ExportList(), Settings);
         }
     }
 
