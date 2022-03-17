@@ -16,6 +16,7 @@ using MW = ModernWpf;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.ProgressBar;
 using System.Threading;
+using Server_GUI2.Develop.Server;
 
 namespace Server_GUI2
 {
@@ -45,7 +46,7 @@ namespace Server_GUI2
                     Environment.Exit(0);
             }
 
-            //CheckConnetNet();
+            CheckConnetNet();
 
             // ProgressBarを表示する
             InitProgressBar = new ProgressBar("Ready to Server Starter", 9);
@@ -67,7 +68,7 @@ namespace Server_GUI2
         /// </summary>
         private static void CheckConnetNet()
         {
-            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+            if (!NetWork.Accessible)
             {
                 string message =
                     "本システムはインターネット環境下のみで動作します。\n" +

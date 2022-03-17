@@ -407,7 +407,7 @@
                 </TabItem>
                 
                 <!--//CustomMap//-->
-                <TabItem>
+                <TabItem Visibility="{Binding ShowMapTab, Converter={StaticResource BoolToVisible}}">
                     <TabItem.Header>
                         <TextBlock Text="Custom Map"/>
                     </TabItem.Header>
@@ -482,6 +482,7 @@
                                   RowHeaderWidth="0"
                                   VirtualizingPanel.ScrollUnit="Pixel"
                                   HorizontalAlignment="Left"
+                                  SelectedItem="{Binding OpPlayersListIndex}"
                                   Margin="20 10">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Player Name" MaxWidth="150" IsReadOnly="True" Binding="{Binding Name}"/>
@@ -537,6 +538,7 @@
                               RowHeaderWidth="0"
                               VirtualizingPanel.ScrollUnit="Pixel"
                               HorizontalAlignment="Left"
+                              SelectedItem="{Binding WhitePlayersListIndex}"
                               Margin="20 10">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Player Name" MaxWidth="130" IsReadOnly="True" Binding="{Binding Name}"/>

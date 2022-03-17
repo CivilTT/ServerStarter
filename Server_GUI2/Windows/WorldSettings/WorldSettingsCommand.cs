@@ -50,6 +50,11 @@ namespace Server_GUI2.Windows.WorldSettings
 
         public override void Execute(object parameter)
         {
+            // Import中にWindowの操作をされないように隠す
+            // TODO: Hideの直後にShowするとWorldSettingsが開くが、File選択の画面の後にShowするとMainWindowが開く問題の修正
+            _vm.Hide();
+            _vm.Show();
+
             switch (parameter)
             {
                 case "Datapack":
@@ -104,6 +109,8 @@ namespace Server_GUI2.Windows.WorldSettings
                 default:
                     throw new ArgumentException("Unknown Import Parameter");
             }
+
+            _vm.Show();
         }
 
         /// <summary>
@@ -117,7 +124,7 @@ namespace Server_GUI2.Windows.WorldSettings
             {
                 Title = "フォルダを選択してください",
                 RestoreDirectory = true,
-                IsFolderPicker = !isFile
+                IsFolderPicker = !isFile,
             })
             {
                 if (isFile && filter != null)
@@ -192,6 +199,7 @@ namespace Server_GUI2.Windows.WorldSettings
             int opLevel = _vm.OpLevelIndex;
             bool addedP = AddPlayer(opLevel);
             bool addedG = AddGroup(opLevel);
+            _vm.OpPlayersList.Sort();
             if (!(addedP || addedG))
                 MW.MessageBox.Show("選択されたプレイヤーとグループはすでに登録されています。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
@@ -246,6 +254,7 @@ namespace Server_GUI2.Windows.WorldSettings
         {
             bool addedP = AddPlayer();
             bool addedG = AddGroup();
+            _vm.WhitePlayersList.Sort();
             if (!(addedP || addedG))
                 MW.MessageBox.Show("選択されたプレイヤーとグループはすでに登録されています。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
         }

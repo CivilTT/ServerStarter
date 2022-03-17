@@ -118,6 +118,7 @@ namespace Server_GUI2.Windows.WorldSettings
         public BindingValue<APlugin> SelectedPlugin { get; private set; }
         public BindingValue<bool> IsCrossPlay { get; private set; }
         // Custom Map
+        public bool ShowMapTab => RunWorld is NewWorld;
         public bool IsZipMap { get; set; } = true;
         public CustomMap CustomMap { get; set; }
         public string ServerResourcePack
