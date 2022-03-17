@@ -18,10 +18,14 @@ namespace Server_GUI2
         public Player(string name, string uuid = "")
         {
             Name = name;
-            UUID = uuid;
+
+            if (uuid == "")
+                GetUuid();
+            else
+                UUID = uuid;
         }
 
-        public void GetUuid()
+        private void GetUuid()
         {
             string url = $@"https://api.mojang.com/users/profiles/minecraft/{Name}";
             WebClient wc = new WebClient();

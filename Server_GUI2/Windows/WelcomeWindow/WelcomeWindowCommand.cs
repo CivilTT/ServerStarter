@@ -24,20 +24,17 @@ namespace Server_GUI2.Windows.WelcomeWindow
 
         public override void Execute(object parameter)
         {
-            Player = new Player(_vm.PlayerName.Value);
-
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += Search;
             worker.RunWorkerCompleted += SearchCompleted;
             worker.RunWorkerAsync();
 
-            _vm.IsActive.Value = true;
-            
+            _vm.IsActive.Value = true;            
         }
 
         private void Search(object sender, DoWorkEventArgs e)
         {
-            Player.GetUuid();
+            Player = new Player(_vm.PlayerName.Value);
         }
 
         private void SearchCompleted(object sender, RunWorkerCompletedEventArgs e)
