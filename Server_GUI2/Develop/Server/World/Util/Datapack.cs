@@ -18,6 +18,11 @@ namespace Server_GUI2.Develop.Server.World
         public ObservableCollection<ADatapack> Datapacks { get;}
         private readonly List<Action<string>> operations = new List<Action<string>>();
 
+        public DatapackCollection()
+        {
+            Datapacks = new ObservableCollection<ADatapack>();
+        }
+
         public DatapackCollection(List<string> datapackNames)
         {
             Datapacks = new ObservableCollection<ADatapack>(datapackNames.Select(x => new ExistDatapack(x)));
@@ -81,12 +86,6 @@ namespace Server_GUI2.Develop.Server.World
         {
             Name = name;
         }
-
-        /// <summary>
-        /// 削除の必要性があるかどうか
-        /// TODO: Viewを更新するためにEventを作成する
-        /// </summary>
-        public bool NeedToRemove;
 
         public virtual void Remove(string path) { }
     }

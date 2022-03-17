@@ -100,8 +100,8 @@ namespace Server_GUI2.Windows.WorldSettings
         public BindingValue<bool> UseSW { get; private set; }
         public ObservableCollection<Storage> Accounts { get; private set; }
         public BindingValue<Storage> AccountIndex { get; private set; }
-        public ObservableCollection<RemoteWorld> RemoteDataList { get; private set; }
-        public BindingValue<RemoteWorld> RemoteIndex { get; private set; }
+        public ObservableCollection<IRemoteWorld> RemoteDataList { get; private set; }
+        public BindingValue<IRemoteWorld> RemoteIndex { get; private set; }
         public string RemoteName { get; set; }
         public bool ShowNewRemoteData => RemoteIndex?.Value == /*//TODO: 何とイコールにすればよい？//*/null;
 
@@ -170,7 +170,7 @@ namespace Server_GUI2.Windows.WorldSettings
             UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => OnPropertyChanged(""));
             Accounts = new ObservableCollection<Storage>(Storages.Storages);
             AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
-            RemoteDataList = AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<RemoteWorld>();
+            RemoteDataList = AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<IRemoteWorld>();
 
             // Additionals
             ImportAdditionalsCommand = new ImportAdditionalsCommand(this);

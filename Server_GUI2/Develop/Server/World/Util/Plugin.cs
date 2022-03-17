@@ -13,6 +13,11 @@ namespace Server_GUI2.Develop.Server.World
         public ObservableCollection<APlugin> Plugins { get; }
         private List<Action<string>> operations = new List<Action<string>>();
 
+        public PluginCollection()
+        {
+            Plugins = new ObservableCollection<APlugin>();
+        }
+
         public PluginCollection(List<string> pluginNames)
         {
             Plugins = new ObservableCollection<APlugin>(pluginNames.Select(x => new ExistPlugin(x)));
@@ -77,12 +82,6 @@ namespace Server_GUI2.Develop.Server.World
         {
             Name = name;
         }
-
-        /// <summary>
-        /// 削除の必要性があるかどうか
-        /// TODO: Viewを更新するためにEventを作成する
-        /// </summary>
-        public bool NeedToRemove;
 
         public virtual void Remove(string path) { }
     }
