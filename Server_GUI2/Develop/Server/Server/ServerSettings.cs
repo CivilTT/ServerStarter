@@ -35,7 +35,7 @@ namespace Server_GUI2
 
         public ServerSettings()
         {
-            ServerProperties = new ServerProperty();
+            ServerProperties = ServerProperty.GetUserDefault();
             Ops = new List<OpsRecord>();
             WhiteList = new List<Player>();
             BannedPlayers = new List<BannedPlayerRecord>();
@@ -43,7 +43,7 @@ namespace Server_GUI2
         }
 
         public ServerSettings(WorldPath path) {
-            ServerProperties = path.ServerProperties.ReadAllText().SuccessFunc( x => new ServerProperty(x)).SuccessOrDefault(new ServerProperty());
+            ServerProperties = path.ServerProperties.ReadAllText().SuccessFunc( x => new ServerProperty(x)).SuccessOrDefault(ServerProperty.GetUserDefault());
             Ops = path.Ops.ReadJson().SuccessOrDefault(new List<OpsRecord>());
             WhiteList = path.WhiteList.ReadJson().SuccessOrDefault(new List<Player>());
             BannedPlayers = path.BannedPlayers.ReadJson().SuccessOrDefault(new List<BannedPlayerRecord>());

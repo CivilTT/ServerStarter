@@ -43,6 +43,10 @@ namespace Server_GUI2.Develop.Server.World
         [DefaultValue(false)]
         public bool Using { get; set; }
 
+        [JsonProperty("lastuser")]
+        [DefaultValue("")]
+        public string LastUser { get; set; }
+
         [JsonProperty("datapacks")]
         public List<string> Datapacks { get; set; } = new List<string>();
 
@@ -54,12 +58,13 @@ namespace Server_GUI2.Develop.Server.World
         public ServerSettings ServerSetting { get; set; } = null;
 
         public WorldState(){ }
-        public WorldState(string name,string type,string version,bool isUsing,List<string> datapacks, List<string> plugins, ServerSettings serverSettings)
+        public WorldState(string name,string type,string version,bool isUsing,string lastUser,List<string> datapacks, List<string> plugins, ServerSettings serverSettings)
         {
             Name = name;
             Type = type;
             Version = version;
             Using = isUsing;
+            LastUser = lastUser;
             Datapacks = datapacks;
             Plugins = plugins;
             ServerSetting = serverSettings;
