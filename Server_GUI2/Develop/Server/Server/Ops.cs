@@ -10,7 +10,7 @@ namespace Server_GUI2
     /// <summary>
     /// ops.jsonのレコード
     /// </summary>
-    public class OpsRecord
+    public class OpsRecord : IEquatable<OpsRecord>, IComparable<OpsRecord>
     {
         [JsonProperty("uuid")]
         public string UUID { get; set; }
@@ -35,6 +35,11 @@ namespace Server_GUI2
         public bool Equals(OpsRecord other)
         {
             return other.UUID == UUID;
+        }
+
+        public int CompareTo(OpsRecord other)
+        {
+            return Name.CompareTo(other.Name);
         }
     }
 }
