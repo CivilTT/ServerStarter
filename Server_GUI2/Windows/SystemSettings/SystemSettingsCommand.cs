@@ -115,7 +115,6 @@ namespace Server_GUI2.Windows.SystemSettings
                         MW.MessageBox.Show("編集したい行を選択してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
-                    // TODO: 編集ボタンを押してもMembersに追記されない
                     _vm.MemberList.ChangeCollection(groupIndex.PlayerList);
                     _vm.GroupName.Value = groupIndex.GroupName;
                     _vm.UpdateGroupPlayersAndMembers();
