@@ -36,7 +36,6 @@ namespace Server_GUI2.Develop.Server.World
                    x.LocalWorld == local.Name
                     ).FirstOrDefault();
 
-                // 通信できないワールドは一覧に追加しないorグレーアウトして選択できないように
                 if (linkData != null)
                 {
                     var storage = StorageCollection.Instance.FindStorage(linkData.RemoteStorage);
@@ -44,11 +43,12 @@ namespace Server_GUI2.Develop.Server.World
                     var world = new World(local,remote);
                     Add(world);
 
-                    // TODO: usingフラグが立ちっぱなしだったらpushする
+                    // usingフラグが立ちっぱなしだったらpushする
+                    // サーバー起動後にネットワークが切断された場合に起こりうる
                     if (linkData.Using)
                     {
+                        world.UploadWorld();
                     }
-                    // サーバー起動後にネットワークが切断された場合に起こりうる
                 }
                 else
                 {
