@@ -17,13 +17,20 @@ namespace Server_GUI2.Develop.Server
     public static class NetWork
     {
         private static bool? accessible = null;
+        private static DateTime? lastGetTime = null;
+
+        // インターネットに接続可能かを再取得ための時間差(秒)
+        private static readonly int reCheckTimeSpan = 60;
+
         public static bool Accessible
         {
             get
             {
+                var now = DateTime.Now;
+                if (lastGetTime.HasValue && (now - lastGetTime.Value).TotalSeconds > reCheckTimeSpan)
                 if (!accessible.HasValue)
                     CheckAccess();
-
+                lastGetTime = now;
                 return accessible.Value;
             }
         }
