@@ -299,7 +299,7 @@ namespace Server_GUI2
             logger.Info($"use java path ({javaPath})");
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Server.StartWithoutEula(Path, javaPath, JarName, Log4jArgument, new ServerProperty());
+            Server.StartWithoutEula(Path, javaPath, JarName, Log4jArgument, ServerProperty.GetUserDefault());
         }
     }
 
@@ -382,7 +382,7 @@ namespace Server_GUI2
             logger.Info($"use java path ({javaPath})");
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
-            Server.StartWithoutEula(Path, javaPath, JarName, Log4jArgument,new ServerProperty());
+            Server.StartWithoutEula(Path, javaPath, JarName, Log4jArgument, ServerProperty.GetUserDefault());
         }
 
         private void CreateBuildBat()
