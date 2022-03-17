@@ -39,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.2.1.1\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -100,6 +101,7 @@
     <Compile Include="OpenCommonDialogTest.cs" />
     <Compile Include="ReadJsonTest.cs" />
     <Compile Include="DirectoryTest.cs" />
+    <Compile Include="TempTest.cs" />
     <Compile Include="UPnP.cs" />
     <Compile Include="WorldTest.cs" />
     <Compile Include="VersionListTest.cs" />
