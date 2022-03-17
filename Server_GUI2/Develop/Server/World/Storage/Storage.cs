@@ -18,6 +18,7 @@ namespace Server_GUI2.Develop.Server.World
     public class StorageCollection
     {
         private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static StorageCollection Instance { get; } = new StorageCollection();
 
         public ObservableCollection<Storage> Storages { get; } = new ObservableCollection<Storage>();
@@ -159,6 +160,9 @@ namespace Server_GUI2.Develop.Server.World
         [JsonProperty("email")]
         public string Email;
 
+        [JsonProperty("worldstates")]
+        public Dictionary<string,WorldState> WorldStates;
+
         /// <summary>
         /// Newtonsoft.Json用コンストラクタ
         /// </summary>
@@ -195,8 +199,10 @@ namespace Server_GUI2.Develop.Server.World
             foreach (var json in gitStorageJsons)
             {
                 var remote = new GitRemote(json.Account, json.Repository);
-                var worldstate = GitStorageManager.Instance.ReadWorldState(remote);
-                result.Add(new GitStorage(remote,worldstate,json.Email));
+                var storage = GitStorageManager.Instance.ReadWorldState(remote).SuccessFunc(
+                    worldstate => new GitStorage(remote, worldstate, json.Email, true)
+                ).SuccessOrDefault( new GitStorage(remote, json.WorldStates, json.Email, false));
+                result.Add(storage);
             }
             logger.Info($"</GetStorages>");
             return result;
@@ -210,18 +216,18 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 新しいリポジトリを生成、ストレージ一覧に追加する
         /// </summary>
-        public static Either<GitStorage,string> AddStorage(string account, string repository, string email)
+        public static Either<GitStorage,Exception> AddStorage(string account, string repository, string email)
         {
             logger.Info($"<AddStorage>");
-
-            // TODO: ストレージのアカウント系のエラー処置
             var remote = new GitRemote(account,repository);
-            var state = GitStorageManager.Instance.ReadWorldState(remote);
-            var storage = new GitStorage(remote,state,email);
-            StorageCollection.Instance.Add(storage);
-
-            logger.Info($"</AddStorage>");
-            return new Success<GitStorage, string>(storage);
+            return GitStorageManager.Instance.ReadWorldState(remote).SuccessFunc(
+                state => {
+                    var storage = new GitStorage(remote, state, email, true);
+                    StorageCollection.Instance.Add(storage);
+                    logger.Info($"</AddStorage>");
+                    return storage;
+                }
+                );
         }
 
         /// <summary>
@@ -250,27 +256,32 @@ namespace Server_GUI2.Develop.Server.World
 
         public GitRemote Remote;
 
-        public GitStorage(GitRemote remote, Dictionary<string, WorldState> worldStates,string email)
+        public GitStorage(GitRemote remote, Dictionary<string, WorldState> worldStates,string email,bool available)
         {
             logger.Info($"<GitStorage> {remote.Account}.{remote.Repository}");
 
             Email = email;
             Remote = remote;
             var named = GitStorageManager.Instance.NamedRemote(Remote);
-            Available = named.IsAvailable;
+            Available = available;
 
             var newUsedNames = new HashSet<string>();
 
-            foreach ( var kv in named.GetBranchs())
+            // リモートと通信できる場合は既に存在するブランチ名は使えないようにする
+            if (Available)
             {
-                newUsedNames.Add(kv.Key);
+                foreach ( var kv in named.GetBranchs())
+                {
+                    newUsedNames.Add(kv.Key);
+                }
             }
 
+            // WorldStatesに登録されたリモートワールド一覧を取得
             foreach ( var worldState in worldStates)
             {
                 if (newUsedNames.Contains(worldState.Key))
                 {
-                    var remoteWorld = new GitRemoteWorld(Remote, worldState.Key, worldState.Value, this, true);
+                    var remoteWorld = new GitRemoteWorld(Remote, worldState.Key, worldState.Value, this, Available);
                     RemoteWorlds.Add(remoteWorld);
                     // 削除イベントを追加
                     remoteWorld.DeleteEvent += new EventHandler((_, __) => RemoteWorlds.Remove(remoteWorld));
@@ -296,9 +307,26 @@ namespace Server_GUI2.Develop.Server.World
             if (Available)
             {
                 // 存在しているリモートだけをフィルタして保存
-                GitStorageManager.Instance.WriteWorldState(Remote, Email, RemoteWorlds.Where(x => x.Exist == true).ToDictionary(x => x.Id, x => x.ExportWorldState()));
+                GitStorageManager.Instance.WriteWorldState
+                    (
+                        Remote,
+                        Email,
+                        ExportWorldStates()
+                        ).SuccessAction
+                    (
+                        x => logger.Info($"</SaveWorldStates> success")
+                    ).FailureAction
+                    (
+                        x => logger.Info($"</SaveWorldStates> failure")
+                    );
             }
-            logger.Info($"</SaveWorldStates>");
+        }
+
+        private Dictionary<string,WorldState> ExportWorldStates()
+        {
+            return RemoteWorlds
+                    .Where(x => x.Exist == true)
+                    .ToDictionary(x => x.Id, x => x.ExportWorldState());
         }
 
         /// <summary>
@@ -320,10 +348,12 @@ namespace Server_GUI2.Develop.Server.World
 
         public GitStorageJson ExportStorageJson()
         {
+            var worldstate = ExportWorldStates();
             var json = new GitStorageJson();
             json.Account = Remote.Account;
             json.Repository = Remote.Repository;
             json.Email = Email;
+            json.WorldStates = worldstate;
             return json;
         }
     }

@@ -20,7 +20,11 @@ namespace Server_GUI2.Develop.Util
 
         public abstract SUCCESS SuccessOrDefault(SUCCESS defaultValue);
 
+        public abstract SUCCESS SuccessOrFunc(Func<FAILURE, SUCCESS> failureToSuccess);
+
         public abstract FAILURE FailureOrDefault(FAILURE defaultValue);
+
+        public abstract FAILURE FailureOrFunc(Func<SUCCESS, FAILURE> successToFailure);
     }
 
     public class Success<SUCCESS, FAILURE>: Either<SUCCESS, FAILURE>
@@ -48,6 +52,10 @@ namespace Server_GUI2.Develop.Util
         }
 
         public override Either<SUCCESS, EitherVoid> FailureAction(Action<FAILURE> action) => new Success<SUCCESS, EitherVoid>(Value);
+
+        public override SUCCESS SuccessOrFunc(Func<FAILURE, SUCCESS> failureToSuccess) => Value;
+
+        public override FAILURE FailureOrFunc(Func<SUCCESS, FAILURE> successToFailure) => successToFailure(Value);
     }
 
     public class Failure<SUCCESS, FAILURE> : Either<SUCCESS, FAILURE>
@@ -71,6 +79,10 @@ namespace Server_GUI2.Develop.Util
 
         public override Either<EitherVoid, FAILURE> SuccessAction(Action<SUCCESS> action) => new Failure<EitherVoid, FAILURE>(Value);
 
+        public override SUCCESS SuccessOrFunc(Func<FAILURE, SUCCESS> failureToSuccess) => failureToSuccess(Value);
+
+        public override FAILURE FailureOrFunc(Func<SUCCESS, FAILURE> successToFailure) => Value; 
+        
         public override Either<SUCCESS, EitherVoid> FailureAction(Action<FAILURE> action)
         {
             action(Value);
