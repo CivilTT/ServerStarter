@@ -136,8 +136,8 @@ namespace Server_GUI2.Windows.WorldSettings
         public bool CanAddOpPlayer => OpPlayerIndex != null;
         public AddOpPlayerCommand AddOpPlayerCommand { get; private set; }
         public DeleteOpPlayerCommand DeleteOpPlayerCommand { get; private set; }
-        public ObservableCollection<OpPlayer> OpPlayersList { get; private set; }
-        public OpPlayer OpPlayersListIndex { get; set; }
+        public ObservableCollection<OpsRecord> OpPlayersList { get; private set; }
+        public OpsRecord OpPlayersListIndex { get; set; }
 
         // WhiteList
         public Player WhitePlayerIndex { get; set; }
@@ -200,8 +200,7 @@ namespace Server_GUI2.Windows.WorldSettings
             OpGroupIndex = Groups.FirstOrDefault();
             AddOpPlayerCommand = new AddOpPlayerCommand(this);
             DeleteOpPlayerCommand = new DeleteOpPlayerCommand(this);
-            // TODO: （@txkodo）WorldインスタンスにOpとWhiteListの情報を持ってほしい
-            OpPlayersList = new ObservableCollection<OpPlayer>();
+            OpPlayersList = new ObservableCollection<OpsRecord>(RunWorld.Settings.Ops);
 
             // WhiteList
             WhitePlayerIndex = Players.FirstOrDefault();
