@@ -63,18 +63,19 @@ namespace Server_GUI2
         /// <summary>
         /// ネットワークに接続されているか調べる
         /// これを実装しなくてもネットがないことを想定して処理されてるところ多め
+        /// TODO: 動作確認
         /// </summary>
-        //private static void CheckConnetNet()
-        //{
-        //    if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-        //    {
-        //        string message =
-        //            "本システムはインターネット環境下のみで動作します。\n" +
-        //            "インターネットに接続したうえで、再度起動してください。";
-        //        MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        Environment.Exit(0);
-        //    }
-        //}
+        private static void CheckConnetNet()
+        {
+            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+            {
+                string message =
+                    "本システムはインターネット環境下のみで動作します。\n" +
+                    "インターネットに接続したうえで、再度起動してください。";
+                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                Environment.Exit(0);
+            }
+        }
 
         /// <summary>
         /// TODO: システムが使用するディレクトリが変更された場合、ここに書いていく

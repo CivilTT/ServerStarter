@@ -182,7 +182,7 @@ namespace Server_GUI2.Windows.WorldSettings
             if (_vm.OpPlayerIndex == null)
                 return false;
 
-            OpPlayer opPlayer = new OpPlayer(_vm.OpPlayerIndex, opLevel);
+            OpsRecord opPlayer = new OpsRecord(_vm.OpPlayerIndex, opLevel);
             if (!_vm.OpPlayersList.Contains(opPlayer))
             {
                 _vm.OpPlayersList.Add(opPlayer);
@@ -200,7 +200,7 @@ namespace Server_GUI2.Windows.WorldSettings
             ObservableCollection<Player> players = _vm.OpGroupIndex.PlayerList;
             foreach (Player player in players)
             {
-                OpPlayer opPlayer = new OpPlayer(player, opLevel);
+                OpsRecord opPlayer = new OpsRecord(player, opLevel);
                 if (!_vm.OpPlayersList.Contains(opPlayer))
                 {
                     _vm.OpPlayersList.Add(opPlayer);
