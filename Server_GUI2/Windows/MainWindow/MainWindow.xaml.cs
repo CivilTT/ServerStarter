@@ -679,7 +679,7 @@ namespace Server_GUI2
     //    [JsonProperty("level")]
     //    public int Level { get; set; }
 
-    //    [JsonProperty("bypassesPlayerLimit")]
+    //    [JsonProperty("BypassesPlayerLimit")]
     //    public bool BypassesPlayerLimit { get; set; }
     //}
 

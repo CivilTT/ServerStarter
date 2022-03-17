@@ -57,7 +57,6 @@ namespace Server_GUI2.Windows.SystemSettings
                 case "Player":
                     var playerList = _vm.PlayerList;
                     var playerContent = new Player(_vm.PlayerName.Value);
-                    playerContent.GetUuid();
                     if (playerContent.UUID == "")
                     {
                         MW.MessageBox.Show("このプレイヤー名は存在しません。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -339,7 +338,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
             // 既存のデータを変更する形で処理
             UserSettings.Instance.userSettings.PlayerName = _vm.UserName.Value;
-            UserSettings.Instance.userSettings.Language = "English;";
+            UserSettings.Instance.userSettings.Language = "English";
             UserSettings.Instance.userSettings.DefaultProperties = _vm.PropertyIndexs.Value;
             UserSettings.Instance.userSettings.Players = _vm.PlayerList.ToList();
             UserSettings.Instance.userSettings.PlayerGroups = _vm.GroupList.ToList();

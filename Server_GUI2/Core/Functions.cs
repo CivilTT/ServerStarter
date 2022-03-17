@@ -1030,7 +1030,7 @@ namespace Server_GUI2
         //    return uuid;
         //}
 
-        //private void Make_op(int level = 4, bool bypassesPlayerLimit = false)
+        //private void Make_op(int level = 4, bool BypassesPlayerLimit = false)
         //{
         //    logger.Info($"Check ops.josn ({Data_list.Info[0]} has op rights, or not)");
         //    string ops_path = $@"{MainWindow.Data_Path}\{Data_list.ReadVersion}\ops.json";
@@ -1049,7 +1049,7 @@ namespace Server_GUI2
         //        Uuid = uuid,
         //        Name = username,
         //        Level = level,
-        //        BypassesPlayerLimit = bypassesPlayerLimit
+        //        BypassesPlayerLimit = BypassesPlayerLimit
         //    };
 
         //    try

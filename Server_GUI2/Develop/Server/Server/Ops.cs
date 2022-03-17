@@ -22,6 +22,19 @@ namespace Server_GUI2
         public int Level;
 
         [JsonProperty("BypassesPlayerLimit")]
-        public bool bypassesPlayerLimit;
+        public bool BypassesPlayerLimit;
+
+        public OpsRecord(Player player, int opLevel, bool bypassesPlayerLimit = false)
+        {
+            Name = player.Name;
+            UUID = player.UUID;
+            Level = opLevel;
+            BypassesPlayerLimit = bypassesPlayerLimit;
+        }
+
+        public bool Equals(OpsRecord other)
+        {
+            return other.UUID == UUID;
+        }
     }
 }
