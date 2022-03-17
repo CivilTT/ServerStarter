@@ -116,10 +116,8 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <local:DataSource x:Key="world_name" ID="input_name"/>
         <Style TargetType="TextBox" x:Key="BoxStyle" BasedOn="{StaticResource {x:Type TextBox}}">
             <Style.Setters>
-                <Setter Property="Text" Value="{Binding ID, Source={StaticResource world_name}, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
                 <Setter Property="Width" Value="253"/>
                 <Setter Property="Height" Value="33"/>
                 <Setter Property="FontSize" Value="18"/>
