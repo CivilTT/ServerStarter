@@ -9,11 +9,14 @@
 		"using": true,
 		"lastuser": "txkodo",
 		"datapacks": [],
-		"properties": {
-			"{key}": "{value}"
-		},
-		"ops": {},
-		"banned-ips": [],
-		"banned-players": []
+		"settings": {
+			"properties": {
+				"{key}": "{value}"
+			},
+			"ops": [],
+			"whitelist": [],
+			"banned-ips": [],
+			"banned-players": []
+		}
 	}
 }
