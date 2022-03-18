@@ -16,6 +16,10 @@ namespace Server_GUI2.Develop.Server.World
     public interface IRemoteWorld : IWorldBase
     {
         Storage Storage { get; }
+        /// <summary>
+        /// GUI上の表示名
+        /// </summary>
+        string DisplayName { get; }
     }
 
     public class NewRemoteWorld : IRemoteWorld
@@ -34,6 +38,8 @@ namespace Server_GUI2.Develop.Server.World
         public Version Version { get; } = null;
 
         public Storage Storage { get; private set; }
+
+        public string DisplayName { get; } = "【new remote world】";
 
         public WorldState ExportWorldState()
         {
@@ -93,6 +99,8 @@ namespace Server_GUI2.Develop.Server.World
         public Version Version  { get; private set; }
 
         public Storage Storage { get; private set; }
+
+        public string DisplayName => Name;
 
         /// <summary>
         /// WorldStateからRemotoworldを構成する
