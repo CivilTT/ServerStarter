@@ -16,6 +16,7 @@ using Server_GUI2.Develop.Util;
 using MW = ModernWpf;
 using System.Text.RegularExpressions;
 using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Develop.Server;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
@@ -154,9 +155,8 @@ namespace Server_GUI2.Windows.SystemSettings
         public bool AlreadyOpened => (PortStatus.Value?.StatusEnum.Value) != null && PortStatus.Value.StatusEnum.Value == Develop.Util.PortStatus.Status.Open;
         public bool CanAddition_Po => ValidPortNumber && CanWritePortNumber && !AlreadyOpened;
         public AddPortCommand AddPortCommand { get; private set; }
-        readonly WebClient wc = new WebClient();
         // TODO: IPの取得にはやや時間がかかるため、awaitにするべき？
-        public string IP { get { return wc.DownloadString("https://ipv4.icanhazip.com/").Replace("\\r\\n", "").Replace("\\n", "").Trim(); } }
+        public string IP { get { return NetWork.GlobalIP; } }
         public ClipbordCommand ClipbordCommand { get; private set; }
         public BindingValue<PortStatus> PortStatus { get; private set; }
 
