@@ -1,0 +1,9 @@
+[
+	{
+		"remote_storage": "git/txkodo/GitTest",
+		"remote_world": "a",
+		"local_version": "1.18.1",
+		"local_world": "world(2)",
+		"using": false
+	}
+]
