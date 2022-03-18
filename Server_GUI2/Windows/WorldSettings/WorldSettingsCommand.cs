@@ -51,9 +51,7 @@ namespace Server_GUI2.Windows.WorldSettings
         public override void Execute(object parameter)
         {
             // Import中にWindowの操作をされないように隠す
-            // TODO: Hideの直後にShowするとWorldSettingsが開くが、File選択の画面の後にShowするとMainWindowが開く問題の修正
             _vm.Hide();
-            _vm.Show();
 
             switch (parameter)
             {
@@ -62,14 +60,14 @@ namespace Server_GUI2.Windows.WorldSettings
                     string path = ShowDialog(isZip, new CommonFileDialogFilter("圧縮ファイル", "*.zip"));
 
                     if (path == null)
-                        return;
+                        break;
 
                     // datapackとして有効かを確認
                     Datapack datapack = Datapack.TryGenInstance(path, isZip);
                     if (datapack == null)
                     {
                         MW.MessageBox.Show($"この{(isZip ? "ファイル" : "フォルダ")}はデータパックとして無効です。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
+                        break;
                     }
 
                     // FileNameで選択されたフォルダを取得する
@@ -79,13 +77,13 @@ namespace Server_GUI2.Windows.WorldSettings
                     path = ShowDialog(true, new CommonFileDialogFilter("プラグインファイル", "*.jar"));
 
                     if (path == null)
-                        return;
+                        break;
 
                     Plugin plugin = Plugin.TryGenInstance(path, false);
                     if (plugin == null)
                     {
                         MW.MessageBox.Show("Pluginとして無効なファイルです。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
+                        break;
                     }
 
                     _vm.Plugins.Add(plugin);
@@ -95,13 +93,13 @@ namespace Server_GUI2.Windows.WorldSettings
                     path = ShowDialog(isZip, new CommonFileDialogFilter("圧縮ファイル", "*.zip"));
 
                     if (path == null)
-                        return;
+                        break;
 
                     CustomMap custom = CustomMap.TryGetInstance(path, isZip);
                     if (custom == null)
                     {
                         MW.MessageBox.Show($"この{(isZip ? "ファイル" : "フォルダ")}は配布ワールドとして無効です。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
+                        break;
                     }
 
                     _vm.RunWorld.CustomMap = custom;
@@ -116,7 +114,6 @@ namespace Server_GUI2.Windows.WorldSettings
         /// <summary>
         /// ファイル選択のダイアログを表示
         /// ファイルが選択された場合、そのパスを返し、選択されなかった場合はnullを返す
-        /// TODO: GUIでisZipを変更しても、それが反映されない
         /// </summary>
         private string ShowDialog(bool isFile, CommonFileDialogFilter filter=null)
         {

@@ -61,7 +61,9 @@ namespace Server_GUI2.Windows.MainWindow
             _vm.Hide?.Invoke();
             var worldSettingWindow = new WorldSettingsVM(_vm.RunVersion, _vm.RunWorld);
             WSwindow.ShowDialog(worldSettingWindow);
-            _vm.Show?.Invoke();
+
+            // OnClosingにコメントアウトの理由あり
+            //_vm.Show?.Invoke();
         }
     }
 

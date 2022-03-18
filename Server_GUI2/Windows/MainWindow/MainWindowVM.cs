@@ -27,7 +27,6 @@ namespace Server_GUI2.Windows.MainWindow
 
 
         // General
-        // TODO: NewWorldの名前チェックはNewWorld.IsUseableName()を使用する
         public bool CanRun => !ShowNewWorld || ValidWorldName;
 
 
@@ -53,7 +52,6 @@ namespace Server_GUI2.Windows.MainWindow
         public ObservableCollection<IWorld> Worlds { get; private set; }
         public BindingValue<IWorld> WorldIndex { get; private set; }
         public bool ShowNewWorld => (WorldIndex.Value?.DisplayName ?? "") == "【new World】";
-        //public BindingValue<string> NewWorldName { get; private set; }
         private string _newWorldName;
         public string NewWorldName
         {
@@ -73,8 +71,6 @@ namespace Server_GUI2.Windows.MainWindow
                 return true;
             }
         }
-        // TODO: 仮で実行するワールドを既存のものから選択したものにしている
-        // 本実装では新規に対応したものに差し替え
         public IWorld RunWorld => WorldIndex.Value;
 
         // Setting
