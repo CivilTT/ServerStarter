@@ -34,8 +34,8 @@ namespace Server_GUI2
 
             // TODO: 実装の整理
             // base.OnStartup(e);
-            bool reset_data = false;
-            bool save_data = false;
+            //bool reset_data = false;
+            //bool save_data = false;
             bool delete_data = false;
 
             if (e.Args.Length == 0)
@@ -89,13 +89,13 @@ namespace Server_GUI2
                             Server_GUI2.Properties.Settings.Default.Save();
                             continue;
                         case "-r":
-                            reset_data = true;
+                            //reset_data = true;
                             continue;
                         case "/save":
-                            save_data = true;
+                            //save_data = true;
                             continue;
                         case "/delete":
-                            delete_data = true;
+                            //delete_data = true;
                             continue;
                         default:
                             Console.WriteLine($"'{key}' is unknown paramater.");
@@ -109,14 +109,14 @@ namespace Server_GUI2
                 
                 MainWindow main = new MainWindow();
                 //More_Settings m_settings = new More_Settings();
-                main.Reset_world = reset_data;
-                main.Save_world = save_data;
+                //main.Reset_world = reset_data;
+                //main.Save_world = save_data;
 
                 bool result = Check_valid(main);
 
                 if (result)
                 {
-                    main.Get_op = op;
+                    //main.Get_op = op;
                     Change_properties();
                     //m_settings.Read_properties();
                     //main.Start(false);
@@ -125,6 +125,11 @@ namespace Server_GUI2
                 Console.Write(end_str);
                 Finish();
             }
+        }
+
+        private void AnalizeArgs(string[] args)
+        {
+
         }
 
         private bool Check_valid(MainWindow main)

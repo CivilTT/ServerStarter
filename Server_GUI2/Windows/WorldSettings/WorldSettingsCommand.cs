@@ -302,7 +302,13 @@ namespace Server_GUI2.Windows.WorldSettings
         {
             _vm.RunWorld.Settings.ServerProperties = new ServerProperty(_vm.PropertyIndexs.Value);
 
-            // TODO: ShareWorldについて保存処理を記載
+            if (_vm.UseSW.Value)
+                if (_vm.RemoteIndex.Value is RemoteWorld world)
+                    _vm.RunWorld.Link(world);
+                else
+                    _vm.RunWorld.Link(_vm.AccountIndex.Value.CreateRemoteWorld(_vm.RemoteName));
+            else if (_vm.RunWorld.HasRemote)
+                _vm.RunWorld.Unlink();
 
             _vm.RunWorld.Datapacks = new DatapackCollection(_vm.Datapacks);
             if (_vm.RunVersion is SpigotVersion)
