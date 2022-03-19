@@ -77,7 +77,7 @@ namespace Server_GUI2.Windows.MainWindow
         public BindingValue<bool> ResetWorld { get; private set; }
         public bool SaveWorld { get; set; }
         public bool ShowSaveWorld => ResetWorld != null && ResetWorld.Value;
-        public bool OwnerHasOp { get; set; }
+        public bool OwnerHasOp { get; set; } /*TODO: OwnerNameがなければ選択できないようにし、TrueならOpPlayerListに追記する*/
         public bool ShutdownPC { get; set; }
 
         // ボタンなどに呼応した処理
