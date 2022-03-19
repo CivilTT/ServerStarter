@@ -77,8 +77,35 @@ namespace Server_GUI2.Windows.MainWindow
         public BindingValue<bool> ResetWorld { get; private set; }
         public bool SaveWorld { get; set; }
         public bool ShowSaveWorld => ResetWorld != null && ResetWorld.Value;
-        public bool OwnerHasOp { get; set; } /*TODO: OwnerNameがなければ選択できないようにし、TrueならOpPlayerListに追記する*/
-        public bool ShutdownPC { get; set; }
+        public bool HasOwner => UserSettings.Instance.userSettings.PlayerName != null;
+        public bool OwnerHasOp
+        {
+            get
+            {
+                if (!HasOwner)
+                    return false;
+
+                Player owner = SaveData.Players.Where(player => player.Name == PlayerName).FirstOrDefault();
+                OpsRecord ownerOp = new OpsRecord(owner, 4);
+                return WorldIndex.Value.Settings.Ops.Contains(ownerOp);
+            }
+            set
+            {
+                Player owner = SaveData.Players.Where(player => player.Name == PlayerName).FirstOrDefault();
+                if (value)
+                {
+                    OpsRecord ownerOp = new OpsRecord(owner, 4);
+                    WorldIndex.Value.Settings.Ops.Add(ownerOp);
+                }
+                else
+                {
+                    OpsRecord ownerOp = WorldIndex.Value.Settings.Ops.Where(player => player.Name == PlayerName).FirstOrDefault();
+                    WorldIndex.Value.Settings.Ops.Remove(ownerOp);
+                }
+            }
+        }
+        public bool ShutdownPC { get; set; } = SaveData.ShutdownPC;
+        public SetShutdown SetShutdown { get; private set; }
 
         // ボタンなどに呼応した処理
         public RunCommand RunCommand { get; private set; }
@@ -120,18 +147,16 @@ namespace Server_GUI2.Windows.MainWindow
 
             // World
             Worlds = new ObservableCollection<IWorld>(AllWorlds);
-            IWorld firstSelectWor = Worlds[0];
-            if (SaveData.LatestRun != null)
-            {
-                LocalWorld targetWorld = LocalWorldCollection.Instance.FindLocalWorld(SaveData.LatestRun.VersionName, SaveData.LatestRun.WorldName);
-                firstSelectWor = AllWorlds.OfType<World>().Where(world => world.LocalWorld == targetWorld).FirstOrDefault();
-            }
-            WorldIndex = new BindingValue<IWorld>(firstSelectWor, () => OnPropertyChanged(new string[2] { "ShowNewWorld", "CanRun" }));
+            LocalWorld targetWorld = LocalWorldCollection.Instance.FindLocalWorld(SaveData.LatestRun.VersionName, SaveData.LatestRun.WorldName);
+            IWorld firstSelectWor = (IWorld)targetWorld ?? Worlds[0];
+            WorldIndex = new BindingValue<IWorld>(firstSelectWor, () => OnPropertyChanged(new string[3] { "ShowNewWorld", "CanRun", "OwnerHasOp" }));
             NewWorldName = "InputWorldName";
             SetUp.InitProgressBar.AddMessage("Set Minecraft Worlds in Main Window");
 
             // Setting
             ResetWorld = new BindingValue<bool>(false, () => OnPropertyChanged("ShowSaveWorld"));
+            SetShutdown = new SetShutdown(this);
+
 
             // Window
             SettingCommand = new SettingCommand(this, ssWindow);

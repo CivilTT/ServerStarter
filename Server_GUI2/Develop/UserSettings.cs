@@ -91,9 +91,6 @@ namespace Server_GUI2
         // }
         public LatestRun LatestRun;
 
-        [JsonProperty("OwnerHasOp")]
-        public bool OwnerHasOp;
-
         [JsonProperty("ShutdownPC")]
         public bool ShutdownPC;
 

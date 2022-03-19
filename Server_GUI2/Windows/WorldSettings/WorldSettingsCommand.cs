@@ -305,7 +305,8 @@ namespace Server_GUI2.Windows.WorldSettings
             // TODO: ShareWorldについて保存処理を記載
 
             _vm.RunWorld.Datapacks = new DatapackCollection(_vm.Datapacks);
-            _vm.RunWorld.Plugins = new PluginCollection(_vm.Plugins);
+            if (_vm.RunVersion is SpigotVersion)
+                _vm.RunWorld.Plugins = new PluginCollection(_vm.Plugins);
             _vm.RunWorld.CustomMap = _vm.CustomMap;
 
             _vm.RunWorld.Settings.Ops = new List<OpsRecord>(_vm.OpPlayersList);

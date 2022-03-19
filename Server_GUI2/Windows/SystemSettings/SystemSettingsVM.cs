@@ -215,7 +215,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
             // Network
             int portNum = SaveData.PortSettings.PortNumber;
-            UsingPortMapping = new BindingValue<bool>(SaveData.PortSettings.UsingPortMapping, () => );
+            UsingPortMapping = new BindingValue<bool>(SaveData.PortSettings.UsingPortMapping, () => UpdateUsingPortMapping());
             PortNumber = portNum.ToString();
             AddPortCommand = new AddPortCommand(this);
             ClipbordCommand = new ClipbordCommand(this);
@@ -249,11 +249,13 @@ namespace Server_GUI2.Windows.SystemSettings
         {
             OnPropertyChanged(new string[4] { "OtherPropertyIndexs", "UsingPortMapping", "CanWritePortNumber", "CanAddition_Po" });
 
-            if (UsingPortMapping.Value)
+            if (UsingPortMapping != null && UsingPortMapping.Value)
             {
+                // TODO: 詳細方法にリンクを付けたい
+                // TODO: リンクの付与など自身でカスタマイズ可能なMessageBoxの作成
                 string message =
-                    "この機能はルータに対してポート開放を行います。" +
-                    "セキュリティソフトに対してはポート開放されないため、必要に応じてご自身で設定してください。" +
+                    "この機能はルータに対してポート開放を行います。\n" +
+                    "セキュリティソフトに対してはポート開放されないため、必要に応じてご自身で設定してください。\n" +
                     "詳細は設定方法をご参照ください。";
                 MW.MessageBox.Show(message, "Server Starter", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
             }

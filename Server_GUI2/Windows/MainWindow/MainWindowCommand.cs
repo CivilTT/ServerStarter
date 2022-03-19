@@ -21,7 +21,7 @@ namespace Server_GUI2.Windows.MainWindow
         public override void Execute(object parameter)
         {
             _vm.Hide();
-            StartServer.Run(_vm.RunVersion, _vm.RunWorld, _vm.ShutdownPC);
+            StartServer.Run(_vm.RunVersion, _vm.RunWorld);
 
             // TODO: 必要に応じて再表示する
         }
@@ -91,6 +91,19 @@ namespace Server_GUI2.Windows.MainWindow
         }
     }
 
+    class SetShutdown : GeneralCommand<MainWindowVM>
+    {
+        public SetShutdown(MainWindowVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            UserSettings.Instance.userSettings.ShutdownPC = _vm.ShutdownPC;
+        }
+    }
+
     class CloseCommand : GeneralCommand<MainWindowVM>
     {
         public CloseCommand(MainWindowVM vm)
@@ -100,24 +113,12 @@ namespace Server_GUI2.Windows.MainWindow
 
         public override void Execute(object parameter)
         {
-            SetLatestRun();
+            // userSettingsに何か変更が加えられていた場合は保存してから終了する
+            UserSettings.Instance.WriteFile();
 
             _vm.Close();
 
             Application.Current.Shutdown();
-        }
-
-        private void SetLatestRun()
-        {
-            //List<string> vers = _vm.ExistsVersions;
-            //string existsVer = _vm.SelectedExistsVersion;
-            //string newVer = _vm.SelectedNewVersion;
-            //string ver = (existsVer == vers[vers.Count - 1]) ? newVer : existsVer;
-
-            //LatestRun latestRun = new LatestRun();
-
-            //UserSettings.userSettings.latestRun = latestRun;
-            //UserSettings.WriteFile();
         }
     }
 }

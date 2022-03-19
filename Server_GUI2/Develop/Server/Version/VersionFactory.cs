@@ -63,6 +63,7 @@ namespace Server_GUI2
 
         public Version GetVersionFromName(string name)
         {
+            // TODO: VersionMapにないnameが指定された場合の対応
             return VersionMap[name];
         }
 
