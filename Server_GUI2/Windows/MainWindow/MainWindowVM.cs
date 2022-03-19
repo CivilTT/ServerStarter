@@ -136,10 +136,10 @@ namespace Server_GUI2.Windows.MainWindow
             {
                 new VanillaVersion("【new Version】", "", true, false)
             };
-            Version firstSelectVer = SaveData.LatestRun == null ? ExistsVersions[0] : VersionFactory.Instance.GetVersionFromName(SaveData.LatestRun.VersionName);
+            Version firstSelectVer = SaveData.LatestRun == null ? ExistsVersions.FirstOrDefault() : VersionFactory.Instance.GetVersionFromName(SaveData.LatestRun.VersionName);
             ExistsVersionIndex = new BindingValue<Version>(firstSelectVer, () => OnPropertyChanged("ShowNewVersions"));
             NewVersions = new ObservableCollection<Version>(AllVers.OfType<VanillaVersion>());
-            NewVersionIndex = new BindingValue<Version>(NewVersions[0], () => OnPropertyChanged(""));
+            NewVersionIndex = new BindingValue<Version>(NewVersions.FirstOrDefault(), () => OnPropertyChanged(""));
             ShowAll = new BindingValue<bool>(false, () => UpdateNewVersions());
             ShowSpigot = new BindingValue<bool>(false, () => UpdateNewVersions());
             SetUp.InitProgressBar.AddMessage("Set Minecraft Versions in Main Window");
@@ -147,8 +147,9 @@ namespace Server_GUI2.Windows.MainWindow
 
             // World
             Worlds = new ObservableCollection<IWorld>(AllWorlds);
-            LocalWorld targetWorld = LocalWorldCollection.Instance.FindLocalWorld(SaveData.LatestRun.VersionName, SaveData.LatestRun.WorldName);
-            IWorld firstSelectWor = (IWorld)targetWorld ?? Worlds[0];
+            LocalWorld targetLocalWorld = LocalWorldCollection.Instance.FindLocalWorld(SaveData.LatestRun.VersionName, SaveData.LatestRun.WorldName);
+            World targetWorld = WorldCollection.Instance.Worlds.OfType<World>().Where(x => x.LocalWorld == targetLocalWorld).FirstOrDefault();
+            IWorld firstSelectWor = targetWorld ?? Worlds.FirstOrDefault();
             WorldIndex = new BindingValue<IWorld>(firstSelectWor, () => OnPropertyChanged(new string[3] { "ShowNewWorld", "CanRun", "OwnerHasOp" }));
             NewWorldName = "InputWorldName";
             SetUp.InitProgressBar.AddMessage("Set Minecraft Worlds in Main Window");
@@ -180,7 +181,7 @@ namespace Server_GUI2.Windows.MainWindow
             }
 
             OnPropertyChanged("NewVersions");
-            NewVersionIndex.Value = NewVersions[0];
+            NewVersionIndex.Value = NewVersions.FirstOrDefault();
         }
 
         private void UpdateNewWorld()

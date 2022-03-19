@@ -103,8 +103,8 @@ namespace Server_GUI2
 
             //一度実行し、eula.txtなどの必要ファイルを書き出す
             func.Start_server(true);
-            MainWindow.Pd.Value = 15;
-            MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
+            //MainWindow.Pd.Value = 15;
+            //MainWindow.Pd.Message = "Output the server.jar, eula.txt and so on";
 
             //eulaの書き換え
             func.Change_eula();

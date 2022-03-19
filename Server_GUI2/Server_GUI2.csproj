@@ -183,9 +183,6 @@
       <DependentUpon>WorldSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\WorldSettings\WorldSettingsVM.cs" />
-    <Compile Include="Windows\ProgressBar\Progress_Bar.xaml.cs">
-      <DependentUpon>Progress_Bar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Core\Spigot_Function.cs" />
     <Compile Include="Core\UPnP.cs" />
     <Compile Include="Core\ReadContents.cs" />
@@ -194,10 +191,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Windows\WorldSettings\WorldSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\ProgressBar\Progress_Bar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

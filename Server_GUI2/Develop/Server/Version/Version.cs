@@ -171,7 +171,6 @@ namespace Server_GUI2
             get
             {
                 // バージョンごとに引数を変更する
-                // TODO: バージョンによってはファイルを新しく用意する必要あり
                 int versionIndex = VersionFactory.GetIndex(Name);
 
                 int index18 = VersionFactory.GetIndex("1.18.1");

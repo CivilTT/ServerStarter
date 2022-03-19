@@ -26,7 +26,7 @@ namespace Server_GUI2
             }
 
             logger.Info("Start the pull ShareWorld");
-            MainWindow.Pd.Message = "\n---Start the pull ShareWorld---\n";
+            //MainWindow.Pd.Message = "\n---Start the pull ShareWorld---\n";
 
             // Process p = Process.Start($@"{MainWindow.Data_Path}\{version}\ShareWorld\pull.bat");
             // %{ "$_" }　によって通常、powershellのエラーによって欠落してしまう文言を補完している
@@ -54,7 +54,7 @@ namespace Server_GUI2
             }
 
             logger.Info("Start the push ShareWorld");
-            MainWindow.Pd.Message = "\n---Start the push ShareWorld---\n";
+            //MainWindow.Pd.Message = "\n---Start the push ShareWorld---\n";
 
             // Process p = Process.Start($@"{MainWindow.Data_Path}\{version}\ShareWorld\push.bat");
             // string command = $@"{MainWindow.Data_Path}\{Data_list.Version}\ShareWorld\push.bat 2>&1 | " + "%{ \"\"\"$_\"\"\" }" + @" | Set-Content -Path .\log\push_log.txt -PassThru";
@@ -75,7 +75,7 @@ namespace Server_GUI2
             Create_bat_clone(version);
 
             logger.Info("Start the cloning ShareWorld");
-            MainWindow.Pd.Message = "\n---Start the cloning ShareWorld---\n";
+            //MainWindow.Pd.Message = "\n---Start the cloning ShareWorld---\n";
 
             // ProcessStartInfo info = new ProcessStartInfo();
             // info.FileName = "clone.bat";
@@ -137,7 +137,7 @@ namespace Server_GUI2
         {
             //出力された文字列を表示する
             // Console.WriteLine(e.Data);
-            MainWindow.Pd.Message = e.Data;
+            //MainWindow.Pd.Message = e.Data;
             log_text.Add(e.Data);
         }
 
