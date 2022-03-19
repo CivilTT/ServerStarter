@@ -28,7 +28,7 @@ namespace Server_GUI2
         /// <summary>
         /// Runボタンが押された時に呼ばれる処理
         /// </summary>
-        public static async void Run(Version version, IWorld world, bool isShutdown)
+        public static async void Run(Version version, IWorld world)
         {
             logger.Info($"<Run>");
             Version = version;
@@ -74,7 +74,7 @@ namespace Server_GUI2
             DeletePort(successPortMapping);
 
             //Shutdown
-            ShutDown(isShutdown);
+            ShutDown();
 
             ////サーバー実行
             //World.WrapRun(
@@ -134,9 +134,9 @@ namespace Server_GUI2
                 await PortMapping.DeletePort(UserSettings.Instance.userSettings.PortSettings.PortNumber);
         }
 
-        private static void ShutDown(bool isShutdown)
+        private static void ShutDown()
         {
-            if (!isShutdown)
+            if (UserSettings.Instance.userSettings.ShutdownPC)
                 return;
 
             DialogResult result = AutoClosingMessageBox.Show(
