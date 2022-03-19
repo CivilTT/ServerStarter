@@ -28,7 +28,7 @@ namespace Server_GUI2
         /// <summary>
         /// Runボタンが押された時に呼ばれる処理
         /// </summary>
-        public static void Run(Version version, IWorld world, bool isShutdown)
+        public static async void Run(Version version, IWorld world, bool isShutdown)
         {
             logger.Info($"<Run>");
             Version = version;
@@ -50,11 +50,14 @@ namespace Server_GUI2
             logger.Info($"best java version ({javaVersion})");
             var javaPath = Java.GetBestJavaPath(javaVersion);
             logger.Info($"use java path ({javaPath})");
+            RunProgressBar.AddMessage($"Decide to using java {javaVersion}");
 
             // Port Mapping
-            bool successPortMapping = AddPort().Result;
+            bool successPortMapping = await AddPort();
+            RunProgressBar.AddMessage("Finished Port Mapping");
 
             //サーバー実行
+            // TODO: Run内にプログレスバーのチェックポイントを立て、起動直前にBarを閉じる
             World.WrapRun(
                 Version,
                 (serverProperty,arg) => Server.Start(
@@ -84,6 +87,8 @@ namespace Server_GUI2
             //        )
             //    );
             logger.Info($"</Run>");
+
+            Environment.Exit(0);
         }
 
         static void DummyRun(VersionPath path, string jarName, string log4jArgument, ServerSettings settings)
@@ -93,16 +98,17 @@ namespace Server_GUI2
 
         private static void RecordLatestVerWor()
         {
-            UserSettings.Instance.userSettings.LatestRun.VersionName = Version.Name;
-            UserSettings.Instance.userSettings.LatestRun.VersionType = Version is VanillaVersion ? "vanilla" : "spigot";
-            UserSettings.Instance.userSettings.LatestRun.WorldName = World.Name;
+            UserSettings.Instance.userSettings.LatestRun = new LatestRun(Version, World);
             UserSettings.Instance.WriteFile();
         }
 
         private static async Task<bool> AddPort()
         {
             if (!UserSettings.Instance.userSettings.PortSettings.UsingPortMapping)
+            {
+                World.Settings.ServerProperties.ServerPort = "25565";
                 return false;
+            }
 
             bool isSuccess = await PortMapping.AddPort(UserSettings.Instance.userSettings.PortSettings.PortNumber);
 
@@ -116,7 +122,7 @@ namespace Server_GUI2
             else
             {
                 // Upnpに対応したポート番号を設定する
-                World.Settings.ServerProperties.ServerPort = "2869";
+                World.Settings.ServerProperties.ServerPort = PortMapping.LocalPort.ToString();
             }
 
             return isSuccess;

@@ -15,12 +15,14 @@ namespace Server_GUI2.Develop.Util
 {
     public class PortMapping
     {
+        public static int LocalPort => 2869;
+
         public static async Task<bool> AddPort(int portNum)
         {
             NatDiscoverer discoverer = new NatDiscoverer();
             NatDevice device = await discoverer.DiscoverDeviceAsync();
 
-            Mapping mapping = new Mapping(Protocol.Tcp, 2869, portNum, "Server Starter");
+            Mapping mapping = new Mapping(Protocol.Tcp, LocalPort, portNum, "Server Starter");
 
             // WhenAnyは引数のTaskのうち、１つでも終了したらawaitを抜ける
             // Delayは非同期処理によって処理を止める（GUIのフリーズ防止）
@@ -43,7 +45,7 @@ namespace Server_GUI2.Develop.Util
             NatDiscoverer discoverer = new NatDiscoverer();
             NatDevice device = await discoverer.DiscoverDeviceAsync();
 
-            Mapping mapping = new Mapping(Protocol.Tcp, 2869, portNum, "Server Starter");
+            Mapping mapping = new Mapping(Protocol.Tcp, LocalPort, portNum, "Server Starter");
 
             await device.DeletePortMapAsync(mapping);
 

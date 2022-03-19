@@ -76,12 +76,11 @@ namespace Server_GUI2.Develop.Server
             //インターネットに接続されているか確認する
             string host = "http://www.yahoo.com";
 
-            HttpWebRequest webreq = null;
             HttpWebResponse webres = null;
             try
             {
                 //HttpWebRequestの作成
-                webreq = (HttpWebRequest)System.Net.WebRequest.Create(host);
+                HttpWebRequest webreq = (HttpWebRequest)WebRequest.Create(host);
                 //メソッドをHEADにする
                 webreq.Method = "HEAD";
                 //受信する

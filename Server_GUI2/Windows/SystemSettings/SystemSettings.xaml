@@ -254,11 +254,13 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style TargetType="Button" x:Key="CopyButton">
+        <Style TargetType="Button" x:Key="CopyButton" BasedOn="{StaticResource MiniButton}">
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
+                <Trigger Property="ClickMode" Value="Release">
                     <Setter Property="Background" Value="#7CBB00"/>
-                    <Setter Property="ToolTip" Value="Copyed!"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="False">
+                    <Setter Property="Background" Value="#FF717171"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -628,23 +630,31 @@
             <TextBlock Text="Status" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="20 30 0 0">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="IP Address" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="Global IP Address" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="Local IP Address" Style="{StaticResource PropertyIndex}"/>
                     <TextBlock Text="Auto Port Mapping" IsEnabled="{Binding UsingPortMapping.Value}" Style="{StaticResource PropertyIndex}"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
-                    <TextBox Text="{Binding IP, Mode=OneWay}" Style="{StaticResource ShowIP}"/>
+                    <TextBox Text="{Binding GlobalIP, Mode=OneWay}" Style="{StaticResource ShowIP}"/>
+                    <TextBox Text="{Binding LocalIP, Mode=OneWay}" Style="{StaticResource ShowIP}"/>
                     <TextBlock Text="{Binding PortStatus.Value.DisplayStatus}" IsEnabled="{Binding UsingPortMapping.Value}" Foreground="Green" FontWeight="Bold" Style="{StaticResource NetStatusBlock}"/>
                 </StackPanel>
             </StackPanel>
             
-            <!--//TODO: ボタンを押したら背景色が変わるようにする//-->
-            <Button Command="{Binding ClipbordCommand}" Margin="20 43" Style="{StaticResource CopyButton}">
+            <Button Command="{Binding ClipbordCommand}" CommandParameter="global" Margin="20 43" Style="{StaticResource CopyButton}">
                 <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                 <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/copy-solid.svg"/>
                 <ToolTipService.ToolTip>
                     <ToolTip Content="Copy"/>
                 </ToolTipService.ToolTip>
-            </Button>            
+            </Button>
+            <Button Command="{Binding ClipbordCommand}" CommandParameter="local" Margin="20 91" Style="{StaticResource CopyButton}">
+                <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/copy-solid.svg"/>
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Copy"/>
+                </ToolTipService.ToolTip>
+            </Button>
             
         </Grid>
         
@@ -679,7 +689,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="{Binding SystemVersion, Mode=OneWay}" Style="{StaticResource NetStatusBlock}"/>
-                    <ui:HyperlinkButton Content="Access Here" NavigateUri="" Margin="0,13,20,2" FontSize="20" Height="33" Padding="0"/>
+                    <ui:HyperlinkButton Content="Access Here" NavigateUri="https://civiltt.github.io/ServerStarter/" Margin="0,13,20,2" FontSize="20" Height="33" Padding="0"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="CivilTT" Style="{StaticResource NetStatusBlock}"/>
                         <Button Command="{Binding TwitterCommand}" CommandParameter="CivilT_T" Style="{StaticResource OthersMiniButton}">
