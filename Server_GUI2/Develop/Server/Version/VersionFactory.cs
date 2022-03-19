@@ -58,7 +58,6 @@ namespace Server_GUI2
             versions.Sort();
             versions.Reverse();
             Versions = new ObservableCollection<Version>(versions);
-            Versions.WriteLine();
         }
 
         public Version GetVersionFromName(string name)

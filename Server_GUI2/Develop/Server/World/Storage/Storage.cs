@@ -17,6 +17,7 @@ namespace Server_GUI2.Develop.Server.World
 {
     public class StorageCollection
     {
+        //TODO: push pullのアカウント切り替え
         private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static StorageCollection Instance { get; } = new StorageCollection();

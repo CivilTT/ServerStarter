@@ -98,12 +98,15 @@ namespace Server_GUI2.Windows.WorldSettings
 
         // ShareWorld
         public BindingValue<bool> UseSW { get; private set; }
+        public bool CanEdit => UseSW.Value && ! RunWorld.HasRemote;
         public ObservableCollection<Storage> Accounts { get; private set; }
         public BindingValue<Storage> AccountIndex { get; private set; }
         public ObservableCollection<IRemoteWorld> RemoteDataList { get; private set; }
         public BindingValue<IRemoteWorld> RemoteIndex { get; private set; }
+        public bool CanSelectRemoteIndex => RunWorld is NewWorld && CanEdit;
+        // TODO: 名称が利用可能かのエラー処理を実装
         public string RemoteName { get; set; }
-        public bool ShowNewRemoteData => RemoteIndex?.Value == /*//TODO: 何とイコールにすればよい？//*/null;
+        public bool ShowNewRemoteData => RemoteIndex?.Value is NewRemoteWorld;
 
         // Additionals
         public ImportAdditionalsCommand ImportAdditionalsCommand { get; private set; }
@@ -167,10 +170,11 @@ namespace Server_GUI2.Windows.WorldSettings
             // ShareWorld
             // TODO: 既存ワールドをリモート化するときには【new Remote Data】しか選べないようにする
             // TODO: (@txkodo) Worldと同じく【new Remote Data】をStoragesに持たせておけないか
-            UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => OnPropertyChanged(""));
+            UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => OnPropertyChanged(new string[2] { "CanEdit", "CanSelectRemoteIndex" }));
             Accounts = new ObservableCollection<Storage>(Storages.Storages);
             AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
-            RemoteDataList = AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<IRemoteWorld>();
+            RemoteDataList = new ObservableCollection<IRemoteWorld>(AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<IRemoteWorld>());
+            RemoteIndex = new BindingValue<IRemoteWorld>(RunWorld.HasRemote ? RunWorld.RemoteWorld : AccountIndex.Value.RemoteWorlds.Last(), () => OnPropertyChanged("ShowNewRemoteData"));
 
             // Additionals
             ImportAdditionalsCommand = new ImportAdditionalsCommand(this);
