@@ -91,9 +91,6 @@ namespace Server_GUI2
         // }
         public LatestRun LatestRun;
 
-        [JsonProperty("OwnerHasOp")]
-        public bool OwnerHasOp;
-
         [JsonProperty("ShutdownPC")]
         public bool ShutdownPC;
 
@@ -124,7 +121,7 @@ namespace Server_GUI2
         [JsonProperty("World")]
         public string WorldName;
 
-        public LatestRun(Version version, World world)
+        public LatestRun(Version version, IWorld world)
         {
             VersionName = version.Name;
             VersionType = version.Type.ToStr();

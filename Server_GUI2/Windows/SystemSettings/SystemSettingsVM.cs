@@ -16,6 +16,7 @@ using Server_GUI2.Develop.Util;
 using MW = ModernWpf;
 using System.Text.RegularExpressions;
 using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Develop.Server;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
@@ -154,9 +155,8 @@ namespace Server_GUI2.Windows.SystemSettings
         public bool AlreadyOpened => (PortStatus.Value?.StatusEnum.Value) != null && PortStatus.Value.StatusEnum.Value == Develop.Util.PortStatus.Status.Open;
         public bool CanAddition_Po => ValidPortNumber && CanWritePortNumber && !AlreadyOpened;
         public AddPortCommand AddPortCommand { get; private set; }
-        readonly WebClient wc = new WebClient();
-        // TODO: IPの取得にはやや時間がかかるため、awaitにするべき？
-        public string IP { get { return wc.DownloadString("https://ipv4.icanhazip.com/").Replace("\\r\\n", "").Replace("\\n", "").Trim(); } }
+        public string GlobalIP { get { return NetWork.GlobalIP; } }
+        public string LocalIP { get { return NetWork.LocalIP; } }
         public ClipbordCommand ClipbordCommand { get; private set; }
         public BindingValue<PortStatus> PortStatus { get; private set; }
 
@@ -215,7 +215,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
             // Network
             int portNum = SaveData.PortSettings.PortNumber;
-            UsingPortMapping = new BindingValue<bool>(SaveData.PortSettings.UsingPortMapping, () => OnPropertyChanged(new string[4] { "OtherPropertyIndexs", "UsingPortMapping", "CanWritePortNumber", "CanAddition_Po" }));
+            UsingPortMapping = new BindingValue<bool>(SaveData.PortSettings.UsingPortMapping, () => UpdateUsingPortMapping());
             PortNumber = portNum.ToString();
             AddPortCommand = new AddPortCommand(this);
             ClipbordCommand = new ClipbordCommand(this);
@@ -243,6 +243,22 @@ namespace Server_GUI2.Windows.SystemSettings
 
             // Membersの中で登録済みのプレイヤーでないものを削除
             MemberList.RemoveAll(player => !PlayerList.Contains(player));
+        }
+
+        private void UpdateUsingPortMapping()
+        {
+            OnPropertyChanged(new string[4] { "OtherPropertyIndexs", "UsingPortMapping", "CanWritePortNumber", "CanAddition_Po" });
+
+            if (UsingPortMapping != null && UsingPortMapping.Value)
+            {
+                // TODO: 詳細方法にリンクを付けたい
+                // TODO: リンクの付与など自身でカスタマイズ可能なMessageBoxの作成
+                string message =
+                    "この機能はルータに対してポート開放を行います。\n" +
+                    "セキュリティソフトに対してはポート開放されないため、必要に応じてご自身で設定してください。\n" +
+                    "詳細は設定方法をご参照ください。";
+                MW.MessageBox.Show(message, "Server Starter", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            }
         }
 
         private string CheckInputBox(string propertyName)

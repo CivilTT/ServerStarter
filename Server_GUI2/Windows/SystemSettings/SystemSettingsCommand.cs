@@ -249,24 +249,13 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public async Task DeletePort()
         {
-            int portNum = int.Parse(_vm.PortNumber);
             PortStatus status = _vm.PortStatus.Value;
 
             // そもそもポート開放していない場合は何もしない
             if (status == null || (status.StatusEnum.Value != PortStatus.Status.Open && status.StatusEnum.Value != PortStatus.Status.Registering))
                 return;
 
-            var result = MW.MessageBox.Show(
-                $"{portNum}番のポートを閉鎖します。よろしいですか？\n" +
-                $"違う番号のポートを閉鎖する場合は「いいえ」を選択し、Port Numberを変更してください。",
-                "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (result != MessageBoxResult.Yes)
-            {
-                _vm.UsingPortMapping.Value = true;
-                return;
-            }
-
-            bool isSuccess = await PortMapping.DeletePort(portNum);
+            bool isSuccess = await PortMapping.DeletePort(status.PortNumber);
 
             if (isSuccess)
                 _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Close;
@@ -274,7 +263,7 @@ namespace Server_GUI2.Windows.SystemSettings
             {
                 MW.MessageBox.Show(
                         "ポートの閉鎖に失敗しました。\n" +
-                        "ルーターなどの設定を変更した場合は、Auto Port Mappingを始めた際の設定に戻し、Auto Port MappingをOffにしてください。",
+                        "ポートを開放したまま留置します。",
                         "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Open;
@@ -292,7 +281,17 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
-            Clipboard.SetText(_vm.IP);
+            switch (parameter)
+            {
+                case "global":
+                    Clipboard.SetText(_vm.GlobalIP);
+                    break;
+                case "local":
+                    Clipboard.SetText(_vm.LocalIP);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

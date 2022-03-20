@@ -78,7 +78,6 @@ namespace Server_GUI2
         /// <summary>
         /// ネットワークに接続されているか調べる
         /// これを実装しなくてもネットがないことを想定して処理されてるところ多め
-        /// TODO: 動作確認
         /// </summary>
         private static void CheckConnetNet()
         {

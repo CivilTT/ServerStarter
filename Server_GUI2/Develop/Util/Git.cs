@@ -283,9 +283,9 @@ namespace Server_GUI2.Util
                 GitCommand.ExecuteThrow($"branch {LocalBranch.Name} --t {RemoteBranch.Expression}", new GitException($"falied to 'git branch {LocalBranch.Name} --t {RemoteBranch.Expression}'"), LocalBranch.Local.Path);
 
                 LocalBranch.Checkout();
-
-                linked = true;
             }
+            linked = true;
+            RemoteBranch.Exists = true;
         }
         public void CommitPush(string message)
         {
@@ -313,8 +313,10 @@ namespace Server_GUI2.Util
                     throw new GitException($"remote branch '{RemoteBranch.Expression}' already exists.");
 
                 // git push -u remote_branch
-                GitCommand.ExecuteThrow($"push -u {RemoteBranch.Expression}", new GitException($"falied to 'push -u {RemoteBranch.Expression}'"), LocalBranch.Local.Path);
+                GitCommand.ExecuteThrow($"push --set-upstream \"{RemoteBranch.NamedRemote.Name}\" \"{LocalBranch.Name}:{RemoteBranch.Name}\"", new GitException($"falied to 'git push --set-upstream \"{RemoteBranch.NamedRemote.Name}\" \"{LocalBranch.Name}:{RemoteBranch.Name}\"'"), LocalBranch.Local.Path);
             }
+            linked = true;
+            RemoteBranch.Exists = true;
         }
     }
 
@@ -401,7 +403,7 @@ namespace Server_GUI2.Util
         public string Name;
         public bool Exists;
 
-        public string Expression => $"{NamedRemote.Name}/{Name}";
+        public string Expression => $"\"{NamedRemote.Name}/{Name}\"";
 
         public GitRemoteBranch(GitNamedRemote namedRemote, string name, bool exists)
         {

@@ -171,6 +171,11 @@
         <Style TargetType="TextBox" x:Key="ShareWorldBox" BasedOn="{StaticResource BoxSource}">
             <Setter Property="Margin" Value="0 10"/>
             <Setter Property="Width" Value="200"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <!--//Additionals//-->
@@ -276,7 +281,7 @@
 
             </StackPanel>
 
-            <Button Content="Save" Command="{Binding SaveCommand}" Style="{StaticResource RunStyle}"/>
+            <Button Content="Save" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Style="{StaticResource RunStyle}"/>
 
         </Grid>
 
@@ -319,22 +324,23 @@
 
         <!--//ShareWorldContents//-->
         <Grid Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <!--<Grid Style="{StaticResource SettingContent}">-->
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                     <TextBlock Text="Use ShareWorld" FontSize="24" Margin="20 0"/>
                     <ui:ToggleSwitch OnContent="Yes" OffContent="No" IsOn="{Binding UseSW.Value}" FontSize="24" Margin="80 0 0 0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20" VerticalAlignment="Top">
-                    <TextBlock Text="Account" Width="150" FontSize="20" IsEnabled="{Binding UseSW.Value}"/>
-                    <ComboBox ItemsSource="{Binding Accounts}" SelectedItem="{Binding AccountIndex.Value}" IsEnabled="{Binding UseSW.Value}" Style="{StaticResource ShareWorldCombo}"/>
+                    <TextBlock Text="Account" Width="150" FontSize="20" IsEnabled="{Binding CanEdit}"/>
+                    <ComboBox ItemsSource="{Binding Accounts}" DisplayMemberPath="Id" SelectedItem="{Binding AccountIndex.Value}" IsEnabled="{Binding CanEdit}" Style="{StaticResource ShareWorldCombo}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20 0" VerticalAlignment="Top">
-                    <TextBlock Text="Remote World" Width="150" FontSize="20" IsEnabled="{Binding UseSW.Value}"/>
-                    <StackPanel Orientation="Vertical" IsEnabled="{Binding UseSW.Value}">
-                        <ComboBox ItemsSource="{Binding RemoteDataList}" DisplayMemberPath="Name" SelectedItem="{Binding RemoteIndex.Value}" Style="{StaticResource ShareWorldCombo}"/>
-                        <TextBox Text="{Binding RemoteName}" Visibility="{Binding ShowNewRemoteData, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ShareWorldBox}"/>
+                    <TextBlock Text="Remote World" Width="150" FontSize="20" IsEnabled="{Binding CanEdit}"/>
+                    <StackPanel Orientation="Vertical">
+                        <ComboBox ItemsSource="{Binding RemoteDataList}" DisplayMemberPath="DisplayName" SelectedItem="{Binding RemoteIndex.Value}" IsEnabled="{Binding CanSelectRemoteIndex}" Style="{StaticResource ShareWorldCombo}"/>
+                        <TextBox Text="{Binding RemoteName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Visibility="{Binding ShowNewRemoteData, Converter={StaticResource BoolToVisible}}" IsEnabled="{Binding CanEdit}" Style="{StaticResource ShareWorldBox}"/>
                     </StackPanel>
-                </StackPanel>                
+                </StackPanel>
             </StackPanel>
         </Grid>
 
