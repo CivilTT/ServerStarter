@@ -59,6 +59,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public Either<EitherVoid,Exception> WriteWorldState(GitRemote remote, string email, Dictionary<string, WorldState> worldState)
         {
+            gitLocal.SetUser(remote.Account, email);
             logger.Info("<WriteWorldState>");
             return GetRemoteBranch(remote).SuccessFunc(branch => { 
                 branch.LocalBranch.Checkout();
@@ -73,8 +74,9 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// worldstateをpull
         /// </summary>
-        public Either<Dictionary<string, WorldState>,Exception> ReadWorldState(GitRemote remote)
+        public Either<Dictionary<string, WorldState>,Exception> ReadWorldState(GitRemote remote,string email)
         {
+            gitLocal.SetUser(remote.Account, email);
             logger.Info("<ReadWorldState>");
             return GetRemoteBranch(remote).SuccessFunc(branch =>
             {

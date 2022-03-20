@@ -17,6 +17,7 @@ using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.ProgressBar;
 using System.Threading;
 using Server_GUI2.Develop.Server;
+using System.Text.RegularExpressions;
 
 namespace Server_GUI2
 {
@@ -34,6 +35,8 @@ namespace Server_GUI2
 
         public static void Initialize()
         {
+            var lastVersion = GetLastVersion();
+
             // 利用規約に同意しているか
             logger.Info("Check to already agree to the system terms");
             if (!UserSettings.Instance.userSettings.Agreement.SystemTerms)
@@ -52,12 +55,24 @@ namespace Server_GUI2
             InitProgressBar.AddMessage("Checked first User Settings");
 
             // 仕様変更が必要な場合に実装
-            ChangeSpecification();
+            ChangeSpecification(lastVersion);
             InitProgressBar.AddMessage("Checked ChangeSpecification");
 
             // SystemVersionの確認＆バージョンアップ
             ManageSystemVersion.CheckVersion();
             InitProgressBar.AddMessage("Checked the versionUP about this system, Server Starter");
+        }
+
+        /// <summary>
+        /// 前回起動時のバージョン情報を取得
+        /// 2.0.0.0以前のバージョンの場合空文字列となる
+        /// </summary>
+        /// <returns></returns>
+        private static string GetLastVersion()
+        {
+            return ServerGuiPath.Instance.InfoJson.ReadJson().SuccessFunc(
+                x => x.StarterVersion
+                ).SuccessOrDefault("");
         }
 
         /// <summary>
@@ -80,7 +95,7 @@ namespace Server_GUI2
         /// TODO: システムが使用するディレクトリが変更された場合、ここに書いていく
         /// （将来的に変更が増えてきたら別の持ち方を検討すべき）
         /// </summary>
-        private static void ChangeSpecification()
+        private static void ChangeSpecification(string lastVersion)
         {
             // 0.X -> 1.0.0.0
             FileInfo starterJson = new FileInfo(Path.Combine(DataPath, "Starter_Version.json"));
@@ -90,6 +105,40 @@ namespace Server_GUI2
             FileInfo infoTxt = new FileInfo(Path.Combine(DataPath, "info.txt"));
             infoTxt.Delete();
 
+            // 2.0.0.0未満の場合のみ実行
+            if (lastVersion == "")
+                ToVersion2_0_0_0();
+        }
+
+        private static void ToVersion2_0_0_0()
+        {
+            foreach (var version in ServerGuiPath.Instance.WorldData.GetVersionDirectories())
+            {
+                foreach (var world in version.GetWorldDirectories())
+                {
+                    world.Directory.MoveTo(ServerGuiPath.Instance.TempDirectory.FullName);
+                    var name = world.Name;
+                    if (Regex.IsMatch(name, "_nether$"))
+                    {
+                        name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_nether$").Groups[1].Value;
+                        var w = version.GetWorldDirectory(name);
+                        w.Create(true);
+                        ServerGuiPath.Instance.TempDirectory.MoveTo(w.Nether.FullName);
+                    }
+                    else if (Regex.IsMatch(name, "_the_end"))
+                    {
+                        name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_the_end$").Groups[1].Value;
+                        var w = version.GetWorldDirectory(name);
+                        w.Create(true);
+                        ServerGuiPath.Instance.TempDirectory.MoveTo(w.Nether.FullName);
+                    }
+                    else
+                    {
+                        world.Create(true);
+                        ServerGuiPath.Instance.TempDirectory.MoveTo(world.World.FullName);
+                    }
+                }
+            }
         }
     }
 }
