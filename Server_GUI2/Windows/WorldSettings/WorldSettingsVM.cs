@@ -105,7 +105,6 @@ namespace Server_GUI2.Windows.WorldSettings
         public ObservableCollection<IRemoteWorld> RemoteDataList { get; private set; }
         public BindingValue<IRemoteWorld> RemoteIndex { get; private set; }
         public bool CanSelectRemoteIndex => RunWorld is NewWorld && CanEdit;
-        // TODO: 名称が利用可能かのエラー処理を実装
         private string remoteName;
         public string RemoteName
         {
