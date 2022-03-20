@@ -17,6 +17,7 @@ using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.ProgressBar;
 using System.Threading;
 using Server_GUI2.Develop.Server;
+using System.Text.RegularExpressions;
 
 namespace Server_GUI2
 {
@@ -90,7 +91,39 @@ namespace Server_GUI2
             // 1.X -> 2.0.0.0
             FileInfo infoTxt = new FileInfo(Path.Combine(DataPath, "info.txt"));
             infoTxt.Delete();
+            if (!ServerGuiPath.Instance.InfoJson.Exists)
+                ToVersion2_0_0_0();
+        }
 
+        private static void ToVersion2_0_0_0()
+        {
+            foreach (var version in ServerGuiPath.Instance.WorldData.GetVersionDirectories())
+            {
+                foreach (var world in version.GetWorldDirectories())
+                {
+                    world.Directory.MoveTo(ServerGuiPath.Instance.TempDirectory.FullName);
+                    var name = world.Name;
+                    if (Regex.IsMatch(name, "_nether$"))
+                    {
+                        name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_nether$").Groups[1].Value;
+                        var w = version.GetWorldDirectory(name);
+                        w.Create(true);
+                        ServerGuiPath.Instance.TempDirectory.MoveTo(w.Nether.FullName);
+                    }
+                    else if (Regex.IsMatch(name, "_the_end"))
+                    {
+                        name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_the_end$").Groups[1].Value;
+                        var w = version.GetWorldDirectory(name);
+                        w.Create(true);
+                        ServerGuiPath.Instance.TempDirectory.MoveTo(w.Nether.FullName);
+                    }
+                    else
+                    {
+                        world.Create(true);
+                        ServerGuiPath.Instance.TempDirectory.MoveTo(world.World.FullName);
+                    }
+                }
+            }
         }
     }
 }
