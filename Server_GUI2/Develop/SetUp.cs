@@ -35,6 +35,8 @@ namespace Server_GUI2
 
         public static void Initialize()
         {
+            var lastVersion = GetLastVersion();
+
             // 利用規約に同意しているか
             logger.Info("Check to already agree to the system terms");
             if (!UserSettings.Instance.userSettings.Agreement.SystemTerms)
@@ -53,12 +55,24 @@ namespace Server_GUI2
             InitProgressBar.AddMessage("Checked first User Settings");
 
             // 仕様変更が必要な場合に実装
-            ChangeSpecification();
+            ChangeSpecification(lastVersion);
             InitProgressBar.AddMessage("Checked ChangeSpecification");
 
             // SystemVersionの確認＆バージョンアップ
             ManageSystemVersion.CheckVersion();
             InitProgressBar.AddMessage("Checked the versionUP about this system, Server Starter");
+        }
+
+        /// <summary>
+        /// 前回起動時のバージョン情報を取得
+        /// 2.0.0.0以前のバージョンの場合空文字列となる
+        /// </summary>
+        /// <returns></returns>
+        private static string GetLastVersion()
+        {
+            return ServerGuiPath.Instance.InfoJson.ReadJson().SuccessFunc(
+                x => x.StarterVersion
+                ).SuccessOrDefault("");
         }
 
         /// <summary>
@@ -82,7 +96,7 @@ namespace Server_GUI2
         /// TODO: システムが使用するディレクトリが変更された場合、ここに書いていく
         /// （将来的に変更が増えてきたら別の持ち方を検討すべき）
         /// </summary>
-        private static void ChangeSpecification()
+        private static void ChangeSpecification(string lastVersion)
         {
             // 0.X -> 1.0.0.0
             FileInfo starterJson = new FileInfo(Path.Combine(DataPath, "Starter_Version.json"));
@@ -91,7 +105,9 @@ namespace Server_GUI2
             // 1.X -> 2.0.0.0
             FileInfo infoTxt = new FileInfo(Path.Combine(DataPath, "info.txt"));
             infoTxt.Delete();
-            if (!ServerGuiPath.Instance.InfoJson.Exists)
+
+            // 2.0.0.0未満の場合のみ実行
+            if (lastVersion == "")
                 ToVersion2_0_0_0();
         }
 
