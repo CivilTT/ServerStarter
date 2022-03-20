@@ -219,8 +219,8 @@ namespace Server_GUI2
         private void Starter_versionUP(string url)
         {
             logger.Info("Delete old .exe and download new .exe");
-            MainWindow.Pd.Message = "---START Version-up this system---";
-            MainWindow.Pd.Message = "Delete old .exe and download new .exe";
+            ////MainWindow.Pd.Message = "---START Version-up this system---";
+            ////MainWindow.Pd.Message = "Delete old .exe and download new .exe";
             string self_path = Directory.GetCurrentDirectory();
 
             if (File.Exists(@".\tmp.bat"))
@@ -231,7 +231,7 @@ namespace Server_GUI2
 
             wc.DownloadFile(url, @".\..\Server_GUI2.zip");
 
-            MainWindow.Pd.Close();
+            ////MainWindow.Pd.Close();
             
             // コマンド実行による引数をここで受け取り、再実行する。
             string args_list = "";
@@ -284,8 +284,8 @@ namespace Server_GUI2
         private void StarterVersionUP(string url)
         {
             logger.Info("Delete old .exe and download new .exe");
-            MainWindow.Pd.Message = "---START Version-up this system---";
-            MainWindow.Pd.Message = "Delete old .exe and download new .exe";
+            ////MainWindow.Pd.Message = "---START Version-up this system---";
+            ////MainWindow.Pd.Message = "Delete old .exe and download new .exe";
 
             if (File.Exists(@".\tmp.bat"))
             {
@@ -295,7 +295,7 @@ namespace Server_GUI2
 
             wc.DownloadFile(url, @".\Setup_ServerStarter.msi");
 
-            MainWindow.Pd.Close();
+            ////MainWindow.Pd.Close();
 
             // コマンド実行による引数をここで受け取り、再実行する。
             string args_list = "";
@@ -670,7 +670,7 @@ namespace Server_GUI2
             {
                 git.Pull(Data_list.Version);
             }
-            MainWindow.Pd.Value = 50;
+            //MainWindow.Pd.Value = 50;
 
 
             //Server_bat-files内のinfo.txtの中身を読み取る(ShareWorld起動時のみ使用するためここに記載している)
@@ -874,20 +874,20 @@ namespace Server_GUI2
 
         public virtual void Upload_ShareWorld()
         {
-            MainWindow.Pd = new ProgressDialog
-            {
-                Title = "push ShareWorld"
-            };
-            MainWindow.Pd.Show();
+            ////MainWindow.Pd = new ProgressDialog
+            //{
+            //    Title = "push ShareWorld"
+            //};
+            //MainWindow.Pd.Show();
 
             //info.txtのなかのserver_openをFalseに戻す
-            MainWindow.Pd.Value = 50;
+            //MainWindow.Pd.Value = 50;
             Change_info(4, Opening_Server: false);
 
             //push
             git.Push();
-            MainWindow.Pd.Close();
-            // MainWindow.pd.Dispose();
+            //MainWindow.Pd.Close();
+            // //MainWindow.Pd.Dispose();
         }
 
         public void Check_versionUP()

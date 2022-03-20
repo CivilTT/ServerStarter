@@ -18,11 +18,8 @@ namespace Server_GUI2.Windows
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Loaded !!");
-            Console.WriteLine(sender);
             if (DataContext is IOperateWindows vm)
             {
-                Console.WriteLine("Register");
                 vm.Close += () =>
                 {
                     //Close();
@@ -32,14 +29,10 @@ namespace Server_GUI2.Windows
                 vm.Hide += () =>
                 {
                     Hide();
-                    Console.WriteLine(vm.Hide.GetInvocationList().Length);
-                    Console.WriteLine(sender);
                 };
                 vm.Show += () =>
                 {
                     Show();
-                    Console.WriteLine(vm.Show.GetInvocationList().Length);
-                    Console.WriteLine(sender);
                 };
             }
         }

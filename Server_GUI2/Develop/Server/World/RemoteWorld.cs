@@ -41,6 +41,8 @@ namespace Server_GUI2.Develop.Server.World
 
         public string DisplayName { get; } = "【new remote world】";
 
+        bool Available => Storage.Available;
+
         public WorldState ExportWorldState()
         {
             throw new NotImplementedException();
@@ -275,7 +277,7 @@ namespace Server_GUI2.Develop.Server.World
                 // リモートの追加
                 var named = gitlocal.AddRemote(remote, "origin");
 
-                // pushs
+                // push
                 gitlocal.CreateBranch(Id).CreateLinkedBranch(named, Id).CommitPush("MESSAGE");
             }
         }

@@ -58,11 +58,11 @@ namespace Server_GUI2
             versions.Sort();
             versions.Reverse();
             Versions = new ObservableCollection<Version>(versions);
-            Versions.WriteLine();
         }
 
         public Version GetVersionFromName(string name)
         {
+            // TODO: VersionMapにないnameが指定された場合の対応
             return VersionMap[name];
         }
 

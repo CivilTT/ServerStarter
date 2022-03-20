@@ -19,8 +19,6 @@ namespace Server_GUI2.Develop.Server.World
 
     public interface IWorld: IWorldBase
     {
-        bool Available { get; }
-
         RemoteWorld RemoteWorld { get; }
 
         string DisplayName { get; }
@@ -45,8 +43,6 @@ namespace Server_GUI2.Develop.Server.World
     /// </summary>
     public class NewWorld : IWorld
     {
-        public bool Available => Version.Available && RemoteWorld.Available;
-
         protected readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public bool HasRemote => RemoteWorld != null;
@@ -108,7 +104,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
             if (!HasRemote) throw new WorldException($"World \"{DisplayName}\" is unlinked");
-
+             
             RemoteWorld = null;
         }
 
@@ -128,7 +124,7 @@ namespace Server_GUI2.Develop.Server.World
 
             World world;
             if (HasRemote)
-                world = new World(localWorld,RemoteWorld);
+                world = new World(localWorld, RemoteWorld);
             else
                 world = new World(localWorld);
 

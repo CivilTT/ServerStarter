@@ -48,14 +48,14 @@ namespace Server_GUI2
         //インスタンス変数を宣言
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static ProgressDialog Pd { get; set; }
+        //public static ProgressDialog Pd { get; set; }
         public static bool Set_new_Version { get; set; } = true;
         public List<string> All_versions { get; set; } = new List<string>();
-        private readonly Functions func = new Functions();
+        //private readonly Functions func = new Functions();
 
-        public bool Reset_world { get; set; } = false;
-        public bool Save_world { get; set; } = false;
-        public bool Get_op { get; set; }
+        //public bool Reset_world { get; set; } = false;
+        //public bool Save_world { get; set; } = false;
+        //public bool Get_op { get; set; }
 
 
         //private readonly Data_list data = new Data_list();

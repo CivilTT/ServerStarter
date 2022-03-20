@@ -10,7 +10,7 @@ using Server_GUI2.Develop.Server.World;
 
 namespace Server_GUI2.Windows.WorldSettings
 {
-    class WorldSettingsVM : GeneralVM
+    class WorldSettingsVM : GeneralVM, IDataErrorInfo
     {
         static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
         static readonly StorageCollection Storages = StorageCollection.Instance;
@@ -28,6 +28,7 @@ namespace Server_GUI2.Windows.WorldSettings
 
         // General
         public string RunInfo => $"{RunVersion.Name} / {RunWorld.Name}";
+        public bool CanSave => (!UseSW.Value || ValidRemoteName);
         public SaveCommand SaveCommand { get; private set; }
         public bool Saved = false;
 
@@ -98,12 +99,25 @@ namespace Server_GUI2.Windows.WorldSettings
 
         // ShareWorld
         public BindingValue<bool> UseSW { get; private set; }
+        public bool CanEdit => UseSW.Value && ! RunWorld.HasRemote;
         public ObservableCollection<Storage> Accounts { get; private set; }
         public BindingValue<Storage> AccountIndex { get; private set; }
         public ObservableCollection<IRemoteWorld> RemoteDataList { get; private set; }
         public BindingValue<IRemoteWorld> RemoteIndex { get; private set; }
-        public string RemoteName { get; set; }
-        public bool ShowNewRemoteData => RemoteIndex?.Value == /*//TODO: 何とイコールにすればよい？//*/null;
+        public bool CanSelectRemoteIndex => RunWorld is NewWorld && CanEdit;
+        // TODO: 名称が利用可能かのエラー処理を実装
+        private string remoteName;
+        public string RemoteName
+        {
+            get => remoteName;
+            set
+            {
+                remoteName = value;
+                OnPropertyChanged("CanSave");
+            }
+        }
+        public bool ValidRemoteName => AccountIndex.Value.IsUsableName(RemoteName);
+        public bool ShowNewRemoteData => RemoteIndex?.Value is NewRemoteWorld;
 
         // Additionals
         public ImportAdditionalsCommand ImportAdditionalsCommand { get; private set; }
@@ -147,6 +161,9 @@ namespace Server_GUI2.Windows.WorldSettings
         public ObservableCollection<Player> WhitePlayersList { get; private set; }
         public Player WhitePlayersListIndex { get; set; }
 
+        // Error Process
+        public string Error { get { return null; } }
+        public string this[string columnName] => CheckInputBox(columnName);
 
         public WorldSettingsVM(Version runVer, IWorld runWor)
         {
@@ -165,11 +182,12 @@ namespace Server_GUI2.Windows.WorldSettings
             SelectedPropIndex = new BindingValue<string>(OtherPropertyIndexs[0], () => OnPropertyChanged("OtherStringProperty"));
 
             // ShareWorld
-            // TODO: 既存ワールドをリモート化するときには【new Remote Data】しか選べないようにする
-            UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => OnPropertyChanged(""));
+            UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => OnPropertyChanged(new string[2] { "CanEdit", "CanSelectRemoteIndex" }));
             Accounts = new ObservableCollection<Storage>(Storages.Storages);
             AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
-            RemoteDataList = AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<IRemoteWorld>();
+            RemoteDataList = new ObservableCollection<IRemoteWorld>(AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<IRemoteWorld>());
+            RemoteIndex = new BindingValue<IRemoteWorld>(RunWorld.HasRemote ? RunWorld.RemoteWorld : AccountIndex.Value.RemoteWorlds.Last(), () => OnPropertyChanged("ShowNewRemoteData"));
+            RemoteName = RunWorld.RemoteWorld?.Name ?? RunWorld.Name;
 
             // Additionals
             ImportAdditionalsCommand = new ImportAdditionalsCommand(this);
@@ -204,6 +222,21 @@ namespace Server_GUI2.Windows.WorldSettings
             WhiteGroupIndex = Groups.FirstOrDefault();
             AddWhiteCommand = new AddWhiteCommand(this);
             WhitePlayersList = new ObservableCollection<Player>(RunWorld.Settings.WhiteList);
+        }
+
+        private string CheckInputBox(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case "RemoteName":
+                    if (!ValidRemoteName)
+                        return "This name is not available";
+                    break;
+                default:
+                    break;
+            }
+
+            return "";
         }
 
         private void CrossPlay()
