@@ -45,7 +45,7 @@ namespace Server_GUI2
             {
                 logger.Info("Read the local info.json data");
                 userSettings = ReadContents.ReadlocalJson<UserSettingsJson>(ServerGuiPath.Instance.InfoJson.FullName, errorMessage);
-                if (userSettings.JsonVersion != UserSettingsJson.LatestJsonVer)
+                if (userSettings.StarterVersion != UserSettingsJson.LatestVersion)
                 {
                     // TODO: jsonの中身を変更した場合にはここにバージョン変換の実装を書く（必要であれば）
                 }
@@ -73,10 +73,10 @@ namespace Server_GUI2
     public class UserSettingsJson
     {
         [JsonIgnore]
-        public static int LatestJsonVer = 1;
+        public static string LatestVersion = "2.0.0.0";
 
-        [JsonProperty("JsonVersion")]
-        public int JsonVersion = LatestJsonVer;
+        [JsonProperty("StarterVersion")]
+        public string StarterVersion = LatestVersion;
 
         [JsonProperty("PlayerName")]
         public string PlayerName;
