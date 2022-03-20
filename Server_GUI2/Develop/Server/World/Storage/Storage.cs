@@ -199,7 +199,7 @@ namespace Server_GUI2.Develop.Server.World
             foreach (var json in gitStorageJsons)
             {
                 var remote = new GitRemote(json.Account, json.Repository);
-                var storage = GitStorageManager.Instance.ReadWorldState(remote).SuccessFunc(
+                var storage = GitStorageManager.Instance.ReadWorldState(remote, json.Email).SuccessFunc(
                     worldstate => new GitStorage(remote, worldstate, json.Email, true)
                 ).SuccessOrDefault( new GitStorage(remote, json.WorldStates, json.Email, false));
                 result.Add(storage);
@@ -220,7 +220,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             logger.Info($"<AddStorage>");
             var remote = new GitRemote(account,repository);
-            return GitStorageManager.Instance.ReadWorldState(remote).SuccessFunc(
+            return GitStorageManager.Instance.ReadWorldState(remote, email).SuccessFunc(
                 state => {
                     var storage = new GitStorage(remote, state, email, true);
                     StorageCollection.Instance.Add(storage);

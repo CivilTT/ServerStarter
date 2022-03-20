@@ -166,7 +166,6 @@ namespace Server_GUI2.Windows.WorldSettings
 
             // ShareWorld
             // TODO: 既存ワールドをリモート化するときには【new Remote Data】しか選べないようにする
-            // TODO: (@txkodo) Worldと同じく【new Remote Data】をStoragesに持たせておけないか
             UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => OnPropertyChanged(""));
             Accounts = new ObservableCollection<Storage>(Storages.Storages);
             AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
