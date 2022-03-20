@@ -171,6 +171,11 @@
         <Style TargetType="TextBox" x:Key="ShareWorldBox" BasedOn="{StaticResource BoxSource}">
             <Setter Property="Margin" Value="0 10"/>
             <Setter Property="Width" Value="200"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <!--//Additionals//-->
@@ -276,7 +281,7 @@
 
             </StackPanel>
 
-            <Button Content="Save" Command="{Binding SaveCommand}" Style="{StaticResource RunStyle}"/>
+            <Button Content="Save" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Style="{StaticResource RunStyle}"/>
 
         </Grid>
 
@@ -333,7 +338,7 @@
                     <TextBlock Text="Remote World" Width="150" FontSize="20" IsEnabled="{Binding CanEdit}"/>
                     <StackPanel Orientation="Vertical">
                         <ComboBox ItemsSource="{Binding RemoteDataList}" DisplayMemberPath="DisplayName" SelectedItem="{Binding RemoteIndex.Value}" IsEnabled="{Binding CanSelectRemoteIndex}" Style="{StaticResource ShareWorldCombo}"/>
-                        <TextBox Text="{Binding RemoteName}" Visibility="{Binding ShowNewRemoteData, Converter={StaticResource BoolToVisible}}" IsEnabled="{Binding CanEdit}" Style="{StaticResource ShareWorldBox}"/>
+                        <TextBox Text="{Binding RemoteName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Visibility="{Binding ShowNewRemoteData, Converter={StaticResource BoolToVisible}}" IsEnabled="{Binding CanEdit}" Style="{StaticResource ShareWorldBox}"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
