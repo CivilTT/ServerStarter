@@ -107,6 +107,7 @@
     <Compile Include="Windows\MessageBox\MessageBox.xaml.cs">
       <DependentUpon>MessageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\MessageBox\MessageBoxCommand.cs" />
     <Compile Include="Windows\MessageBox\MessageBoxVM.cs" />
     <Compile Include="Windows\ProgressBar\ProgressBar.cs" />
     <Compile Include="Windows\ProgressBar\Back\ProgressBarDialog.xaml.cs">
@@ -146,8 +147,8 @@
     <Compile Include="Windows\MainWindow\MainWindowCommand.cs" />
     <Compile Include="Windows\GeneralVM.cs" />
     <Compile Include="Windows\MainWindow\MainWindowVM.cs" />
-    <Resource Include="Resources\MessageBox\info%28B%29.png" />
-    <Resource Include="Resources\MessageBox\info%28W%29.png" />
+    <Resource Include="Resources\MessageBox\Infomation%28B%29.png" />
+    <Resource Include="Resources\MessageBox\Infomation%28W%29.png" />
     <None Include="Planning\storages.json" />
     <Resource Include="Resources\MainWindow\setting.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
