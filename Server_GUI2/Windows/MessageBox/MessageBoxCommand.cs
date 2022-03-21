@@ -16,6 +16,7 @@ namespace Server_GUI2.Windows.MessageBox
         public override void Execute(object parameter)
         {
             _vm.SelectedIndex = int.Parse(parameter.ToString());
+            _vm.UserSelected = true;
             _vm.Close();
         }
     }

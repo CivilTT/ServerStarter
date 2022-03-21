@@ -13,7 +13,7 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="MessageBox" Width="{Binding WindowWidth, Mode=TwoWay}"  SizeToContent="Height">
+        Title="{Binding Title}" Width="{Binding WindowWidth, Mode=TwoWay}"  SizeToContent="Height">
         <!--Title="MessageBox" Width="350"  SizeToContent="Height">-->
 
     <Window.Resources>
@@ -23,7 +23,7 @@
         </Style>
         <Style x:Key="ButtonSource" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Height" Value="45"/>
+            <Setter Property="Height" Value="40"/>
             <Setter Property="Margin" Value="5 0"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="FontWeight" Value="Bold"/>
