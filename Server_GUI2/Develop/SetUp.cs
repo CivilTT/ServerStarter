@@ -18,6 +18,7 @@ using Server_GUI2.Windows.ProgressBar;
 using System.Threading;
 using Server_GUI2.Develop.Server;
 using System.Text.RegularExpressions;
+using Server_GUI2.Windows.MessageBox;
 
 namespace Server_GUI2
 {
@@ -49,6 +50,12 @@ namespace Server_GUI2
             }
 
             CheckConnetNet();
+            string message = 
+                $"ShareWorldはすでに存在するワールドです。\n" +
+                $"存在するワールドを新しく起動することはできません。\n" +
+                $"同じ名前でワールドを作り直す場合は、メイン画面にてRecreateにチェックを入れてください。";
+            string result1 = CustomMessageBox.Show(message, new string[3] { "OK", "Cancel", "Gaizi" }, Image.Infomation);
+            Console.WriteLine(result1);
 
             // ProgressBarを表示する
             InitProgressBar = new ProgressBar("Ready to Server Starter", 9);

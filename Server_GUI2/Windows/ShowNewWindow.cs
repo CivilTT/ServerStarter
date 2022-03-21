@@ -26,16 +26,5 @@ namespace Server_GUI2.Windows
 
             return dlg.ShowDialog();
         }
-
-        public void Show(TViewModel context)
-        {
-            var dlg = new TWindow()
-            {
-                Owner = this.Owner,
-                DataContext = context,
-            };
-
-            dlg.Show();
-        }
     }
 }
