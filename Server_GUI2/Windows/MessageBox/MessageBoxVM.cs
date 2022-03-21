@@ -38,6 +38,7 @@ namespace Server_GUI2.Windows.MessageBox
         {
             get
             {
+                // TODO: 他のImageTypeの画像も追加する
                 if (MW.ThemeManager.Current.ApplicationTheme == MW.ApplicationTheme.Dark)
                     return $"pack://application:,,,/Resources/MessageBox/{ImageType}(B).png";
                 else
@@ -51,6 +52,7 @@ namespace Server_GUI2.Windows.MessageBox
         // ボタンを増やす場合は変数を増やしたのちにxamlのStackPanelに追記すればよい
         public List<ButtonManager> ButtonManagers { get; private set; } = new List<ButtonManager>();
         public ButtonCommand ButtonCommand { get; private set; }
+        public bool UserSelected = false;
 
 
         public MessageBoxVM(string message, string title, string[] buttons, Image icon, LinkMessage link)
