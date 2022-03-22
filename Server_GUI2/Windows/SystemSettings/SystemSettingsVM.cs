@@ -17,6 +17,8 @@ using MW = ModernWpf;
 using System.Text.RegularExpressions;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Server;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
@@ -251,13 +253,12 @@ namespace Server_GUI2.Windows.SystemSettings
 
             if (UsingPortMapping != null && UsingPortMapping.Value)
             {
-                // TODO: 詳細方法にリンクを付けたい
-                // TODO: リンクの付与など自身でカスタマイズ可能なMessageBoxの作成
                 string message =
                     "この機能はルータに対してポート開放を行います。\n" +
                     "セキュリティソフトに対してはポート開放されないため、必要に応じてご自身で設定してください。\n" +
                     "詳細は設定方法をご参照ください。";
-                MW.MessageBox.Show(message, "Server Starter", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                LinkMessage link = new LinkMessage("ポート開放の設定方法", "https://civiltt.github.io/ServerStarter/");
+                CustomMessageBox.Show(message, ButtonType.OK, MessageBox.Back.Image.Infomation, link);
             }
         }
 

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MW = ModernWpf;
 
-namespace Server_GUI2.Windows.MessageBox
+namespace Server_GUI2.Windows.MessageBox.Back
 {
     public enum Image
     {

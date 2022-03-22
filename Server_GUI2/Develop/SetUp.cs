@@ -19,6 +19,7 @@ using System.Threading;
 using Server_GUI2.Develop.Server;
 using System.Text.RegularExpressions;
 using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 
 namespace Server_GUI2
 {
@@ -87,7 +88,7 @@ namespace Server_GUI2
                 string message =
                     "本システムはインターネット環境下のみで動作します。\n" +
                     "インターネットに接続したうえで、再度起動してください。";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
                 Environment.Exit(0);
             }
         }

@@ -1,30 +1,12 @@
-﻿using Server_GUI2.Util;
+﻿using Server_GUI2.Windows.MessageBox.Back;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Server_GUI2.Windows.MessageBox
 {
-    /// <summary>
-    /// MessageBox.xaml の相互作用ロジック
-    /// </summary>
-    public partial class MessageBox : GeneralCB
-    {
-        public MessageBox()
-        {
-            InitializeComponent();
-        }
-    }
-
     public static class CustomMessageBox
     {
         public static string Show(string message, ButtonType type, Image icon)
@@ -52,7 +34,7 @@ namespace Server_GUI2.Windows.MessageBox
         /// </summary>
         public static string Show(string message, string title, string[] buttons, Image icon, LinkMessage link)
         {
-            var window = new ShowNewWindow<MessageBox, MessageBoxVM>();
+            var window = new ShowNewWindow<Back.MessageBox, MessageBoxVM>();
             var vm = new MessageBoxVM(message, title, buttons, icon, link);
             window.ShowDialog(vm);
             if (!vm.UserSelected)

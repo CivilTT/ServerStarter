@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server_GUI2.Windows.MessageBox
+namespace Server_GUI2.Windows.MessageBox.Back
 {
     class ButtonCommand : GeneralCommand<MessageBoxVM>
     {

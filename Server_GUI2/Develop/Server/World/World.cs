@@ -8,6 +8,8 @@ using System.Reflection;
 using System.Windows;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
 
 namespace Server_GUI2.Develop.Server.World
@@ -467,21 +469,19 @@ namespace Server_GUI2.Develop.Server.World
             if (version < Version)
             {
                 logger.Warn($"The World-Data will be recreated by {version} from {Version}");
-                var result = MW.MessageBox.Show(
+                string result = CustomMessageBox.Show(
                     $"ワールドデータを{Version}から{version}へバージョンダウンしようとしています。\n" +
-                    $"データが破損する可能性が極めて高い操作ですが、危険性を理解したうえで実行しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.No)
-                {
+                    $"データが破損する可能性が極めて高い操作ですが、危険性を理解したうえで実行しますか？", ButtonType.YesNo, Image.Warning);
+                if (result == "No")
                     throw new DowngradeException("User reject downgrading");
-                }
             }
 
             // version変更
             if (local.Path.Parent != version.Path)
             {
                 // versionのフォルダに移動するとともにVtoS変換
-                Console.WriteLine($"local.path: {local.Path}");
-                Console.WriteLine($"local.path: {version}");
+                //Console.WriteLine($"local.path: {local.Path}");
+                //Console.WriteLine($"local.path: {version}");
                 var newPath = version.Path.GetWorldDirectory(local.Path.Name);
                 local.Move(newPath, version, version.Type, local.Settings, local.Datapacks, local.Plugins, addSuffixWhenNameCollided: true);
             }

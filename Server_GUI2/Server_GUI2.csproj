@@ -104,11 +104,12 @@
     <Compile Include="Develop\Server\World\RemoteWorld.cs" />
     <Compile Include="Develop\Util\Java.cs" />
     <Compile Include="Develop\Util\ManageSystemVersion.cs" />
-    <Compile Include="Windows\MessageBox\MessageBox.xaml.cs">
+    <Compile Include="Windows\MessageBox\Back\MessageBox.xaml.cs">
       <DependentUpon>MessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\MessageBox\MessageBoxCommand.cs" />
-    <Compile Include="Windows\MessageBox\MessageBoxVM.cs" />
+    <Compile Include="Windows\MessageBox\Back\MessageBoxCommand.cs" />
+    <Compile Include="Windows\MessageBox\Back\MessageBoxVM.cs" />
+    <Compile Include="Windows\MessageBox\CustomMessageBox.cs" />
     <Compile Include="Windows\ProgressBar\ProgressBar.cs" />
     <Compile Include="Windows\ProgressBar\Back\ProgressBarDialog.xaml.cs">
       <DependentUpon>ProgressBarDialog.xaml</DependentUpon>
@@ -154,7 +155,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\SystemSettings\pen.svg" />
-    <Page Include="Windows\MessageBox\MessageBox.xaml">
+    <Page Include="Windows\MessageBox\Back\MessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

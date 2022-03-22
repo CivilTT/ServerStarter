@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
 
 namespace Server_GUI2.Windows.WorldSettings
@@ -22,7 +24,7 @@ namespace Server_GUI2.Windows.WorldSettings
         public override void Execute(object parameter)
         {
             _vm.PropertyIndexs.Value = new ServerProperty(UserSettings.Instance.userSettings.DefaultProperties);
-            MW.MessageBox.Show("既定のサーバープロパティを適用しました。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageBox.Show("既定のサーバープロパティを適用しました。", ButtonType.OK, Image.Infomation);
         }
     }
 
@@ -36,7 +38,7 @@ namespace Server_GUI2.Windows.WorldSettings
         public override void Execute(object parameter)
         {
             UserSettings.Instance.userSettings.DefaultProperties = new ServerProperty(_vm.PropertyIndexs.Value);
-            MW.MessageBox.Show("既定のサーバープロパティとして保存されました。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageBox.Show("既定のサーバープロパティとして保存されました。", ButtonType.OK, Image.Infomation);
         }
     }
 
@@ -66,7 +68,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     Datapack datapack = Datapack.TryGenInstance(path, isZip);
                     if (datapack == null)
                     {
-                        MW.MessageBox.Show($"この{(isZip ? "ファイル" : "フォルダ")}はデータパックとして無効です。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                        CustomMessageBox.Show($"この{(isZip ? "ファイル" : "フォルダ")}はデータパックとして無効です。", ButtonType.OK, Image.Error);
                         break;
                     }
 
@@ -82,7 +84,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     Plugin plugin = Plugin.TryGenInstance(path, false);
                     if (plugin == null)
                     {
-                        MW.MessageBox.Show("Pluginとして無効なファイルです。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                        CustomMessageBox.Show("Pluginとして無効なファイルです。", ButtonType.OK, Image.Error);
                         break;
                     }
 
@@ -98,7 +100,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     CustomMap custom = CustomMap.TryGetInstance(path, isZip);
                     if (custom == null)
                     {
-                        MW.MessageBox.Show($"この{(isZip ? "ファイル" : "フォルダ")}は配布ワールドとして無効です。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                        CustomMessageBox.Show($"この{(isZip ? "ファイル" : "フォルダ")}は配布ワールドとして無効です。", ButtonType.OK, Image.Error);
                         break;
                     }
 
@@ -148,12 +150,12 @@ namespace Server_GUI2.Windows.WorldSettings
             {
                 if (name == null)
                 {
-                    MW.MessageBox.Show(nullMessage, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    CustomMessageBox.Show(nullMessage, ButtonType.OK, Image.Warning);
                     return;
                 }
 
-                MessageBoxResult? result = MW.MessageBox.Show($"{name}を削除しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
+                string result = CustomMessageBox.Show($"{name}を削除しますか？", ButtonType.YesNo, Image.Question);
+                if (result == "Yes")
                     DeleteAction();
             }
 
@@ -198,7 +200,7 @@ namespace Server_GUI2.Windows.WorldSettings
             bool addedG = AddGroup(opLevel);
             _vm.OpPlayersList.Sort();
             if (!(addedP || addedG))
-                MW.MessageBox.Show("選択されたプレイヤーとグループはすでに登録されています。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("選択されたプレイヤーとグループはすでに登録されています。", ButtonType.OK, Image.Warning);
         }
 
         /// <summary>
@@ -253,7 +255,7 @@ namespace Server_GUI2.Windows.WorldSettings
             bool addedG = AddGroup();
             _vm.WhitePlayersList.Sort();
             if (!(addedP || addedG))
-                MW.MessageBox.Show("選択されたプレイヤーとグループはすでに登録されています。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("選択されたプレイヤーとグループはすでに登録されています。", ButtonType.OK, Image.Warning);
         }
 
         private bool AddPlayer()
