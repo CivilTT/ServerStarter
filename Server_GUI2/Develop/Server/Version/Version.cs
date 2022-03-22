@@ -15,6 +15,8 @@ using Microsoft.VisualBasic.FileIO;
 using Server_GUI2.Develop.Server;
 using Server_GUI2.Util;
 using Server_GUI2.Develop.Util;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 
 namespace Server_GUI2
 {
@@ -119,9 +121,11 @@ namespace Server_GUI2
         {
             Exists = false;
 
-            MessageBoxResult? result = MW.MessageBox.Show($"このバージョンを削除しますか？\r\n「{Name}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            string result = CustomMessageBox.Show(
+                $"このバージョンを削除しますか？\n" +
+                $"「{Name}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", ButtonType.OKCancel, Image.Warning);
             logger.Warn("delete Version data");
-            if (result == MessageBoxResult.OK)
+            if (result == "OK")
             {
                 // 削除イベント発火
                 DeleteEvent?.Invoke(this,null);
@@ -250,7 +254,7 @@ namespace Server_GUI2
                         "Vanila サーバーのダウンロードに失敗しました。\n" +
                         $"{Name}はマルチサーバーが存在しない可能性があります。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
                 throw new DownloadException($"Failed to get url to download server.jar (Error Message : {ex.Message})");
             }
 
@@ -266,7 +270,7 @@ namespace Server_GUI2
                 string message =
                         "Vanila サーバーのダウンロードに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
                 throw new DownloadException($"Failed to download server.jar (Error Message : {ex.Message})");
             }
 
@@ -316,7 +320,7 @@ namespace Server_GUI2
                 Path.Delete();
                 string message = "Spigot サーバーのビルドファイルのダウンロードに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
                 throw new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})");
             }
 
@@ -349,7 +353,7 @@ namespace Server_GUI2
                         break;
                 }
 
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
                 throw new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})");
             }
 
@@ -382,7 +386,7 @@ namespace Server_GUI2
                 string message =
                         "Spigotサーバーをビルドするための必要ファイルの作成に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
                 throw new IOException($"Failed to write build.bat (Error Message : {ex.Message})");
             }
         }

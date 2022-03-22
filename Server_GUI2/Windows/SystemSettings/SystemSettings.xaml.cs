@@ -16,6 +16,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
 
 namespace Server_GUI2.Windows.SystemSettings
@@ -46,8 +48,8 @@ namespace Server_GUI2.Windows.SystemSettings
                 string message =
                     "System Settingsに対する変更を保存せずにMain Windowへ戻りますか？\n" +
                     "変更を保存する場合は「いいえ」を選択したのちに左下の「Save」ボタンを押してください。";
-                var result = MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.No)
+                string result = CustomMessageBox.Show(message, ButtonType.YesNo, MessageBox.Back.Image.Warning);
+                if (result == "No")
                     e.Cancel = true;
             }
         }

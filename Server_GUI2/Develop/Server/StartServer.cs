@@ -11,6 +11,8 @@ using log4net;
 using Server_GUI2.Develop.Server;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using Server_GUI2.Windows.ProgressBar;
 using MW = ModernWpf;
 
@@ -117,7 +119,7 @@ namespace Server_GUI2
                 string message =
                     "自動ポート開放に失敗しました。\n" +
                     "ポートを開放せずにサーバーを起動します。";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Warning);
             }
             else
             {

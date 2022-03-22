@@ -1,6 +1,8 @@
 ﻿using log4net;
 using System;
 using System.Reflection;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
 
 namespace Server_GUI2
@@ -20,7 +22,7 @@ namespace Server_GUI2
 
         public static void ShowError<Ex>(string showMessage, Ex ex) where Ex : Exception
         {
-            MW.MessageBox.Show(showMessage, "Server Starter", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            CustomMessageBox.Show(showMessage, ButtonType.OK, Image.Error);
 
             throw new ServerStarterException<Ex>(ex);
         }
