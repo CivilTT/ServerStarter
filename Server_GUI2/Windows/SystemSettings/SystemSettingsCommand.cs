@@ -334,49 +334,10 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
-            // Auto Port Mappingの設定確認
-            WarningPort();
-            RemovePort();
-
-            // 既存のデータを変更する形で処理
-            UserSettings.Instance.userSettings.PlayerName = _vm.UserName.Value;
-            UserSettings.Instance.userSettings.Language = "English";
-            UserSettings.Instance.userSettings.DefaultProperties = _vm.PropertyIndexs.Value;
-            UserSettings.Instance.userSettings.Players = _vm.PlayerList.ToList();
-            UserSettings.Instance.userSettings.PlayerGroups = new List<PlayerGroup>(_vm.GroupList);
-
-            UserSettings.Instance.WriteFile();
+            _vm.SaveSystemSettings();
             _vm.Saved = true;
 
             _vm.Close();
-        }
-
-        private void WarningPort()
-        {
-            if (!_vm.ValidPortNumber)
-            {
-                string message =
-                    "指定されたポート番号が不正な値です。\n" +
-                    "Auto Port Mappingを使用しない設定に変更します。";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
-                UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = false;
-                UserSettings.Instance.userSettings.PortSettings.PortNumber = 25565;
-            }
-            else
-            {
-                UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = _vm.UsingPortMapping.Value;
-                UserSettings.Instance.userSettings.PortSettings.PortNumber = int.Parse(_vm.PortNumber);
-            }
-        }
-
-        private void RemovePort()
-        {
-            if (_vm.PortStatus.Value.StatusEnum.Value == PortStatus.Status.Open)
-            {
-
-                PortSetting portSetting = new PortSetting(_vm);
-                _ = portSetting.DeletePort();
-            }
         }
     }
 }

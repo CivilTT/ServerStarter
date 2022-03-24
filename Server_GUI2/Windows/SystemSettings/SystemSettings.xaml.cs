@@ -46,11 +46,20 @@ namespace Server_GUI2.Windows.SystemSettings
             if (!vm.Saved)
             {
                 string message =
-                    "System Settingsに対する変更を保存せずにMain Windowへ戻りますか？\n" +
-                    "変更を保存する場合は「いいえ」を選択したのちに左下の「Save」ボタンを押してください。";
-                string result = CustomMessageBox.Show(message, ButtonType.YesNo, MessageBox.Back.Image.Warning);
-                if (result == "No")
-                    e.Cancel = true;
+                    "Systemに関する設定を保存しますか？";
+                string[] buttons = new string[3] { "Save", "Not Save", "Cancel" };
+                string result = CustomMessageBox.Show(message, buttons, MessageBox.Back.Image.Warning);
+                switch (result)
+                {
+                    case "Save":
+                        vm.SaveSystemSettings();
+                        break;
+                    case "Not Save":
+                        break;
+                    default:
+                        e.Cancel = true;
+                        break;
+                }
             }
         }
     }

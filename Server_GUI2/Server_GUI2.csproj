@@ -148,6 +148,12 @@
     <Compile Include="Windows\MainWindow\MainWindowCommand.cs" />
     <Compile Include="Windows\GeneralVM.cs" />
     <Compile Include="Windows\MainWindow\MainWindowVM.cs" />
+    <Resource Include="Resources\MessageBox\Error%28B%29.png" />
+    <Resource Include="Resources\MessageBox\Error%28W%29.png" />
+    <Resource Include="Resources\MessageBox\Warning%28B%29.png" />
+    <Resource Include="Resources\MessageBox\Warning%28W%29.png" />
+    <Resource Include="Resources\MessageBox\Question%28B%29.png" />
+    <Resource Include="Resources\MessageBox\Question%28W%29.png" />
     <Resource Include="Resources\MessageBox\Infomation%28B%29.png" />
     <Resource Include="Resources\MessageBox\Infomation%28W%29.png" />
     <None Include="Planning\storages.json" />

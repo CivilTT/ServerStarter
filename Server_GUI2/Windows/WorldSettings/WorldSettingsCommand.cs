@@ -302,24 +302,7 @@ namespace Server_GUI2.Windows.WorldSettings
 
         public override void Execute(object parameter)
         {
-            _vm.RunWorld.Settings.ServerProperties = new ServerProperty(_vm.PropertyIndexs.Value);
-
-            if (_vm.UseSW.Value)
-                if (_vm.RemoteIndex.Value is RemoteWorld world)
-                    _vm.RunWorld.Link(world);
-                else
-                    _vm.RunWorld.Link(_vm.AccountIndex.Value.CreateRemoteWorld(_vm.RemoteName));
-            else if (_vm.RunWorld.HasRemote)
-                _vm.RunWorld.Unlink();
-
-            _vm.RunWorld.Datapacks = new DatapackCollection(_vm.Datapacks);
-            if (_vm.RunVersion is SpigotVersion)
-                _vm.RunWorld.Plugins = new PluginCollection(_vm.Plugins);
-            _vm.RunWorld.CustomMap = _vm.CustomMap;
-
-            _vm.RunWorld.Settings.Ops = new List<OpsRecord>(_vm.OpPlayersList);
-            _vm.RunWorld.Settings.WhiteList = new List<Player>(_vm.WhitePlayersList);
-
+            _vm.SaveWorldSettings();
             _vm.Saved = true;
 
             _vm.Close();
