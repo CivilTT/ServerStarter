@@ -110,12 +110,32 @@ namespace Server_GUI2
             // 2.0.0.0未満の場合のみ実行
             if (lastVersion == "")
                 ToVersion2_0_0_0();
-
         }
 
         private static void ToVersion2_0_0_0()
         {
-            var tempName = ServerGuiPath.Instance.TempDirectory.FullName;
+            void MoveTo(DirectoryInfo sourceDirectory, DirectoryInfo targetDirectory,bool delete)
+            {
+                targetDirectory.Create();
+                foreach (var dir in sourceDirectory.GetDirectories())
+                {
+                    var name = dir.Name;
+                    if (name != "world" && name != "world_nether" && name != "world_the_end")
+                    {
+                        dir.MoveTo(Path.Combine(targetDirectory.FullName, name));
+                    }
+                }
+                foreach (var file in sourceDirectory.GetFiles())
+                {
+                    var name = file.Name;
+                    file.MoveTo(Path.Combine(targetDirectory.FullName, name));
+                }
+                if (delete)
+                {
+                    sourceDirectory.Delete();
+                }
+            }
+
             foreach (var version in ServerGuiPath.Instance.WorldData.GetVersionDirectories())
             {
                 foreach (var world in version.GetWorldDirectories())
@@ -123,38 +143,29 @@ namespace Server_GUI2
                     DirectoryInfo sourceDirectory = world.Directory;
                     DirectoryInfo targetDirectory;
                     var name = world.Name;
+                    var delete = false;
                     if (Regex.IsMatch(name, "_nether$"))
                     {
                         name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_nether$").Groups[1].Value;
                         var w = version.GetWorldDirectory(name);
                         w.Create(true);
                         targetDirectory = w.Nether.Directory;
+                        delete = true;
                     }
                     else if (Regex.IsMatch(name, "_the_end$"))
                     {
                         name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_the_end$").Groups[1].Value;
                         var w = version.GetWorldDirectory(name);
                         w.Create(true);
-                        targetDirectory = w.Nether.Directory;
+                        targetDirectory = w.End.Directory;
+                        delete = true;
                     }
                     else
                     {
                         world.Directory.Create();
                         targetDirectory = world.World.Directory;
                     }
-                    foreach(var dir in sourceDirectory.GetDirectories())
-                    {
-                        name = dir.Name;
-                        if (name != "world" && name != "world_nether" && name != "world_the_end")
-                        {
-                            dir.MoveTo(Path.Combine(targetDirectory.FullName,name));
-                        }
-                    }
-                    foreach(var file in sourceDirectory.GetFiles())
-                    {
-                        name = file.Name;
-                        file.MoveTo(Path.Combine(targetDirectory.FullName,name));
-                    }
+                    Task.Run(() => MoveTo(sourceDirectory, targetDirectory, delete));
                 }
             }
         }
