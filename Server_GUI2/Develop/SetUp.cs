@@ -115,57 +115,69 @@ namespace Server_GUI2
 
         private static void ToVersion2_0_0_0()
         {
-            //var tempName = ServerGuiPath.Instance.TempDirectory.FullName;
-            //foreach (var version in ServerGuiPath.Instance.WorldData.GetVersionDirectories())
-            //{
-            //    foreach (var world in version.GetWorldDirectories())
-            //    {
-            //        MoveToAsync(world.Directory, ServerGuiPath.Instance.TempDirectory);
-            //        var name = world.Name;
-            //        if (Regex.IsMatch(name, "_nether$"))
-            //        {
-            //            name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_nether$").Groups[1].Value;
-
-            //            var w = version.GetWorldDirectory(name);
-            //            w.Create(true);
-            //            ServerGuiPath.Instance.TempDirectory.MoveTo(w.Nether.FullName);
-            //        }
-            //        else if (Regex.IsMatch(name, "_the_end$"))
-            //        {
-            //            name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_the_end$").Groups[1].Value;
-            //            var w = version.GetWorldDirectory(name);
-            //            w.Create(true);
-            //            ServerGuiPath.Instance.TempDirectory.MoveTo(w.Nether.FullName);
-            //        }
-            //        else
-            //        {
-            //            world.Directory.Create();
-            //            await MoveToAsync(ServerGuiPath.Instance.TempDirectory, world.World.Directory);
-            //        }
-            //    }
-            //}
+            var tempName = ServerGuiPath.Instance.TempDirectory.FullName;
+            foreach (var version in ServerGuiPath.Instance.WorldData.GetVersionDirectories())
+            {
+                foreach (var world in version.GetWorldDirectories())
+                {
+                    DirectoryInfo sourceDirectory = world.Directory;
+                    DirectoryInfo targetDirectory;
+                    var name = world.Name;
+                    if (Regex.IsMatch(name, "_nether$"))
+                    {
+                        name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_nether$").Groups[1].Value;
+                        var w = version.GetWorldDirectory(name);
+                        w.Create(true);
+                        targetDirectory = w.Nether.Directory;
+                    }
+                    else if (Regex.IsMatch(name, "_the_end$"))
+                    {
+                        name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_the_end$").Groups[1].Value;
+                        var w = version.GetWorldDirectory(name);
+                        w.Create(true);
+                        targetDirectory = w.Nether.Directory;
+                    }
+                    else
+                    {
+                        world.Directory.Create();
+                        targetDirectory = world.World.Directory;
+                    }
+                    foreach(var dir in sourceDirectory.GetDirectories())
+                    {
+                        name = dir.Name;
+                        if (name != "world" && name != "world_nether" && name != "world_the_end")
+                        {
+                            dir.MoveTo(Path.Combine(targetDirectory.FullName,name));
+                        }
+                    }
+                    foreach(var file in sourceDirectory.GetFiles())
+                    {
+                        name = file.Name;
+                        file.MoveTo(Path.Combine(targetDirectory.FullName,name));
+                    }
+                }
+            }
         }
-
-        //private static async Task MoveToAsync(DirectoryInfo from, DirectoryInfo to)
-        //{
-        //    //Creates all of the directories and sub-directories
-        //    foreach (DirectoryInfo dirInfo in from.GetDirectories("*", SearchOption.AllDirectories))
-        //    {
-        //        string dirPath = dirInfo.FullName;
-        //        string outputPath = dirPath.Replace(from.FullName, to.FullName);
-        //        Directory.CreateDirectory(outputPath);
-
-        //        foreach (FileInfo file in dirInfo.EnumerateFiles())
-        //        {
-        //            using (FileStream SourceStream = file.OpenRead())
-        //            {
-        //                using (FileStream DestinationStream = File.Create(outputPath + file.Name))
-        //                {
-        //                    await SourceStream.CopyToAsync(DestinationStream);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
     }
+    //private static async Task MoveToAsync(DirectoryInfo from, DirectoryInfo to)
+    //{
+    //    //Creates all of the directories and sub-directories
+    //    foreach (DirectoryInfo dirInfo in from.GetDirectories("*", SearchOption.AllDirectories))
+    //    {
+    //        string dirPath = dirInfo.FullName;
+    //        string outputPath = dirPath.Replace(from.FullName, to.FullName);
+    //        Directory.CreateDirectory(outputPath);
+
+    //        foreach (FileInfo file in dirInfo.EnumerateFiles())
+    //        {
+    //            using (FileStream SourceStream = file.OpenRead())
+    //            {
+    //                using (FileStream DestinationStream = File.Create(outputPath + file.Name))
+    //                {
+    //                    await SourceStream.CopyToAsync(DestinationStream);
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 }
