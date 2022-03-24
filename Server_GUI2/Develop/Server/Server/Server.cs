@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
 
 namespace Server_GUI2
@@ -118,11 +120,14 @@ namespace Server_GUI2
                 return true;
             }
 
-            var result = MW.MessageBox.Show(
+            string result = CustomMessageBox.Show(
                 $"以下のURLに示されているサーバー利用に関する注意事項に同意しますか？\n\n" +
-                $"【EULAのURL】\n{euraURL}", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+                $"【EULAのURL】\n{euraURL}", ButtonType.OKCancel, Image.Infomation);
+            //var result = MW.MessageBox.Show(
+            //    $"以下のURLに示されているサーバー利用に関する注意事項に同意しますか？\n\n" +
+            //    $"【EULAのURL】\n{euraURL}", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Information);
 
-            if (result == MessageBoxResult.Cancel)
+            if (result == "Cancel")
             {
                 UserSelectException ex = new UserSelectException("User didn't agree eula");
                 logger.Info("</AgreeEula> not agreed");

@@ -134,7 +134,7 @@ namespace Server_GUI2.Windows.ProgressBar
         /// </summary>
         public void ShowCount()
         {
-            MessageBox.Show($"Counter : {Counter} times");
+            System.Windows.MessageBox.Show($"Counter : {Counter} times");
         }
     }
 }

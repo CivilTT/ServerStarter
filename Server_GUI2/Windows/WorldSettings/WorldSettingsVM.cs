@@ -105,7 +105,6 @@ namespace Server_GUI2.Windows.WorldSettings
         public ObservableCollection<IRemoteWorld> RemoteDataList { get; private set; }
         public BindingValue<IRemoteWorld> RemoteIndex { get; private set; }
         public bool CanSelectRemoteIndex => RunWorld is NewWorld && CanEdit;
-        // TODO: 名称が利用可能かのエラー処理を実装
         private string remoteName;
         public string RemoteName
         {
@@ -255,6 +254,27 @@ namespace Server_GUI2.Windows.WorldSettings
             {
                 // TODO: クロスプレイに必要なプラグインを削除する
             }
+        }
+
+        public void SaveWorldSettings()
+        {
+            RunWorld.Settings.ServerProperties = new ServerProperty(PropertyIndexs.Value);
+
+            if (UseSW.Value)
+                if (RemoteIndex.Value is RemoteWorld world)
+                    RunWorld.Link(world);
+                else
+                    RunWorld.Link(AccountIndex.Value.CreateRemoteWorld(RemoteName));
+            else if (RunWorld.HasRemote)
+                RunWorld.Unlink();
+
+            RunWorld.Datapacks = new DatapackCollection(Datapacks);
+            if (RunVersion is SpigotVersion)
+                RunWorld.Plugins = new PluginCollection(Plugins);
+            RunWorld.CustomMap = CustomMap;
+
+            RunWorld.Settings.Ops = new List<OpsRecord>(OpPlayersList);
+            RunWorld.Settings.WhiteList = new List<Player>(WhitePlayersList);
         }
 
     }

@@ -10,6 +10,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
 
 namespace Server_GUI2.Develop.Util
@@ -54,7 +56,7 @@ namespace Server_GUI2.Develop.Util
                         "Server Starterの更新データの取得に失敗しました。\n" +
                         "最新バージョンの確認を行わずに起動します。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Infomation);
                 return null;
             }
         }
@@ -75,8 +77,8 @@ namespace Server_GUI2.Develop.Util
                     "「はい（Yes）」を選択しているにも関わらず、このメッセージが繰り返し表示される場合、自動更新がこのPC環境に対応していない可能性があります。\n" +
                     "最新バージョンはGitのReleaseに公開されていますが、バグ修正のため、作者のTwitterへDMを頂けますと幸いです。\n" +
                     "お手数をおかけしますが、よろしくお願いします。";
-                var result = MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result != MessageBoxResult.Yes)
+                string result = CustomMessageBox.Show(message, ButtonType.YesNo, Image.Warning);
+                if (result != "Yes")
                     return;
 
                 tmpBat.Delete();
@@ -119,7 +121,7 @@ namespace Server_GUI2.Develop.Util
                         "Server Starterの更新ファイルの作成に失敗しました。\n" +
                         "システムの更新をせずに実行します。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
                 logger.Warn($"Failed to write tmp.bat (Error Message : {ex.Message})");
                 return;
             }
@@ -127,7 +129,7 @@ namespace Server_GUI2.Develop.Util
             string mes =
                 "Server Starterの更新を開始します。\n" +
                 "Setup_ServerStarter.msiによってシステムを更新するため、次に表示される確認画面で許可してください。";
-            MW.MessageBox.Show(mes, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageBox.Show(mes, ButtonType.OK, Image.Infomation);
             Process.Start(@".\tmp.bat", @" > .\log\tmp(versionUP)_log.txt 2>&1");
             Environment.Exit(0);
         }
