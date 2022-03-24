@@ -197,6 +197,11 @@
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Margin" Value="0,15,20,0"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.2"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style TargetType="ComboBox" x:Key="PropertyCombo" BasedOn="{StaticResource ComboSource}">
             <Setter Property="Width" Value="145"/>
