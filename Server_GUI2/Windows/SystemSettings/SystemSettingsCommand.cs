@@ -9,6 +9,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
 
 namespace Server_GUI2.Windows.SystemSettings
@@ -26,14 +28,14 @@ namespace Server_GUI2.Windows.SystemSettings
             {
                 if (content == null)
                 {
-                    MW.MessageBox.Show(nullMessage, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    CustomMessageBox.Show(nullMessage, ButtonType.OK, Image.Warning);
                     return;
                 }
 
                 // Containsを作動させるためには該当のクラス（型）でIEquatable<T>を実装している必要性あり
                 if (list.Contains(content))
                 {
-                    MW.MessageBox.Show(alreadyContainMessage, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    CustomMessageBox.Show(alreadyContainMessage, ButtonType.OK, Image.Warning);
                     return;
                 }
 
@@ -60,7 +62,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     var playerContent = new Player(_vm.PlayerName.Value);
                     if (playerContent.UUID == "")
                     {
-                        MW.MessageBox.Show("このプレイヤー名は存在しません。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                        CustomMessageBox.Show("このプレイヤー名は存在しません。", ButtonType.OK, Image.Error);
                         return;
                     }
                     AddContent(playerList, playerContent, "このプレイヤーはすでに登録されています。");
@@ -112,7 +114,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     var groupIndex = _vm.GLIndex;
                     if (groupIndex == null)
                     {
-                        MW.MessageBox.Show("編集したい行を選択してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        CustomMessageBox.Show("編集したい行を選択してください。", ButtonType.OK, Image.Warning);
                         return;
                     }
                     _vm.MemberList.ChangeCollection(groupIndex.PlayerList);
@@ -139,12 +141,12 @@ namespace Server_GUI2.Windows.SystemSettings
             {
                 if (name == null)
                 {
-                    MW.MessageBox.Show(nullMessage, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    CustomMessageBox.Show(nullMessage, ButtonType.OK, Image.Warning);
                     return;
                 }
 
-                MessageBoxResult? result = MW.MessageBox.Show($"{name}を削除しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result != MessageBoxResult.Yes)
+                string result = CustomMessageBox.Show($"{name}を削除しますか？", ButtonType.YesNo, Image.Question);
+                if (result != "Yes")
                     return;
 
                 list.Remove(deleteItem);
@@ -156,8 +158,8 @@ namespace Server_GUI2.Windows.SystemSettings
                     //var remoteList = _vm.RemoteList;
                     //var remoteDeleteItem = _vm.RLIndex.Value ?? null;
                     //var remoteName = _vm.RLIndex.Value?. ?? null;
-                    MessageBoxResult? result = MW.MessageBox.Show($"{_vm.RLIndex.Value.RepositoryName}を削除しますか？", "Server Starter", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
+                    string result = CustomMessageBox.Show($"{_vm.RLIndex.Value.RepositoryName}を削除しますか？", ButtonType.YesNo, Image.Question);
+                    if (result == "Yes")
                         _vm.RLIndex.Value.Delete();
                     //DeleteContent(remoteList, remoteDeleteItem, remoteName);
                     break;
@@ -181,7 +183,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     }
                     else
                     {
-                        MW.MessageBox.Show("削除したいメンバーを選択してください。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        CustomMessageBox.Show("削除したいメンバーを選択してください。", ButtonType.OK, Image.Warning);
                     }
                     break;
 
@@ -261,10 +263,10 @@ namespace Server_GUI2.Windows.SystemSettings
                 _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Close;
             else
             {
-                MW.MessageBox.Show(
-                        "ポートの閉鎖に失敗しました。\n" +
-                        "ポートを開放したまま留置します。",
-                        "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                string message =
+                    "ポートの閉鎖に失敗しました。\n" +
+                    "ポートを開放したまま留置します。";
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
 
                 _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Open;
                 _vm.UsingPortMapping.Value = true;
@@ -332,49 +334,10 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
-            // Auto Port Mappingの設定確認
-            WarningPort();
-            RemovePort();
-
-            // 既存のデータを変更する形で処理
-            UserSettings.Instance.userSettings.PlayerName = _vm.UserName.Value;
-            UserSettings.Instance.userSettings.Language = "English";
-            UserSettings.Instance.userSettings.DefaultProperties = _vm.PropertyIndexs.Value;
-            UserSettings.Instance.userSettings.Players = _vm.PlayerList.ToList();
-            UserSettings.Instance.userSettings.PlayerGroups = new List<PlayerGroup>(_vm.GroupList);
-
-            UserSettings.Instance.WriteFile();
+            _vm.SaveSystemSettings();
             _vm.Saved = true;
 
             _vm.Close();
-        }
-
-        private void WarningPort()
-        {
-            if (!_vm.ValidPortNumber)
-            {
-                string message =
-                    "指定されたポート番号が不正な値です。\n" +
-                    "Auto Port Mappingを使用しない設定に変更します。";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
-                UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = false;
-                UserSettings.Instance.userSettings.PortSettings.PortNumber = 25565;
-            }
-            else
-            {
-                UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = _vm.UsingPortMapping.Value;
-                UserSettings.Instance.userSettings.PortSettings.PortNumber = int.Parse(_vm.PortNumber);
-            }
-        }
-
-        private void RemovePort()
-        {
-            if (_vm.PortStatus.Value.StatusEnum.Value == PortStatus.Status.Open)
-            {
-
-                PortSetting portSetting = new PortSetting(_vm);
-                _ = portSetting.DeletePort();
-            }
         }
     }
 }

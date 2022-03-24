@@ -77,7 +77,7 @@ namespace Server_GUI2.Windows.MainWindow
         public BindingValue<bool> ResetWorld { get; private set; }
         public bool SaveWorld { get; set; }
         public bool ShowSaveWorld => ResetWorld != null && ResetWorld.Value;
-        public bool HasOwner => UserSettings.Instance.userSettings.PlayerName != null;
+        public bool HasOwner => UserSettings.Instance.userSettings.PlayerName != "";
         public bool OwnerHasOp
         {
             get

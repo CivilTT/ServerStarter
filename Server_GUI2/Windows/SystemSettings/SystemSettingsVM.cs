@@ -17,6 +17,9 @@ using MW = ModernWpf;
 using System.Text.RegularExpressions;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Server;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
+using Image = Server_GUI2.Windows.MessageBox.Back.Image;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
@@ -251,13 +254,12 @@ namespace Server_GUI2.Windows.SystemSettings
 
             if (UsingPortMapping != null && UsingPortMapping.Value)
             {
-                // TODO: 詳細方法にリンクを付けたい
-                // TODO: リンクの付与など自身でカスタマイズ可能なMessageBoxの作成
                 string message =
                     "この機能はルータに対してポート開放を行います。\n" +
                     "セキュリティソフトに対してはポート開放されないため、必要に応じてご自身で設定してください。\n" +
                     "詳細は設定方法をご参照ください。";
-                MW.MessageBox.Show(message, "Server Starter", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                LinkMessage link = new LinkMessage("ポート開放の設定方法", "https://civiltt.github.io/ServerStarter/");
+                CustomMessageBox.Show(message, ButtonType.OK, MessageBox.Back.Image.Infomation, link);
             }
         }
 
@@ -274,6 +276,50 @@ namespace Server_GUI2.Windows.SystemSettings
             }
 
             return "";
+        }
+
+        public void SaveSystemSettings()
+        {
+            // Auto Port Mappingの設定確認
+            WarningPort();
+            RemovePort();
+
+            // 既存のデータを変更する形で処理
+            UserSettings.Instance.userSettings.PlayerName = UserName.Value;
+            UserSettings.Instance.userSettings.Language = "English";
+            UserSettings.Instance.userSettings.DefaultProperties = PropertyIndexs.Value;
+            UserSettings.Instance.userSettings.Players = PlayerList.ToList();
+            UserSettings.Instance.userSettings.PlayerGroups = new List<PlayerGroup>(GroupList);
+
+            UserSettings.Instance.WriteFile();
+        }
+
+        private void WarningPort()
+        {
+            if (!ValidPortNumber)
+            {
+                string message =
+                    "指定されたポート番号が不正な値です。\n" +
+                    "Auto Port Mappingを使用しない設定に変更します。";
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
+                UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = false;
+                UserSettings.Instance.userSettings.PortSettings.PortNumber = 25565;
+            }
+            else
+            {
+                UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = UsingPortMapping.Value;
+                UserSettings.Instance.userSettings.PortSettings.PortNumber = int.Parse(PortNumber);
+            }
+        }
+
+        private void RemovePort()
+        {
+            if (PortStatus.Value.StatusEnum.Value == Develop.Util.PortStatus.Status.Open)
+            {
+
+                PortSetting portSetting = new PortSetting(this);
+                _ = portSetting.DeletePort();
+            }
         }
     }
 

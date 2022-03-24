@@ -18,7 +18,11 @@ using Server_GUI2.Windows.ProgressBar;
 using System.Threading;
 using Server_GUI2.Develop.Server;
 using System.Text.RegularExpressions;
+<<<<<<< HEAD
 using Server_GUI2.Util;
+=======
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 
 namespace Server_GUI2
 {
@@ -63,6 +67,7 @@ namespace Server_GUI2
             ManageSystemVersion.CheckVersion();
             InitProgressBar.AddMessage("Checked the versionUP about this system, Server Starter");
         }
+>>>>>>> 2017490549da644039c64ac5a8246a70045e8ab8
 
         /// <summary>
         /// 前回起動時のバージョン情報を取得
@@ -87,7 +92,7 @@ namespace Server_GUI2
                 string message =
                     "本システムはインターネット環境下のみで動作します。\n" +
                     "インターネットに接続したうえで、再度起動してください。";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
                 Environment.Exit(0);
             }
         }
@@ -108,7 +113,11 @@ namespace Server_GUI2
 
             // 2.0.0.0未満の場合のみ実行
             if (lastVersion == "")
+<<<<<<< HEAD
                 await ToVersion2_0_0_0();
+=======
+                ToVersion2_0_0_0();
+>>>>>>> 2017490549da644039c64ac5a8246a70045e8ab8
         }
 
         private async static Task ToVersion2_0_0_0()

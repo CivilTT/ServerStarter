@@ -8,6 +8,8 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Windows;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
 
 namespace Server_GUI2.Develop.Util
@@ -45,7 +47,7 @@ namespace Server_GUI2.Develop.Util
                     string message =
                             errorMessage + "\n\n" +
                             $"【エラー要因】\n{ex.Message}";
-                    MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    CustomMessageBox.Show(message, ButtonType.OK, Image.Warning);
                 }
             }
 
@@ -69,7 +71,7 @@ namespace Server_GUI2.Develop.Util
                 string message =
                         errorMessage + "\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Warning);
             }
 
             return root;
@@ -97,7 +99,7 @@ namespace Server_GUI2.Develop.Util
                 string message =
                         errorMessage + "\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Warning);
             }
             return root;
         }
@@ -121,7 +123,7 @@ namespace Server_GUI2.Develop.Util
                 string message =
                         errorMessage + "\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Warning);
             }
 
             return root;
@@ -180,7 +182,7 @@ namespace Server_GUI2.Develop.Util
                 string message =
                     errorMessage + "\n\n" +
                     $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Warning);
 
                 return null;
             }
