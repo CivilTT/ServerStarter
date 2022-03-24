@@ -1,4 +1,5 @@
-﻿using Server_GUI2.Develop.Server.World;
+﻿using log4net;
+using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
 using Server_GUI2.Util;
 using Server_GUI2.Windows.SystemSettings;
@@ -9,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
 
@@ -16,6 +18,7 @@ namespace Server_GUI2.Windows.MainWindow
 {
     class MainWindowVM : GeneralVM, IDataErrorInfo
     {
+        private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
 
         // 一般
@@ -136,8 +139,7 @@ namespace Server_GUI2.Windows.MainWindow
             {
                 new VanillaVersion("【new Version】", "", true, false)
             };
-            Version firstSelectVer = SaveData.LatestRun == null ? ExistsVersions.FirstOrDefault() : VersionFactory.Instance.GetVersionFromName(SaveData.LatestRun.VersionName);
-            ExistsVersionIndex = new BindingValue<Version>(firstSelectVer, () => OnPropertyChanged("ShowNewVersions"));
+            ExistsVersionIndex = new BindingValue<Version>(SetFirstVer(), () => OnPropertyChanged("ShowNewVersions"));
             NewVersions = new ObservableCollection<Version>(AllVers.OfType<VanillaVersion>());
             NewVersionIndex = new BindingValue<Version>(NewVersions.FirstOrDefault(), () => OnPropertyChanged(""));
             ShowAll = new BindingValue<bool>(false, () => UpdateNewVersions());
@@ -148,12 +150,10 @@ namespace Server_GUI2.Windows.MainWindow
             // World
             Worlds = new ObservableCollection<IWorld>(AllWorlds);
             // TODO: ワールドデータが空の場合のデバッグ
-            LocalWorld targetLocalWorld = LocalWorldCollection.Instance.FindLocalWorld(SaveData.LatestRun.VersionName, SaveData.LatestRun.WorldName);
-            World targetWorld = WorldCollection.Instance.Worlds.OfType<World>().Where(x => x.LocalWorld == targetLocalWorld).FirstOrDefault();
-            IWorld firstSelectWor = targetWorld ?? Worlds.FirstOrDefault();
-            WorldIndex = new BindingValue<IWorld>(firstSelectWor, () => OnPropertyChanged(new string[3] { "ShowNewWorld", "CanRun", "OwnerHasOp" }));
+            WorldIndex = new BindingValue<IWorld>(SetFirstWor(), () => OnPropertyChanged(new string[3] { "ShowNewWorld", "CanRun", "OwnerHasOp" }));
             NewWorldName = "InputWorldName";
             SetUp.InitProgressBar.AddMessage("Set Minecraft Worlds in Main Window");
+
 
             // Setting
             ResetWorld = new BindingValue<bool>(false, () => OnPropertyChanged("ShowSaveWorld"));
@@ -165,6 +165,30 @@ namespace Server_GUI2.Windows.MainWindow
             WorldSettingCommand = new WorldSettingCommand(this, wsWindow);
             SetUp.InitProgressBar.AddMessage("Finished to ready Main Window");
             SetUp.InitProgressBar.Close();
+        }
+
+        private Version SetFirstVer()
+        {
+            if (SaveData.LatestRun == null || SaveData.LatestRun.VersionName == null || SaveData.LatestRun.VersionName == "")
+                return ExistsVersions.FirstOrDefault();
+            else
+            {
+                bool isSpigot = SaveData.LatestRun.VersionType == "spigot";
+                return VersionFactory.Instance.GetVersionFromName(SaveData.LatestRun.VersionName, isSpigot);
+            }
+        }
+
+        private IWorld SetFirstWor()
+        {
+            if (SaveData.LatestRun == null || SaveData.LatestRun.WorldName == null || SaveData.LatestRun.WorldName == "")
+            {
+                return Worlds.FirstOrDefault();
+            }
+            else
+            {
+                LocalWorld targetLocalWorld = LocalWorldCollection.Instance.FindLocalWorld(RunVersion.Name, SaveData.LatestRun.WorldName);
+                return Worlds.OfType<World>().Where(x => x.LocalWorld == targetLocalWorld).FirstOrDefault();
+            }
         }
 
         private void UpdateNewVersions()
@@ -197,6 +221,7 @@ namespace Server_GUI2.Windows.MainWindow
                 }
                 catch (WorldException ex)
                 {
+                    logger.Warn(ex.Message);
                 }
             }
         }

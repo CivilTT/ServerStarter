@@ -60,10 +60,15 @@ namespace Server_GUI2
             Versions = new ObservableCollection<Version>(versions);
         }
 
-        public Version GetVersionFromName(string name)
+        /// <summary>
+        /// バージョン名からVersionインスタンスを取得
+        /// isSpigotをtrueにすることでSpigotSuffixを付した名称で検索する
+        /// </summary>
+        public Version GetVersionFromName(string name, bool isSpigot=false)
         {
             // TODO: VersionMapにないnameが指定された場合の対応
-            return VersionMap[name];
+            string verName = isSpigot ? $"Spigot_{name}" : name;
+            return VersionMap[verName];
         }
 
         /// <summary>
@@ -120,7 +125,7 @@ namespace Server_GUI2
                 // Spigot_{withoutPrefix}
                 var withoutPrefix = i.Substring(7);
                 var name = withoutPrefix == "1.14-pre5" ? "1.14 Pre-Release 5" : withoutPrefix;
-                VersionIndex["Spigot_"+ withoutPrefix] = VersionIndex[name];
+                VersionIndex["Spigot_" + withoutPrefix] = VersionIndex[name];
             }
         }
 
