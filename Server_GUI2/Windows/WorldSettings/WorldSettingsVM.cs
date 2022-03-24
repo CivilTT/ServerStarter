@@ -181,6 +181,7 @@ namespace Server_GUI2.Windows.WorldSettings
             SelectedPropIndex = new BindingValue<string>(OtherPropertyIndexs[0], () => OnPropertyChanged("OtherStringProperty"));
 
             // ShareWorld
+            // TODO: Storagesがnullの場合のAccountIndexの処理
             UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => OnPropertyChanged(new string[2] { "CanEdit", "CanSelectRemoteIndex" }));
             Accounts = new ObservableCollection<Storage>(Storages.Storages);
             AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
