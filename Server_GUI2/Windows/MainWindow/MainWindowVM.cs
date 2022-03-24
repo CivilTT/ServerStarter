@@ -149,7 +149,6 @@ namespace Server_GUI2.Windows.MainWindow
 
             // World
             Worlds = new ObservableCollection<IWorld>(AllWorlds);
-            // TODO: ワールドデータが空の場合のデバッグ
             WorldIndex = new BindingValue<IWorld>(SetFirstWor(), () => OnPropertyChanged(new string[3] { "ShowNewWorld", "CanRun", "OwnerHasOp" }));
             NewWorldName = "InputWorldName";
             SetUp.InitProgressBar.AddMessage("Set Minecraft Worlds in Main Window");
