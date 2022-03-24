@@ -50,14 +50,6 @@ namespace Server_GUI2
                     // TODO: jsonの中身を変更した場合にはここにバージョン変換の実装を書く（必要であれば）
                 }
             }
-            //else if (File.Exists(OldInfoPath))
-            //{
-            //    logger.Info("Read the local info.txt data");
-                
-            //    List<string> info = ReadContents.ReadOldInfo(OldInfoPath);
-            //    // TODO: info.txtから読み込んだ情報を新システムに登録（そのくらいもう一度自分でWelcomeWindowにて登録してもらう？）
-            //    // info.txtのユーザー名が正しいか確認の意味でもShowBuilderするべき？
-            //}
         }
 
         public void WriteFile()

@@ -13,7 +13,7 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="{Binding Title}" Width="{Binding WindowWidth, Mode=TwoWay}" SizeToContent="Height">
+        Title="{Binding Title}" MinWidth="350" Width="{Binding WindowWidth, Mode=TwoWay}" SizeToContent="Height">
         <!--Title="MessageBox" Width="350"  SizeToContent="Height">-->
 
     <Window.Resources>
