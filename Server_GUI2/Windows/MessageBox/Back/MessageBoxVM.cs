@@ -38,7 +38,6 @@ namespace Server_GUI2.Windows.MessageBox.Back
         {
             get
             {
-                // TODO: 他のImageTypeの画像も追加する
                 if (MW.ThemeManager.Current.ApplicationTheme == MW.ApplicationTheme.Dark)
                     return $"pack://application:,,,/Resources/MessageBox/{ImageType}(B).png";
                 else
