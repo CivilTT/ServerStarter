@@ -19,6 +19,7 @@ using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Server;
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
+using Image = Server_GUI2.Windows.MessageBox.Back.Image;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
@@ -275,6 +276,50 @@ namespace Server_GUI2.Windows.SystemSettings
             }
 
             return "";
+        }
+
+        public void SaveSystemSettings()
+        {
+            // Auto Port Mappingの設定確認
+            WarningPort();
+            RemovePort();
+
+            // 既存のデータを変更する形で処理
+            UserSettings.Instance.userSettings.PlayerName = UserName.Value;
+            UserSettings.Instance.userSettings.Language = "English";
+            UserSettings.Instance.userSettings.DefaultProperties = PropertyIndexs.Value;
+            UserSettings.Instance.userSettings.Players = PlayerList.ToList();
+            UserSettings.Instance.userSettings.PlayerGroups = new List<PlayerGroup>(GroupList);
+
+            UserSettings.Instance.WriteFile();
+        }
+
+        private void WarningPort()
+        {
+            if (!ValidPortNumber)
+            {
+                string message =
+                    "指定されたポート番号が不正な値です。\n" +
+                    "Auto Port Mappingを使用しない設定に変更します。";
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
+                UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = false;
+                UserSettings.Instance.userSettings.PortSettings.PortNumber = 25565;
+            }
+            else
+            {
+                UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = UsingPortMapping.Value;
+                UserSettings.Instance.userSettings.PortSettings.PortNumber = int.Parse(PortNumber);
+            }
+        }
+
+        private void RemovePort()
+        {
+            if (PortStatus.Value.StatusEnum.Value == Develop.Util.PortStatus.Status.Open)
+            {
+
+                PortSetting portSetting = new PortSetting(this);
+                _ = portSetting.DeletePort();
+            }
         }
     }
 

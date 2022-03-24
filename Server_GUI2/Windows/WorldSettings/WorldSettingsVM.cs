@@ -256,5 +256,26 @@ namespace Server_GUI2.Windows.WorldSettings
             }
         }
 
+        public void SaveWorldSettings()
+        {
+            RunWorld.Settings.ServerProperties = new ServerProperty(PropertyIndexs.Value);
+
+            if (UseSW.Value)
+                if (RemoteIndex.Value is RemoteWorld world)
+                    RunWorld.Link(world);
+                else
+                    RunWorld.Link(AccountIndex.Value.CreateRemoteWorld(RemoteName));
+            else if (RunWorld.HasRemote)
+                RunWorld.Unlink();
+
+            RunWorld.Datapacks = new DatapackCollection(Datapacks);
+            if (RunVersion is SpigotVersion)
+                RunWorld.Plugins = new PluginCollection(Plugins);
+            RunWorld.CustomMap = CustomMap;
+
+            RunWorld.Settings.Ops = new List<OpsRecord>(OpPlayersList);
+            RunWorld.Settings.WhiteList = new List<Player>(WhitePlayersList);
+        }
+
     }
 }
