@@ -246,7 +246,7 @@ namespace Server_GUI2.Develop.Server
             GitState = new GitStatePath(SubDirectory("git_state"), this);
             ManifestJson = new JsonFile<ServerGuiPath, VanillaVersonsJson>(SubFile("version_manifest_v2.json"), this);
             SpigotVersionJson = new JsonFile<ServerGuiPath,List<string>>(SubFile("spigot_versions.json"), this);
-            StoragesJson = new JsonFile<ServerGuiPath,StoragesJson>(SubFile("stoarges.json"), this);
+            StoragesJson = new JsonFile<ServerGuiPath,StoragesJson>(SubFile("storages.json"), this);
             InfoJson = new JsonFile<ServerGuiPath,UserSettingsJson>(SubFile("info.json"), this);
             TempDirectory = SubDirectory("temp");
         }

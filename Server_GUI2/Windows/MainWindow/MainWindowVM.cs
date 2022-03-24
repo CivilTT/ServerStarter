@@ -147,6 +147,7 @@ namespace Server_GUI2.Windows.MainWindow
 
             // World
             Worlds = new ObservableCollection<IWorld>(AllWorlds);
+            // TODO: ワールドデータが空の場合のデバッグ
             LocalWorld targetLocalWorld = LocalWorldCollection.Instance.FindLocalWorld(SaveData.LatestRun.VersionName, SaveData.LatestRun.WorldName);
             World targetWorld = WorldCollection.Instance.Worlds.OfType<World>().Where(x => x.LocalWorld == targetLocalWorld).FirstOrDefault();
             IWorld firstSelectWor = targetWorld ?? Worlds.FirstOrDefault();

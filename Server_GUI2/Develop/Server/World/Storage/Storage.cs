@@ -28,7 +28,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             logger.Info($"<StorageCollection>");
 
-            var storages = ServerGuiPath.Instance.StoragesJson.ReadJson().SuccessOrDefault(new StoragesJson());
+            var storages = ServerGuiPath.Instance.StoragesJson.ReadJson().FailureFunc(x => { x.WriteLine(); return x; }).SuccessOrDefault(new StoragesJson());
 
             // gitのリポジトリを全取得
             GitStorage.GetStorages(storages.Git).ForEach(x => Add(x));
@@ -199,6 +199,8 @@ namespace Server_GUI2.Develop.Server.World
             var result = new List<GitStorage>();
             foreach (var json in gitStorageJsons)
             {
+                json.Account.WriteLine();
+                json.Repository.WriteLine();
                 var remote = new GitRemote(json.Account, json.Repository);
                 var storage = GitStorageManager.Instance.ReadWorldState(remote, json.Email).SuccessFunc(
                     worldstate => new GitStorage(remote, worldstate, json.Email, true)
