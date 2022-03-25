@@ -225,7 +225,7 @@ namespace Server_GUI2.Windows.SystemSettings
             PortStatus = new BindingValue<PortStatus>(new PortStatus(portNum, Develop.Util.PortStatus.Status.Ready), () => OnPropertyChanged("PortStatus"));
 
             // Others
-            UserName = new BindingValue<string>(UserSettings.Instance.userSettings.PlayerName, () => OnPropertyChanged("UserName"));
+            UserName = new BindingValue<string>(UserSettings.Instance.userSettings.OwnerName, () => OnPropertyChanged("UserName"));
             TwitterCommand = new TwitterCommand(this);
             GitCommandVM = new GitCommandVM(this);
 
@@ -285,7 +285,7 @@ namespace Server_GUI2.Windows.SystemSettings
             RemovePort();
 
             // 既存のデータを変更する形で処理
-            UserSettings.Instance.userSettings.PlayerName = UserName.Value;
+            UserSettings.Instance.userSettings.OwnerName = UserName.Value;
             UserSettings.Instance.userSettings.Language = "English";
             UserSettings.Instance.userSettings.DefaultProperties = PropertyIndexs.Value;
             UserSettings.Instance.userSettings.Players = PlayerList.ToList();

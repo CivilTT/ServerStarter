@@ -368,7 +368,7 @@ namespace Server_GUI2.Develop.Server.World
             Using = true;
 
             // リモートワールドを複数人が同時に開かないようにロックし、最終使用者を更新
-            RemoteWorld.LastUser = UserSettings.Instance.userSettings.PlayerName ?? "";
+            RemoteWorld.LastUser = UserSettings.Instance.userSettings.OwnerName ?? "";
             RemoteWorld.Using = true;
             RemoteWorld.UpdateWorldState();
 

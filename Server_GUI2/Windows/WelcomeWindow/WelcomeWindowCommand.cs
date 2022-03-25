@@ -72,8 +72,11 @@ namespace Server_GUI2.Windows.WelcomeWindow
             string playerUUID = _vm.UUID.Value;
             Player player = new Player(playerName, playerUUID);
 
-            UserSettings.Instance.userSettings.PlayerName = playerName;
-            UserSettings.Instance.userSettings.Players.Add(player);
+            if (!_vm.NotRegistName.Value)
+            {
+                UserSettings.Instance.userSettings.OwnerName = playerName;
+                UserSettings.Instance.userSettings.Players.Add(player);
+            }
             UserSettings.Instance.userSettings.Agreement.SystemTerms = _vm.Agreed.Value;
 
             UserSettings.Instance.WriteFile();

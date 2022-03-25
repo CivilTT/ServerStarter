@@ -23,7 +23,7 @@ namespace Server_GUI2.Windows.MainWindow
 
         // 一般
         public string StarterVersion { get { return $"ver {ManageSystemVersion.StarterVersion}"; } }
-        public string PlayerName { get { return UserSettings.Instance.userSettings.PlayerName; } }
+        public string PlayerName { get { return UserSettings.Instance.userSettings.OwnerName; } }
         public string OpContents { get { return $"{PlayerName} has op rights in this version's server"; } }
         readonly ObservableCollection<Version> AllVers = VersionFactory.Instance.Versions;
         readonly ObservableCollection<IWorld> AllWorlds = WorldCollection.Instance.Worlds;
@@ -80,7 +80,7 @@ namespace Server_GUI2.Windows.MainWindow
         public BindingValue<bool> ResetWorld { get; private set; }
         public bool SaveWorld { get; set; }
         public bool ShowSaveWorld => ResetWorld != null && ResetWorld.Value;
-        public bool HasOwner => UserSettings.Instance.userSettings.PlayerName != "";
+        public bool HasOwner => UserSettings.Instance.userSettings.OwnerName != "";
         public bool OwnerHasOp
         {
             get
@@ -95,6 +95,9 @@ namespace Server_GUI2.Windows.MainWindow
             set
             {
                 Player owner = SaveData.Players.Where(player => player.Name == PlayerName).FirstOrDefault();
+                if (owner == null)
+                    return;
+
                 if (value)
                 {
                     OpsRecord ownerOp = new OpsRecord(owner, 4);
