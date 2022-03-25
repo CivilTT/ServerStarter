@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Windows.MessageBox;
 
 namespace Server_GUI2.Windows.WorldSettings
 {
@@ -101,11 +102,12 @@ namespace Server_GUI2.Windows.WorldSettings
         public BindingValue<bool> UseSW { get; private set; }
         public bool CanEdit => UseSW.Value && ! RunWorld.HasRemote;
         public ObservableCollection<Storage> Accounts { get; private set; }
+        public bool HasStrages => Storages.Storages.Count != 0;
         public BindingValue<Storage> AccountIndex { get; private set; }
         public ObservableCollection<IRemoteWorld> RemoteDataList { get; private set; }
         public BindingValue<IRemoteWorld> RemoteIndex { get; private set; }
         public bool CanSelectRemoteIndex => RunWorld is NewWorld && CanEdit;
-        private string remoteName;
+        private string remoteName = "";
         public string RemoteName
         {
             get => remoteName;
@@ -115,7 +117,7 @@ namespace Server_GUI2.Windows.WorldSettings
                 OnPropertyChanged("CanSave");
             }
         }
-        public bool ValidRemoteName => AccountIndex.Value.IsUsableName(RemoteName);
+        public bool ValidRemoteName => AccountIndex?.Value.IsUsableName(RemoteName) ?? false;
         public bool ShowNewRemoteData => RemoteIndex?.Value is NewRemoteWorld;
 
         // Additionals
@@ -142,6 +144,7 @@ namespace Server_GUI2.Windows.WorldSettings
 
         //Op
         public List<Player> Players { get; private set; }
+        public bool ValidPlayers => Players.Count != 0;
         public Player OpPlayerIndex { get; set; }
         public List<PlayerGroup> Groups { get; private set; }
         public PlayerGroup OpGroupIndex { get; set; }
@@ -182,12 +185,15 @@ namespace Server_GUI2.Windows.WorldSettings
 
             // ShareWorld
             // TODO: Storagesがnullの場合のAccountIndexの処理
-            UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => OnPropertyChanged(new string[2] { "CanEdit", "CanSelectRemoteIndex" }));
-            Accounts = new ObservableCollection<Storage>(Storages.Storages);
-            AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
-            RemoteDataList = new ObservableCollection<IRemoteWorld>(AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<IRemoteWorld>());
-            RemoteIndex = new BindingValue<IRemoteWorld>(RunWorld.HasRemote ? RunWorld.RemoteWorld : AccountIndex.Value.RemoteWorlds.Last(), () => OnPropertyChanged("ShowNewRemoteData"));
-            RemoteName = RunWorld.RemoteWorld?.Name ?? RunWorld.Name;
+            UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => SetUseSW());
+            if (HasStrages)
+            {
+                Accounts = new ObservableCollection<Storage>(Storages.Storages);
+                AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
+                RemoteDataList = new ObservableCollection<IRemoteWorld>(AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<IRemoteWorld>());
+                RemoteIndex = new BindingValue<IRemoteWorld>(RunWorld.HasRemote ? RunWorld.RemoteWorld : AccountIndex.Value.RemoteWorlds.Last(), () => OnPropertyChanged("ShowNewRemoteData"));
+                RemoteName = RunWorld.RemoteWorld?.Name ?? RunWorld.Name;
+            }
 
             // Additionals
             ImportAdditionalsCommand = new ImportAdditionalsCommand(this);
@@ -237,6 +243,38 @@ namespace Server_GUI2.Windows.WorldSettings
             }
 
             return "";
+        }
+
+        /// <summary>
+        /// UseSWが回された際にStoragesの有無と設定画面の表示非表示を管理
+        /// </summary>
+        private void SetUseSW()
+        {
+            OnPropertyChanged(new string[3] { "UseSW", "CanEdit", "CanSelectRemoteIndex" });
+
+            if (UseSW != null && UseSW.Value && !HasStrages)
+            {
+                string message =
+                    "ShareWorldを利用するための準備がされていません。\n" +
+                    "設定画面を表示しますか？";
+                string result = CustomMessageBox.Show(message, MessageBox.Back.ButtonType.YesNo, MessageBox.Back.Image.Question);
+                if (result == "Yes")
+                {
+                    Hide();
+                    var window = new ShowNewWindow<SystemSettings.SystemSettings, SystemSettingsVM>();
+                    var vm = new SystemSettingsVM();
+                    window.ShowDialog(vm);
+                    Show();
+                    if (HasStrages)
+                    {
+                        OnPropertyChanged(new string[2] { "Accounts", "RemoteDataList" });
+                        AccountIndex.Value = Accounts.FirstOrDefault();
+                        RemoteIndex.Value = AccountIndex.Value.RemoteWorlds.Last();
+                    }
+                }
+
+                UseSW.Value = HasStrages;
+            }
         }
 
         private void CrossPlay()
