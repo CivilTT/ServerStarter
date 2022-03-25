@@ -70,8 +70,8 @@ namespace Server_GUI2
         [JsonProperty("StarterVersion")]
         public string StarterVersion = LatestVersion;
 
-        [JsonProperty("PlayerName")]
-        public string PlayerName;
+        [JsonProperty("OwnerName")]
+        public string OwnerName = "";
 
         [JsonProperty("Language")]
         public string Language;
