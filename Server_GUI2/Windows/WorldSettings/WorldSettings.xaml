@@ -460,7 +460,7 @@
                         <TextBlock Text="Add Op Player" Style="{StaticResource OpTitle}"/>
                         <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
                             <TextBlock Text="Player Name" Style="{StaticResource OpBlock}"/>
-                            <ComboBox ItemsSource="{Binding Players}" DisplayMemberPath="Name" SelectedItem="{Binding OpPlayerIndex}" Width="150" Style="{StaticResource OpCombo}"/>
+                            <ComboBox ItemsSource="{Binding Players}" DisplayMemberPath="Name" SelectedItem="{Binding OpPlayerIndex}" IsEnabled="{Binding ValidPlayers}" Width="150" Style="{StaticResource OpCombo}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="40 10 0 0">
                             <TextBlock Text="Group Name" Style="{StaticResource OpBlock}"/>
@@ -520,13 +520,13 @@
                 <TextBlock Text="Add WhiteList Player" Style="{StaticResource OpTitle}"/>
                 <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
                     <TextBlock Text="Player Name" Style="{StaticResource OpBlock}"/>
-                    <ComboBox ItemsSource="{Binding Players}" DisplayMemberPath="Name" SelectedItem="{Binding WhitePlayerIndex}"  Width="150" Style="{StaticResource OpCombo}"/>
+                    <ComboBox ItemsSource="{Binding Players}" DisplayMemberPath="Name" SelectedItem="{Binding WhitePlayerIndex}" IsEnabled="{Binding ValidPlayers}" Width="150" Style="{StaticResource OpCombo}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="40 10 0 0">
                     <TextBlock Text="Group Name" Style="{StaticResource OpBlock}"/>
                     <ComboBox ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding WhiteGroupIndex}" Width="150" Style="{StaticResource OpCombo}"/>
                 </StackPanel>
-                <Button Content="Add Player" Command="{Binding AddWhiteCommand}" HorizontalAlignment="Right" Margin="20" Style="{StaticResource RunStyle}"/>
+                <Button Content="Add Player" Command="{Binding AddWhiteCommand}" IsEnabled="{Binding CanAddWhitePlayer}" HorizontalAlignment="Right" Margin="20" Style="{StaticResource RunStyle}"/>
             </StackPanel>
 
             <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="WhiteList" Margin="20 0" Style="{StaticResource MiniButton}">
