@@ -11,7 +11,7 @@ namespace Server_GUI2
     /// ops.jsonのレコード
     /// TODO: PalyerとOpsRecordを比較するためにPlayerを継承した。動作確認を念のため行う必要性あり。
     /// </summary>
-    public class OpsRecord : Player, IEquatable<OpsRecord>, IComparable<OpsRecord>
+    public class OpsRecord : IEquatable<OpsRecord>, IComparable<OpsRecord>
     {
         [JsonProperty("name")]
         public string Name { get; private set; }
@@ -24,8 +24,23 @@ namespace Server_GUI2
         [JsonProperty("BypassesPlayerLimit")]
         public bool BypassesPlayerLimit { get; set; }
 
-        public OpsRecord(Player player, int opLevel, bool bypassesPlayerLimit = false) : base(player.Name, player.UUID)
+        [JsonIgnore]
+        private Player _player { get; set; }
+        [JsonIgnore]
+        public Player Player
         {
+            get
+            {
+                _player = _player ?? new Player(Name,UUID);
+                return _player;
+            }
+        }
+        public OpsRecord() { }
+
+        public OpsRecord(Player player, int opLevel, bool bypassesPlayerLimit = false)
+        {
+            UUID = player.UUID;
+            Name = player.Name;
             Level = opLevel;
             BypassesPlayerLimit = bypassesPlayerLimit;
         }
