@@ -253,7 +253,7 @@ namespace Server_GUI2.Windows.SystemSettings
             GroupList.RemoveAll(group => group.PlayerList.Count == 0);
 
             // RegisterボタンのIsEnabledを更新
-            OnPropertyChanged(new string[2] { "CanAddition_Gr", "GroupList" });
+            OnPropertyChanged("CanAddition_Gr");
         }
 
         private void UpdateUsingPortMapping()
