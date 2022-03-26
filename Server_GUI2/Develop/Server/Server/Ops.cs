@@ -15,6 +15,7 @@ namespace Server_GUI2
     {
         [JsonProperty("name")]
         public string Name { get; private set; }
+
         [JsonProperty("uuid")]
         public string UUID { get; protected set; }
 
