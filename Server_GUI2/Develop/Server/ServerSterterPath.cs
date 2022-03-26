@@ -203,9 +203,9 @@ namespace Server_GUI2.Develop.Server
         {
             try
             {
-                var result = _ReadAllText();
-                return result.SuccessFunc(x => JsonConvert.DeserializeObject<S>(x));
-            } catch (Exception e)
+                return _ReadAllText().SuccessFunc(x => JsonConvert.DeserializeObject<S>(x));
+            }
+            catch (Exception e)
             {
                 return new Failure<S, Exception>(e);
             }
