@@ -117,8 +117,6 @@ namespace Server_GUI2.Windows.MainWindow
             UserSettings.Instance.WriteFile();
 
             _vm.Close();
-
-            Application.Current.Shutdown();
         }
     }
 }

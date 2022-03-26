@@ -81,11 +81,8 @@ namespace Server_GUI2.Windows
 
         public static void RemoveAll<T>(this ObservableCollection<T> collection, Predicate<T> match)
         {
-            foreach (var item in collection)
-            {
-                if (match(item))
-                    collection.Remove(item);
-            }
+            var _collection = new ObservableCollection<T>(collection.Where(x => !match(x)));
+            collection.ChangeCollection(_collection);
         }
 
         /// <summary>

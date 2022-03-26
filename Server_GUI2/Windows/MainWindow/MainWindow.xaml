@@ -12,6 +12,7 @@
         d:DataContext="{d:DesignInstance vm:MainWindowVM}"
         ResizeMode="CanMinimize"
         ui:WindowHelper.UseModernWindowStyle="True"
+        Closing="OnClosing"
         Title="Server Starter" Height="630" Width="630" WindowStartupLocation="CenterScreen">
     
     <Window.Resources>
@@ -204,7 +205,7 @@
             <CheckBox Content="Recreate World (When you want to reset the selected world)" FontSize="16" IsChecked="{Binding ResetWorld.Value}"/>
             <CheckBox Content="Save old World before recreating it (Saving name : ...__old(1))" FontSize="16" Margin="40,0,0,10" IsChecked="{Binding SaveWorld}" IsEnabled="{Binding ShowSaveWorld}"/>
 
-            <CheckBox Content="{Binding OpContents}" FontSize="16" IsChecked="{Binding OwnerHasOp}" IsEnabled="{Binding HasOwner}"/>
+            <CheckBox Content="{Binding OpContents}" FontSize="16" IsChecked="{Binding OwnerHasOp}" Visibility="{Binding HasOwner, Converter={StaticResource BoolToVisible}}"/>
             <CheckBox Content="Shutdown this PC after stopping the server" FontSize="16" IsChecked="{Binding ShutdownPC}" Command="{Binding SetShutdown}"/>
         </StackPanel>
         <Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="61" Y1="425" X2="61" Y2="448" Grid.Column="1"/>
