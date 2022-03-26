@@ -144,13 +144,19 @@ namespace Server_GUI2
                     DirectoryInfo targetDirectory;
                     var name = world.Name;
                     var delete = false;
-                    if (Regex.IsMatch(name, "_nether$"))
+
+                    if(name == "plugins" || name == "bundler" || name == "logs" || name == "libraries")
+                    {
+                        continue;
+                    }
+                    else if (Regex.IsMatch(name, "_nether$"))
                     {
                         name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_nether$").Groups[1].Value;
                         var w = version.GetWorldDirectory(name);
                         w.Create(true);
                         targetDirectory = w.Nether.Directory;
                         delete = true;
+                        MoveTo(sourceDirectory, targetDirectory, delete);
                     }
                     else if (Regex.IsMatch(name, "_the_end$"))
                     {
@@ -159,13 +165,19 @@ namespace Server_GUI2
                         w.Create(true);
                         targetDirectory = w.End.Directory;
                         delete = true;
+                        MoveTo(sourceDirectory, targetDirectory, delete);
                     }
                     else
                     {
                         world.Directory.Create();
                         targetDirectory = world.World.Directory;
+                        MoveTo(sourceDirectory, targetDirectory, delete);
+                        version.ServerProperties.File.CopyTo(world.ServerProperties.FullName);
+                        version.Ops.File.CopyTo(world.Ops.FullName);
+                        version.WhiteList.File.CopyTo(world.WhiteList.FullName);
+                        version.BannedIps.File.CopyTo(world.BannedIps.FullName);
+                        version.BannedPlayers.File.CopyTo(world.BannedPlayers.FullName);
                     }
-                    Task.Run(() => MoveTo(sourceDirectory, targetDirectory, delete));
                 }
             }
         }
