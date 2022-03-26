@@ -249,13 +249,11 @@ namespace Server_GUI2.Windows.SystemSettings
 
             // GroupListの中で登録済みプレイやー出ないものを削除＆削除した結果、メンバーのいなくなったグループを削除
             foreach (var group in GroupList)
-            {
                 group.PlayerList.RemoveAll(player => !PlayerList.Contains(player));
-            }
             GroupList.RemoveAll(group => group.PlayerList.Count == 0);
 
             // RegisterボタンのIsEnabledを更新
-            OnPropertyChanged("CanAddition_Gr");
+            OnPropertyChanged(new string[2] { "CanAddition_Gr", "GroupList" });
         }
 
         private void UpdateUsingPortMapping()
