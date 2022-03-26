@@ -225,7 +225,7 @@ namespace Server_GUI2.Windows.SystemSettings
             PortStatus = new BindingValue<PortStatus>(new PortStatus(portNum, Develop.Util.PortStatus.Status.Ready), () => OnPropertyChanged("PortStatus"));
 
             // Others
-            UserName = new BindingValue<string>(UserSettings.Instance.userSettings.PlayerName, () => OnPropertyChanged("UserName"));
+            UserName = new BindingValue<string>(UserSettings.Instance.userSettings.OwnerName, () => OnPropertyChanged("UserName"));
             TwitterCommand = new TwitterCommand(this);
             GitCommandVM = new GitCommandVM(this);
 
@@ -246,6 +246,14 @@ namespace Server_GUI2.Windows.SystemSettings
 
             // Membersの中で登録済みのプレイヤーでないものを削除
             MemberList.RemoveAll(player => !PlayerList.Contains(player));
+
+            // GroupListの中で登録済みプレイやー出ないものを削除＆削除した結果、メンバーのいなくなったグループを削除
+            foreach (var group in GroupList)
+                group.PlayerList.RemoveAll(player => !PlayerList.Contains(player));
+            GroupList.RemoveAll(group => group.PlayerList.Count == 0);
+
+            // RegisterボタンのIsEnabledを更新
+            OnPropertyChanged("CanAddition_Gr");
         }
 
         private void UpdateUsingPortMapping()
@@ -259,7 +267,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     "セキュリティソフトに対してはポート開放されないため、必要に応じてご自身で設定してください。\n" +
                     "詳細は設定方法をご参照ください。";
                 LinkMessage link = new LinkMessage("ポート開放の設定方法", "https://civiltt.github.io/ServerStarter/");
-                CustomMessageBox.Show(message, ButtonType.OK, MessageBox.Back.Image.Infomation, link);
+                CustomMessageBox.Show(message, ButtonType.OK, Image.Infomation, link);
             }
         }
 
@@ -285,7 +293,7 @@ namespace Server_GUI2.Windows.SystemSettings
             RemovePort();
 
             // 既存のデータを変更する形で処理
-            UserSettings.Instance.userSettings.PlayerName = UserName.Value;
+            UserSettings.Instance.userSettings.OwnerName = UserName.Value;
             UserSettings.Instance.userSettings.Language = "English";
             UserSettings.Instance.userSettings.DefaultProperties = PropertyIndexs.Value;
             UserSettings.Instance.userSettings.Players = PlayerList.ToList();

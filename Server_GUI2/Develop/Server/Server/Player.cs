@@ -10,9 +10,9 @@ namespace Server_GUI2
 {
     public class Player : IEquatable<Player>, IComparable<Player>
     {
-        [JsonProperty("Name")]
+        [JsonProperty("name")]
         public string Name { get; private set; }
-        [JsonProperty("UUID")]
+        [JsonProperty("uuid")]
         public string UUID { get; protected set; }
 
         public Player(string name, string uuid = "")

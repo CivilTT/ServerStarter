@@ -35,7 +35,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
             StartCommand = new StartCommand(this);
 
             // 1.
-            PlayerName = new BindingValue<string>("Your Name", () => OnPropertyChanged(new string[2] { "PlayerName", "CanStart" }));
+            PlayerName = new BindingValue<string>("Your Name", () => OnPropertyChanged(new string[2] { "OwnerName", "CanStart" }));
             IsActive = new BindingValue<bool>(false, () => OnPropertyChanged("IsActive"));
             UUID = new BindingValue<string>("", () => OnPropertyChanged("UUID"));
             CheckValidNameCommand = new CheckValidNameCommand(this, ownerWindow);

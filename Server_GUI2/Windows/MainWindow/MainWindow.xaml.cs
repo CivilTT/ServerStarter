@@ -188,6 +188,11 @@ namespace Server_GUI2
             DataContext = new MainWindowVM(systemSettingWindow, worldSettingWindow);
         }
 
+        private void OnClosing(object sender, CancelEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
         //public void Start(bool gui=true)
         //{
         //    logger.Debug("------------------------------------------------------------");

@@ -114,7 +114,7 @@ namespace Server_GUI2
 
         private static void ToVersion2_0_0_0()
         {
-            void MoveTo(DirectoryInfo sourceDirectory, DirectoryInfo targetDirectory,bool delete)
+            void MoveTo(DirectoryInfo sourceDirectory, DirectoryInfo targetDirectory, bool delete)
             {
                 targetDirectory.Create();
                 foreach (var dir in sourceDirectory.GetDirectories())
