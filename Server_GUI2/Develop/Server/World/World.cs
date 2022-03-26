@@ -122,7 +122,7 @@ namespace Server_GUI2.Develop.Server.World
         public void WrapRun(Version version, Action<ServerSettings, string> runFunc)
         {
             // ローカルワールドを生成
-            var localWorld = new LocalWorld( version.Path.GetWorldDirectory(Name), version );
+            var localWorld = new LocalWorld( version.Path.Worlds.GetWorldDirectory(Name), version );
 
             World world;
             if (HasRemote)
@@ -477,12 +477,12 @@ namespace Server_GUI2.Develop.Server.World
             }
 
             // version変更
-            if (local.Path.Parent != version.Path)
+            if (local.Path.Parent.Parent != version.Path)
             {
                 // versionのフォルダに移動するとともにVtoS変換
                 //Console.WriteLine($"local.path: {local.Path}");
                 //Console.WriteLine($"local.path: {version}");
-                var newPath = version.Path.GetWorldDirectory(local.Path.Name);
+                var newPath = version.Path.Worlds.GetWorldDirectory(local.Path.Name);
                 local.Move(newPath, version, version.Type, local.Settings, local.Datapacks, local.Plugins, addSuffixWhenNameCollided: true);
             }
 
