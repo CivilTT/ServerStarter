@@ -203,9 +203,9 @@ namespace Server_GUI2.Develop.Server
         {
             try
             {
-                return _ReadAllText().SuccessFunc(x => JsonConvert.DeserializeObject<S>(x));
-            }
-            catch (Exception e)
+                var result = _ReadAllText();
+                return result.SuccessFunc(x => JsonConvert.DeserializeObject<S>(x));
+            } catch (Exception e)
             {
                 return new Failure<S, Exception>(e);
             }
@@ -289,8 +289,8 @@ namespace Server_GUI2.Develop.Server
 
     public class VersionPath : SubDirectoryPath<WorldDataPath>
     {
+        public WorldsPath Worlds;
         public VersionLogsPath Logs;
-
         public TextFile<VersionPath> ServerProperties;
         public JsonFile<VersionPath,List<OpsRecord>> Ops;
         public JsonFile<VersionPath,List<Player>> WhiteList;
@@ -302,6 +302,7 @@ namespace Server_GUI2.Develop.Server
 
         internal VersionPath(DirectoryInfo directory, WorldDataPath parent) : base(directory,parent)
         {
+            Worlds = new WorldsPath(SubDirectory("worlds"), this);
             Logs = new VersionLogsPath(SubDirectory("logs"), this);
             ServerProperties = new TextFile<VersionPath>(SubFile("server.properties"), this);
             Ops = new JsonFile<VersionPath, List<OpsRecord>>(SubFile("ops.json"), this);
@@ -310,6 +311,18 @@ namespace Server_GUI2.Develop.Server
             BannedIps = new JsonFile<VersionPath, List<BannedIpRecord>>(SubFile("banned-ips.json"), this);
             Eula = new TextFile<VersionPath>(SubFile("eula.txt"), this);
         }
+
+    }
+
+    public class VersionLogsPath : SubDirectoryPath<VersionPath>
+    {
+        internal VersionLogsPath(DirectoryInfo directory, VersionPath parent) : base(directory,parent){ }
+    }
+
+    public class WorldsPath : SubDirectoryPath<VersionPath>
+    {
+        internal WorldsPath(DirectoryInfo directory, VersionPath parent) : base(directory, parent){ }
+
         public WorldPath[] GetWorldDirectories()
         {
             return Directory.GetDirectories().Select(x => new WorldPath(x, this)).ToArray();
@@ -320,12 +333,7 @@ namespace Server_GUI2.Develop.Server
         }
     }
 
-    public class VersionLogsPath : SubDirectoryPath<VersionPath>
-    {
-        internal VersionLogsPath(DirectoryInfo directory, VersionPath parent) : base(directory,parent){ }
-    }
-
-    public class WorldPath : SubDirectoryPath<VersionPath>
+    public class WorldPath : SubDirectoryPath<WorldsPath>
     {
         public TextFile<WorldPath> ServerProperties;
         public JsonFile<WorldPath, List<OpsRecord>> Ops;
@@ -336,7 +344,7 @@ namespace Server_GUI2.Develop.Server
         public WorldWorldPath World;
         public WorldNetherPath Nether;
         public WorldEndPath End;
-        internal WorldPath(DirectoryInfo directory, VersionPath parent) : base(directory,parent)
+        internal WorldPath(DirectoryInfo directory, WorldsPath parent) : base(directory,parent)
         {
             Parent = parent;
 

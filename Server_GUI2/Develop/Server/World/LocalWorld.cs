@@ -23,7 +23,7 @@ namespace Server_GUI2.Develop.Server.World
                 try
                 {
                     var version = VersionFactory.Instance.GetVersionFromName(verDir.Name);
-                    foreach (var worldDir in verDir.GetWorldDirectories())
+                    foreach (var worldDir in verDir.Worlds.GetWorldDirectories())
                     {
                         // ログフォルダは無視
                         if (worldDir.Name == "logs" || worldDir.Name == "crash-reports")
@@ -267,7 +267,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             logger.Info("<WrapRun>");
             
-            logger.Info($"change levelname to '{Path.Name}/{Path.World.Name}'");
+            logger.Info($"change levelname to 'worlds/{Path.Name}/{Path.World.Name}'");
 
             string arg = "";
 
@@ -276,12 +276,12 @@ namespace Server_GUI2.Develop.Server.World
             {
                 // vanillaの場合はlevel-nameを{worldname}/worldに
                 case ServerType.Vanilla:
-                    Settings.ServerProperties.LevelName = $"{Path.Name}/{Path.World.Name}";
+                    Settings.ServerProperties.LevelName = $"worlds/{Path.Name}/{Path.World.Name}";
                     break;
                 // spigotの場合は起動時引数に level-nameをworldに
                 case ServerType.Spigot:
                     Settings.ServerProperties.LevelName = Path.World.Name;
-                    arg = $" --world-container {Path.Name}";
+                    arg = $" --world-container worlds/{Path.Name}";
                     break;
             }
 

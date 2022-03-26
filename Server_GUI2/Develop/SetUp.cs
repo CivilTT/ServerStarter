@@ -136,49 +136,59 @@ namespace Server_GUI2
                 }
             }
 
+            void convert(VersionPath version, DirectoryInfo world)
+            {
+                DirectoryInfo sourceDirectory = world;
+                DirectoryInfo targetDirectory;
+                var name = world.Name;
+                var delete = false;
+                if(name == "plugins" || name == "bundler" || name == "logs" || name == "libraries")
+                {
+                    return;
+                }
+                else if (Regex.IsMatch(name, "_nether$"))
+                {
+                    name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_nether$").Groups[1].Value;
+                    var w = version.Worlds.GetWorldDirectory(name);
+                    w.Create(true);
+                    targetDirectory = w.Nether.Directory;
+                    delete = true;
+                    MoveTo(sourceDirectory, targetDirectory, delete);
+                }
+                else if (Regex.IsMatch(name, "_the_end$"))
+                {
+                    name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_the_end$").Groups[1].Value;
+                    var w = version.Worlds.GetWorldDirectory(name);
+                    w.Create(true);
+                    targetDirectory = w.End.Directory;
+                    delete = true;
+                    MoveTo(sourceDirectory, targetDirectory, delete);
+                }
+                else
+                {
+                    var w = version.Worlds.GetWorldDirectory(name);
+                    w.Directory.Create();
+                    targetDirectory = w.World.Directory;
+                    delete = name != "worlds";
+                    MoveTo(sourceDirectory, targetDirectory, delete);
+                    version.ServerProperties.File.CopyTo(w.ServerProperties.FullName);
+                    version.Ops.File.CopyTo(w.Ops.FullName);
+                    version.WhiteList.File.CopyTo(w.WhiteList.FullName);
+                    version.BannedIps.File.CopyTo(w.BannedIps.FullName);
+                    version.BannedPlayers.File.CopyTo(w.BannedPlayers.FullName);
+                }
+            }
+
             foreach (var version in ServerGuiPath.Instance.WorldData.GetVersionDirectories())
             {
-                foreach (var world in version.GetWorldDirectories())
-                {
-                    DirectoryInfo sourceDirectory = world.Directory;
-                    DirectoryInfo targetDirectory;
-                    var name = world.Name;
-                    var delete = false;
+                var worlds = new DirectoryInfo(Path.Combine(version.Directory.FullName, "worlds"));
 
-                    if(name == "plugins" || name == "bundler" || name == "logs" || name == "libraries")
-                    {
-                        continue;
-                    }
-                    else if (Regex.IsMatch(name, "_nether$"))
-                    {
-                        name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_nether$").Groups[1].Value;
-                        var w = version.GetWorldDirectory(name);
-                        w.Create(true);
-                        targetDirectory = w.Nether.Directory;
-                        delete = true;
-                        MoveTo(sourceDirectory, targetDirectory, delete);
-                    }
-                    else if (Regex.IsMatch(name, "_the_end$"))
-                    {
-                        name = Regex.Match(name, "(^[0-9A-Za-z_-]+)_the_end$").Groups[1].Value;
-                        var w = version.GetWorldDirectory(name);
-                        w.Create(true);
-                        targetDirectory = w.End.Directory;
-                        delete = true;
-                        MoveTo(sourceDirectory, targetDirectory, delete);
-                    }
-                    else
-                    {
-                        world.Directory.Create();
-                        targetDirectory = world.World.Directory;
-                        MoveTo(sourceDirectory, targetDirectory, delete);
-                        version.ServerProperties.File.CopyTo(world.ServerProperties.FullName);
-                        version.Ops.File.CopyTo(world.Ops.FullName);
-                        version.WhiteList.File.CopyTo(world.WhiteList.FullName);
-                        version.BannedIps.File.CopyTo(world.BannedIps.FullName);
-                        version.BannedPlayers.File.CopyTo(world.BannedPlayers.FullName);
-                    }
-                }
+                if (worlds.Exists)
+                    convert(version, worlds);
+
+                foreach (var world in version.Directory.GetDirectories())
+                    if (world.Name != "worlds")
+                        convert(version, worlds);
             }
         }
     }
