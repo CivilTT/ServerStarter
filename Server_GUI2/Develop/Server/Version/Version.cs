@@ -329,7 +329,7 @@ namespace Server_GUI2
             p.WaitForExit();
 
             // 余計なファイルの削除
-            foreach (var x in Path.GetWorldDirectories())
+            foreach (var x in Path.Worlds.GetWorldDirectories())
                 x.Delete(force: true);
             Path.SubTextFile<VersionPath>("BuildTools.jar").Delete();
             //Path.SubTextFile<VersionPath>("build.bat").Delete();
