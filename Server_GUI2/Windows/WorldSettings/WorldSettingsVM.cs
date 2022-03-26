@@ -238,7 +238,7 @@ namespace Server_GUI2.Windows.WorldSettings
         {
             List<Player> notExistPlayers = new List<Player>();
             //RunWorld.Settings.Ops.WriteLine(x => x.Name);
-            notExistPlayers.AddRange(RunWorld.Settings.Ops.Where(opPlayer => !SaveData.Players.Contains(opPlayer)));
+            notExistPlayers.AddRange(RunWorld.Settings.Ops.Where(opPlayer => !SaveData.Players.Contains(opPlayer.Player)).Select(opPlayer => opPlayer.Player));
             notExistPlayers.AddRange(RunWorld.Settings.WhiteList.Where(player => !SaveData.Players.Contains(player)));
             
             if (notExistPlayers.Count != 0)
