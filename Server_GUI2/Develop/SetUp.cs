@@ -188,7 +188,7 @@ namespace Server_GUI2
 
                 foreach (var world in version.Directory.GetDirectories())
                     if (world.Name != "worlds")
-                        convert(version, worlds);
+                        convert(version, world);
             }
         }
     }
