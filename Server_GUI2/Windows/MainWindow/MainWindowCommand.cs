@@ -85,6 +85,7 @@ namespace Server_GUI2.Windows.MainWindow
                     World selected = (World)_vm.WorldIndex.Value;
                     selected.Delete();
                     _vm.Worlds.Remove(_vm.WorldIndex.Value);
+                    _vm.WorldIndex.Value = _vm.Worlds[0];
                     break;
                 default:
                     break;
