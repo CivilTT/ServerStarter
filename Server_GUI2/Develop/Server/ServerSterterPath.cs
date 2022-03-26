@@ -105,9 +105,11 @@ namespace Server_GUI2.Develop.Server
         {
             try
             {
-                var stream = File.OpenRead();
-                var result = new StreamReader(stream).ReadToEnd();
-                stream.Close();
+                string result = "";
+                using (FileStream stream = File.OpenRead())
+                {
+                    result = new StreamReader(stream).ReadToEnd();
+                }
                 return new Success<string, Exception>(result);
             }
             catch (Exception e)

@@ -246,7 +246,7 @@ namespace Server_GUI2.Windows.WorldSettings
                 //notExistPlayers.WriteLine(x => x.Name);
                 string message = "以下のプレイヤーがServer Starterに登録されていません。\n登録しますか？\n";
                 //Console.WriteLine(string.Join("\n", notExistPlayers.Select(x => $"User name : {x.Name}\tUUID : {x.UUID}")));
-                message += string.Join("\n", notExistPlayers.Select(x => $"\nUser name : {x.Name}\tUUID : {x.UUID}"));
+                message += string.Join("\n", notExistPlayers.Select(x => $"\nUser name : {x.Name}\nUUID : {x.UUID}"));
                 string result = CustomMessageBox.Show(message, ButtonType.YesNo, Image.Question);
                 if (result == "Yes")
                     SaveData.Players.AddRange(notExistPlayers);
