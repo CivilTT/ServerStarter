@@ -13,6 +13,11 @@ namespace Server_GUI2
     /// </summary>
     public class OpsRecord : Player, IEquatable<OpsRecord>, IComparable<OpsRecord>
     {
+        [JsonProperty("name")]
+        public string Name { get; private set; }
+        [JsonProperty("uuid")]
+        public string UUID { get; protected set; }
+
         [JsonProperty("level")]
         public int Level { get; set; }
 
