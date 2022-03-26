@@ -15,6 +15,7 @@ namespace Server_GUI2
     {
         [JsonProperty("name")]
         public string Name { get; private set; }
+
         [JsonProperty("uuid")]
         public string UUID { get; protected set; }
 
@@ -26,6 +27,8 @@ namespace Server_GUI2
 
         public OpsRecord(Player player, int opLevel, bool bypassesPlayerLimit = false) : base(player.Name, player.UUID)
         {
+            Name = player.Name;
+            UUID = player.UUID;
             Level = opLevel;
             BypassesPlayerLimit = bypassesPlayerLimit;
         }
