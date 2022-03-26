@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
+using Server_GUI2.Util;
 
 namespace Server_GUI2.Windows.WorldSettings
 {
@@ -213,12 +215,14 @@ namespace Server_GUI2.Windows.WorldSettings
             }
             // Custom Map
 
-
+            CheckPlayer();
             // Op (new することで参照渡しにならないようにする)
             Players = new List<Player>(SaveData.Players);
             OpPlayerIndex = Players.FirstOrDefault();
-            Groups = new List<PlayerGroup>(SaveData.PlayerGroups);
-            Groups.Add(new PlayerGroup("(No Group)", null));
+            Groups = new List<PlayerGroup>(SaveData.PlayerGroups)
+            {
+                new PlayerGroup("(No Group)", null)
+            };
             OpGroupIndex = Groups.FirstOrDefault();
             AddOpPlayerCommand = new AddOpPlayerCommand(this);
             OpPlayersList = new ObservableCollection<OpsRecord>(RunWorld.Settings.Ops);
@@ -228,6 +232,25 @@ namespace Server_GUI2.Windows.WorldSettings
             WhiteGroupIndex = Groups.FirstOrDefault();
             AddWhiteCommand = new AddWhiteCommand(this);
             WhitePlayersList = new ObservableCollection<Player>(RunWorld.Settings.WhiteList);
+        }
+
+        private void CheckPlayer()
+        {
+            List<Player> notExistPlayers = new List<Player>();
+            //RunWorld.Settings.Ops.WriteLine(x => x.Name);
+            notExistPlayers.AddRange(RunWorld.Settings.Ops.Where(opPlayer => !SaveData.Players.Contains(opPlayer)));
+            notExistPlayers.AddRange(RunWorld.Settings.WhiteList.Where(player => !SaveData.Players.Contains(player)));
+            
+            if (notExistPlayers.Count != 0)
+            {
+                //notExistPlayers.WriteLine(x => x.Name);
+                string message = "以下のプレイヤーがServer Starterに登録されていません。\n登録しますか？\n\n";
+                //Console.WriteLine(string.Join("\n", notExistPlayers.Select(x => $"User name : {x.Name}\tUUID : {x.UUID}")));
+                message += string.Join("\n", notExistPlayers.Select(x => $"User name : {x.Name}\tUUID : {x.UUID}"));
+                string result = CustomMessageBox.Show(message, ButtonType.YesNo, Image.Question);
+                if (result == "Yes")
+                    SaveData.Players.AddRange(notExistPlayers);
+            }
         }
 
         private string CheckInputBox(string propertyName)
@@ -257,7 +280,7 @@ namespace Server_GUI2.Windows.WorldSettings
                 string message =
                     "ShareWorldを利用するための準備がされていません。\n" +
                     "設定画面を表示しますか？";
-                string result = CustomMessageBox.Show(message, MessageBox.Back.ButtonType.YesNo, MessageBox.Back.Image.Question);
+                string result = CustomMessageBox.Show(message, ButtonType.YesNo, Image.Question);
                 if (result == "Yes")
                 {
                     Hide();
