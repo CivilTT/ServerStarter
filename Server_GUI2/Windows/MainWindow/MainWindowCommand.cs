@@ -84,6 +84,7 @@ namespace Server_GUI2.Windows.MainWindow
                 case "world":
                     World selected = (World)_vm.WorldIndex.Value;
                     selected.Delete();
+                    _vm.Worlds.Remove(_vm.WorldIndex.Value);
                     break;
                 default:
                     break;
