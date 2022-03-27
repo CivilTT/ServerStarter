@@ -9,7 +9,6 @@ namespace Server_GUI2
 {
     /// <summary>
     /// ops.jsonのレコード
-    /// TODO: PalyerとOpsRecordを比較するためにPlayerを継承した。動作確認を念のため行う必要性あり。
     /// </summary>
     public class OpsRecord : IEquatable<OpsRecord>, IComparable<OpsRecord>
     {

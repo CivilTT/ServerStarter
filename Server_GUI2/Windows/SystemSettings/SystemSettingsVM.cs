@@ -207,13 +207,16 @@ namespace Server_GUI2.Windows.SystemSettings
             // Player
             PlayerName = new BindingValue<string>("", () => OnPropertyChanged("CanAddition_Pl"));
             PlayerList = new ObservableCollection<Player>(SaveData.Players);
+            PlayerList.Sort();
             // Group
             GroupName = new BindingValue<string>("", () => OnPropertyChanged(new string[2] { "GroupName", "CanAddition_Gr" }));
             PlayerList_Group = new ObservableCollection<Player>(SaveData.Players);
+            PlayerList_Group.Sort();
             PLGIndex = new BindingValue<Player>(null, () => OnPropertyChanged("CanAddition_Gr"));
             MemberList = new ObservableCollection<Player>();
             MLIndex = new BindingValue<Player>(null, () => OnPropertyChanged("CanAddition_Gr"));
             GroupList = new ObservableCollection<PlayerGroup>(SaveData.PlayerGroups);
+            GroupList.Sort();
 
 
             // Network

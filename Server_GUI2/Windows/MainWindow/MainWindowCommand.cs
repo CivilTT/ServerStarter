@@ -1,8 +1,10 @@
 ﻿using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.WorldSettings;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,17 +78,40 @@ namespace Server_GUI2.Windows.MainWindow
 
         public override void Execute(object parameter)
         {
+            void Delete<T>(ObservableCollection<T> collection, T removeItemIndex, string removeItemName, Action deleteAction)
+            {
+                string removeType = "";
+                if (removeItemIndex is Version version)
+                    removeType = "バージョン";
+                else if (removeItemIndex is IWorld world)
+                    removeType = "ワールド";
+
+                string message =
+                    $"この{removeType}を削除しますか？\n" +
+                    $"「{removeItemName}」は完全に削除され、復元ができなくなります。";
+                string result = CustomMessageBox.Show(message, MessageBox.Back.ButtonType.YesNo, MessageBox.Back.Image.Warning);
+                if (result != "Yes")
+                    return;
+
+                deleteAction();
+                collection.Remove(removeItemIndex);
+                removeItemIndex = collection[0];
+            }
+
             switch (parameter.ToString())
             {
                 case "version":
-                    _vm.ExistsVersionIndex.Value.Remove();
+                    Version versionIndex = _vm.ExistsVersionIndex.Value;
+                    string name = $"{versionIndex.Type} {versionIndex.Name}";
+                    Delete(_vm.ExistsVersions, versionIndex, name, () => versionIndex.Remove());
                     break;
+
                 case "world":
-                    World selected = (World)_vm.WorldIndex.Value;
-                    selected.Delete();
-                    _vm.Worlds.Remove(_vm.WorldIndex.Value);
-                    _vm.WorldIndex.Value = _vm.Worlds[0];
+                    IWorld worldIndex = _vm.WorldIndex.Value;
+                    name = worldIndex.DisplayName;
+                    Delete(_vm.Worlds, worldIndex, name, () => ((World)worldIndex).Delete());
                     break;
+
                 default:
                     break;
             }

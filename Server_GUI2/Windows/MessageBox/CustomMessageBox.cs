@@ -31,6 +31,7 @@ namespace Server_GUI2.Windows.MessageBox
         /// <summary>
         /// カスタムメッセージボックスを表示する
         /// 選択したボタンの内容を文字列として返すが、ユーザーが選択しなかった場合はstring.Emptyを返す
+        /// TODO: タイムアウトに対応したMessageboxを表示できるようにする
         /// </summary>
         public static string Show(string message, string title, string[] buttons, Image icon, LinkMessage link)
         {

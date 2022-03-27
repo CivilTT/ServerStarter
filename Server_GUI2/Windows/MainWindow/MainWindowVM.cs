@@ -142,9 +142,9 @@ namespace Server_GUI2.Windows.MainWindow
             {
                 new VanillaVersion("【new Version】", "", true, false)
             };
-            ExistsVersionIndex = new BindingValue<Version>(SetFirstVer(), () => OnPropertyChanged("ShowNewVersions"));
+            ExistsVersionIndex = new BindingValue<Version>(SetFirstVer(), () => OnPropertyChanged(new string[2] { "ExistsVersionIndex", "ShowNewVersions" }));
             NewVersions = new ObservableCollection<Version>(AllVers.OfType<VanillaVersion>());
-            NewVersionIndex = new BindingValue<Version>(NewVersions.FirstOrDefault(), () => OnPropertyChanged(""));
+            NewVersionIndex = new BindingValue<Version>(NewVersions.FirstOrDefault(), () => OnPropertyChanged("NewVersionIndex"));
             ShowAll = new BindingValue<bool>(false, () => UpdateNewVersions());
             ShowSpigot = new BindingValue<bool>(false, () => UpdateNewVersions());
             SetUp.InitProgressBar.AddMessage("Set Minecraft Versions in Main Window");
@@ -152,7 +152,7 @@ namespace Server_GUI2.Windows.MainWindow
 
             // World
             Worlds = new ObservableCollection<IWorld>(AllWorlds);
-            WorldIndex = new BindingValue<IWorld>(SetFirstWor(), () => OnPropertyChanged(new string[3] { "ShowNewWorld", "CanRun", "OwnerHasOp" }));
+            WorldIndex = new BindingValue<IWorld>(SetFirstWor(), () => OnPropertyChanged(new string[4] { "WorldIndex", "ShowNewWorld", "CanRun", "OwnerHasOp" }));
             NewWorldName = "InputWorldName";
             SetUp.InitProgressBar.AddMessage("Set Minecraft Worlds in Main Window");
 
