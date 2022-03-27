@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MW = ModernWpf;
 
@@ -27,6 +28,10 @@ namespace Server_GUI2.Windows.MessageBox.Back
         // Width
         public int WindowWidth { get; set; }
         public int ButtonWidth { get; private set; }
+
+        // Timer
+        public Timer Timer { get; set; }
+        public bool isTimeUp = false;
 
         // Contents
         public string Title { get; private set; }
@@ -54,7 +59,7 @@ namespace Server_GUI2.Windows.MessageBox.Back
         public bool UserSelected = false;
 
 
-        public MessageBoxVM(string message, string title, string[] buttons, Image icon, LinkMessage link)
+        public MessageBoxVM(string message, string title, string[] buttons, Image icon, LinkMessage link, int timeout)
         {
             Message = message;
             Title = title;
@@ -67,6 +72,15 @@ namespace Server_GUI2.Windows.MessageBox.Back
             SetButtonContent();
             SetButtonWidth();
             SetWindowWidth();
+
+            if (timeout > -1)
+                Timer = new Timer(CloseWindow, null, timeout, Timeout.Infinite);
+        }
+
+        private void CloseWindow(object state)
+        {
+            isTimeUp = true;
+            Close();
         }
 
         private void SetButtonContent()

@@ -89,8 +89,6 @@ namespace Server_GUI2
             //        )
             //    );
             logger.Info($"</Run>");
-
-            Environment.Exit(0);
         }
 
         static void DummyRun(VersionPath path, string jarName, string log4jArgument, ServerSettings settings)
@@ -138,14 +136,14 @@ namespace Server_GUI2
 
         private static void ShutDown()
         {
-            if (UserSettings.Instance.userSettings.ShutdownPC)
+            if (!UserSettings.Instance.userSettings.ShutdownPC)
                 return;
 
-            DialogResult result = AutoClosingMessageBox.Show(
+            string result = CustomMessageBox.Show(
                 "PCを30秒後にシャットダウンしようとしています。\n" +
-                "シャットダウンしない場合は「キャンセル」を押してください。", "Server Starter", 30000, MessageBoxButtons.OKCancel);
+                "シャットダウンしない場合は「キャンセル」を押してください。", ButtonType.OKCancel, Image.Infomation, 30000);
 
-            if (result == DialogResult.Cancel)
+            if (result == "Cancel")
                 return;
 
             ProcessStartInfo psi = new ProcessStartInfo

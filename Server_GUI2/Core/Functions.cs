@@ -1117,33 +1117,33 @@ namespace Server_GUI2
         //    }
         //}
 
-        public void Shutdown()
-        {
-            if (!Properties.Settings.Default.Shutdown)
-            {
-                return;
-            }
+        //public void Shutdown()
+        //{
+        //    if (!Properties.Settings.Default.Shutdown)
+        //    {
+        //        return;
+        //    }
 
-            DialogResult result = AutoClosingMessageBox.Show(
-                "PCを30秒後にシャットダウンしようとしています。\n" +
-                "シャットダウンしない場合は「キャンセル」を押してください。", "Server Starter", 30000, MessageBoxButtons.OKCancel);
+        //    DialogResult result = AutoClosingMessageBox.Show(
+        //        "PCを30秒後にシャットダウンしようとしています。\n" +
+        //        "シャットダウンしない場合は「キャンセル」を押してください。", "Server Starter", 30000, MessageBoxButtons.OKCancel);
 
-            if(result == System.Windows.Forms.DialogResult.Cancel)
-            {
-                return;
-            }
+        //    if(result == System.Windows.Forms.DialogResult.Cancel)
+        //    {
+        //        return;
+        //    }
 
-            ProcessStartInfo psi = new ProcessStartInfo
-            {
-                FileName = "shutdown.exe",
-                Arguments = "/s /f /t 0",
-                // ウィンドウを表示しない
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
+        //    ProcessStartInfo psi = new ProcessStartInfo
+        //    {
+        //        FileName = "shutdown.exe",
+        //        Arguments = "/s /f /t 0",
+        //        // ウィンドウを表示しない
+        //        UseShellExecute = false,
+        //        CreateNoWindow = true
+        //    };
 
-            Process.Start(psi);
-        }
+        //    Process.Start(psi);
+        //}
 
         public static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs=true)
         {
