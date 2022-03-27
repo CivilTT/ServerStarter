@@ -186,7 +186,6 @@ namespace Server_GUI2.Windows.WorldSettings
             SelectedPropIndex = new BindingValue<string>(OtherPropertyIndexs[0], () => OnPropertyChanged("OtherStringProperty"));
 
             // ShareWorld
-            // TODO: Storagesがnullの場合のAccountIndexの処理
             UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => SetUseSW());
             if (HasStrages)
             {
