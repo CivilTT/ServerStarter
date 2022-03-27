@@ -26,6 +26,8 @@ namespace Server_GUI2.Windows.MainWindow
             StartServer.Run(_vm.RunVersion, _vm.RunWorld);
 
             // TODO: 必要に応じて再表示する
+
+            _vm.Close();
         }
     }
 
@@ -41,10 +43,10 @@ namespace Server_GUI2.Windows.MainWindow
 
         public override void Execute(object parameter)
         {
-            _vm.Hide?.Invoke();
+            _vm.Hide();
             var systemSettingWindow = new SystemSettingsVM();
             SSwindow.ShowDialog(systemSettingWindow);
-            _vm.Show?.Invoke();
+            _vm.Show();
         }
     }
 

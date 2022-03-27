@@ -15,6 +15,9 @@ namespace Server_GUI2.Windows.MessageBox.Back
 
         public override void Execute(object parameter)
         {
+            if (_vm.Timer != null)
+                _vm.Timer.Dispose();
+
             _vm.SelectedIndex = int.Parse(parameter.ToString());
             _vm.UserSelected = true;
             _vm.Close();
