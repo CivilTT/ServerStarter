@@ -104,14 +104,12 @@ namespace Server_GUI2.Windows.MainWindow
             {
                 case "version":
                     Version versionIndex = _vm.ExistsVersionIndex.Value;
-                    string name = $"{versionIndex.Type} {versionIndex.Name}";
-                    Delete(_vm.ExistsVersions, versionIndex, name, () => versionIndex.Remove());
+                    Delete(_vm.ExistsVersions, versionIndex, versionIndex.Name, () => versionIndex.Remove());
                     break;
 
                 case "world":
                     IWorld worldIndex = _vm.WorldIndex.Value;
-                    name = worldIndex.DisplayName;
-                    Delete(_vm.Worlds, worldIndex, name, () => ((World)worldIndex).Delete());
+                    Delete(_vm.Worlds, worldIndex, worldIndex.DisplayName, () => ((World)worldIndex).Delete());
                     break;
 
                 default:
