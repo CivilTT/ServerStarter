@@ -123,9 +123,6 @@ namespace Server_GUI2
             string result = CustomMessageBox.Show(
                 $"以下のURLに示されているサーバー利用に関する注意事項に同意しますか？\n\n" +
                 $"【EULAのURL】\n{euraURL}", ButtonType.OKCancel, Image.Infomation);
-            //var result = MW.MessageBox.Show(
-            //    $"以下のURLに示されているサーバー利用に関する注意事項に同意しますか？\n\n" +
-            //    $"【EULAのURL】\n{euraURL}", "Server Starter", MessageBoxButton.OKCancel, MessageBoxImage.Information);
 
             if (result == "Cancel")
             {
