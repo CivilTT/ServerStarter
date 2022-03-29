@@ -15,7 +15,7 @@ namespace Server_GUI2.Develop.Util
 {
     public class PortMapping
     {
-        public static int LocalPort => 2869;
+        public static int LocalPort => 25565;
 
         public static async Task<bool> AddPort(int portNum)
         {
