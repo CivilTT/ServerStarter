@@ -93,8 +93,10 @@ namespace Server_GUI2
         /// </summary>
         public (VersionPath, string, int) ReadyVersion()
         {
+            logger.Info("<ReadyVersion>");
             if (!Exists)
                 SetNewVersion();
+            logger.Info("</ReadyVersion>");
             return (Path,JarName, GetJavaVersion());
         }
 
