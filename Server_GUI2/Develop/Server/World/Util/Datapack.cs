@@ -66,6 +66,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             foreach ( var operation in operations)
                 operation(path);
+            StartServer.RunProgressBar.AddMessage("Imported Datapacks.");
         }
 
         public List<string> GetNames()

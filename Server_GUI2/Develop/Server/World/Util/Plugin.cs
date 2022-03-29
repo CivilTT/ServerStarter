@@ -61,6 +61,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             foreach (var operation in operations)
                 operation(path);
+            StartServer.RunProgressBar.AddMessage("Imported Plugins.");
         }
 
         public List<string> GetNames()

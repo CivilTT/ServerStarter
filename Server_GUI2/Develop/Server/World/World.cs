@@ -464,6 +464,7 @@ namespace Server_GUI2.Develop.Server.World
                 // LocalWorldの中身に変更を反映(VtoSコンバート等も含む)
                 local.ReConstruct(local.Path, version, version.Type, local.Settings, local.Datapacks, local.Plugins);
             }
+            StartServer.RunProgressBar.AddMessage("Checked Custom Map.");
 
             //versionのダウングレードを確認して警告表示
             if (version < Version)
@@ -485,6 +486,7 @@ namespace Server_GUI2.Develop.Server.World
                 var newPath = version.Path.Worlds.GetWorldDirectory(local.Path.Name);
                 local.Move(newPath, version, version.Type, local.Settings, local.Datapacks, local.Plugins, addSuffixWhenNameCollided: true);
             }
+            StartServer.RunProgressBar.AddMessage("Converted World Version.");
 
             logger.Info("</TryImportCustomMapAndChangeVersion>");
         }
