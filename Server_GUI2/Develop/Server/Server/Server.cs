@@ -153,12 +153,12 @@ namespace Server_GUI2
                 {
                     var eulaValue = false;
 
-                    var eulaValueMatch = Regex.Match(euracontent, @"(?<=[^|\n]\s*eula\s*=\s*)true|True|TRUE|false|False|FALSE(?=\s*[\n|$])");
+                    var eulaValueMatch = Regex.Match(euracontent, @"[^|\n]\s*eula\s*=\s*(true|True|TRUE|false|False|FALSE)\s*[\n|$]");
                     if (!eulaValueMatch.Success)
                         logger.Info("eula.txt has no segment \"eura=(true|false)\"");
                     else
                     {
-                        eulaValue = eulaValueMatch.Value.ToLower() == "true";
+                        eulaValue = eulaValueMatch.Groups[1].Value.ToLower() == "true";
                         logger.Info($"eula.txt has segment \"eura={eulaValue.ToString().ToLower()}\"");
                     }
 

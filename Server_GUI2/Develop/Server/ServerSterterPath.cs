@@ -51,6 +51,7 @@ namespace Server_GUI2.Develop.Server
                 return;
             Directory.Create();
         }
+
         public void Delete(bool deletedOk = false,bool force = false)
         {
             if (deletedOk && !Exists)
@@ -59,6 +60,7 @@ namespace Server_GUI2.Develop.Server
                 RemoveReadonlyAttribute(Directory);
             Directory.Delete(true);
         }
+
         protected void _MoveTo(DirectoryInfo destination)
         {
             Directory.MoveTo(destination.FullName);
@@ -363,6 +365,7 @@ namespace Server_GUI2.Develop.Server
         }
         public void MoveTo(WorldPath destination)
         {
+            destination.Parent.Create(true);
             Directory.MoveTo(destination.FullName);
             Create();
         }
