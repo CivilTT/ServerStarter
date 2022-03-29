@@ -25,7 +25,7 @@ namespace Server_GUI2
         public VersionException(string message):base(message){ }
     }
 
-    public abstract class Version : IComparable<Version>, INotifyPropertyChanged
+    public abstract class Version : IEquatable<Version>, IComparable<Version>, INotifyPropertyChanged
     {
         protected ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public static WebClient wc = new WebClient();
@@ -68,7 +68,7 @@ namespace Server_GUI2
             }
         }
 
-        protected Version(string name,VersionPath path, bool available)
+        protected Version(string name, VersionPath path, bool available)
         {
             Path = path;
             Name = name;
@@ -136,12 +136,17 @@ namespace Server_GUI2
             }
         }
 
+        public bool Equals(Version other)
+        {
+            return Name == other.Name;
+        }
+
         // 比較可能にする
         public int CompareTo(Version ver)
         {
             return VersionFactory.GetIndex(ver.Name) - VersionFactory.GetIndex(this.Name);
-        }    
-        
+        }
+
         // Define the is greater than operator.
         public static bool operator >(Version operand1, Version operand2)
         {
@@ -264,7 +269,7 @@ namespace Server_GUI2
 
             try
             {
-                wc.DownloadFile(url2, $@"{Path}\server.jar");
+                wc.DownloadFile(url2, $@"{Path.FullName}\server.jar");
                 wc.Dispose();
             }
             catch (Exception ex)
@@ -273,6 +278,7 @@ namespace Server_GUI2
                         "Vanila サーバーのダウンロードに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
                 CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
+                Directory.Delete(Path.FullName);
                 throw new DownloadException($"Failed to download server.jar (Error Message : {ex.Message})");
             }
 

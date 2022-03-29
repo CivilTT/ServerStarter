@@ -176,7 +176,8 @@ namespace Server_GUI2.Windows.MainWindow
             else
             {
                 bool isSpigot = SaveData.LatestRun.VersionType == "spigot";
-                return VersionFactory.Instance.GetVersionFromName(SaveData.LatestRun.VersionName, isSpigot);
+                var result = VersionFactory.Instance.GetVersionFromName(SaveData.LatestRun.VersionName, isSpigot);
+                return ExistsVersions.Contains(result) ? result : ExistsVersions.FirstOrDefault();
             }
         }
 
@@ -189,7 +190,8 @@ namespace Server_GUI2.Windows.MainWindow
             else
             {
                 LocalWorld targetLocalWorld = LocalWorldCollection.Instance.FindLocalWorld(RunVersion.Name, SaveData.LatestRun.WorldName);
-                return Worlds.OfType<World>().Where(x => x.LocalWorld == targetLocalWorld).FirstOrDefault();
+                var result = Worlds.OfType<World>().Where(x => x.LocalWorld == targetLocalWorld).FirstOrDefault();
+                return result ?? Worlds.FirstOrDefault();
             }
         }
 

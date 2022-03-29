@@ -13,7 +13,7 @@
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True"
         Closing="OnClosing"
-        Title="Infomation" Height="550" Width="600" WindowStartupLocation="CenterScreen">
+        Title="System Settings" Height="550" Width="600" WindowStartupLocation="CenterScreen">
     
     <Window.Resources>
         <!--//Source//-->
