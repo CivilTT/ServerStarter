@@ -64,11 +64,10 @@ namespace Server_GUI2
         /// バージョン名からVersionインスタンスを取得
         /// isSpigotをtrueにすることでSpigotSuffixを付した名称で検索する
         /// </summary>
-        public Version GetVersionFromName(string name, bool isSpigot=false)
+        public Version GetVersionFromName(string name)
         {
             // TODO: VersionMapにないnameが指定された場合の対応
-            string verName = isSpigot ? $"Spigot_{name}" : name;
-            return VersionMap[verName];
+            return VersionMap[name];
         }
 
         /// <summary>
