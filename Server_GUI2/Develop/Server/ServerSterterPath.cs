@@ -49,6 +49,8 @@ namespace Server_GUI2.Develop.Server
         {
             if (existsOk && Exists)
                 return;
+            if (!Directory.Parent.Exists)
+                Directory.Parent.Create();
             Directory.Create();
         }
 
@@ -365,6 +367,15 @@ namespace Server_GUI2.Develop.Server
         }
         public void MoveTo(WorldPath destination)
         {
+            Console.WriteLine(destination.FullName);
+            Console.WriteLine(destination.FullName);
+            Console.WriteLine(destination.FullName);
+            Console.WriteLine(destination.FullName);
+            Console.WriteLine(destination.FullName);
+            Console.WriteLine(destination.FullName);
+            Console.WriteLine(destination.FullName);
+            Console.WriteLine(destination.FullName);
+            Console.WriteLine(destination.FullName);
             destination.Parent.Create(true);
             Directory.MoveTo(destination.FullName);
             Create();
