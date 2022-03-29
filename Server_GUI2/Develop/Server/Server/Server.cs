@@ -74,6 +74,8 @@ namespace Server_GUI2
 
             if (euraResult)
             {
+                StartServer.RunProgressBar.Close();
+                StartServer.RunProgressBar.ShowCount();
                 Run();
             }
             else
@@ -86,8 +88,6 @@ namespace Server_GUI2
 
         private static void Run()
         {
-            StartServer.RunProgressBar.Close();
-            StartServer.RunProgressBar.ShowCount();
             var argumnets = $"-Xmx5G -Xms5G{Log4jArgument} -jar {JarName} nogui{WorldContainerArgument}";
             logger.Info("<Run>");
             var process = new Process()
