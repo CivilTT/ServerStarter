@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Quicksand:wght@500&family=Shadows+Into+Light&family=Zen+Kaku+Gothic+Antique&display=swap');
+
+*{
+  padding: 0;
+  margin: 0;
+}
+
+body{
+  background-color: #f8f8f8;
+}
+
+:link, :visited { text-decoration: none }
+
+h1{
+  font-family: 'PT Sans', sans-serif;
+  font-size: 3rem;
+  width: 100%;
+  text-align: center;
+  padding-top: 3rem;
+  font-weight: 400;
+}
+
+h2 {
+  font-family: 'Quicksand', 'Zen Kaku Gothic Antique', 'PT Sans', sans-serif;
+  font-weight: normal;
+  font-size: 1.5rem;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 3rem;
+  color: #333;
+}
+
+h2::after{
+  content: " -";
+}
+
+h2::before{
+  content: "- ";
+}
+
+section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  font-size: 1.2rem;
+}
+
+header{
+  position: fixed;
+  height: 3rem;
+  width: 95%;
+  right: 0;
+  left: 0;
+  margin: auto;
+  font-family: 'PT Sans', sans-serif;
+}
+
+header hr{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 3rem;
+  bottom: 0;
+  height: 1px;
+  background-color: #aaa;
+  border-style:none;
+}
+
+header a{
+  font-family: 'Quicksand', 'Zen Kaku Gothic Antique', 'PT Sans', sans-serif;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+
+.header_items{
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  margin: auto;
+  height:  3rem;
+}
+
+.header_items a+a::before{
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 300;
+  content: "/";
+  margin-left: 8px;
+  margin-right: 8px;
+  color:#aaa;
+}
+
+.header_title{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header_title_title{
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1.7rem;
+  /* letter-spacing: -0.05em; */
+}
+
+.title{
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  top: auto;
+  bottom: auto;
+  font-size: 2rem;
+}
+
+.title_block{
+  text-align: center;
+}
+
+.title_title{
+  font-size:3.5rem;
+  font-weight: 900;
+  color: #000; 
+  /* color: rgba(0,0,0,0); 
+  background-image: url("./nether.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-background-clip: text; */
+}
+
+.title_subTitle{
+  font-size:1.6rem;
+}
+
+
+.title_for{
+  color: #333;
+  font-weight: 400;
+  font-size: 0.8em;
+}
+
+.top{
+  padding-top: 3rem;
+}
