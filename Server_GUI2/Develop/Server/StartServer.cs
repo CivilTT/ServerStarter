@@ -91,7 +91,7 @@ namespace Server_GUI2
             logger.Info($"</Run>");
         }
 
-        static void DummyRun(VersionPath path, string jarName, string log4jArgument, ServerSettings settings)
+        static void DummyRun(VersionPath path, string javaPath,string jarName, string log4jArgument, ServerSettings settings,string arg)
         {
             settings.Save(path);
         }
