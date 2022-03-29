@@ -94,9 +94,11 @@ namespace Server_GUI2
         public (VersionPath, string, int) ReadyVersion()
         {
             logger.Info("<ReadyVersion>");
+            StartServer.RunProgressBar.AddMessage("Ready Version Data.");
             if (!Exists)
                 SetNewVersion();
             logger.Info("</ReadyVersion>");
+            StartServer.RunProgressBar.AddMessage("Get Best Java Version.");
             return (Path,JarName, GetJavaVersion());
         }
 

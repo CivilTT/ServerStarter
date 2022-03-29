@@ -34,6 +34,7 @@ namespace Server_GUI2
         public static void StartWithoutEula(VersionPath path, string javaPath, string jarName, string log4jArgument, ServerProperty property, string worldContainerArgument = "")
         {
             logger.Info("<StartWithoutEula>");
+            StartServer.RunProgressBar.AddMessage("Temporary Run Server to Generate Eula.");
 
             logger.Info("save server.properties");
             path.ServerProperties.WriteAllText(property.ExportProperty());
@@ -60,6 +61,7 @@ namespace Server_GUI2
 
             logger.Info("save server settings");
             settings.Save(path);
+            StartServer.RunProgressBar.AddMessage("Reflected World Settings.");
 
             Path = path;
             JavaPath = javaPath;
@@ -68,6 +70,7 @@ namespace Server_GUI2
             WorldContainerArgument = worldContainerArgument;
 
             var euraResult = CheckEula();
+            StartServer.RunProgressBar.AddMessage("Checked Eura.");
 
             if (euraResult)
             {
@@ -83,6 +86,8 @@ namespace Server_GUI2
 
         private static void Run()
         {
+            StartServer.RunProgressBar.Close();
+            StartServer.RunProgressBar.ShowCount();
             var argumnets = $"-Xmx5G -Xms5G{Log4jArgument} -jar {JarName} nogui{WorldContainerArgument}";
             logger.Info("<Run>");
             var process = new Process()
