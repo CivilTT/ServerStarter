@@ -87,7 +87,8 @@ namespace Server_GUI2.Windows.MessageBox.Back
         {
             int buttonCount = 4;
             if (Buttons.Length > buttonCount)
-                throw new ArgumentException($"You can't set {Buttons.Length} buttons");
+                
+                new ArgumentException($"You can't set {Buttons.Length} buttons");
 
             // 表示するボタンの登録
             foreach (string content in Buttons)

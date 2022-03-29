@@ -248,7 +248,7 @@ namespace Server_GUI2
 
             logger.Info("Import vanila Server");
 
-            string url2;
+            string url2 = "";
             try
             {
                 //サーバーダウンロードのurlが記されたjsonをダウンロード
@@ -263,8 +263,7 @@ namespace Server_GUI2
                         "Vanila サーバーのダウンロードに失敗しました。\n" +
                         $"{Name}はマルチサーバーが存在しない可能性があります。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
-                throw new DownloadException($"Failed to get url to download server.jar (Error Message : {ex.Message})");
+                ServerStarterException<DownloadException>.ShowError(message, new DownloadException($"Failed to get url to download server.jar (Error Message : {ex.Message})"));
             }
 
             Path.Create();
@@ -279,9 +278,8 @@ namespace Server_GUI2
                 string message =
                         "Vanila サーバーのダウンロードに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
                 Directory.Delete(Path.FullName);
-                throw new DownloadException($"Failed to download server.jar (Error Message : {ex.Message})");
+                ServerStarterException<DownloadException>.ShowError(message, new DownloadException($"Failed to download server.jar (Error Message : {ex.Message})"));
             }
 
             var javaVersion = GetJavaVersion();
@@ -330,8 +328,7 @@ namespace Server_GUI2
                 Path.Delete();
                 string message = "Spigot サーバーのビルドファイルのダウンロードに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
-                throw new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})");
+                ServerStarterException<DownloadException>.ShowError(message, new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})"));
             }
 
             logger.Info($"Start to build the Spigot Server ({NameWithoutPrefix})");
@@ -350,7 +347,6 @@ namespace Server_GUI2
             void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
             {
                 //出力された文字列を表示する
-                logger.Info(e.Data);
                 StartServer.RunProgressBar.AddMessage(e.Data, moving: true, addCount: false);
             }
             p.OutputDataReceived += p_OutputDataReceived;
@@ -391,8 +387,7 @@ namespace Server_GUI2
                         break;
                 }
 
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
-                throw new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})");
+                ServerStarterException<ServerException>.ShowError(message, new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})"));
             }
 
             var javaVersion = GetJavaVersion();

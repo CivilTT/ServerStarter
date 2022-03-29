@@ -474,7 +474,7 @@ namespace Server_GUI2.Develop.Server.World
                     $"ワールドデータを{Version}から{version}へバージョンダウンしようとしています。\n" +
                     $"データが破損する可能性が極めて高い操作ですが、危険性を理解したうえで実行しますか？", ButtonType.YesNo, Image.Warning);
                 if (result == "No")
-                    throw new DowngradeException("User reject downgrading");
+                    throw new ServerStarterException<DowngradeException>(new DowngradeException("User reject downgrading"));
             }
 
             // version変更

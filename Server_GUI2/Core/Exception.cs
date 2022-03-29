@@ -7,7 +7,7 @@ using MW = ModernWpf;
 
 namespace Server_GUI2
 {
-    class ServerStarterException<T> : Exception where T : Exception 
+    public class ServerStarterException<T> : Exception where T : Exception 
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
