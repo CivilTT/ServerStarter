@@ -37,7 +37,7 @@ namespace Server_GUI2
             World = world;
 
             // ProgressBarの表示
-            RunProgressBar = new Windows.ProgressBar.ProgressBar($"Starting {version.Name} / {world.Name}", 10);
+            RunProgressBar = new Windows.ProgressBar.ProgressBar($"Starting {version.Name} / {world.Name}", 12);
             //RunProgressBar.AddMessage("これは追加の例");
             //RunProgressBar.AddMessage("これは追加の例", addCount:false); -> これはメッセージを追加するが数字を進めない
             //RunProgressBar.AddCount(); -> これはメッセージを追加せずに数字だけ進める
