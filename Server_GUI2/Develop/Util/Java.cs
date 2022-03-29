@@ -18,6 +18,7 @@ namespace Server_GUI2.Develop.Util
         /// <summary>
         /// 導入されているjavaの中でversionNum以上で一番近いバージョンの実行ファイルパスを返す
         /// 該当なしの場合エラー
+        /// TODO: エラーの場合にJavaの導入を促すウィンドウを表示する
         /// </summary>
         public static string GetBestJavaPath(int versionNum)
         {
