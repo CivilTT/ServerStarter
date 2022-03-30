@@ -46,26 +46,29 @@ namespace Server_GUI2.Windows.SystemSettings
             switch (parameter)
             {
                 case "Remote":
-                    void Search(object sender, DoWorkEventArgs e)
-                    {
-                        Either<GitStorage, Exception>  result = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
-                        result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<RemoteWorld>()));
-                    }
-                    void SearchCompleted(object sender, RunWorkerCompletedEventArgs e)
-                    {
-                        _vm.RemoteAdding.Value = false;
-                    }
+                    //void Search(object sender, DoWorkEventArgs e)
+                    //{
+                    //    Either<GitStorage, Exception>  result = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
+                    //    result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<RemoteWorld>()));
+                    //}
+                    //void SearchCompleted(object sender, RunWorkerCompletedEventArgs e)
+                    //{
+                    //    _vm.RemoteAdding.Value = false;
+                    //}
 
-                    BackgroundWorker worker = new BackgroundWorker();
-                    worker.DoWork += Search;
-                    worker.RunWorkerCompleted += SearchCompleted;
-                    worker.RunWorkerAsync();
+                    //BackgroundWorker worker = new BackgroundWorker();
+                    //worker.DoWork += Search;
+                    //worker.RunWorkerCompleted += SearchCompleted;
+                    //worker.RunWorkerAsync();
 
-                    _vm.RemoteAdding.Value = true;
+                    //_vm.RemoteAdding.Value = true;
+
+                    Either<GitStorage, Exception> result = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
+                    result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<RemoteWorld>()));
 
                     //var result = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
                     //result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<RemoteWorld>()));
-                    
+
                     //var gitList = _vm.RemoteList;
                     //var repo = new Repository(_vm.RepoName.Value)
                     //var gitContent= new AccountInfo(
