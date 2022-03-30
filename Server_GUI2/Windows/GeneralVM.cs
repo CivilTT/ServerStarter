@@ -26,11 +26,11 @@ namespace Server_GUI2.Windows
         /// <summary>
         /// PropertyChanged?.Invokeの記述を省略する
         /// </summary>
-        protected void OnPropertyChanged(string name)
+        public void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        protected void OnPropertyChanged(string[] propertyList)
+        public void OnPropertyChanged(string[] propertyList)
         {
             foreach (string property in propertyList)
                 OnPropertyChanged(property);
