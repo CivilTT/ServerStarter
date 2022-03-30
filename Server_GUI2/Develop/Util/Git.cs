@@ -174,6 +174,14 @@ namespace Server_GUI2.Util
             GitCommand.ExecuteThrow($"commit --allow-empty -m \"{message}\"", new GitException($"falied to 'commit --allow-empty -m \"{message}\"'"), Path);
         }
 
+
+        public void ExecuteThrow(string argument)
+        {
+            // git add -A
+            GitCommand.ExecuteThrow(argument, new GitException($"falied to 'git {argument}'"), Path);
+        }
+
+
         /// <summary>
         /// ローカルブランチを返す(実際のブランチの生成はしない)
         /// </summary>

@@ -46,9 +46,9 @@ namespace Server_GUI2.Windows.SystemSettings
         public BindingValue<string> AccountEmail { get; private set; }
         public BindingValue<string> RepoName { get; private set; }
         public bool CanAddition_SW => CheckHasContent(new List<BindingValue<string>> { AccountName, AccountEmail, RepoName }, "");
-        public ObservableCollection<Storage> RemoteList { get; private set; }
-        public BindingValue<Storage> RLIndex { get; private set; }
-        public bool HasBranch => RLIndex.Value?.RemoteWorlds.Count != 0;
+        public BindingValue<bool> RemoteAdding { get; private set; }
+        public ObservableCollection<IRemoteWorld> RemoteList { get; private set; }
+        public BindingValue<IRemoteWorld> RLIndex { get; private set; }
         public CredentialManagerCommand CredentialManagerCommand { get; private set; }
 
         // Server
@@ -171,6 +171,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
 
         // END Process
+        public bool CanSave => !RemoteAdding.Value;
         public SaveCommand SaveCommand { get; private set; }
         public bool Saved = false;
 
@@ -192,8 +193,10 @@ namespace Server_GUI2.Windows.SystemSettings
             AccountName = new BindingValue<string>("", () => OnPropertyChanged(new string[2] { "AccountName", "CanAddition_SW" }));
             AccountEmail = new BindingValue<string>("", () => OnPropertyChanged(new string[2] { "AccountEmail", "CanAddition_SW" }));
             RepoName = new BindingValue<string>("ShareWorld", () => OnPropertyChanged(new string[2] { "RepoName", "CanAddition_SW" }));
-            RemoteList = Storages.Storages;
-            RLIndex = new BindingValue<Storage>(null, () => OnPropertyChanged(new string[2] { "RLIndex", "HasBranch" }));
+            RemoteAdding = new BindingValue<bool>(false, () => OnPropertyChanged("CanSave"));
+            RemoteList = new ObservableCollection<IRemoteWorld>(Storages.Storages.SelectMany(storage => storage.RemoteWorlds).OfType<RemoteWorld>());
+            RemoteList.AddRange(Storages.Storages.Where(storage => storage.RemoteWorlds.Count == 1).SelectMany(storage => storage.RemoteWorlds));  /*RemoteWorldsがないレポジトリを表示するための処理*/
+            RLIndex = new BindingValue<IRemoteWorld>(null, () => OnPropertyChanged("RLIndex"));
             CredentialManagerCommand = new CredentialManagerCommand(this);
 
             // Server

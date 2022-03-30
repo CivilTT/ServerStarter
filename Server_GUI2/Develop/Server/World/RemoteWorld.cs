@@ -65,6 +65,8 @@ namespace Server_GUI2.Develop.Server.World
         public string LastUser;
         public bool Available;
 
+        public bool IsVisible { get; set; } = true;
+
         public DatapackCollection Datapacks  { get; set; }
 
         public ServerSettings Settings { get; set; }

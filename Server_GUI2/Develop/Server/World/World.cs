@@ -164,7 +164,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             get
             {
-                if (HasRemote)
+                if (HasRemote && !isNewRemote)
                     return RemoteWorld;
                 else
                     return LocalWorld;
@@ -178,6 +178,8 @@ namespace Server_GUI2.Develop.Server.World
 
         public bool HasRemote => RemoteWorld != null;
 
+        private bool isNewRemote = false;
+
         //リンク先が変更可能か
         public bool CanCahngeRemote { get; private set; }
 
@@ -189,6 +191,7 @@ namespace Server_GUI2.Develop.Server.World
             get => world.Datapacks;
             set { world.Datapacks = value; }
         }
+
         public PluginCollection Plugins {
             get => world.Plugins;
             set { world.Plugins = value; }
@@ -255,10 +258,15 @@ namespace Server_GUI2.Develop.Server.World
         public void Link(RemoteWorld remote)
         {
             if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
-            if (HasRemote) throw new WorldException($"World \"{DisplayName}\" is unlinked");
+            if (HasRemote) throw new WorldException($"World \"{DisplayName}\" is already linked");
 
-            RemoteWorld.DeleteEvent += deleteRemoteEvent;
+
+            //LocalWorld.Path 
+            // TODO: .gitディレクトリを生成して初期化
+
+            isNewRemote = true;
             RemoteWorld = remote;
+            RemoteWorld.DeleteEvent += deleteRemoteEvent;
         }
 
         /// <summary>
