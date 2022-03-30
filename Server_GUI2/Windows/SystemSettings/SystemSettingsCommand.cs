@@ -46,7 +46,26 @@ namespace Server_GUI2.Windows.SystemSettings
             switch (parameter)
             {
                 case "Remote":
-                    GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
+                    void Search(object sender, DoWorkEventArgs e)
+                    {
+                        Either<GitStorage, Exception>  result = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
+                        result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<RemoteWorld>()));
+                    }
+                    void SearchCompleted(object sender, RunWorkerCompletedEventArgs e)
+                    {
+                        _vm.RemoteAdding.Value = false;
+                    }
+
+                    BackgroundWorker worker = new BackgroundWorker();
+                    worker.DoWork += Search;
+                    worker.RunWorkerCompleted += SearchCompleted;
+                    worker.RunWorkerAsync();
+
+                    _vm.RemoteAdding.Value = true;
+
+                    //var result = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
+                    //result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<RemoteWorld>()));
+                    
                     //var gitList = _vm.RemoteList;
                     //var repo = new Repository(_vm.RepoName.Value)
                     //var gitContent= new AccountInfo(
@@ -60,7 +79,7 @@ namespace Server_GUI2.Windows.SystemSettings
                 case "Player":
                     var playerList = _vm.PlayerList;
                     var playerContent = new Player(_vm.PlayerName.Value);
-                    if (playerContent.UUID == "")
+                    if (playerContent.UUID == null)
                     {
                         CustomMessageBox.Show("このプレイヤー名は存在しません。", ButtonType.OK, Image.Error);
                         return;
@@ -101,14 +120,14 @@ namespace Server_GUI2.Windows.SystemSettings
         {
             switch (parameter)
             {
-                case "Remote":
-                    var remoteList = _vm.RemoteList;
-                    var remoteDeleteItem = _vm.RLIndex.Value;
-                    _vm.AccountName.Value = remoteDeleteItem.AccountName;
-                    _vm.AccountEmail.Value = remoteDeleteItem.Email;
-                    _vm.RepoName.Value = remoteDeleteItem.RepositoryName;
-                    remoteList.Remove(remoteDeleteItem);
-                    break;
+                //case "Remote":
+                //    var remoteList = _vm.RemoteList;
+                //    var remoteDeleteItem = _vm.RLIndex.Value;
+                //    _vm.AccountName.Value = remoteDeleteItem.AccountName;
+                //    _vm.AccountEmail.Value = remoteDeleteItem.Email;
+                //    _vm.RepoName.Value = remoteDeleteItem.RepositoryName;
+                //    remoteList.Remove(remoteDeleteItem);
+                //    break;
                 case "Group":
                     var groupList = _vm.GroupList;
                     var groupIndex = _vm.GLIndex;
@@ -158,9 +177,17 @@ namespace Server_GUI2.Windows.SystemSettings
                     //var remoteList = _vm.RemoteList;
                     //var remoteDeleteItem = _vm.RLIndex.Value ?? null;
                     //var remoteName = _vm.RLIndex.Value?. ?? null;
-                    string result = CustomMessageBox.Show($"{_vm.RLIndex.Value.RepositoryName}を削除しますか？", ButtonType.YesNo, Image.Question);
+                    var storage = _vm.RLIndex.Value.Storage;
+                    var worldName = $"/{_vm.RLIndex.Value.Name}";
+                    string result = CustomMessageBox.Show($"{storage.AccountName}/{storage.RepositoryName}{worldName}を削除しますか？", ButtonType.YesNo, Image.Question);
                     if (result == "Yes")
-                        _vm.RLIndex.Value.Delete();
+                    {
+                        if (_vm.RLIndex.Value is RemoteWorld world)
+                            world.Delete();
+                        else if (_vm.RLIndex.Value is NewRemoteWorld world1)
+                            world1.Storage.Delete();
+                        _vm.RemoteList.Remove(_vm.RLIndex.Value);
+                    }
                     //DeleteContent(remoteList, remoteDeleteItem, remoteName);
                     break;
 

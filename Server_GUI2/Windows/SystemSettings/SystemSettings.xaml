@@ -342,7 +342,7 @@
 
             </StackPanel>
 
-            <Button Content="Save" Command="{Binding SaveCommand}" Style="{StaticResource RunStyle}"/>
+            <Button Content="Save" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Style="{StaticResource RunStyle}"/>
 
         </Grid>
 
@@ -381,10 +381,6 @@
                     <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                 </Button>
-                <Button Command="{Binding EditListCommand}" CommandParameter="Remote" IsEnabled="{Binding HasBranch, Converter={StaticResource InverseBoolConverter}}" Margin="90 0" Style="{StaticResource MiniButton}">
-                    <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
-                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/pen.svg"/>
-                </Button>
                 <StackPanel Orientation="Vertical" Grid.Row="1" Margin="20 40 20 10">
                     <DataGrid Grid.Row="1" ItemsSource="{Binding RemoteList}"
                               CanUserAddRows="False"
@@ -397,9 +393,9 @@
                               MaxHeight="250"
                               MaxWidth="355">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Account Name" IsReadOnly="True" Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Repository" IsReadOnly="True" Binding="{Binding Repository}"/>
-                            <DataGridTextColumn Header="World" IsReadOnly="True" Binding="{Binding Branch}"/>
+                            <DataGridTextColumn Header="Account Name" IsReadOnly="True" Binding="{Binding Storage.AccountName}"/>
+                            <DataGridTextColumn Header="Repository" IsReadOnly="True" Binding="{Binding Storage.RepositoryName}"/>
+                            <DataGridTextColumn Header="World" IsReadOnly="True" Binding="{Binding Name}"/>
                             <DataGridTemplateColumn Header="Show" Width="60">
                                 <DataGridTemplateColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
@@ -410,7 +406,7 @@
                                 </DataGridTemplateColumn.HeaderStyle>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding IsShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="20 0 0 0"/>
+                                        <CheckBox IsChecked="{Binding IsVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="20 0 0 0"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

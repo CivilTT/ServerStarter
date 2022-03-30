@@ -29,7 +29,7 @@ namespace Server_GUI2
 
         public static string CurrentDirectory => AppDomain.CurrentDomain.BaseDirectory;
 
-        public static string DataPath => Path.Combine(CurrentDirectory, "World_Data");
+        public static string DataPath => ServerGuiPath.Instance.WorldData.FullName;
 
         // Initialize()より前には呼ばない前提
         public static ProgressBar InitProgressBar;
@@ -99,6 +99,9 @@ namespace Server_GUI2
         /// </summary>
         private static void ChangeSpecification(string lastVersion)
         {
+            // Init
+            ServerGuiPath.Instance.WorldData.Create();
+
             // 0.X -> 1.0.0.0
             FileInfo starterJson = new FileInfo(Path.Combine(DataPath, "Starter_Version.json"));
             starterJson.Delete();

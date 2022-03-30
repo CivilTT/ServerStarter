@@ -31,7 +31,7 @@ namespace Server_GUI2.Windows.WorldSettings
 
         // General
         public string RunInfo => $"{RunVersion.Name} / {RunWorld.Name}";
-        public bool CanSave => (!UseSW.Value || ValidRemoteName);
+        public bool CanSave => !UseSW.Value || (!ShowNewRemoteData || ValidRemoteName);
         public SaveCommand SaveCommand { get; private set; }
         public bool Saved = false;
 
@@ -104,7 +104,7 @@ namespace Server_GUI2.Windows.WorldSettings
         public BindingValue<bool> UseSW { get; private set; }
         public bool CanEdit => UseSW.Value && ! RunWorld.HasRemote;
         public ObservableCollection<Storage> Accounts { get; private set; }
-        public bool HasStrages => Storages.Storages.Count != 0;
+        public bool HasStorages => Storages.Storages.Count != 0;
         public BindingValue<Storage> AccountIndex { get; private set; }
         public ObservableCollection<IRemoteWorld> RemoteDataList { get; private set; }
         public BindingValue<IRemoteWorld> RemoteIndex { get; private set; }
@@ -187,7 +187,7 @@ namespace Server_GUI2.Windows.WorldSettings
 
             // ShareWorld
             UseSW = new BindingValue<bool>(RunWorld.HasRemote, () => SetUseSW());
-            if (HasStrages)
+            if (HasStorages)
             {
                 Accounts = new ObservableCollection<Storage>(Storages.Storages);
                 AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
@@ -274,7 +274,7 @@ namespace Server_GUI2.Windows.WorldSettings
         {
             OnPropertyChanged(new string[3] { "UseSW", "CanEdit", "CanSelectRemoteIndex" });
 
-            if (UseSW != null && UseSW.Value && !HasStrages)
+            if (UseSW != null && UseSW.Value && !HasStorages)
             {
                 string message =
                     "ShareWorldを利用するための準備がされていません。\n" +
@@ -287,7 +287,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     var vm = new SystemSettingsVM();
                     window.ShowDialog(vm);
                     Show();
-                    if (HasStrages)
+                    if (HasStorages)
                     {
                         OnPropertyChanged(new string[2] { "Accounts", "RemoteDataList" });
                         AccountIndex.Value = Accounts.FirstOrDefault();
@@ -295,7 +295,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     }
                 }
 
-                UseSW.Value = HasStrages;
+                UseSW.Value = HasStorages;
             }
         }
 
@@ -321,13 +321,16 @@ namespace Server_GUI2.Windows.WorldSettings
         {
             RunWorld.Settings.ServerProperties = new ServerProperty(PropertyIndexs.Value);
 
-            if (UseSW.Value)
+            if (UseSW.Value && !RunWorld.HasRemote)
                 if (RemoteIndex.Value is RemoteWorld world)
                     RunWorld.Link(world);
                 else
                     RunWorld.Link(AccountIndex.Value.CreateRemoteWorld(RemoteName));
-            else if (RunWorld.HasRemote)
+            else if (!UseSW.Value && RunWorld.HasRemote)
+            {
                 RunWorld.Unlink();
+                //AccountIndex.Value.RemoveRemoteWorld()は無いのか
+            }
 
             RunWorld.Datapacks = new DatapackCollection(Datapacks);
             if (RunVersion is SpigotVersion)

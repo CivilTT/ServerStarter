@@ -51,6 +51,8 @@ namespace Server_GUI2.Develop.Server.World
             gitLocal.Init();
             // git commit --allow-empty -m "empty"
             gitLocal.AddAllAndCommit("first commit");
+            // リモートとローカルのブランチ名が違っていてもgit pushが実行できる
+            gitLocal.ExecuteThrow("config --local push.default upstream");
             logger.Info("</CreateDirectory> successfully created");
         }
 
