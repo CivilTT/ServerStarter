@@ -339,7 +339,7 @@ namespace Server_GUI2.Develop.Server.World
             GitStorageManager.Instance.RemoveRemote(Remote).SuccessAction( x => {
 
                 // 紐づいたリモートワールドを削除
-                foreach (var world in RemoteWorlds.OfType<RemoteWorld>())
+                foreach (var world in RemoteWorlds.OfType<RemoteWorld>().ToList())
                 {
                     world.Delete();
                 }
