@@ -148,7 +148,17 @@ namespace Server_GUI2.Develop.Server.World
             // git remote add {id}
             var named = gitLocal.AddRemote(remote, id);
 
-            var remoteBranchs = named.GetBranchs();
+            Dictionary<string, GitRemoteBranch> remoteBranchs;
+
+            try
+            {
+                remoteBranchs = named.GetBranchs();
+            }
+            catch (GitException ex)
+            {
+                // gitが存在しない場合
+                return new Failure<GitLinkedLocalBranch, Exception>(ex);
+            }
 
             // 1. まっさらなリポジトリである場合(#stateブランチがない場合)
             if (!remoteBranchs.Keys.Contains("#state"))
