@@ -248,7 +248,7 @@ namespace Server_GUI2
 
             logger.Info("Import vanila Server");
 
-            string url2;
+            string url2 = "";
             try
             {
                 //サーバーダウンロードのurlが記されたjsonをダウンロード
@@ -263,8 +263,7 @@ namespace Server_GUI2
                         "Vanila サーバーのダウンロードに失敗しました。\n" +
                         $"{Name}はマルチサーバーが存在しない可能性があります。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
-                throw new DownloadException($"Failed to get url to download server.jar (Error Message : {ex.Message})");
+                ServerStarterException<DownloadException>.ShowError(message, new DownloadException($"Failed to get url to download server.jar (Error Message : {ex.Message})"));
             }
 
             Path.Create();
@@ -279,9 +278,8 @@ namespace Server_GUI2
                 string message =
                         "Vanila サーバーのダウンロードに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
                 Directory.Delete(Path.FullName);
-                throw new DownloadException($"Failed to download server.jar (Error Message : {ex.Message})");
+                ServerStarterException<DownloadException>.ShowError(message, new DownloadException($"Failed to download server.jar (Error Message : {ex.Message})"));
             }
 
             var javaVersion = GetJavaVersion();
@@ -330,25 +328,51 @@ namespace Server_GUI2
                 Path.Delete();
                 string message = "Spigot サーバーのビルドファイルのダウンロードに失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
-                throw new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})");
+                ServerStarterException<DownloadException>.ShowError(message, new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})"));
             }
 
-            CreateBuildBat();
-            Process p = Process.Start($@"{Path.FullName}\build.bat");
+            logger.Info($"Start to build the Spigot Server ({NameWithoutPrefix})");
+            var p = new Process()
+            {
+                StartInfo = new ProcessStartInfo(Java.GetBestJavaPath(GetJavaVersion()))
+                {
+                    Arguments = $"-jar BuildTools.jar --rev { NameWithoutPrefix }",
+                    WorkingDirectory = Path.FullName,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                }
+            };
+            void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
+            {
+                //出力された文字列を表示する
+                StartServer.RunProgressBar.AddMessage(e.Data, moving: true, addCount: false);
+            }
+            p.OutputDataReceived += p_OutputDataReceived;
+            p.ErrorDataReceived += p_OutputDataReceived;
+            p.Start();
+
+            //非同期で出力の読み取りを開始
+            p.BeginErrorReadLine();
+            p.BeginOutputReadLine();
+
             p.WaitForExit();
 
             // 余計なファイルの削除
-            foreach (var x in Path.Worlds.GetWorldDirectories())
-                x.Delete(force: true);
+            foreach (var path in Directory.GetDirectories(Path.FullName))
+            {
+                DirectoryInfo di = new DirectoryInfo(path);
+                RemoveReadonlyAttribute(di);
+                di.Delete(true);
+            }
             Path.SubTextFile<VersionPath>("BuildTools.jar").Delete();
-            //Path.SubTextFile<VersionPath>("build.bat").Delete();
-
             MoveLogFile();
+            logger.Info($"Finished to build the Spigot Server ({NameWithoutPrefix})");
 
             if (p.ExitCode != 0)
             {
-                //Path.Delete(force:true);
+                Path.Delete(force: true);
 
                 string message;
                 switch (p.ExitCode)
@@ -363,8 +387,7 @@ namespace Server_GUI2
                         break;
                 }
 
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
-                throw new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})");
+                ServerStarterException<ServerException>.ShowError(message, new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})"));
             }
 
             var javaVersion = GetJavaVersion();
@@ -376,29 +399,20 @@ namespace Server_GUI2
             Server.StartWithoutEula(Path, javaPath, JarName, Log4jArgument, ServerProperty.GetUserDefault());
         }
 
-        private void CreateBuildBat()
+        private void RemoveReadonlyAttribute(DirectoryInfo dirInfo)
         {
-            logger.Info("Generate build.bat");
-            try
-            {
-                using (var writer = new StreamWriter($@"{Path.FullName}\build.bat", false))
-                {
-                    writer.WriteLine("@echo off");
-                    writer.WriteLine("cd %~dp0");
-                    //writer.WriteLine($"java -jar BuildTools.jar --rev {NameWithoutPrefix}");
-                    writer.WriteLine($"echo dummy > BuildTools.log.txt");
-                    writer.WriteLine("cd ..");
-                    writer.WriteLine($"copy \"spigot-1.18.2.jar\" \"Spigot_1.18.2/spigot-1.18.2.jar\"");
-                }
-            }
-            catch (Exception ex)
-            {
-                string message =
-                        "Spigotサーバーをビルドするための必要ファイルの作成に失敗しました。\n\n" +
-                        $"【エラー要因】\n{ex.Message}";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
-                throw new IOException($"Failed to write build.bat (Error Message : {ex.Message})");
-            }
+            //基のフォルダの属性を変更
+            if ((dirInfo.Attributes & FileAttributes.ReadOnly) ==
+                FileAttributes.ReadOnly)
+                dirInfo.Attributes = FileAttributes.Normal;
+            //フォルダ内のすべてのファイルの属性を変更
+            foreach (FileInfo fi in dirInfo.GetFiles())
+                if ((fi.Attributes & FileAttributes.ReadOnly) ==
+                    FileAttributes.ReadOnly)
+                    fi.Attributes = FileAttributes.Normal;
+            //サブフォルダの属性を回帰的に変更
+            foreach (DirectoryInfo di in dirInfo.GetDirectories())
+                RemoveReadonlyAttribute(di);
         }
 
         /// <summary>

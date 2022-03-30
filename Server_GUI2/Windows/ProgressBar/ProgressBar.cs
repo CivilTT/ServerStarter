@@ -88,10 +88,19 @@ namespace Server_GUI2.Windows.ProgressBar
             bool percentBool = percent.Success;
             string percentStr = percent.Value;
 
-            if (moving)
+            if (moving && !ProgressVM.Moving.Value)
             {
                 ProgressVM.Moving.Value = true;
                 ProgressVM.SubMessage.Value = message;
+            }
+            else if (moving)
+            {
+                ProgressVM.Moving.Value = true;
+            }
+            else
+            {
+                ProgressVM.Moving.Value = false;
+                ProgressVM.SubMessage.Value = "";
             }
 
             if (headerBool && percentBool)

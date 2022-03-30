@@ -35,8 +35,7 @@ namespace Server_GUI2
                 string message =
                         "サーバーの移行に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                MW.MessageBox.Show(message, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw new WinCommandException($"Failed to switch the server system (Error Message : {ex.Message})");
+                ServerStarterException<WinCommandException>.ShowError(message, new WinCommandException($"Failed to switch the server system (Error Message : {ex.Message})"));
             }
         }
 
