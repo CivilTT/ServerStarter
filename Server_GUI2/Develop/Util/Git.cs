@@ -245,11 +245,11 @@ namespace Server_GUI2.Util
         }
 
         /// <summary>
-        /// git branch -d ...
+        /// git branch -D ...
         /// </summary>
         public void Remove()
         {
-            GitCommand.ExecuteThrow($"branch -d {Name}", new GitException($"falied to 'branch -d {Name}'"), Local.Path);
+            GitCommand.ExecuteThrow($"branch -D {Name}", new GitException($"falied to 'branch -D {Name}'"), Local.Path);
         }
     }
 
