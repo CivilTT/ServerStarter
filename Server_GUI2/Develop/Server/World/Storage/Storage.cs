@@ -62,7 +62,10 @@ namespace Server_GUI2.Develop.Server.World
         {
             Storages.Add(storage);
             // Storage削除時にリストから排除
-            storage.DeleteEvent += new EventHandler((_,__) => Storages.Remove(storage));
+            storage.DeleteEvent += new EventHandler((_,__) => {
+                Storages.Remove(storage);
+                SaveJson();
+            });
             // Storageの状態を保存
             SaveJson();
         }
