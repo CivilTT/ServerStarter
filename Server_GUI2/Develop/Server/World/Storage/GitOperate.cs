@@ -110,10 +110,26 @@ namespace Server_GUI2.Develop.Server.World
             if (!main.Exists)
                 gitLocal.CreateBranch("#main");
             main.Checkout();
-            // git remote remove {account}.{repository}
-            gitLocal.GetBranch(id).Remove();
-            // git branch -d {account}.{repository}
-            gitLocal.GetNamedRemotes()[id].Remove();
+
+            try
+            {
+                // git remote remove {account}.{repository}
+                gitLocal.GetBranch(id).Remove();
+            }
+            catch
+            {
+                // pass
+            }
+            
+            try
+            {
+                // git branch -d {account}.{repository}
+                gitLocal.GetNamedRemotes()[id].Remove();
+            }
+            catch
+            {
+                // pass
+            }
 
             return new Success<EitherVoid, string>(EitherVoid.Instance);
         }

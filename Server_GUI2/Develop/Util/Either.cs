@@ -12,8 +12,12 @@ namespace Server_GUI2.Develop.Util
 
         public abstract Either<T, FAILURE> SuccessFunc<T>(Func<SUCCESS, T> func);
 
+        public abstract Either<T, FAILURE> SuccessFunc<T>(Func<SUCCESS, Either<T, FAILURE>> func);
+
         public abstract Either<SUCCESS, T> FailureFunc<T>(Func<FAILURE, T> func);
-        
+
+        public abstract Either<SUCCESS, T> FailureFunc<T>(Func<FAILURE, Either<SUCCESS, T>> func);
+
         public abstract Either<EitherVoid, FAILURE> SuccessAction(Action<SUCCESS> action);
 
         public abstract Either<SUCCESS, EitherVoid> FailureAction(Action<FAILURE> action);
@@ -40,7 +44,11 @@ namespace Server_GUI2.Develop.Util
 
         public override Either<T, FAILURE> SuccessFunc<T>(Func<SUCCESS, T> func) => new Success<T, FAILURE>(func(Value));
 
+        public override Either<T, FAILURE> SuccessFunc<T>(Func<SUCCESS, Either<T, FAILURE>> func) => func(Value);
+
         public override Either<SUCCESS, T> FailureFunc<T>(Func<FAILURE, T> func) => new Success<SUCCESS, T>(Value);
+
+        public override Either<SUCCESS, T> FailureFunc<T>(Func<FAILURE, Either<SUCCESS, T>> func) => new Success<SUCCESS, T>(Value);
 
         public override SUCCESS SuccessOrDefault(SUCCESS defaultValue) => Value;
 
@@ -71,8 +79,12 @@ namespace Server_GUI2.Develop.Util
 
         public override Either<T, FAILURE> SuccessFunc<T>(Func<SUCCESS, T> func) => new Failure<T, FAILURE>(Value);
 
+        public override Either<T, FAILURE> SuccessFunc<T>(Func<SUCCESS, Either<T, FAILURE>> func) => new Failure<T, FAILURE>(Value);
+
         public override Either<SUCCESS, T> FailureFunc<T>(Func<FAILURE, T> func) => new Failure<SUCCESS, T>(func(Value));
 
+        public override Either<SUCCESS, T> FailureFunc<T>(Func<FAILURE, Either<SUCCESS, T>> func) => func(Value);
+        
         public override SUCCESS SuccessOrDefault(SUCCESS defaultValue) => defaultValue;
 
         public override FAILURE FailureOrDefault(FAILURE defaultValue) => Value;
