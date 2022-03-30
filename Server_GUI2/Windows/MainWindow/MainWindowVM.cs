@@ -175,8 +175,7 @@ namespace Server_GUI2.Windows.MainWindow
                 return ExistsVersions.FirstOrDefault();
             else
             {
-                bool isSpigot = SaveData.LatestRun.VersionType == "spigot";
-                var result = VersionFactory.Instance.GetVersionFromName(SaveData.LatestRun.VersionName, isSpigot);
+                var result = VersionFactory.Instance.GetVersionFromName(SaveData.LatestRun.VersionName);
                 return ExistsVersions.Contains(result) ? result : ExistsVersions.FirstOrDefault();
             }
         }
