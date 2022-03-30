@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
+using Server_GUI2.Util;
 
 namespace Server_GUI2.Develop.Server.World
 {
@@ -360,6 +361,11 @@ namespace Server_GUI2.Develop.Server.World
         private void WrapRun_NewLink(Version version, Action<ServerSettings, string> runFunc)
         {
             logger.Info("ready newly linked world data");
+
+            // .gitディレクトリを作る
+            var gitLocal = new GitLocal(LocalWorld.Path.FullName);
+            gitLocal.Init();
+            gitLocal.AddAllAndCommit("first commit");
 
             // ワールドのリンク先を固定する
             CanCahngeRemote = false;
