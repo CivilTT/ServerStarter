@@ -10,17 +10,31 @@ using System.Windows;
 using System.ComponentModel;
 using System.Threading;
 using Server_GUI2.Windows;
+using log4net;
+using System.Reflection;
 
 namespace Server_GUI2.Develop.Util
 {
     public class PortMapping
     {
+        static ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static int LocalPort => 25565;
 
         public static async Task<bool> AddPort(int portNum)
         {
+            logger.Info($"Start opening port {portNum}");
+
             NatDiscoverer discoverer = new NatDiscoverer();
-            NatDevice device = await discoverer.DiscoverDeviceAsync();
+            var searchDevice = discoverer.DiscoverDeviceAsync();
+            var deviceResult = await Task.WhenAny(searchDevice, Task.Delay(5000));
+            if (deviceResult != searchDevice)
+            {
+                logger.Info("Failed to searchDevice");
+                return false;
+            }
+
+            NatDevice device = await searchDevice;
 
             Mapping mapping = new Mapping(Protocol.Tcp, LocalPort, portNum, "Server Starter");
 
@@ -28,45 +42,71 @@ namespace Server_GUI2.Develop.Util
             // Delayは非同期処理によって処理を止める（GUIのフリーズ防止）
             // この二つを組み合わせ、目的TaskのTimeout処理（目的Taskが終わる or timeoutまで待つ）を実装
             // 開放しようとするポートがUpnp以外で開放されていた場合、無限に追加しようとしてしまう状態を回避
+            logger.Info("Start searching mappings");
             await Task.WhenAny(device.CreatePortMapAsync(mapping), Task.Delay(5000));
             var getMappings = device.GetAllMappingsAsync();
             var mappingsResult = await Task.WhenAny(getMappings, Task.Delay(5000));
 
             if (mappingsResult != getMappings)
+            {
+                logger.Info("Failed to search mappings");
                 return false;
+            }
 
             foreach(var mapping1 in await getMappings)
             {
                 //Console.WriteLine(mapping1.PublicPort);
                 if (mapping1.PublicPort == portNum)
+                {
+                    logger.Info($"Success to port mapping! ({portNum})");
                     return true;
+                }
             }
 
+            logger.Info($"Failed to open port {portNum}");
             return false;
         }
 
         public static async Task<bool> DeletePort(int portNum)
         {
+            logger.Info($"Start opening port {portNum}");
+
             NatDiscoverer discoverer = new NatDiscoverer();
-            NatDevice device = await discoverer.DiscoverDeviceAsync();
+            var searchDevice = discoverer.DiscoverDeviceAsync();
+            var deviceResult = await Task.WhenAny(searchDevice, Task.Delay(5000));
+            if (deviceResult != searchDevice)
+            {
+                logger.Info("Failed to searchDevice");
+                return false;
+            }
+
+            NatDevice device = await searchDevice;
 
             Mapping mapping = new Mapping(Protocol.Tcp, LocalPort, portNum, "Server Starter");
 
+            logger.Info("Start searching mappings");
             await device.DeletePortMapAsync(mapping);
             var getMappings = device.GetAllMappingsAsync();
             var mappingsResult = await Task.WhenAny(getMappings, Task.Delay(5000));
 
             if (mappingsResult != getMappings)
+            {
+                logger.Info("Failed to search mappings");
                 return false;
+            }
 
             //Console.WriteLine("The external IP Address is: {0} ", await device.GetExternalIPAsync());
             foreach (var mapping1 in await getMappings)
             {
                 //Console.WriteLine(mapping1.PublicPort);
                 if (mapping1.PublicPort == portNum)
-                    return false;
+                {
+                    logger.Info($"Success to port mapping! ({portNum})");
+                    return true;
+                }
             }
 
+            logger.Info($"Failed to open port {portNum}");
             return true;
         }
 
