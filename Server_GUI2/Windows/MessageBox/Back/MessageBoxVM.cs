@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.UI.ViewManagement;
 using MW = ModernWpf;
 
 namespace Server_GUI2.Windows.MessageBox.Back
@@ -43,7 +44,7 @@ namespace Server_GUI2.Windows.MessageBox.Back
         {
             get
             {
-                if (MW.ThemeManager.Current.ApplicationTheme == MW.ApplicationTheme.Dark)
+                if (MW.ThemeManager.Current.ActualApplicationTheme == MW.ApplicationTheme.Light)
                     return $"pack://application:,,,/Resources/MessageBox/{ImageType}(B).png";
                 else
                     return $"pack://application:,,,/Resources/MessageBox/{ImageType}(W).png";
