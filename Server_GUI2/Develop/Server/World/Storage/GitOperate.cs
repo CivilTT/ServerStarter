@@ -161,8 +161,8 @@ namespace Server_GUI2.Develop.Server.World
 
             logger.Info("#state branch not exists on local");
 
-            GitNamedRemote named;
             // 新規作成する場合
+            GitNamedRemote named;
             try
             {
                 // git remote add {id}
@@ -184,6 +184,7 @@ namespace Server_GUI2.Develop.Server.World
             }
             catch (GitException ex)
             {
+                named.Remove();
                 // gitが存在しない場合
                 return new Failure<GitLinkedLocalBranch, Exception>(ex);
             }
