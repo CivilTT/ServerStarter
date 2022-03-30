@@ -179,8 +179,7 @@ namespace Server_GUI2.Develop.Server.World
             else if (version is SpigotVersion)
                 type = ServerType.Spigot;
             else
-                
-                new ArgumentException($"\"{version.GetType()}\" is unknowen version.");
+                throw new ArgumentException($"\"{version.GetType()}\" is unknowen version.");
             return new LocalWorld(Path, version, type, Settings, Datapacks, Plugins);
         }
 
