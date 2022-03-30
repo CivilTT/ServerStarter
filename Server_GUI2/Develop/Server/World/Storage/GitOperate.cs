@@ -168,7 +168,7 @@ namespace Server_GUI2.Develop.Server.World
                 // git remote add {id}
                 named = gitLocal.AddRemote(remote, id);
             }
-            catch (GitException ex)
+            catch (Exception ex)
             {
                 // gitが存在しない場合
                 return new Failure<GitLinkedLocalBranch, Exception>(ex);
