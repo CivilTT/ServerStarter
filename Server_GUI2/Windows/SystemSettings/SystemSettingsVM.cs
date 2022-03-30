@@ -237,6 +237,9 @@ namespace Server_GUI2.Windows.SystemSettings
 
             // END Process
             SaveCommand = new SaveCommand(this);
+
+            // 複数スレッドからコレクション操作できるようにする
+            BindingOperations.EnableCollectionSynchronization(RemoteList, new object());
         }
 
         /// <summary>

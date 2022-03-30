@@ -29,8 +29,13 @@ namespace Server_GUI2.Develop.Util
             // この二つを組み合わせ、目的TaskのTimeout処理（目的Taskが終わる or timeoutまで待つ）を実装
             // 開放しようとするポートがUpnp以外で開放されていた場合、無限に追加しようとしてしまう状態を回避
             await Task.WhenAny(device.CreatePortMapAsync(mapping), Task.Delay(5000));
+            var getMappings = device.GetAllMappingsAsync();
+            var mappingsResult = await Task.WhenAny(getMappings, Task.Delay(5000));
 
-            foreach(var mapping1 in await device.GetAllMappingsAsync())
+            if (mappingsResult != getMappings)
+                return false;
+
+            foreach(var mapping1 in await getMappings)
             {
                 //Console.WriteLine(mapping1.PublicPort);
                 if (mapping1.PublicPort == portNum)
@@ -48,9 +53,14 @@ namespace Server_GUI2.Develop.Util
             Mapping mapping = new Mapping(Protocol.Tcp, LocalPort, portNum, "Server Starter");
 
             await device.DeletePortMapAsync(mapping);
+            var getMappings = device.GetAllMappingsAsync();
+            var mappingsResult = await Task.WhenAny(getMappings, Task.Delay(5000));
+
+            if (mappingsResult != getMappings)
+                return false;
 
             //Console.WriteLine("The external IP Address is: {0} ", await device.GetExternalIPAsync());
-            foreach (var mapping1 in await device.GetAllMappingsAsync())
+            foreach (var mapping1 in await getMappings)
             {
                 //Console.WriteLine(mapping1.PublicPort);
                 if (mapping1.PublicPort == portNum)
