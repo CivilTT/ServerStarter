@@ -28,13 +28,12 @@ namespace Server_GUI2.Develop.Util
             NatDiscoverer discoverer = new NatDiscoverer();
             var searchDevice = discoverer.DiscoverDeviceAsync();
             var deviceResult = await Task.WhenAny(searchDevice, Task.Delay(5000));
-            if (deviceResult != searchDevice)
+            NatDevice device = searchDevice.Result;
+            if (deviceResult != searchDevice || device == null)
             {
                 logger.Info("Failed to searchDevice");
                 return false;
             }
-
-            NatDevice device = await searchDevice;
 
             Mapping mapping = new Mapping(Protocol.Tcp, LocalPort, portNum, "Server Starter");
 
