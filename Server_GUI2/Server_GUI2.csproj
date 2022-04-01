@@ -148,6 +148,7 @@
     <Compile Include="Windows\MainWindow\MainWindowCommand.cs" />
     <Compile Include="Windows\GeneralVM.cs" />
     <Compile Include="Windows\MainWindow\MainWindowVM.cs" />
+    <Resource Include="Resources\help.png" />
     <Resource Include="Resources\MessageBox\Error%28B%29.png" />
     <Resource Include="Resources\MessageBox\Error%28W%29.png" />
     <Resource Include="Resources\MessageBox\Warning%28B%29.png" />

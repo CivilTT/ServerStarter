@@ -10,10 +10,10 @@
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:SystemSettingsVM}"
-        ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True"
         Closing="OnClosing"
         Title="System Settings" Height="550" Width="600" WindowStartupLocation="CenterScreen">
+        <!--ResizeMode="NoResize"-->
     
     <Window.Resources>
         <!--//Source//-->
@@ -156,7 +156,21 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="24"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Margin" Value="20 0"/>
+            <Setter Property="Margin" Value="20 0 10 0"/>
+        </Style>
+        <Style TargetType="Button" x:Key="Help">
+            <Setter Property="Width" Value="25"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="pack://application:,,,/Resources/help.png"/>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!--//SideMenu//-->
@@ -425,10 +439,15 @@
         <!--<ScrollViewer Style="{StaticResource ScrollSource}">-->
             <Grid Style="{StaticResource SettingContent}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="500"/>
+                    <RowDefinition Height="340"/>
+                    <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Default Properties" Style="{StaticResource TitleBlock}"/>
+                <!--<Button Margin="230 7 0 0" Style="{StaticResource Help}"/>-->
+                <Button Margin="230 7 0 0" Width="25" Height="25" Padding="0" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Top">
+                    <Image Source="pack://application:,,,/Resources/help.png"/>
+                </Button>
                 <StackPanel Orientation="Horizontal" Margin="0 35 0 0">
                     <StackPanel Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <TextBlock Text="MAIN Settings" Style="{StaticResource TitleBlock2}"/>
@@ -437,9 +456,8 @@
                         <TextBlock Text="gamemode" Style="{StaticResource PropertyIndex}"/>
                         <TextBlock Text="white-list" Style="{StaticResource PropertyIndex}"/>
                         <TextBlock Text="level-type" Style="{StaticResource PropertyIndex}"/>
-                        <TextBlock Text="OTHER Settings" Margin="30,24,0,0" Style="{StaticResource TitleBlock2}"/>
-                        <ComboBox SelectedItem="{Binding SelectedTFIndex.Value}" ItemsSource="{Binding OtherTFPropertyIndexs}" Margin="35,15,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
-                        <ComboBox SelectedItem="{Binding SelectedPropIndex.Value}" ItemsSource="{Binding OtherPropertyIndexs}" Margin="35,15,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
+                        <!--<ComboBox SelectedItem="{Binding SelectedTFIndex.Value}" ItemsSource="{Binding OtherTFPropertyIndexs}" Margin="35,15,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
+                        <ComboBox SelectedItem="{Binding SelectedPropIndex.Value}" ItemsSource="{Binding OtherPropertyIndexs}" Margin="35,15,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>-->
                     </StackPanel>
                     <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,57,0,0" Style="{StaticResource PropertyCombo}"/>
@@ -447,16 +465,60 @@
                         <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Gamemode}" ItemsSource="{Binding GamemodeCombo}" Style="{StaticResource PropertyCombo}"/>
                         <ComboBox SelectedItem="{Binding PropertyIndexs.Value.WhiteList}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
                         <ComboBox SelectedItem="{Binding PropertyIndexs.Value.LevelType}" ItemsSource="{Binding TypeCombo}" Style="{StaticResource PropertyCombo}"/>
-                        <!--<ComboBox SelectedIndex="{Binding SelectedTFProperty}" ItemsSource="{Binding BoolCombo}" Margin="10,73,0,0" Style="{StaticResource PropertyCombo}"/>-->
+                        <ComboBox SelectedIndex="{Binding SelectedTFProperty}" ItemsSource="{Binding BoolCombo}" Margin="10,73,0,0" Style="{StaticResource PropertyCombo}"/>
                         <ComboBox SelectedItem="{Binding SelectedTFProperty}" ItemsSource="{Binding BoolCombo}" Margin="10,73,0,0" Style="{StaticResource PropertyCombo}"/>
                         <TextBox Text="{Binding OtherStringProperty}" Margin="10,15,0,0" HorizontalAlignment="Left" Style="{StaticResource PropertyBox}"/>
                     </StackPanel>
                 </StackPanel>
-
-                <!--<TextBlock Text="Java Version" Grid.Row="1" Style="{StaticResource TitleBlock}"/>-->
                 
+                <TextBlock Text="True / False  Settings" Grid.Row="1" Margin="30 0" Style="{StaticResource TitleBlock2}"/>
+                <DataGrid Grid.Row="1" ItemsSource="{Binding BoolOptions}"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          RowHeaderWidth="0"
+                          AutoGenerateColumns="False"
+                          VirtualizingPanel.ScrollUnit="Pixel"
+                          HorizontalAlignment="Left"
+                          Margin="30 40">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Property" IsReadOnly="True" Binding="{Binding Property}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTemplateColumn Header="Setting Value" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.BoolCombo}" SelectedItem="{Binding Value}" HorizontalAlignment="Center" Width="80" Style="{StaticResource ComboSource}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
 
-
+                <TextBlock Text="Text  Settings" Grid.Row="2" Margin="30 0" Style="{StaticResource TitleBlock2}"/>
+                <DataGrid Grid.Row="2" ItemsSource="{Binding TextOptions}"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          RowHeaderWidth="0"
+                          AutoGenerateColumns="False"
+                          VirtualizingPanel.ScrollUnit="Pixel"
+                          HorizontalAlignment="Left"
+                          Margin="30 40">
+                    <!--MaxWidth="325">-->
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Property" Binding="{Binding Property}" IsReadOnly="True" Width="170">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="ToolTip" Value="{Binding ToolTip}" />
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Setting Value" Binding="{Binding Value}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </ScrollViewer>
         
@@ -617,6 +679,7 @@
             </Grid.RowDefinitions>
             
             <TextBlock Text="Port Mapping" Style="{StaticResource TitleBlock}"/>
+            <Button Margin="180 7" Style="{StaticResource Help}"/>
             <StackPanel Orientation="Horizontal" Margin="30">
                 <TextBlock Text="Using auto port mapping" Style="{StaticResource PropertyIndex}"/>
                 <ui:ToggleSwitch OnContent="Yes" OffContent="No" FontSize="20" VerticalAlignment="Top" Margin="0 15" IsOn="{Binding UsingPortMapping.Value}"/>
