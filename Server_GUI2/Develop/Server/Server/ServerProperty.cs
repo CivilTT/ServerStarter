@@ -158,6 +158,58 @@ namespace Server_GUI2
             {"allow-flight",false}
         };
 
+        public static Dictionary<string, string> Descriptions { get; } = new Dictionary<string, string>()
+        {
+            {"view-distance","チャンク単位の描画距離"},
+            {"resource-pack-prompt",""},
+            {"server-ip","サーバーを立てるIPアドレス"},
+            {"rcon.port","リモートコントロールに使用するポート番号"},
+            {"gamemode","ゲーム内でのプレイモード"},
+            {"server-port","サーバーを公開する際に使用するポート番号"},
+            {"op-permission-level","ゲーム内における管理者権限のレベル（４が最高）"},
+            {"resource-pack",""},
+            {"entity-broadcast-range-percentage",""},
+            {"level-name",""},
+            {"level-type", ""},
+            {"player-idle-timeout",""},
+            {"rcon.password",""},
+            {"motd",""},
+            {"query.port",""},
+            {"rate-limit",""},
+            {"function-permission-level",""},
+            {"difficulty","easy"},
+            {"network-compression-threshold",""},
+            {"text-filtering-config",""},
+            {"max-tick-time",""},
+            {"max-players",""},
+            {"resource-pack-sha1",""},
+            {"spawn-protection",""},
+            {"max-world-size",""},
+            {"broadcast-rcon-to-ops",""},
+            {"enable-jmx-monitoring",""},
+            {"allow-nether",""},
+            {"enable-command-block",""},
+            {"enable-rcon",""},
+            {"sync-chunk-writes",""},
+            {"enable-query",""},
+            {"prevent-proxy-connections",""},
+            {"force-gamemode",""},
+            {"hardcore",""},
+            {"white-list",""},
+            {"broadcast-console-to-ops",""},
+            {"pvp",""},
+            {"spawn-npcs",""},
+            {"spawn-animals",""},
+            {"snooper-enabled",""},
+            {"require-resource-pack",""},
+            {"spawn-monsters",""},
+            {"enforce-whitelist",""},
+            {"use-native-transport",""},
+            {"enable-status",""},
+            {"online-mode",""},
+            {"allow-flight","" }
+        };
+
         [JsonProperty("broadcast-rcon-to-ops")]
         [DefaultValue(true)]
         public bool BroadcastRconToOps

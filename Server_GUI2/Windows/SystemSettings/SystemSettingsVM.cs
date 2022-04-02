@@ -371,13 +371,17 @@ namespace Server_GUI2.Windows.SystemSettings
     public class BoolOption
     {
         public string Property { get; }
-        public string ToolTip => "TESTTESTTEST";
+        public string ToolTip { get; } = "このプロパティの説明は登録されていません。";
         public bool Value { get; set; }
 
         private BoolOption(string property, bool value)
         {
             Property = property;
             Value = value;
+
+            bool hasdescription = ServerProperty.Descriptions.TryGetValue(property, out string tooltip);
+            if (hasdescription)
+                ToolTip = tooltip;
         }
 
         public static ObservableCollection<BoolOption> GetBoolCollection(SortedDictionary<string, bool> boolOption, string[] removeProps)
@@ -397,13 +401,17 @@ namespace Server_GUI2.Windows.SystemSettings
     public class TextOption
     {
         public string Property { get; }
-        public string ToolTip => "TESTTESTTEST";
+        public string ToolTip { get; } = "このプロパティの説明は登録されていません。";
         public string Value { get; set; }
 
         private TextOption(string property, string value)
         {
             Property = property;
             Value = value;
+
+            bool hasdescription = ServerProperty.Descriptions.TryGetValue(property, out string tooltip);
+            if (hasdescription)
+                ToolTip = tooltip;
         }
 
         public static ObservableCollection<TextOption> GetTextCollection(SortedDictionary<string, string> boolOption, string[] removeProps)
