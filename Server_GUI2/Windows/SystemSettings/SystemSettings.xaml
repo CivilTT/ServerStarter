@@ -10,11 +10,11 @@
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:SystemSettingsVM}"
+        ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True"
         Closing="OnClosing"
-        Title="System Settings" Height="550" Width="600" WindowStartupLocation="CenterScreen">
-        <!--ResizeMode="NoResize"-->
-    
+        Title="System Settings" Height="600" Width="650" WindowStartupLocation="CenterScreen">
+
     <Window.Resources>
         <!--//Source//-->
         <Style TargetType="Button" x:Key="ButtonSource" BasedOn="{StaticResource {x:Type Button}}">
@@ -189,28 +189,29 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="10 0"/>
         </Style>
-        
+
         <!--//ShareWorld//-->
         <Style TargetType="TextBlock" x:Key="SWBlock" BasedOn="{StaticResource BlockSource}">
             <Setter Property="Width" Value="140"/>
         </Style>
         <Style TargetType="TextBox" x:Key="SWBox" BasedOn="{StaticResource BoxSource}">
-            <Setter Property="Width" Value="185"/>
+            <Setter Property="Width" Value="225"/>
             <Setter Property="Margin" Value="20 5"/>
             <!--//Delete Buttonで一括削除するとAdd Accountの利用可否が更新されないため、表示していない//-->
             <!--//MainWindowと同様にTextChangedを使えば解決するが、そうするとMVVMの思想から外れる//-->
             <Setter Property="ui:TextBoxHelper.IsDeleteButtonVisible" Value="False"/>
         </Style>
-        
+
         <!--//Server//-->
         <Style TargetType="TextBlock" x:Key="TitleBlock2" BasedOn="{StaticResource TitleBlock}">
-            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontSize" Value="22"/>
             <Setter Property="Margin" Value="30 10 0 0"/>
         </Style>
         <Style TargetType="TextBlock" x:Key="PropertyIndex" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Margin" Value="0,15,20,0"/>
+            <Setter Property="Margin" Value="0,20,20,0"/>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.2"/>
@@ -219,13 +220,13 @@
         </Style>
         <Style TargetType="ComboBox" x:Key="PropertyCombo" BasedOn="{StaticResource ComboSource}">
             <Setter Property="Width" Value="145"/>
-            <Setter Property="Margin" Value="10,15,0,0"/>
+            <Setter Property="Margin" Value="10,20,0,0"/>
         </Style>
         <Style TargetType="TextBox" x:Key="PropertyBox" BasedOn="{StaticResource BoxSource}">
             <Setter Property="Width" Value="145"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
         </Style>
-        
+
         <!--//Players//-->
         <Style TargetType="ComboBox" x:Key="PlayerCombo" BasedOn="{StaticResource ComboSource}">
             <Setter Property="Width" Value="200"/>
@@ -243,7 +244,7 @@
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="Margin" Value="0 10"/>
         </Style>
-        
+
         <!--//NetWork//-->
         <Style TargetType="TextBox" x:Key="PortBox" BasedOn="{StaticResource PropertyBox}">
             <Style.Triggers>
@@ -283,7 +284,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
         <!--//Others//-->
         <Style TargetType="Button" x:Key="OthersMiniButton" BasedOn="{StaticResource MiniButton}">
             <Setter Property="Width" Value="28"/>
@@ -291,17 +292,17 @@
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
-        
+
         <!--//Converter//-->
         <base:InverseBoolConverter x:Key="InverseBoolConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
         <vm:MemberListConverter x:Key="MemberListConverter"/>
     </Window.Resources>
-       
+
     <!--<Window.DataContext>
         <vm:SystemSettingsVM/>
     </Window.DataContext>-->
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180"/>
@@ -315,7 +316,7 @@
 
         <Grid Grid.RowSpan="1" Grid.ColumnSpan="3">
             <TextBlock Text="System Settings" Margin="30,15,0,0" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
-            <Line X1="30" X2="570" Y1="70" Y2="70" Grid.Column="1" Style="{StaticResource LineStyle}"/>
+            <Line X1="30" X2="610" Y1="70" Y2="70" Style="{StaticResource LineStyle}"/>
         </Grid>
 
         <Grid Style="{StaticResource SideMenu}">
@@ -360,18 +361,18 @@
 
         </Grid>
 
-        <Line X1="3" X2="3" Y1="10" Y2="430" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
+        <Line X1="3" X2="3" Y1="10" Y2="470" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
 
         <!--//ShareWorldContents//-->
         <ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">
-        <!--<ScrollViewer Visibility="Hidden" Style="{StaticResource ScrollSource}">-->
+            <!--<ScrollViewer Style="{StaticResource ScrollSource}">-->
             <Grid Style="{StaticResource SettingContent}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="240"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Add Remote Setting" Style="{StaticResource TitleBlock}"/>
-                <StackPanel Orientation="Vertical" Margin="30 40 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <StackPanel Orientation="Vertical" Margin="40 40 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Account Name" Style="{StaticResource SWBlock}"/>
                         <TextBox Text="{Binding AccountName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
@@ -384,10 +385,6 @@
                         <TextBlock Text="Repository" Style="{StaticResource SWBlock}"/>
                         <TextBox Text="{Binding RepoName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
-                    <!--<StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Type" Style="{StaticResource SWBlock}"/>
-                        <ui:ToggleSwitch IsOn="{Binding IsPrivate.Value}" OnContent="Private" OffContent="Public" Margin="20 5" FontSize="20"/>
-                    </StackPanel>-->
                     <Button Content="Add Account" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_SW}" Command="{Binding AddListCommand}" CommandParameter="Remote" Style="{StaticResource RunStyle}"/>
                 </StackPanel>
                 <TextBlock Text="Remote List" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
@@ -403,9 +400,7 @@
                               AutoGenerateColumns="False"
                               VirtualizingPanel.ScrollUnit="Pixel"
                               HorizontalAlignment="Left"
-                              SelectedItem="{Binding RLIndex.Value}"
-                              MaxHeight="250"
-                              MaxWidth="355">
+                              SelectedItem="{Binding RLIndex.Value}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Account Name" IsReadOnly="True" Binding="{Binding Storage.AccountName}"/>
                             <DataGridTextColumn Header="Repository" IsReadOnly="True" Binding="{Binding Storage.RepositoryName}"/>
@@ -435,96 +430,117 @@
         </ScrollViewer>
 
         <!--//ServerContents//-->
-        <ScrollViewer Visibility="{Binding ShowServer, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">
-        <!--<ScrollViewer Style="{StaticResource ScrollSource}">-->
-            <Grid Style="{StaticResource SettingContent}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="340"/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Default Properties" Style="{StaticResource TitleBlock}"/>
-                <!--<Button Margin="230 7 0 0" Style="{StaticResource Help}"/>-->
-                <Button Margin="230 7 0 0" Width="25" Height="25" Padding="0" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Top">
-                    <Image Source="pack://application:,,,/Resources/help.png"/>
-                </Button>
-                <StackPanel Orientation="Horizontal" Margin="0 35 0 0">
-                    <StackPanel Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <TextBlock Text="MAIN Settings" Style="{StaticResource TitleBlock2}"/>
-                        <TextBlock Text="difficulty" Style="{StaticResource PropertyIndex}"/>
-                        <TextBlock Text="hardcore" Style="{StaticResource PropertyIndex}"/>
-                        <TextBlock Text="gamemode" Style="{StaticResource PropertyIndex}"/>
-                        <TextBlock Text="white-list" Style="{StaticResource PropertyIndex}"/>
-                        <TextBlock Text="level-type" Style="{StaticResource PropertyIndex}"/>
-                        <!--<ComboBox SelectedItem="{Binding SelectedTFIndex.Value}" ItemsSource="{Binding OtherTFPropertyIndexs}" Margin="35,15,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>
-                        <ComboBox SelectedItem="{Binding SelectedPropIndex.Value}" ItemsSource="{Binding OtherPropertyIndexs}" Margin="35,15,0,0" Width="160" Style="{StaticResource PropertyCombo}"/>-->
-                    </StackPanel>
-                    <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
-                        <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,57,0,0" Style="{StaticResource PropertyCombo}"/>
-                        <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Hardcore}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
-                        <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Gamemode}" ItemsSource="{Binding GamemodeCombo}" Style="{StaticResource PropertyCombo}"/>
-                        <ComboBox SelectedItem="{Binding PropertyIndexs.Value.WhiteList}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
-                        <ComboBox SelectedItem="{Binding PropertyIndexs.Value.LevelType}" ItemsSource="{Binding TypeCombo}" Style="{StaticResource PropertyCombo}"/>
-                        <ComboBox SelectedIndex="{Binding SelectedTFProperty}" ItemsSource="{Binding BoolCombo}" Margin="10,73,0,0" Style="{StaticResource PropertyCombo}"/>
-                        <ComboBox SelectedItem="{Binding SelectedTFProperty}" ItemsSource="{Binding BoolCombo}" Margin="10,73,0,0" Style="{StaticResource PropertyCombo}"/>
-                        <TextBox Text="{Binding OtherStringProperty}" Margin="10,15,0,0" HorizontalAlignment="Left" Style="{StaticResource PropertyBox}"/>
-                    </StackPanel>
-                </StackPanel>
-                
-                <TextBlock Text="True / False  Settings" Grid.Row="1" Margin="30 0" Style="{StaticResource TitleBlock2}"/>
-                <DataGrid Grid.Row="1" ItemsSource="{Binding BoolOptions}"
-                          CanUserAddRows="False"
-                          CanUserDeleteRows="False"
-                          RowHeaderWidth="0"
-                          AutoGenerateColumns="False"
-                          VirtualizingPanel.ScrollUnit="Pixel"
-                          HorizontalAlignment="Left"
-                          Margin="30 40">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Property" IsReadOnly="True" Binding="{Binding Property}">
-                            <DataGridTextColumn.CellStyle>
-                                <Style TargetType="DataGridCell">
-                                    <Setter Property="ToolTip" Value="{Binding ToolTip}" />
-                                </Style>
-                            </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>
-                        <DataGridTemplateColumn Header="Setting Value" Width="100">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.BoolCombo}" SelectedItem="{Binding Value}" HorizontalAlignment="Center" Width="80" Style="{StaticResource ComboSource}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+        <Grid Visibility="{Binding ShowServer, Converter={StaticResource BoolToVisible}}" Margin="0 -10 0 0" Style="{StaticResource SettingContent}">
+        <!--<Grid Margin="0 -10 0 0" Style="{StaticResource SettingContent}">-->
+            <TabControl>
+                <TabControl.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Transparent" Offset="0"/>
+                        <GradientStop Color="Gold" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabControl.Background>
 
-                <TextBlock Text="Text  Settings" Grid.Row="2" Margin="30 0" Style="{StaticResource TitleBlock2}"/>
-                <DataGrid Grid.Row="2" ItemsSource="{Binding TextOptions}"
-                          CanUserAddRows="False"
-                          CanUserDeleteRows="False"
-                          RowHeaderWidth="0"
-                          AutoGenerateColumns="False"
-                          VirtualizingPanel.ScrollUnit="Pixel"
-                          HorizontalAlignment="Left"
-                          Margin="30 40">
-                    <!--MaxWidth="325">-->
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Property" Binding="{Binding Property}" IsReadOnly="True" Width="170">
-                            <DataGridTextColumn.CellStyle>
-                                <Style TargetType="DataGridCell">
-                                    <Setter Property="ToolTip" Value="{Binding ToolTip}" />
-                                </Style>
-                            </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Setting Value" Binding="{Binding Value}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-        </ScrollViewer>
-        
+                <!--//Main//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Main"/>
+                    </TabItem.Header>
+                    <Grid Margin="0 10">
+                        <TextBlock Text="Default Properties" Style="{StaticResource TitleBlock}"/>
+                        <Button Margin="230 7 0 0" Style="{StaticResource Help}"/>
+
+                        <Button Margin="230 7 0 0" Width="25" Height="25" Padding="0" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Top">
+                            <Image Source="pack://application:,,,/Resources/help.png"/>
+                        </Button>
+                        <StackPanel Orientation="Horizontal" Margin="0 35 0 0">
+                            <StackPanel Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <TextBlock Text="MAIN Settings" Style="{StaticResource TitleBlock2}"/>
+                                <TextBlock Text="difficulty" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="hardcore" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="gamemode" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="white-list" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="level-type" Style="{StaticResource PropertyIndex}"/>
+                            </StackPanel>
+                            <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,62,0,0" Style="{StaticResource PropertyCombo}"/>
+                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Hardcore}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
+                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Gamemode}" ItemsSource="{Binding GamemodeCombo}" Style="{StaticResource PropertyCombo}"/>
+                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.WhiteList}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
+                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.LevelType}" ItemsSource="{Binding TypeCombo}" Style="{StaticResource PropertyCombo}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+
+                <!--//True / False//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="True / False"/>
+                    </TabItem.Header>
+                    <Grid Margin="0 10">
+                        <TextBlock Text="True / False  Settings" Grid.Row="1" Margin="30 0" Style="{StaticResource TitleBlock2}"/>
+                        <DataGrid ItemsSource="{Binding BoolOptions}"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  RowHeaderWidth="0"
+                                  AutoGenerateColumns="False"
+                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                  HorizontalAlignment="Left"
+                                  Margin="30 50 0 0" Width="428">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Property" Width="300">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Property}" ToolTip="{Binding ToolTip}" VerticalAlignment="Center" FontSize="16" Margin="11 7"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Setting Value" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.BoolCombo}" SelectedItem="{Binding Value}" HorizontalAlignment="Center" Width="80" Style="{StaticResource ComboSource}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!--//Text//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Text"/>
+                    </TabItem.Header>
+                    <Grid Margin="0 10">
+                        <TextBlock Text="Text Settings" Margin="30 0" Style="{StaticResource TitleBlock2}"/>
+                        <DataGrid ItemsSource="{Binding TextOptions}"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  RowHeaderWidth="0"
+                                  AutoGenerateColumns="False"
+                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                  HorizontalAlignment="Left"
+                                  Margin="30 50 0 0" Width="418">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Property" Width="230">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Property}" ToolTip="{Binding ToolTip}" VerticalAlignment="Center" FontSize="16" Margin="11 7"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Setting Value" Binding="{Binding Value}" FontSize="16" Width="170"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+
         <!--//Players//-->
         <Grid Visibility="{Binding ShowPlayers, Converter={StaticResource BoolToVisible}}" Margin="0 -10 0 0" Style="{StaticResource SettingContent}">
-        <!--<Grid Margin="0 -10 0 0" Style="{StaticResource SettingContent}">-->
+            <!--<Grid Margin="0 -10 0 0" Style="{StaticResource SettingContent}">-->
             <TabControl SelectedIndex="{Binding PlayersTabIndex.Value}">
                 <TabControl.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -532,58 +548,57 @@
                         <GradientStop Color="Gold" Offset="1"/>
                     </LinearGradientBrush>
                 </TabControl.Background>
-                
+
                 <!--//Player//-->
                 <TabItem>
                     <TabItem.Header>
                         <TextBlock Text="Player"/>
                     </TabItem.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="180"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        
-                        <StackPanel Orientation="Vertical" Margin="0 10">
-                            <TextBlock Text="Add Player" Style="{StaticResource TitleBlock}"/>
-                            <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
-                                <TextBlock Text="New Player Name" Style="{StaticResource PlayerBlock}"/>
-                                <TextBox Width="160" Text="{Binding PlayerName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerBox}"/>
-                            </StackPanel>
-                            <Button Content="Regist" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" IsEnabled="{Binding CanAddition_Pl}" Command="{Binding AddListCommand}" CommandParameter="Player" Style="{StaticResource RunStyle}"/>
-                        </StackPanel>
+                    <ScrollViewer>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="180"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Text="Player List" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
-                        <Button Command="{Binding DeleteListCommand}" CommandParameter="Player" Margin="20 0" Style="{StaticResource MiniButton}">
-                            <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
-                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
-                        </Button>
-                        <DataGrid ItemsSource="{Binding PlayerList}"
-                                  CanUserAddRows="False"
-                                  CanUserDeleteRows="False"
-                                  CanUserResizeRows="False"
-                                  CanUserResizeColumns="False"
-                                  RowHeaderWidth="0"
-                                  VirtualizingPanel.ScrollUnit="Pixel"
-                                  AutoGenerateColumns="False"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
-                                  Grid.Row="1"
-                                  MaxHeight="170"
-                                  SelectedItem="{Binding PLIndex}"
-                                  Margin="20 50 0 0">
-                            <DataGrid.Columns>
-                                <!--//Typeは Player or Group を表示する//-->
-                                <!--<DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>-->
-                                <DataGridTextColumn Header="Player Name" MaxWidth="100" IsReadOnly="True" Binding="{Binding Name}" ElementStyle="{StaticResource DataGridSource}"/>
-                                <DataGridTextColumn Header="UUID" IsReadOnly="True" Binding="{Binding UUID}" ElementStyle="{StaticResource DataGridSource}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        <StackPanel Orientation="Vertical" Grid.Row="1">
-                        </StackPanel>
-                    </Grid>
+                            <StackPanel Orientation="Vertical" Margin="0 10">
+                                <TextBlock Text="Add Player" Style="{StaticResource TitleBlock}"/>
+                                <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
+                                    <TextBlock Text="New Player Name" Style="{StaticResource PlayerBlock}"/>
+                                    <TextBox Width="210" Text="{Binding PlayerName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerBox}"/>
+                                </StackPanel>
+                                <Button Content="Regist" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" IsEnabled="{Binding CanAddition_Pl}" Command="{Binding AddListCommand}" CommandParameter="Player" Style="{StaticResource RunStyle}"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Player List" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                            <Button Command="{Binding DeleteListCommand}" CommandParameter="Player" Margin="20 0" Style="{StaticResource MiniButton}">
+                                <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                            </Button>
+                            <DataGrid ItemsSource="{Binding PlayerList}"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      CanUserResizeRows="False"
+                                      CanUserResizeColumns="False"
+                                      RowHeaderWidth="0"
+                                      VirtualizingPanel.ScrollUnit="Pixel"
+                                      AutoGenerateColumns="False"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Top"
+                                      Grid.Row="1"
+                                      SelectedItem="{Binding PLIndex}"
+                                      Margin="20 50 0 0">
+                                <DataGrid.Columns>
+                                    <!--//Typeは Player or Group を表示する//-->
+                                    <!--<DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>-->
+                                    <DataGridTextColumn Header="Player Name" IsReadOnly="True" Binding="{Binding Name}" ElementStyle="{StaticResource DataGridSource}"/>
+                                    <DataGridTextColumn Header="UUID" IsReadOnly="True" Binding="{Binding UUID}" ElementStyle="{StaticResource DataGridSource}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </ScrollViewer>
                 </TabItem>
-                
+
                 <!--//Group//-->
                 <TabItem>
                     <TabItem.Header>
@@ -600,11 +615,11 @@
                                 <TextBlock Text="Add Group" Style="{StaticResource TitleBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
                                     <TextBlock Text="New Group Name" Style="{StaticResource PlayerBlock}"/>
-                                    <TextBox Width="160" Text="{Binding GroupName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerBox}"/>
+                                    <TextBox Width="210" Text="{Binding GroupName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerBox}"/>
                                 </StackPanel>
                                 <!--<TextBlock Text="New Group Member" Margin="40 20 0 0" Style="{StaticResource PlayerBlock}"/>-->
                                 <UniformGrid Rows="1" Margin="40 20 20 0">
-                                    <StackPanel Orientation="Vertical" Width="160" HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Vertical" Width="180" HorizontalAlignment="Left">
                                         <TextBlock Text="Players" Style="{StaticResource PlayerBlock}"/>
                                         <ListBox ItemsSource="{Binding PlayerList_Group}" SelectedItem="{Binding PLGIndex.Value}" Height="170">
                                             <ListBox.ItemTemplate>
@@ -614,9 +629,9 @@
                                             </ListBox.ItemTemplate>
                                         </ListBox>
                                         <Button Content="Add" Command="{Binding AddListCommand}" CommandParameter="GroupPlayer" Style="{StaticResource GroupButton}"/>
-                                        
+
                                     </StackPanel>
-                                    <StackPanel Orientation="Vertical" Width="160" HorizontalAlignment="Right">
+                                    <StackPanel Orientation="Vertical" Width="180" HorizontalAlignment="Right">
                                         <TextBlock Text="Members" Style="{StaticResource PlayerBlock}"/>
                                         <ListBox ItemsSource="{Binding MemberList}" SelectedItem="{Binding MLIndex.Value}" Height="170">
                                             <ListBox.ItemTemplate>
@@ -652,42 +667,41 @@
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       Grid.Row="1"
-                                      MaxHeight="170"
                                       SelectedItem="{Binding GLIndex}"
-                                      Margin="20 50 0 50">
+                                      Margin="20 50 0 30">
                                 <DataGrid.Columns>
                                     <!--//Typeは Player or Group を表示する//-->
                                     <!--<DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>-->
-                                    <DataGridTextColumn Header="Group Name" IsReadOnly="True" MaxWidth="100" Binding="{Binding GroupName}" ElementStyle="{StaticResource DataGridSource}"/>
-                                    <DataGridTextColumn Header="Members" IsReadOnly="True" MaxWidth="250" Binding="{Binding PlayerList, Converter={StaticResource MemberListConverter}}" ElementStyle="{StaticResource DataGridSource}"/>
+                                    <DataGridTextColumn Header="Group Name" IsReadOnly="True" Binding="{Binding GroupName}" ElementStyle="{StaticResource DataGridSource}"/>
+                                    <DataGridTextColumn Header="Members" IsReadOnly="True" Binding="{Binding PlayerList, Converter={StaticResource MemberListConverter}}" ElementStyle="{StaticResource DataGridSource}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <StackPanel Orientation="Vertical" Grid.Row="1">
                             </StackPanel>
-                        </Grid>                        
+                        </Grid>
                     </ScrollViewer>
                 </TabItem>
             </TabControl>
         </Grid>
-        
+
         <!--//NetWork//-->
         <Grid Visibility="{Binding ShowNet, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
-        <!--<Grid Style="{StaticResource SettingContent}">-->
+            <!--<Grid Style="{StaticResource SettingContent}">-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="200"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            
+
             <TextBlock Text="Port Mapping" Style="{StaticResource TitleBlock}"/>
             <Button Margin="180 7" Style="{StaticResource Help}"/>
-            <StackPanel Orientation="Horizontal" Margin="30">
+            <StackPanel Orientation="Horizontal" Margin="40 30 0 0">
                 <TextBlock Text="Using auto port mapping" Style="{StaticResource PropertyIndex}"/>
-                <ui:ToggleSwitch OnContent="Yes" OffContent="No" FontSize="20" VerticalAlignment="Top" Margin="0 15" IsOn="{Binding UsingPortMapping.Value}"/>
+                <ui:ToggleSwitch OnContent="Yes" OffContent="No" FontSize="20" VerticalAlignment="Top" Margin="60 15" IsOn="{Binding UsingPortMapping.Value}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="30 80 0 0">
+            <StackPanel Orientation="Horizontal" Margin="40 80 0 0">
                 <TextBlock Text="Port Number" Style="{StaticResource PropertyIndex}"/>
                 <!--<TextBox Text="{Binding PortNumber.Value, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="47 15" IsEnabled="{Binding CanWritePortNumber}" Style="{StaticResource PortBox}"/>-->
-                <TextBox Text="{Binding PortNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="47 15" IsEnabled="{Binding CanWritePortNumber}" Style="{StaticResource PortBox}"/>
+                <TextBox Text="{Binding PortNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="107 15" IsEnabled="{Binding CanWritePortNumber}" Style="{StaticResource PortBox}"/>
             </StackPanel>
             <Button Content="Mapping Test" HorizontalAlignment="Right" Margin="30 15" IsEnabled="{Binding CanAddition_Po}" Command="{Binding AddPortCommand}" Style="{StaticResource RunStyle}"/>
 
@@ -704,7 +718,7 @@
                     <TextBlock Text="{Binding PortStatus.Value.DisplayStatus}" IsEnabled="{Binding UsingPortMapping.Value}" Foreground="Green" FontWeight="Bold" Style="{StaticResource NetStatusBlock}"/>
                 </StackPanel>
             </StackPanel>
-            
+
             <Button Command="{Binding ClipbordCommand}" CommandParameter="global" Margin="20 43" Style="{StaticResource CopyButton}">
                 <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                 <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/copy-solid.svg"/>
@@ -719,22 +733,23 @@
                     <ToolTip Content="Copy"/>
                 </ToolTipService.ToolTip>
             </Button>
-            
+
         </Grid>
-        
+
         <!--//Others//-->
         <Grid Visibility="{Binding ShowOthers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+            <!--<Grid Style="{StaticResource SettingContent}">-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="160"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock Text="User Settings" Style="{StaticResource TitleBlock}"/>
-            <StackPanel Orientation="Horizontal" Margin="30">
+            <StackPanel Orientation="Horizontal" Margin="40 30">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="User Name" Style="{StaticResource PropertyIndex}"/>
                     <TextBlock Text="Language" Style="{StaticResource PropertyIndex}"/>
                 </StackPanel>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Margin="30 0">
                     <TextBox Text="{Binding UserName.Value}" Margin="15" Style="{StaticResource PlayerBox}"/>
                     <ComboBox SelectedIndex="0" HorizontalContentAlignment="Left" Margin="15 0" Style="{StaticResource PlayerCombo}">
                         <ComboBoxItem>
@@ -745,13 +760,13 @@
             </StackPanel>
 
             <TextBlock Text="Infomation" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
-            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="30">
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="40 30">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="System Version" Style="{StaticResource PropertyIndex}"/>
                     <TextBlock Text="Manual" Style="{StaticResource PropertyIndex}"/>
                     <TextBlock Text="Auther" Style="{StaticResource PropertyIndex}"/>
                 </StackPanel>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Margin="10 0">
                     <TextBlock Text="{Binding SystemVersion, Mode=OneWay}" Style="{StaticResource NetStatusBlock}"/>
                     <ui:HyperlinkButton Content="Access Here" NavigateUri="https://civiltt.github.io/ServerStarter/" Margin="0,13,20,2" FontSize="20" Height="33" Padding="0"/>
                     <StackPanel Orientation="Horizontal">
@@ -790,9 +805,9 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            
+
 
         </Grid>
-        
+
     </Grid>
 </base:GeneralCB>
