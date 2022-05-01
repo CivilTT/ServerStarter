@@ -312,7 +312,7 @@ namespace Server_GUI2.Windows.SystemSettings
             // 既存のデータを変更する形で処理
             UserSettings.Instance.userSettings.OwnerName = UserName.Value;
             UserSettings.Instance.userSettings.Language = "English";
-            UserSettings.Instance.userSettings.DefaultProperties = PropertyIndexs.Value;
+            UserSettings.Instance.userSettings.DefaultProperties = new ServerProperty(PropertyIndexs.Value);
             UserSettings.Instance.userSettings.Players = PlayerList.ToList();
             UserSettings.Instance.userSettings.PlayerGroups = new List<PlayerGroup>(GroupList);
 
