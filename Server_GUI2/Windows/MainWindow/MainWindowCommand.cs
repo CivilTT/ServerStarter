@@ -1,4 +1,5 @@
 ﻿using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Util;
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.WorldSettings;
@@ -80,7 +81,7 @@ namespace Server_GUI2.Windows.MainWindow
 
         public override void Execute(object parameter)
         {
-            void Delete<T>(ObservableCollection<T> collection, T removeItemIndex, string removeItemName, Action deleteAction)
+            bool Delete<T>(ObservableCollection<T> collection, T removeItemIndex, string removeItemName, Action deleteAction)
             {
                 string removeType = "";
                 if (removeItemIndex is Version version)
@@ -93,23 +94,37 @@ namespace Server_GUI2.Windows.MainWindow
                     $"「{removeItemName}」は完全に削除され、復元ができなくなります。";
                 string result = CustomMessageBox.Show(message, MessageBox.Back.ButtonType.YesNo, MessageBox.Back.Image.Warning);
                 if (result != "Yes")
-                    return;
+                    return false;
 
                 deleteAction();
                 collection.Remove(removeItemIndex);
-                removeItemIndex = collection[0];
+                return true;
             }
 
+            Version versionIndex = _vm.ExistsVersionIndex.Value;
+            IWorld worldIndex = _vm.WorldIndex.Value;
             switch (parameter.ToString())
             {
                 case "version":
-                    Version versionIndex = _vm.ExistsVersionIndex.Value;
-                    Delete(_vm.ExistsVersions, versionIndex, versionIndex.Name, () => versionIndex.Remove());
+                    bool deleted = Delete(_vm.ExistsVersions, versionIndex, versionIndex.Name,
+                        () => {
+                            versionIndex.Remove();
+                            _vm.Worlds.WriteLine(world => world.DisplayName);
+                            _vm.Worlds.RemoveAll(world => world.Version == versionIndex);
+                        });
+                    if (deleted)
+                    {
+                        _vm.ExistsVersionIndex.Value = _vm.ExistsVersions[0];
+                        _vm.Worlds.WriteLine(world => world.DisplayName);
+                        _vm.WorldIndex.Value = _vm.Worlds.Contains(worldIndex) ? worldIndex : _vm.Worlds[0];
+                        Console.WriteLine(_vm.WorldIndex.Value.DisplayName);
+                    }
                     break;
 
                 case "world":
-                    IWorld worldIndex = _vm.WorldIndex.Value;
-                    Delete(_vm.Worlds, worldIndex, worldIndex.DisplayName, () => ((World)worldIndex).Delete());
+                    deleted = Delete(_vm.Worlds, worldIndex, worldIndex.DisplayName, () => ((World)worldIndex).Delete());
+                    if (deleted)
+                        _vm.WorldIndex.Value = _vm.Worlds[0];
                     break;
 
                 default:

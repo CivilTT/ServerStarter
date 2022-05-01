@@ -68,7 +68,7 @@ namespace Server_GUI2.Develop.Util
 
         public static async Task<bool> DeletePort(int portNum)
         {
-            logger.Info($"Start opening port {portNum}");
+            logger.Info($"Start closing port {portNum}");
 
             NatDiscoverer discoverer = new NatDiscoverer();
             var searchDevice = discoverer.DiscoverDeviceAsync();
@@ -105,7 +105,7 @@ namespace Server_GUI2.Develop.Util
                 }
             }
 
-            logger.Info($"Failed to open port {portNum}");
+            logger.Info($"Failed to close port {portNum}");
             return true;
         }
 
