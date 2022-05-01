@@ -89,6 +89,8 @@ namespace Server_GUI2.Windows.MainWindow
                     return false;
 
                 Player owner = SaveData.Players.Where(player => player.Name == PlayerName).FirstOrDefault();
+                if (WorldIndex.Value == null)
+                    return false;
                 OpsRecord ownerOp = new OpsRecord(owner, 4);
                 return WorldIndex.Value.Settings.Ops.Contains(ownerOp);
             }

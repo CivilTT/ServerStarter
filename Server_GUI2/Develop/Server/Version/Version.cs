@@ -125,17 +125,11 @@ namespace Server_GUI2
         {
             Exists = false;
 
-            string result = CustomMessageBox.Show(
-                $"このバージョンを削除しますか？\n" +
-                $"「{Name}」とその内部に保管されたワールドデータは完全に削除され、復元ができなくなります。", ButtonType.OKCancel, Image.Warning);
-            logger.Warn("delete Version data");
-            if (result == "OK")
-            {
-                // 削除イベント発火
-                DeleteEvent?.Invoke(this,null);
-                // ディレクトリを削除
-                Path.Delete();
-            }
+            // 削除イベント発火
+            DeleteEvent?.Invoke(this,null);
+            
+            // ディレクトリを削除
+            Path.Delete();
         }
 
         public bool Equals(Version other)

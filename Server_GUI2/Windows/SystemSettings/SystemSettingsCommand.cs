@@ -159,19 +159,20 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
-            void DeleteContent<T>(ObservableCollection<T> list, T deleteItem, string name, string nullMessage= "削除したい行を選択してください。")
+            string DeleteContent<T>(ObservableCollection<T> list, T deleteItem, string name, string notSelected= null, string nullMessage= "削除したい行を選択してください。")
             {
-                if (name == null)
+                if (name == notSelected)
                 {
                     CustomMessageBox.Show(nullMessage, ButtonType.OK, Image.Warning);
-                    return;
+                    return string.Empty;
                 }
 
                 string result = CustomMessageBox.Show($"{name}を削除しますか？", ButtonType.YesNo, Image.Question);
                 if (result != "Yes")
-                    return;
+                    return result;
 
                 list.Remove(deleteItem);
+                return "Yes";
             }
 
             switch (parameter)
@@ -180,18 +181,18 @@ namespace Server_GUI2.Windows.SystemSettings
                     //var remoteList = _vm.RemoteList;
                     //var remoteDeleteItem = _vm.RLIndex.Value ?? null;
                     //var remoteName = _vm.RLIndex.Value?. ?? null;
-                    var storage = _vm.RLIndex.Value.Storage;
-                    var worldName = $"/{_vm.RLIndex.Value.Name}";
-                    string result = CustomMessageBox.Show($"{storage.AccountName}/{storage.RepositoryName}{worldName}を削除しますか？", ButtonType.YesNo, Image.Question);
+                    var remoteItem = _vm.RLIndex.Value;
+                    var storageAccount = remoteItem?.Storage.AccountName ?? null;
+                    var storageRepo = remoteItem?.Storage.RepositoryName ?? null;
+                    var worldName = $"/{remoteItem?.Name ?? null}";
+                    string result = DeleteContent(_vm.RemoteList, remoteItem, $"{storageAccount}/{storageRepo}{worldName}", "//");
                     if (result == "Yes")
                     {
-                        if (_vm.RLIndex.Value is RemoteWorld world)
+                        if (remoteItem is RemoteWorld world)
                             world.Delete();
-                        else if (_vm.RLIndex.Value is NewRemoteWorld world1)
+                        else if (remoteItem is NewRemoteWorld world1)
                             world1.Storage.Delete();
-                        _vm.RemoteList.Remove(_vm.RLIndex.Value);
                     }
-                    //DeleteContent(remoteList, remoteDeleteItem, remoteName);
                     break;
 
                 case "Player":

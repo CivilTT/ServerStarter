@@ -139,6 +139,7 @@ namespace Server_GUI2
             if (!UserSettings.Instance.userSettings.ShutdownPC)
                 return;
 
+            logger.Info("Show window to check PC shutdown");
             string result = CustomMessageBox.Show(
                 "PCを30秒後にシャットダウンしようとしています。\n" +
                 "シャットダウンしない場合は「キャンセル」を押してください。", ButtonType.OKCancel, Image.Infomation, 30000);
@@ -146,6 +147,7 @@ namespace Server_GUI2
             if (result == "Cancel")
                 return;
 
+            logger.Info("This PC will be shutdown");
             ProcessStartInfo psi = new ProcessStartInfo
             {
                 FileName = "shutdown.exe",

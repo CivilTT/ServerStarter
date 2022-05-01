@@ -259,7 +259,7 @@
         <Style TargetType="TextBox" x:Key="ShowIP">
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="Height" Value="33"/>
-            <Setter Property="Margin" Value="-3 15 0 0"/>
+            <Setter Property="Margin" Value="-3 20 0 0"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Padding" Value="0"/>
@@ -719,14 +719,14 @@
                 </StackPanel>
             </StackPanel>
 
-            <Button Command="{Binding ClipbordCommand}" CommandParameter="global" Margin="20 43" Style="{StaticResource CopyButton}">
+            <Button Command="{Binding ClipbordCommand}" CommandParameter="global" Margin="20 47" Style="{StaticResource CopyButton}">
                 <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                 <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/copy-solid.svg"/>
                 <ToolTipService.ToolTip>
                     <ToolTip Content="Copy"/>
                 </ToolTipService.ToolTip>
             </Button>
-            <Button Command="{Binding ClipbordCommand}" CommandParameter="local" Margin="20 91" Style="{StaticResource CopyButton}">
+            <Button Command="{Binding ClipbordCommand}" CommandParameter="local" Margin="20 100" Style="{StaticResource CopyButton}">
                 <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                 <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/copy-solid.svg"/>
                 <ToolTipService.ToolTip>

@@ -163,22 +163,26 @@ namespace Server_GUI2.Windows.WorldSettings
             {
                 case "Datapack":
                     ADatapack datapack = _vm.SelectedDatapack.Value;
-                    DeleteContent(() => _vm.Datapacks.Remove(datapack), datapack.Name);                    
+                    string name = datapack?.Name ?? null;
+                    DeleteContent(() => _vm.Datapacks.Remove(datapack), name);                    
                     break;
                 case "Plugin":
                     APlugin plugin = _vm.SelectedPlugin.Value;
-                    DeleteContent(() => _vm.Plugins.Remove(plugin), plugin.Name);
+                    name = plugin?.Name ?? null;
+                    DeleteContent(() => _vm.Plugins.Remove(plugin), name);
                     break;
                 case "CustomMap":
                     _vm.CustomMap = null;
                     break;
                 case "Op":
                     OpsRecord ops = _vm.OpPlayersListIndex;
-                    DeleteContent(() => _vm.OpPlayersList.Remove(ops), ops.Name);
+                    name = ops?.Name ?? null;
+                    DeleteContent(() => _vm.OpPlayersList.Remove(ops), name);
                     break;
                 case "WhiteList":
                     Player player = _vm.WhitePlayersListIndex;
-                    DeleteContent(() => _vm.WhitePlayersList.Remove(player), player.Name);
+                    name = player?.Name ?? null;
+                    DeleteContent(() => _vm.WhitePlayersList.Remove(player), name);
                     break;
                 default:
                     break;

@@ -380,7 +380,7 @@ namespace Server_GUI2.Windows.SystemSettings
             Value = value;
 
             bool hasdescription = ServerProperty.Descriptions.TryGetValue(property, out string tooltip);
-            if (hasdescription)
+            if (hasdescription && tooltip != "")
                 ToolTip = tooltip;
         }
 
@@ -410,7 +410,7 @@ namespace Server_GUI2.Windows.SystemSettings
             Value = value;
 
             bool hasdescription = ServerProperty.Descriptions.TryGetValue(property, out string tooltip);
-            if (hasdescription)
+            if (hasdescription && tooltip != "")
                 ToolTip = tooltip;
         }
 
