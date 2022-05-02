@@ -141,9 +141,9 @@ namespace Server_GUI2.Windows.WorldSettings
             if (HasStorages)
             {
                 Accounts = new ObservableCollection<Storage>(Storages.Storages);
-                AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => OnPropertyChanged("RemoteDataList"));
+                AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => UpdateRemoteList());
                 RemoteDataList = new ObservableCollection<IRemoteWorld>(AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<IRemoteWorld>());
-                RemoteIndex = new BindingValue<IRemoteWorld>(RunWorld.HasRemote ? RunWorld.RemoteWorld : AccountIndex.Value.RemoteWorlds.Last(), () => OnPropertyChanged("ShowNewRemoteData"));
+                RemoteIndex = new BindingValue<IRemoteWorld>(RunWorld.HasRemote ? RunWorld.RemoteWorld : AccountIndex.Value.RemoteWorlds.Last(), () => OnPropertyChanged(new string[2] { "RemoteIndex", "ShowNewRemoteData" }));
                 RemoteName = RunWorld.RemoteWorld?.Name ?? RunWorld.Name;
             }
 
@@ -247,6 +247,15 @@ namespace Server_GUI2.Windows.WorldSettings
                 }
 
                 UseSW.Value = HasStorages;
+            }
+        }
+
+        private void UpdateRemoteList()
+        {
+            if (RemoteDataList != null && AccountIndex.Value != null)
+            {
+                RemoteDataList.ChangeCollection(AccountIndex.Value.RemoteWorlds);
+                RemoteIndex.Value = RemoteDataList[0];
             }
         }
 
