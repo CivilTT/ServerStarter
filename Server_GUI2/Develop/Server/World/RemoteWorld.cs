@@ -180,7 +180,14 @@ namespace Server_GUI2.Develop.Server.World
         public WorldState ExportWorldState()
         {
             if (!Exist) throw new WorldException("non-exist world must not export worldstate");
-            return new WorldState(Name,Type.ToString(),Version.Name,Using, LastUser, Datapacks.ExportList(),Plugins.ExportList(), Settings);
+            return new WorldState(Name, Type.ToStr(), Version.Name, Using, LastUser, Datapacks.ExportList(), Plugins.ExportList(), Settings);
+        }
+
+        public void EnableWorld(Version version, ServerType type)
+        {
+            Type = type;
+            Exist = true;
+            Version = version;
         }
     }
 
@@ -256,32 +263,39 @@ namespace Server_GUI2.Develop.Server.World
             if (!Available) throw new RemoteWorldException($"remoteworld {Name} is not available");
 
             var gitlocal = new GitLocal(local.Path.FullName);
-            var branches = gitlocal.GetBranchs();
+            bool isRepository = gitlocal.IsGitRepository();
 
-            if (
-                // gitリポジトリである
-                gitlocal.IsGitRepository() &&
-                // {Name}ブランチがある
-                branches.ContainsKey(Id) &&
-                // {Name}ブランチがリンクされている
-                branches[Id] is GitLinkedLocalBranch branch
-                )
+            if (isRepository)
             {
-                // push
-                branch.CommitPush("MESSAGE");
+                var branches = gitlocal.GetBranchs();
+                if (
+                    // {Name}ブランチがある
+                    branches.ContainsKey(Id) &&
+                    // {Name}ブランチがリンクされている
+                    branches[Id] is GitLinkedLocalBranch branch
+                    )
+                {
+                    // push
+                    branch.CommitPush(UserSettings.Instance.userSettings.OwnerName ?? "Anonymus");
+                    return;
+                }
             }
-            else
+
+            // .gitディレクトリごと削除
+            var gitPath = Path.Combine(local.Path.FullName, ".git");
+            if (Directory.Exists(gitPath))
             {
-                // .gitディレクトリごと削除
-                var gitPath = Path.Combine(local.Path.FullName, ".git");
-                if (Directory.Exists(gitPath)) Directory.Delete(gitPath, true);
-
-                // リモートの追加
-                var named = gitlocal.AddRemote(remote, "origin");
-
-                // push
-                gitlocal.CreateBranch(Id).CreateLinkedBranch(named, Id).CommitPush("MESSAGE");
+                DirectoryPath.RemoveReadonlyAttribute(new DirectoryInfo(gitPath));
+                Directory.Delete(gitPath, true);
             }
+            gitlocal.Init();
+            gitlocal.AddAllAndCommit("First Commit");
+
+            // リモートの追加
+            var named = gitlocal.AddRemote(remote, "origin");
+
+            // push
+            gitlocal.CreateBranch(Id).CreateLinkedBranch(named, Id).CommitPush("MESSAGE");
         }
 
         /// <summary>

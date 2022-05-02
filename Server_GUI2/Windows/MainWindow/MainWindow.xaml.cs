@@ -2,11 +2,14 @@
 using Newtonsoft.Json;
 using Server_GUI2.Windows;
 using Server_GUI2.Windows.MainWindow;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.WorldSettings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -70,12 +73,15 @@ namespace Server_GUI2
                 string error_message = eventargs.ExceptionObject.ToString();
                 if (!error_message.Contains("UserSelectException"))
                 {
-                    string message_box = 
+                    string message_box =
                         "予期せぬエラーが発生しました。\n" +
                         "エラー内容を確認し、システムバグが疑われる場合は制作者（CivilTT）にお問い合わせください。\n\n" +
-                        $"【エラー内容】\n{error_message.Split(separator, StringSplitOptions.None)[0]}\n\n" +
-                        $"【ログファイルの場所】\n{Path.GetFullPath(@".\log\Server_Starter.log")}";
-                    MW.MessageBox.Show(message_box, "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
+                        $"【エラー内容】\n{error_message.Split(separator, StringSplitOptions.None)[0]}";
+
+                    var result = CustomMessageBox.Show(message_box, new string[2] { "log File", "Close" }, Image.Error);
+
+                    if (result == "log File")
+                        Process.Start(Path.GetFullPath(@".\log\Server_Starter.log"));
                     logger.Error(error_message);
                 }
             };

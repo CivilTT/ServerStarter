@@ -158,12 +158,19 @@ namespace Server_GUI2.Util
                 var repositoryName = urls[urls.Count - 1].Substring(0, urls[urls.Count - 1].Length - 4);
                 remotes[strs[0]] = new GitNamedRemote(this, new GitRemote(accountName, repositoryName), strs[0]);
             }
+            
+            if (output.Length != 0)
+            {
+                var remoteData = output.Substring(0, output.Length - 1).Split('\n').Where((_, i) => i % 2 == 0);
 
-            var remoteData = output.Substring(0, output.Length - 1).Split('\n').Where((_, i) => i % 2 == 0);
+                foreach (var remote in remoteData) GetNamedRemote(remote);
 
-            foreach (var remote in remoteData) GetNamedRemote(remote);
-
-            return remotes;
+                return remotes;
+            }
+            else
+            {
+                return new Dictionary<string, GitNamedRemote>();
+            }
         }
 
         public void AddAllAndCommit(string message)
@@ -276,7 +283,8 @@ namespace Server_GUI2.Util
             {     
                 LocalBranch.Checkout();
                 // git pull
-                GitCommand.ExecuteThrow($"pull", new GitException($"falied to 'git pull'"), LocalBranch.Local.Path);
+                GitCommand.ExecuteThrow($"fetch {RemoteBranch.NamedRemote.Name} {RemoteBranch.Name}", new GitException($"falied to 'git fetch { RemoteBranch.Expression }'"), LocalBranch.Local.Path);
+                GitCommand.ExecuteThrow("merge", new GitException("falied to 'git merge'"), LocalBranch.Local.Path);
             }
             else
             {
