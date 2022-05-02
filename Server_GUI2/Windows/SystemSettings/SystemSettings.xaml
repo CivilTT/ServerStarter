@@ -448,10 +448,7 @@
                     <Grid Margin="0 10">
                         <TextBlock Text="Default Properties" Style="{StaticResource TitleBlock}"/>
                         <Button Margin="230 7 0 0" Style="{StaticResource Help}"/>
-
-                        <Button Margin="230 7 0 0" Width="25" Height="25" Padding="0" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Top">
-                            <Image Source="pack://application:,,,/Resources/help.png"/>
-                        </Button>
+                        
                         <StackPanel Orientation="Horizontal" Margin="0 35 0 0">
                             <StackPanel Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
                                 <TextBlock Text="MAIN Settings" Style="{StaticResource TitleBlock2}"/>
@@ -478,7 +475,7 @@
                         <TextBlock Text="True / False"/>
                     </TabItem.Header>
                     <Grid Margin="0 10">
-                        <TextBlock Text="True / False  Settings" Grid.Row="1" Margin="30 0" Style="{StaticResource TitleBlock2}"/>
+                        <TextBlock Text="True / False  Settings" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
                         <DataGrid ItemsSource="{Binding BoolOptions}"
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
@@ -513,7 +510,7 @@
                         <TextBlock Text="Text"/>
                     </TabItem.Header>
                     <Grid Margin="0 10">
-                        <TextBlock Text="Text Settings" Margin="30 0" Style="{StaticResource TitleBlock2}"/>
+                        <TextBlock Text="Text Settings" Style="{StaticResource TitleBlock}"/>
                         <DataGrid ItemsSource="{Binding TextOptions}"
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"

@@ -36,68 +36,6 @@ namespace Server_GUI2.Windows.WorldSettings
         public bool Saved = false;
 
         // ServerProperty
-        //public SetDefaultProperties SetDefaultProperties { get; private set; }
-        //public SetAsDefaultProperties SetAsDefaultProperties { get; private set; }
-        //public bool[] BoolCombo => new bool[2] { true, false };
-        //public string[] DifficultyCombo => new string[4] { "peaceful", "easy", "normal", "hard" };
-        //public string[] GamemodeCombo => new string[4] { "survival", "creative", "adventure", "spectator" };
-        //public string[] TypeCombo => new string[4] { "default", "flat", "largeBiomes", "amplified" };
-        ///// <summary>
-        ///// MainSettingsで使用（最終保存データを格納）
-        ///// </summary>
-        //public BindingValue<ServerProperty> PropertyIndexs { get; private set; }
-        ///// <summary>
-        ///// TrueFalseの左側の項目一覧
-        ///// </summary>
-        //public string[] OtherTFPropertyIndexs
-        //{
-        //    get
-        //    {
-        //        ServerProperty properties = RunWorld.Settings.ServerProperties;
-        //        string[] removeIndex = new string[2] { "hardcore", "white-list" };
-        //        List<string> allindex = properties.BoolOption.Keys.ToList();
-        //        allindex.RemoveAll(index => removeIndex.Contains(index));
-        //        return allindex.ToArray();
-        //    }
-        //}
-        ///// <summary>
-        ///// TrueFalseの左側で選択している項目
-        ///// </summary>
-        //public BindingValue<string> SelectedTFIndex { get; private set; }
-        ///// <summary>
-        ///// Stringの左側の項目一覧
-        ///// </summary>
-        //public string[] OtherPropertyIndexs
-        //{
-        //    get
-        //    {
-        //        ServerProperty properties = RunWorld.Settings.ServerProperties;
-        //        string[] removeIndex = new string[4] { "difficulty", "gamemode", "level-type", "level-name" };
-        //        List<string> allindex = properties.StringOption.Keys.ToList();
-        //        allindex.RemoveAll(index => removeIndex.Contains(index));
-        //        return allindex.ToArray();
-        //    }
-        //}
-        ///// <summary>
-        ///// Stringの左側で選択している項目
-        ///// </summary>
-        //public BindingValue<string> SelectedPropIndex { get; private set; }
-        ///// <summary>
-        ///// TrueFalseの右側で選択している項目
-        ///// </summary>
-        //public bool SelectedTFProperty
-        //{
-        //    get => PropertyIndexs.Value.BoolOption[SelectedTFIndex.Value];
-        //    set => PropertyIndexs.Value.BoolOption[SelectedTFIndex.Value] = value;
-        //}
-        ///// <summary>
-        ///// Stringの右側の記載事項
-        ///// </summary>
-        //public string OtherStringProperty
-        //{
-        //    get => PropertyIndexs.Value.StringOption[SelectedPropIndex.Value];
-        //    set => PropertyIndexs.Value.StringOption[SelectedPropIndex.Value] = value;
-        //}
         public bool[] BoolCombo => new bool[2] { true, false };
         public string[] DifficultyCombo => new string[4] { "peaceful", "easy", "normal", "hard" };
         public string[] GamemodeCombo => new string[4] { "survival", "creative", "adventure", "spectator" };
