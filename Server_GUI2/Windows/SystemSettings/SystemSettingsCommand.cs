@@ -178,14 +178,11 @@ namespace Server_GUI2.Windows.SystemSettings
             switch (parameter)
             {
                 case "Remote":
-                    //var remoteList = _vm.RemoteList;
-                    //var remoteDeleteItem = _vm.RLIndex.Value ?? null;
-                    //var remoteName = _vm.RLIndex.Value?. ?? null;
                     var remoteItem = _vm.RLIndex.Value;
                     var storageAccount = remoteItem?.Storage.AccountName ?? null;
                     var storageRepo = remoteItem?.Storage.RepositoryName ?? null;
                     var worldName = $"/{remoteItem?.Name ?? null}";
-                    string result = DeleteContent(_vm.RemoteList, remoteItem, $"{storageAccount}/{storageRepo}{worldName}", "//");
+                    string result = DeleteContent(_vm.RemoteList, remoteItem, $"{storageAccount}/{storageRepo}{worldName}", "//", "削除したいリモートを選択してください。");
                     if (result == "Yes")
                     {
                         if (remoteItem is RemoteWorld world)

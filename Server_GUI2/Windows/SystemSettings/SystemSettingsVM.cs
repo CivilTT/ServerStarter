@@ -63,61 +63,6 @@ namespace Server_GUI2.Windows.SystemSettings
         public ObservableCollection<BoolOption> BoolOptions { get; private set; }
         public ObservableCollection<TextOption> TextOptions { get; private set; }
 
-
-        ///// <summary>
-        ///// TrueFalseの左側の項目一覧
-        ///// </summary>
-        //public string[] OtherTFPropertyIndexs
-        //{
-        //    get
-        //    {
-        //        ServerProperty defaultProperties = SaveData.DefaultProperties;
-        //        string[] removeIndex = new string[2] { "hardcore", "white-list" };
-        //        List<string> allindex = defaultProperties.BoolOption.Keys.ToList();
-        //        allindex.RemoveAll(index => removeIndex.Contains(index));
-        //        return allindex.ToArray();
-        //    }
-        //}
-        ///// <summary>
-        ///// TrueFalseの左側で選択している項目
-        ///// </summary>
-        //public BindingValue<string> SelectedTFIndex { get; private set; }
-        ///// <summary>
-        ///// Stringの左側の項目一覧
-        ///// </summary>
-        //public string[] OtherPropertyIndexs
-        //{
-        //    get
-        //    {
-        //        ServerProperty defaultProperties = SaveData.DefaultProperties;
-        //        string[] removeIndex = new string[4] { "difficulty", "gamemode", "level-type", "level-name" };
-        //        List<string> allindex = defaultProperties.StringOption.Keys.ToList();
-        //        allindex.RemoveAll(index => removeIndex.Contains(index));
-        //        return allindex.ToArray();
-        //    }
-        //}
-        ///// <summary>
-        ///// Stringの左側で選択している項目
-        ///// </summary>
-        //public BindingValue<string> SelectedPropIndex { get; private set; }
-        ///// <summary>
-        ///// TrueFalseの右側で選択している項目
-        ///// </summary>
-        //public bool SelectedTFProperty
-        //{
-        //    get => PropertyIndexs.Value.BoolOption[SelectedTFIndex.Value];
-        //    set => PropertyIndexs.Value.BoolOption[SelectedTFIndex.Value] = value;
-        //}
-        ///// <summary>
-        ///// Stringの右側の記載事項
-        ///// </summary>
-        //public string OtherStringProperty
-        //{
-        //    get => PropertyIndexs.Value.StringOption[SelectedPropIndex.Value];
-        //    set => PropertyIndexs.Value.StringOption[SelectedPropIndex.Value] = value;
-        //}
-
-
         // Players
         public BindingValue<int> PlayersTabIndex { get; private set; }
         // Player
@@ -210,8 +155,6 @@ namespace Server_GUI2.Windows.SystemSettings
             PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(defaultProperties), () => OnPropertyChanged("PropertyIndexs"));
             BoolOptions = BoolOption.GetBoolCollection(PropertyIndexs.Value.BoolOption, new string[2] { "hardcore", "white-list" });
             TextOptions = TextOption.GetTextCollection(PropertyIndexs.Value.StringOption, new string[4] { "difficulty", "gamemode", "level-type", "level-name" });
-            //SelectedTFIndex = new BindingValue<string>(OtherTFPropertyIndexs[0], () => OnPropertyChanged("SelectedTFProperty"));
-            //SelectedPropIndex = new BindingValue<string>(OtherPropertyIndexs[0], () => OnPropertyChanged("OtherStringProperty"));
 
             // Players
             PlayersTabIndex = new BindingValue<int>(0, () => UpdateGroupPlayersAndMembers());
