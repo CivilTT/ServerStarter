@@ -351,7 +351,7 @@ namespace Server_GUI2.Develop.Server
         public WorldWorldPath World;
         public WorldNetherPath Nether;
         public WorldEndPath End;
-        internal WorldPath(DirectoryInfo directory, WorldsPath parent) : base(directory,parent)
+        internal WorldPath(DirectoryInfo directory, WorldsPath parent) : base(directory, parent)
         {
             Parent = parent;
 
