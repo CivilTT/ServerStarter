@@ -225,32 +225,47 @@ namespace Server_GUI2.Develop.Server.World
         public override void ToLocal(LocalWorld local)
         {
             if (!Available) throw new RemoteWorldException($"remoteworld {Id} is not available");
+
+
             var gitlocal = new GitLocal(local.Path.FullName);
-            var branches = gitlocal.GetBranchs();
+            bool isRepository = gitlocal.IsGitRepository();
 
-            if (
-                // gitリポジトリである
-                gitlocal.IsGitRepository() &&
-                // {Name}ブランチがある
-                branches.ContainsKey(Id) &&
-                // {Name}ブランチがリンクされている
-                branches[Id] is GitLinkedLocalBranch branch
-                )
+            if (isRepository)
             {
-                branch.Pull();
+                var branches = gitlocal.GetBranchs();
+                if (
+                    // {Name}ブランチがある
+                    branches.ContainsKey(Id) &&
+                    // {Name}ブランチがリンクされている
+                    branches[Id] is GitLinkedLocalBranch branch
+                    )
+                {
+                    // pull
+                    branch.Pull();
+
+                    // データを更新
+                    local.ReConstruct(local.Path, Version);
+
+                    return;
+                }
             }
-            else
+
+            // .gitディレクトリごと削除
+            var gitPath = Path.Combine(local.Path.FullName, ".git");
+            if (Directory.Exists(gitPath))
             {
-                // .gitディレクトリごと削除
-                var gitPath = Path.Combine(local.Path.FullName, ".git");
-                if (Directory.Exists(gitPath)) Directory.Delete(gitPath, true);
-
-                // リモートの追加
-                var named = gitlocal.AddRemote(remote, "origin");
-
-                // pull
-                named.GetBranchs()[Id].CreateLinkedBranch(Id).Pull();
+                DirectoryPath.RemoveReadonlyAttribute(new DirectoryInfo(gitPath));
+                Directory.Delete(gitPath, true);
             }
+            gitlocal.Init();
+            gitlocal.AddAllAndCommit("First Commit");
+
+            // リモートの追加
+            var named = gitlocal.AddRemote(remote, "origin");
+
+            // pull
+            named.GetBranchs()[Id].CreateLinkedBranch(Id).Pull();
+
             // データを更新
             local.ReConstruct(local.Path, Version);
         }
