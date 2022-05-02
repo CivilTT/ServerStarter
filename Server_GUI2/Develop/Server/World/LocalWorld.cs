@@ -239,7 +239,7 @@ namespace Server_GUI2.Develop.Server.World
             // 削除イベントの呼び出し
             DeleteEvent?.Invoke(this,null);
             // ワールドデータを全削除
-            Path.Delete();
+            Path.Delete(force:true);
         }
 
         /// <summary>

@@ -125,11 +125,9 @@ namespace Server_GUI2.Develop.Server.World
             // ローカルワールドを生成
             var localWorld = new LocalWorld( version.Path.Worlds.GetWorldDirectory(Name), version );
 
-            World world;
+            World world = new World(localWorld);
             if (HasRemote)
-                world = new World(localWorld, RemoteWorld);
-            else
-                world = new World(localWorld);
+                world.Link(RemoteWorld);
 
             WorldCollection.Instance.Add(world);
 
@@ -402,14 +400,17 @@ namespace Server_GUI2.Develop.Server.World
             try
             {
                 RemoteWorld.FromLocal(LocalWorld);
+
+                // リモートのワールドデータを更新し、ロック解除
+                RemoteWorld.Using = false;
+                RemoteWorld.EnableWorld(version, version.Type);
+                RemoteWorld.UpdateWorldState();
+
+                // 起動中フラグを回収
+                Using = false;
             }
             catch (GitException)
             {
-                // リモートのワールドデータを更新し、ロック解除
-                RemoteWorld.Using = false;
-                RemoteWorld.UpdateWorldState();
-                // 起動中フラグを回収
-                Using = false;
             }
 
             // LinkJsonを更新
@@ -451,14 +452,16 @@ namespace Server_GUI2.Develop.Server.World
             try
             {
                 RemoteWorld.FromLocal(LocalWorld);
-            }
-            catch (GitException)
-            {
+
                 // リモートのワールドデータを更新し、ロック解除
                 RemoteWorld.Using = false;
                 RemoteWorld.UpdateWorldState();
+
                 // 起動中フラグを回収
                 Using = false;
+            }
+            catch (GitException)
+            {
             }
 
             // LinkJsonを更新

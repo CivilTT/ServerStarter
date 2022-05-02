@@ -68,7 +68,7 @@ namespace Server_GUI2.Develop.Server
             Directory.MoveTo(destination.FullName);
         }
 
-        private static void RemoveReadonlyAttribute(DirectoryInfo dirInfo)
+        public static void RemoveReadonlyAttribute(DirectoryInfo dirInfo)
         {
             //基のフォルダの属性を変更
             if ((dirInfo.Attributes & FileAttributes.ReadOnly) ==
