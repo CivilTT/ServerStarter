@@ -23,6 +23,7 @@ namespace Server_GUI2.Develop.Server.World
                 try
                 {
                     var version = VersionFactory.Instance.GetVersionFromName(verDir.Name);
+                    verDir.Worlds.Create(true);
                     foreach (var worldDir in verDir.Worlds.GetWorldDirectories())
                     {
                         // ログフォルダは無視

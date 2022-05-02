@@ -99,7 +99,7 @@ namespace Server_GUI2
                 SetNewVersion();
             logger.Info("</ReadyVersion>");
             StartServer.RunProgressBar.AddMessage("Get Best Java Version.");
-            return (Path,JarName, GetJavaVersion());
+            return (Path, JarName, GetJavaVersion());
         }
 
         public abstract int GetJavaVersion();

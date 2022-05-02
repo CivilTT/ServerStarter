@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,7 +44,16 @@ namespace Server_GUI2.Develop.Util
             {
                 bestVersion += 1;
                 if (bestVersion > maxVersion)
+                {
+                    CustomMessageBox.Show(
+                        $"このバージョンのサーバーを起動するためには Java{versionNum} 以上が必要です\n" +
+                        $"以下のリンクよりJavaをインストールしたうえで，再度起動してください",
+                        ButtonType.OK,
+                        Image.Error,
+                        new LinkMessage("Javaのインストール", "https://www.oracle.com/java/technologies/downloads/")
+                        );
                     throw new JaveVersionException($"java version later than {versionNum} is needed");
+                }
             }
             return $@"{versionMap[bestVersion]}\bin\java.exe";
         }
