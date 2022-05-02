@@ -16,16 +16,16 @@ namespace Server_GUI2.Develop.Server
     {
         public static string ToStr(this ServerType state)
         {
-            return state == ServerType.Vanilla ? "vanilla" : "spigot";
+            return state == ServerType.Vanilla ? "Vanilla" : "Spigot";
         }
 
         public static ServerType FromStr(string str)
         {
             switch (str)
             {
-                case "vanilla":
+                case "Vanilla":
                     return ServerType.Vanilla;
-                case "spigot":
+                case "Spigot":
                     return ServerType.Spigot;
                 default:
                     throw new ArgumentException($"\"{str}\" is invalid string for ServerType");
