@@ -182,7 +182,7 @@ namespace Server_GUI2.Develop.Server.World
             {
                 remoteBranchs = named.GetBranchs();
             }
-            catch (GitException ex)
+            catch (Exception ex)
             {
                 named.Remove();
                 // gitが存在しない場合

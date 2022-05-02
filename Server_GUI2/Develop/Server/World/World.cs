@@ -262,6 +262,7 @@ namespace Server_GUI2.Develop.Server.World
 
             //LocalWorld.Path 
             // TODO: .gitディレクトリを生成して初期化
+            CanCahngeRemote = !remote.Exist;
 
             isNewRemote = true;
             RemoteWorld = remote;
