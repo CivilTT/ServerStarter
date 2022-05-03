@@ -154,6 +154,7 @@ namespace Server_GUI2.Windows.SystemSettings
             ServerProperty defaultProperties = SaveData.DefaultProperties;
             PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(defaultProperties), () => OnPropertyChanged("PropertyIndexs"));
             BoolOptions = BoolOption.GetBoolCollection(PropertyIndexs.Value.BoolOption, new string[2] { "hardcore", "white-list" });
+            PropertyIndexs.Value.StringOption.WriteLine();
             TextOptions = TextOption.GetTextCollection(PropertyIndexs.Value.StringOption, new string[4] { "difficulty", "gamemode", "level-type", "level-name" });
 
             // Players
