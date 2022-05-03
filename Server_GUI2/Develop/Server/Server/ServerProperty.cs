@@ -72,7 +72,7 @@ namespace Server_GUI2
                 string indexName = line.Substring(0, splitIndex).Trim();
                 string strValue = (line == (indexName + "=")) ? "" : line.Substring(splitIndex + 1).Trim();
 
-                if (strValue == "true" || strValue == "false")
+                if (strValue == "true" || strValue == "false" || strValue == "True" || strValue == "False")
                 {
                     BoolOption[indexName] = Convert.ToBoolean(strValue);
                 }

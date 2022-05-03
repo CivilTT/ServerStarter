@@ -364,8 +364,8 @@
         <Line X1="3" X2="3" Y1="10" Y2="470" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
 
         <!--//ShareWorldContents//-->
-        <!--<ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">-->
-        <ScrollViewer Style="{StaticResource ScrollSource}">
+        <ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">
+        <!--<ScrollViewer Style="{StaticResource ScrollSource}">-->
             <Grid Style="{StaticResource SettingContent}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="240"/>
