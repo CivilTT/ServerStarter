@@ -144,7 +144,7 @@ namespace Server_GUI2.Windows.SystemSettings
             AccountName = new BindingValue<string>("", () => OnPropertyChanged(new string[2] { "AccountName", "CanAddition_SW" }));
             AccountEmail = new BindingValue<string>("", () => OnPropertyChanged(new string[2] { "AccountEmail", "CanAddition_SW" }));
             RepoName = new BindingValue<string>("ShareWorld", () => OnPropertyChanged(new string[2] { "RepoName", "CanAddition_SW" }));
-            RemoteAdding = new BindingValue<bool>(false, () => OnPropertyChanged("CanSave"));
+            RemoteAdding = new BindingValue<bool>(false, () => OnPropertyChanged(new string[2] { "RemoteAdding", "CanSave" }));
             RemoteList = new ObservableCollection<IRemoteWorld>(Storages.Storages.SelectMany(storage => storage.RemoteWorlds).OfType<RemoteWorld>());
             RemoteList.AddRange(Storages.Storages.Where(storage => storage.RemoteWorlds.Count == 1).SelectMany(storage => storage.RemoteWorlds));  /*RemoteWorldsがないレポジトリを表示するための処理*/
             RLIndex = new BindingValue<IRemoteWorld>(null, () => OnPropertyChanged("RLIndex"));
