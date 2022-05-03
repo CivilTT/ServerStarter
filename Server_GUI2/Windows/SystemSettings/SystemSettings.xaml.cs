@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
+using Image = Server_GUI2.Windows.MessageBox.Back.Image;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
@@ -41,6 +42,13 @@ namespace Server_GUI2.Windows.SystemSettings
             {
                 PortSetting portSetting = new PortSetting(vm);
                 _ = portSetting.DeletePort();
+            }
+
+            if (vm.RemoteAdding.Value)
+            {
+                CustomMessageBox.Show("リモートの登録中はこの画面を閉じることができません", ButtonType.OK, Image.Infomation);
+                e.Cancel = true;
+                return;
             }
 
             if (!vm.Saved)
