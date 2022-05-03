@@ -56,60 +56,60 @@ namespace Server_GUI2
         //    }
         //}
 
-        public System.Windows.Controls.ComboBox Init_new_Versions(System.Windows.Controls.ComboBox new_Version, List<string> list_versions)
-        {
-            foreach (string version in list_versions)
-            {
-                new_Version.Items.Add(version);
-            }
+        //public System.Windows.Controls.ComboBox Init_new_Versions(System.Windows.Controls.ComboBox new_Version, List<string> list_versions)
+        //{
+        //    foreach (string version in list_versions)
+        //    {
+        //        new_Version.Items.Add(version);
+        //    }
 
-            return new_Version;
-        }
+        //    return new_Version;
+        //}
 
-        public System.Windows.Controls.ComboBox Init_version(System.Windows.Controls.ComboBox Version)
-        {
-            logger.Info("Read the local NewVersions");
+        //public System.Windows.Controls.ComboBox Init_version(System.Windows.Controls.ComboBox Version)
+        //{
+        //    logger.Info("Read the local NewVersions");
 
-            foreach (KeyValuePair<string, List<string>> kvp in Data_list.VerWor_list)
-            {
-                Version.Items.Add(kvp.Key);
-            }
+        //    foreach (KeyValuePair<string, List<string>> kvp in Data_list.VerWor_list)
+        //    {
+        //        Version.Items.Add(kvp.Key);
+        //    }
 
-            if (MainWindow.Set_new_Version)
-            {
-                Version.Items.Add("【new Version】");
-            }
-            Version = Check_index(Version, Properties.Settings.Default.Version);
+        //    if (MainWindow.Set_new_Version)
+        //    {
+        //        Version.Items.Add("【new Version】");
+        //    }
+        //    Version = Check_index(Version, Properties.Settings.Default.Version);
 
-            return Version;
-        }
+        //    return Version;
+        //}
 
-        public System.Windows.Controls.ComboBox Init_world(System.Windows.Controls.ComboBox World)
-        {
-            logger.Info("Read the local Worlds");
+        //public System.Windows.Controls.ComboBox Init_world(System.Windows.Controls.ComboBox World)
+        //{
+        //    logger.Info("Read the local Worlds");
 
-            foreach (KeyValuePair<string, List<string>> kvp in Data_list.VerWor_list)
-            {
-                foreach (string world_name in kvp.Value)
-                {
-                    if (world_name == "ShareWorld")
-                        continue;
+        //    foreach (KeyValuePair<string, List<string>> kvp in Data_list.VerWor_list)
+        //    {
+        //        foreach (string world_name in kvp.Value)
+        //        {
+        //            if (world_name == "ShareWorld")
+        //                continue;
 
-                    World.Items.Add($"{kvp.Key}/{world_name}");
-                }
-            }
+        //            World.Items.Add($"{kvp.Key}/{world_name}");
+        //        }
+        //    }
 
-            if (Data_list.Avail_sw)
-            {
-                World.Items.Add("ShareWorld");
-            }
-            World.Items.Add("【new World】");
-            // string index_name = (Data_list.Info[3] == "ShareWorld") ? Data_list.Info[3] : $"{Properties.Settings.Default.Version}/{Data_list.Info[3]}";
-            string index_name = (Properties.Settings.Default.World == "ShareWorld") ? Properties.Settings.Default.World : $"{Properties.Settings.Default.CopyVersion}/{Properties.Settings.Default.World}";
-            World = Check_index(World, index_name);
+        //    if (Data_list.Avail_sw)
+        //    {
+        //        World.Items.Add("ShareWorld");
+        //    }
+        //    World.Items.Add("【new World】");
+        //    // string index_name = (Data_list.Info[3] == "ShareWorld") ? Data_list.Info[3] : $"{Properties.Settings.Default.Version}/{Data_list.Info[3]}";
+        //    string index_name = (Properties.Settings.Default.World == "ShareWorld") ? Properties.Settings.Default.World : $"{Properties.Settings.Default.CopyVersion}/{Properties.Settings.Default.World}";
+        //    World = Check_index(World, index_name);
 
-            return World;
-        }
+        //    return World;
+        //}
 
         private System.Windows.Controls.ComboBox Check_index(System.Windows.Controls.ComboBox world_version, string index_name)
         {
