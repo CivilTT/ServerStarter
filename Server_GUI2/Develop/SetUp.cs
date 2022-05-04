@@ -179,6 +179,8 @@ namespace Server_GUI2
                     version.WhiteList.File.CopyTo(w.WhiteList.FullName);
                     version.BannedIps.File.CopyTo(w.BannedIps.FullName);
                     version.BannedPlayers.File.CopyTo(w.BannedPlayers.FullName);
+                    // プラグインをコピー
+                    version.Plugins.Directory.CopyTo(w.World.Plugins.FullName);
                 }
             }
 

@@ -102,6 +102,7 @@
     <Compile Include="Develop\Server\World\World.cs" />
     <Compile Include="Develop\Server\World\IWorldBase.cs" />
     <Compile Include="Develop\Server\World\RemoteWorld.cs" />
+    <Compile Include="Develop\Util\DirectoryInfoExt.cs" />
     <Compile Include="Develop\Util\Java.cs" />
     <Compile Include="Develop\Util\ManageSystemVersion.cs" />
     <Compile Include="Windows\MessageBox\Back\MessageBox.xaml.cs">

@@ -238,6 +238,10 @@ namespace Server_GUI2.Develop.Server.World
         {
             // 削除イベントの呼び出し
             DeleteEvent?.Invoke(this,null);
+
+            // バージョン削除イベントからこのワールドの削除イベントを削除
+            Version.DeleteEvent -= WhenVersionDeleted;
+
             // ワールドデータを全削除
             Path.Delete(force:true);
         }

@@ -96,7 +96,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public override void Remove(string path)
         {
-            File.Delete(path);
+            File.Delete(Path.Combine(path,$"world\\plugins\\{Name}"));
         }
     }
 
