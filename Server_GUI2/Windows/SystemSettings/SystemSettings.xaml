@@ -365,7 +365,7 @@
 
         <!--//ShareWorldContents//-->
         <ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">
-            <!--<ScrollViewer Style="{StaticResource ScrollSource}">-->
+        <!--<ScrollViewer Style="{StaticResource ScrollSource}">-->
             <Grid Style="{StaticResource SettingContent}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="240"/>
@@ -385,7 +385,10 @@
                         <TextBlock Text="Repository" Style="{StaticResource SWBlock}"/>
                         <TextBox Text="{Binding RepoName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
-                    <Button Content="Add Account" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_SW}" Command="{Binding AddListCommand}" CommandParameter="Remote" Style="{StaticResource RunStyle}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 10" HorizontalAlignment="Right">
+                        <ui:ProgressRing IsActive="{Binding RemoteAdding.Value}" Width="30" Height="30"/>
+                        <Button Content="Add Account" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_SW}" Command="{Binding AddListCommand}" CommandParameter="Remote" Style="{StaticResource RunStyle}"/>
+                    </StackPanel>
                 </StackPanel>
                 <TextBlock Text="Remote List" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
                 <Button Command="{Binding DeleteListCommand}" CommandParameter="Remote" Style="{StaticResource MiniButton}">

@@ -1,5 +1,6 @@
 ﻿using log4net;
 using Microsoft.VisualBasic.FileIO;
+using Server_GUI2.Util;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -171,12 +172,12 @@ namespace Server_GUI2.Develop.Server.World
             using (ZipArchive zipArchive = ZipFile.OpenRead(sourcePath))
             {
                 // フォルダの直下(or一つ下)に pack.mcmeta & dataフォルダ が存在しているかを確認する
-                string dirPath = (zipArchive.GetEntry(name) == null) ? $@"{name}/" : "";
+                string dirPath = (zipArchive.GetEntry(name) != null) ? $@"{name}/" : "";
 
-                ZipArchiveEntry metaEntry = zipArchive.GetEntry($"{dirPath}pack.mcmeta");
-                ZipArchiveEntry dataEntry = zipArchive.GetEntry($"{dirPath}data/");
+                bool hasmcmeta = zipArchive.GetEntry($"{dirPath}pack.mcmeta") != null;
+                bool hasdata = zipArchive.Entries.Where(entry => entry.FullName.StartsWith($"{dirPath}data")).Count() != 0;
 
-                result = metaEntry != null && dataEntry != null;
+                result = hasmcmeta && hasdata;
             }
 
             return result;

@@ -127,11 +127,6 @@ namespace Server_GUI2.Windows.WorldSettings
             SaveCommand = new SaveCommand(this);
 
             // ServerProperty
-            //SetDefaultProperties = new SetDefaultProperties(this);
-            //SetAsDefaultProperties = new SetAsDefaultProperties(this);
-            //PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(RunWorld.Settings.ServerProperties), () => OnPropertyChanged("PropertyIndexs"));
-            //SelectedTFIndex = new BindingValue<string>(OtherTFPropertyIndexs[0], () => OnPropertyChanged("SelectedTFProperty"));
-            //SelectedPropIndex = new BindingValue<string>(OtherPropertyIndexs[0], () => OnPropertyChanged("OtherStringProperty"));
             PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(RunWorld.Settings.ServerProperties), () => OnPropertyChanged("PropertyIndexs"));
             BoolOptions = BoolOption.GetBoolCollection(PropertyIndexs.Value.BoolOption, new string[2] { "hardcore", "white-list" });
             TextOptions = TextOption.GetTextCollection(PropertyIndexs.Value.StringOption, new string[4] { "difficulty", "gamemode", "level-type", "level-name" });
@@ -143,6 +138,7 @@ namespace Server_GUI2.Windows.WorldSettings
                 Accounts = new ObservableCollection<Storage>(Storages.Storages);
                 AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => UpdateRemoteList());
                 RemoteDataList = new ObservableCollection<IRemoteWorld>(AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<IRemoteWorld>());
+                RemoteDataList.RemoveAll(remote => (remote is RemoteWorld world) && !world.IsVisible);
                 RemoteIndex = new BindingValue<IRemoteWorld>(RunWorld.HasRemote ? RunWorld.RemoteWorld : AccountIndex.Value.RemoteWorlds.Last(), () => OnPropertyChanged(new string[2] { "RemoteIndex", "ShowNewRemoteData" }));
                 RemoteName = RunWorld.RemoteWorld?.Name ?? RunWorld.Name;
             }
@@ -187,15 +183,12 @@ namespace Server_GUI2.Windows.WorldSettings
         private void CheckPlayer()
         {
             List<Player> notExistPlayers = new List<Player>();
-            //RunWorld.Settings.Ops.WriteLine(x => x.Name);
             notExistPlayers.AddRange(RunWorld.Settings.Ops.Where(opPlayer => !SaveData.Players.Contains(opPlayer.Player)).Select(opPlayer => opPlayer.Player));
             notExistPlayers.AddRange(RunWorld.Settings.WhiteList.Where(player => !SaveData.Players.Contains(player)));
             
             if (notExistPlayers.Count != 0)
             {
-                //notExistPlayers.WriteLine(x => x.Name);
                 string message = "以下のプレイヤーがServer Starterに登録されていません。\n登録しますか？\n";
-                //Console.WriteLine(string.Join("\n", notExistPlayers.Select(x => $"User name : {x.Name}\tUUID : {x.UUID}")));
                 message += string.Join("\n", notExistPlayers.Select(x => $"\nUser name : {x.Name}\nUUID : {x.UUID}"));
                 string result = CustomMessageBox.Show(message, ButtonType.YesNo, Image.Question);
                 if (result == "Yes")
@@ -255,6 +248,7 @@ namespace Server_GUI2.Windows.WorldSettings
             if (RemoteDataList != null && AccountIndex.Value != null)
             {
                 RemoteDataList.ChangeCollection(AccountIndex.Value.RemoteWorlds);
+                RemoteDataList.RemoveAll(remote => (remote is RemoteWorld world) && !world.IsVisible);
                 RemoteIndex.Value = RemoteDataList[0];
             }
         }
