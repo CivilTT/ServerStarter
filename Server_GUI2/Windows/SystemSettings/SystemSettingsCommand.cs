@@ -46,8 +46,21 @@ namespace Server_GUI2.Windows.SystemSettings
             switch (parameter)
             {
                 case "Remote":
-                    Either<GitStorage, Exception> result = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
-                    result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<IRemoteWorld>()));
+                    void Adding(object sender, DoWorkEventArgs e)
+                    {
+                        Either<GitStorage, Exception> result = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
+                        result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<IRemoteWorld>()));
+                    }
+                    void Finished(object sender, RunWorkerCompletedEventArgs e)
+                    {
+                        _vm.RemoteAdding.Value = false;
+                    }
+                    BackgroundWorker worker = new BackgroundWorker();
+                    worker.DoWork += Adding;
+                    worker.RunWorkerCompleted += Finished;
+                    worker.RunWorkerAsync();
+
+                    _vm.RemoteAdding.Value = true;
                     break;
 
                 case "Player":
