@@ -12,6 +12,7 @@ using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
 using Server_GUI2.Util;
+using Server_GUI2.Develop.Util;
 
 namespace Server_GUI2.Develop.Server.World
 {
@@ -354,6 +355,8 @@ namespace Server_GUI2.Develop.Server.World
             // プラグインの導入
             logger.Info("Import plugins");
             Plugins.Evaluate(LocalWorld.Path.FullName);
+            version.Path.Plugins.Delete(true);
+            LocalWorld.Path.World.Plugins.Directory.CopyTo(version.Path.Plugins.FullName);
 
             // 実行
             LocalWorld.WrapRun(version, runFunc);
@@ -393,6 +396,8 @@ namespace Server_GUI2.Develop.Server.World
 
             // プラグインの導入
             Plugins.Evaluate(LocalWorld.Path.FullName);
+            version.Path.Plugins.Delete(true);
+            LocalWorld.Path.World.Plugins.Directory.CopyTo(version.Path.Plugins.FullName);
 
             // 実行
             LocalWorld.WrapRun(version, runFunc);
@@ -445,6 +450,8 @@ namespace Server_GUI2.Develop.Server.World
 
             // プラグインの導入
             Plugins.Evaluate(LocalWorld.Path.FullName);
+            version.Path.Plugins.Delete(true);
+            LocalWorld.Path.World.Plugins.Directory.CopyTo(version.Path.Plugins.FullName);
 
             // 実行
             LocalWorld.WrapRun(version,runFunc);
