@@ -237,8 +237,7 @@ namespace Server_GUI2.Develop.Server.World
                     StorageCollection.Instance.Add(storage);
                     logger.Info($"</AddStorage>");
                     return new Success<GitStorage, Exception>(storage);
-                }
-                );
+                });
         }
 
         /// <summary>

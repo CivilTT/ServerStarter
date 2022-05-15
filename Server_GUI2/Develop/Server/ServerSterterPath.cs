@@ -56,6 +56,7 @@ namespace Server_GUI2.Develop.Server
 
         public void Delete(bool deletedOk = false,bool force = false)
         {
+            Console.WriteLine($"DELETED {Directory.FullName}");
             if (deletedOk && !Exists)
                 return;
             if (force)
@@ -297,6 +298,7 @@ namespace Server_GUI2.Develop.Server
     public class VersionPath : SubDirectoryPath<WorldDataPath>
     {
         public WorldsPath Worlds;
+        public VersionPluginsPath Plugins;
         public VersionLogsPath Logs;
         public TextFile<VersionPath> ServerProperties;
         public JsonFile<VersionPath,List<OpsRecord>> Ops;
@@ -310,6 +312,7 @@ namespace Server_GUI2.Develop.Server
         internal VersionPath(DirectoryInfo directory, WorldDataPath parent) : base(directory,parent)
         {
             Worlds = new WorldsPath(SubDirectory("worlds"), this);
+            Plugins = new VersionPluginsPath(SubDirectory("plugins"), this);
             Logs = new VersionLogsPath(SubDirectory("logs"), this);
             ServerProperties = new TextFile<VersionPath>(SubFile("server.properties"), this);
             Ops = new JsonFile<VersionPath, List<OpsRecord>>(SubFile("ops.json"), this);
@@ -467,6 +470,18 @@ namespace Server_GUI2.Develop.Server
         }
     }
 
+    public class VersionPluginsPath : SubDirectoryPath<VersionPath>
+    {
+        internal VersionPluginsPath(DirectoryInfo directory, VersionPath parent) : base(directory, parent) { }
+        public BytesFile<VersionPluginsPath>[] GetPluginDirectories()
+        {
+            return Directory.GetFiles().Select(x => new BytesFile<VersionPluginsPath>(x,this)).ToArray();
+        }
+        public BytesFile<VersionPluginsPath> GetPluginDirectory(string name)
+        {
+            return new BytesFile<VersionPluginsPath>(SubFile(name), this);
+        }
+    }
     public class PluginsPath : SubDirectoryPath<WorldWorldPath>
     {
         internal PluginsPath(DirectoryInfo directory, WorldWorldPath parent) : base(directory, parent) { }
