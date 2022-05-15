@@ -1,25 +1,14 @@
 ﻿using log4net;
-using Newtonsoft.Json;
-using Server_GUI2.Develop.Util;
-using Server_GUI2.Windows.WelcomeWindow;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using Server_GUI2.Windows;
-using MW = ModernWpf;
-using Server_GUI2.Windows.SystemSettings;
-using Server_GUI2.Windows.ProgressBar;
-using System.Threading;
 using Server_GUI2.Develop.Server;
-using System.Text.RegularExpressions;
+using Server_GUI2.Develop.Util;
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
+using Server_GUI2.Windows.ProgressBar;
+using Server_GUI2.Windows.WelcomeWindow;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Server_GUI2
 {
@@ -53,7 +42,7 @@ namespace Server_GUI2
             CheckConnetNet();
 
             // ProgressBarを表示する
-            InitProgressBar = new ProgressBar("Ready to Server Starter", 9);
+            InitProgressBar = new ProgressBar("Ready for Server Starter", 9);
             InitProgressBar.AddMessage("Checked first User Settings");
 
             // 仕様変更が必要な場合に実装
@@ -85,10 +74,7 @@ namespace Server_GUI2
         {
             if (!NetWork.Accessible)
             {
-                string message =
-                    "本システムはインターネット環境下のみで動作します。\n" +
-                    "インターネットに接続したうえで、再度起動してください。";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
+                CustomMessageBox.Show(Properties.Resources.Setup_Net, ButtonType.OK, Image.Error);
                 Environment.Exit(0);
             }
         }

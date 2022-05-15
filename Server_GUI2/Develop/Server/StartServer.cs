@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Forms;
-using log4net;
+﻿using log4net;
 using Server_GUI2.Develop.Server;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
-using Server_GUI2.Windows.ProgressBar;
-using MW = ModernWpf;
+using System;
+using System.Diagnostics;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Server_GUI2
 {
@@ -114,10 +107,7 @@ namespace Server_GUI2
 
             if (!isSuccess)
             {
-                string message =
-                    "自動ポート開放に失敗しました。\n" +
-                    "ポートを開放せずにサーバーを起動します。";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Warning);
+                CustomMessageBox.Show(Properties.Resources.StartServer_PortMsg, ButtonType.OK, Image.Warning);
             }
             else
             {
@@ -140,11 +130,9 @@ namespace Server_GUI2
                 return;
 
             logger.Info("Show window to check PC shutdown");
-            string result = CustomMessageBox.Show(
-                "PCを30秒後にシャットダウンしようとしています。\n" +
-                "シャットダウンしない場合は「キャンセル」を押してください。", ButtonType.OKCancel, Image.Infomation, 30000);
+            int result = CustomMessageBox.Show(Properties.Resources.StartServer_ShutdownMsg, ButtonType.OKCancel, Image.Infomation, 30000);
 
-            if (result == "Cancel")
+            if (result == 1)
                 return;
 
             logger.Info("This PC will be shutdown");

@@ -1,15 +1,7 @@
-﻿using Server_GUI2.Util;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Forms;
-using Server_GUI2.Windows.MessageBox;
+﻿using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
-using MW = ModernWpf;
+using System.ComponentModel;
+using System.Windows;
 
 namespace Server_GUI2.Windows.WelcomeWindow
 {
@@ -43,7 +35,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
         {
             if (Player.UUID == "")
             {
-                CustomMessageBox.Show("このプレイヤー名は存在しません。", ButtonType.OK, Image.Error);
+                CustomMessageBox.Show(Properties.Resources.SystemSettings_Exist, ButtonType.OK, Image.Error);
                 //MW.MessageBox.Show(Owner, "このプレイヤー名は存在しません。""このプレイヤー名は存在しません。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
                 _vm.checkedName = "";
                 _vm.UUID.Value = "";

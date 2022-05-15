@@ -188,10 +188,10 @@ namespace Server_GUI2.Windows.WorldSettings
             
             if (notExistPlayers.Count != 0)
             {
-                string message = "以下のプレイヤーがServer Starterに登録されていません。\n登録しますか？\n";
-                message += string.Join("\n", notExistPlayers.Select(x => $"\nUser name : {x.Name}\nUUID : {x.UUID}"));
-                string result = CustomMessageBox.Show(message, ButtonType.YesNo, Image.Question);
-                if (result == "Yes")
+                string message = Properties.Resources.WorldSettings_Player;
+                message += string.Join("\n", notExistPlayers.Select(x => $"\n{Properties.Resources.UserName} : {x.Name}\nUUID : {x.UUID}"));
+                int result = CustomMessageBox.Show(message, ButtonType.YesNo, Image.Question);
+                if (result == 0)
                     SaveData.Players.AddRange(notExistPlayers);
             }
         }
@@ -220,11 +220,8 @@ namespace Server_GUI2.Windows.WorldSettings
 
             if (UseSW != null && UseSW.Value && !HasStorages)
             {
-                string message =
-                    "ShareWorldを利用するための準備がされていません。\n" +
-                    "設定画面を表示しますか？";
-                string result = CustomMessageBox.Show(message, ButtonType.YesNo, Image.Question);
-                if (result == "Yes")
+                int result = CustomMessageBox.Show(Properties.Resources.WorldSettings_SW, ButtonType.YesNo, Image.Question);
+                if (result == 0)
                 {
                     Hide();
                     var window = new ShowNewWindow<SystemSettings.SystemSettings, SystemSettingsVM>();

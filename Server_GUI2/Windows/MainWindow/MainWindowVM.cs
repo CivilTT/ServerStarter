@@ -1,17 +1,14 @@
 ﻿using log4net;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
-using Server_GUI2.Util;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.WorldSettings;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Windows.Data;
 
 namespace Server_GUI2.Windows.MainWindow
@@ -24,7 +21,7 @@ namespace Server_GUI2.Windows.MainWindow
         // 一般
         public string StarterVersion { get { return $"ver {ManageSystemVersion.StarterVersion}"; } }
         public string PlayerName { get { return UserSettings.Instance.userSettings.OwnerName; } }
-        public string OpContents { get { return $"{PlayerName} has op rights in this version's server"; } }
+        public string OpContents { get { return $"{PlayerName} {Properties.Resources.Main_Op}"; } }
         readonly ObservableCollection<Version> AllVers = VersionFactory.Instance.Versions;
         readonly ObservableCollection<IWorld> AllWorlds = WorldCollection.Instance.Worlds;
 

@@ -46,11 +46,11 @@ namespace Server_GUI2.Develop.Util
                 if (bestVersion > maxVersion)
                 {
                     CustomMessageBox.Show(
-                        $"このバージョンのサーバーを起動するためには Java{versionNum} 以上が必要です\n" +
-                        $"以下のリンクよりJavaをインストールしたうえで，再度起動してください",
+                        $"{Properties.Resources.Java_Ver1}{versionNum}{Properties.Resources.Java_Ver2}\n" +
+                        Properties.Resources.Java_Ver3,
                         ButtonType.OK,
                         Image.Error,
-                        new LinkMessage("Javaのインストール", "https://www.oracle.com/java/technologies/downloads/")
+                        new LinkMessage(Properties.Resources.Java_Ver4, "https://www.oracle.com/java/technologies/downloads/")
                         );
                     throw new JaveVersionException($"java version later than {versionNum} is needed");
                 }

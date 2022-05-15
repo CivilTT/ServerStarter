@@ -22,7 +22,7 @@ namespace Server_GUI2.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Server_GUI2.Properties {
         ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Server_GUI2.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Server_GUI2.Properties {
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,26 +61,749 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
-        ///   
-        ///Using : Server_GUI2.exe (Version_name) (World_Version) (World_name) (Settings : Optional) [-o] [-a] [/?] [/start]
+        ///   An unexpected error has occurred.
+        ///Please check the error and if you suspect a system bug, please contact us at Git Issues.
+        ///
+        ///【What happened?】 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string App_Unhandle {
+            get {
+                return ResourceManager.GetString("App_Unhandle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cancel に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Close に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   【What happened?】 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Contents_error {
+            get {
+                return ResourceManager.GetString("Contents_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   file に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string File {
+            get {
+                return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   folder に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Folder {
+            get {
+                return ResourceManager.GetString("Folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   You can build the Minecraft Server easily.
+        ///
+        ///Using : Server_GUI2.exe (Version_name) (World_Version : Optional) (World_name) [-s(Settings : Optional)]
+        ///	 [-o] [-a (or /a)] [-r (&amp; /save)] [/delete]
         ///
         ///Option :
+        ///	-s	If you want to change any settings of the server.properties,
+        ///		set this marker in front of the dictionaly.
         ///	-o	Give the execution user op permission when the server starts
-        ///	-a	Get All_VerWor.json which record All NewVersions and Worlds
-        ///
-        ///	/?	You can get this information
-        ///	/start	Server Starter launch with the GUI window.
-        ///
-        ///Example : 
-        ///	Server_GUI2.exe 1.17 1.17 Test				Start Version	| 1.17
-        ///								World Version	| 1.17
-        ///								World Name	| Test
-        ///
-        ///	Server_GUI2.exe /start					You can g [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        ///	-a	Output All_VerWor.json which record All Versions and Worlds.
+        ///		This setting will also be applied at the next boot, so you don&apos;t  [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string Guide {
+        public static string Guide {
             get {
                 return ResourceManager.GetString("Guide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Java  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Java_Ver1 {
+            get {
+                return ResourceManager.GetString("Java_Ver1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    or higher is required to activate this version. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Java_Ver2 {
+            get {
+                return ResourceManager.GetString("Java_Ver2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Please install Java from the following link and restart me! に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Java_Ver3 {
+            get {
+                return ResourceManager.GetString("Java_Ver3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Install link of Java に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Java_Ver4 {
+            get {
+                return ResourceManager.GetString("Java_Ver4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Log Folder に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LogFolder {
+            get {
+                return ResourceManager.GetString("LogFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Do you want to remove this に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_DeleteMsg1 {
+            get {
+                return ResourceManager.GetString("Main_DeleteMsg1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_DeleteMsg2 {
+            get {
+                return ResourceManager.GetString("Main_DeleteMsg2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   &quot; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_DeleteMsg3 {
+            get {
+                return ResourceManager.GetString("Main_DeleteMsg3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   &quot; is completely removed and cannot be restored に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_DeleteMsg4 {
+            get {
+                return ResourceManager.GetString("Main_DeleteMsg4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   has op rights in this version&apos;s server に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_Op {
+            get {
+                return ResourceManager.GetString("Main_Op", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recreate World (When you want to reset the selected world) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_ReWorld {
+            get {
+                return ResourceManager.GetString("Main_ReWorld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Run に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_Run {
+            get {
+                return ResourceManager.GetString("Main_Run", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Save old World before recreating it (Save name : ..._old(1)) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_SaveWorld {
+            get {
+                return ResourceManager.GetString("Main_SaveWorld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Server Version に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_ServerVersion {
+            get {
+                return ResourceManager.GetString("Main_ServerVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Show Versions に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_Show {
+            get {
+                return ResourceManager.GetString("Main_Show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Shutdown this PC after stopping the server に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_Shutdown {
+            get {
+                return ResourceManager.GetString("Main_Shutdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Import Spigot に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_Spigot {
+            get {
+                return ResourceManager.GetString("Main_Spigot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   World Name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_WorldName {
+            get {
+                return ResourceManager.GetString("Main_WorldName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   World Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_WorldSettings {
+            get {
+                return ResourceManager.GetString("Main_WorldSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to create update file for Server Starter.
+        ///Run without updating the system.
+        ///【What happened?】 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Manage_FailUpdate {
+            get {
+                return ResourceManager.GetString("Manage_FailUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to get the latest data of Server Starter.
+        ///I will start this system with existing version.
+        ///【What happened?】 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Manage_GetLatestMsg {
+            get {
+                return ResourceManager.GetString("Manage_GetLatestMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Start the update for Server Starter.
+        ///Setup_ServerStarter.msi to update the system, please allow it on the confirmation screen that appears next. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Manage_Update {
+            get {
+                return ResourceManager.GetString("Manage_Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   The upgrade of Server Starter failed at the last startup.
+        ///Do you want to update now?
+        ///
+        ///If this message appears repeatedly, automatic updates may not be compatible with this environment.
+        ///You can get latest version from Git Release.
+        ///Please give me your log file through Git Issues. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Manage_Vup1 {
+            get {
+                return ResourceManager.GetString("Manage_Vup1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Server Starter&apos;s Git page に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Manage_Vup2 {
+            get {
+                return ResourceManager.GetString("Manage_Vup2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Update now! に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Manage_Vup3 {
+            get {
+                return ResourceManager.GetString("Manage_Vup3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Update later... に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Manage_Vup4 {
+            get {
+                return ResourceManager.GetString("Manage_Vup4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   No に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Plugin File に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Plugin {
+            get {
+                return ResourceManager.GetString("Plugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Save に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Do you agree eula? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Server_EulaMsg1 {
+            get {
+                return ResourceManager.GetString("Server_EulaMsg1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Eula&apos;s URL に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Server_EulaMsg2 {
+            get {
+                return ResourceManager.GetString("Server_EulaMsg2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   This system doesn&apos;t work without an Internet connection.
+        ///Connect to the Internet and restart me! に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Setup_Net {
+            get {
+                return ResourceManager.GetString("Setup_Net", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to auto port mapping.
+        ///I start the server without port mapping. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string StartServer_PortMsg {
+            get {
+                return ResourceManager.GetString("StartServer_PortMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   I will shutdown this PC after 30 seconds.
+        ///If you don&apos;t want to shutdown, click &quot;Cancel&quot; button. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string StartServer_ShutdownMsg {
+            get {
+                return ResourceManager.GetString("StartServer_ShutdownMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   This Port Number is invalid に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_CheckPort {
+            get {
+                return ResourceManager.GetString("SystemSettings_CheckPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Select the column what you want to edit from list に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Edit {
+            get {
+                return ResourceManager.GetString("SystemSettings_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   This player name is not exist に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Exist {
+            get {
+                return ResourceManager.GetString("SystemSettings_Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Description of this property is not registered に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Option {
+            get {
+                return ResourceManager.GetString("SystemSettings_Option", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to close the port mapping.
+        ///I leave the port open. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Port {
+            get {
+                return ResourceManager.GetString("SystemSettings_Port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   This function opens ports to the router automatically.
+        ///Since the port is not mapped to security software, please configure it by yourself if necessary.
+        ///Please refer to Configuration for details. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_PortOn1 {
+            get {
+                return ResourceManager.GetString("SystemSettings_PortOn1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   How to configure port mapping に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_PortOn2 {
+            get {
+                return ResourceManager.GetString("SystemSettings_PortOn2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Selected group is already registered に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_RegisterG {
+            get {
+                return ResourceManager.GetString("SystemSettings_RegisterG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   You cannot close this window while registering remote data に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Registering {
+            get {
+                return ResourceManager.GetString("SystemSettings_Registering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Selected player is already registered に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_RegisterP {
+            get {
+                return ResourceManager.GetString("SystemSettings_RegisterP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Select the player what you want to remove from list に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Remove {
+            get {
+                return ResourceManager.GetString("SystemSettings_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   The port number has an invalid value.
+        ///Change the setting not to use Auto Port Mapping. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Warn {
+            get {
+                return ResourceManager.GetString("SystemSettings_Warn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to load personal settings.
+        ///Please set it again. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string User_Read {
+            get {
+                return ResourceManager.GetString("User_Read", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   User name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to get the list of Spigot versions.
+        ///You can&apos;t import a new Spigot version. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string VerFac_Spigot {
+            get {
+                return ResourceManager.GetString("VerFac_Spigot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to get the list of Vanilla versions.
+        ///You can&apos;t import a new Vanilla version. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string VerFac_Vanilla {
+            get {
+                return ResourceManager.GetString("VerFac_Vanilla", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Version に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Do you want to save these settings? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Window_CheckSave {
+            get {
+                return ResourceManager.GetString("Window_CheckSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   World に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string World {
+            get {
+                return ResourceManager.GetString("World", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   I am trying to grade down the world data from に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string World_VerDownMsg1 {
+            get {
+                return ResourceManager.GetString("World_VerDownMsg1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    to  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string World_VerDownMsg2 {
+            get {
+                return ResourceManager.GetString("World_VerDownMsg2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   . に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string World_VerDownMsg3 {
+            get {
+                return ResourceManager.GetString("World_VerDownMsg3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   This is an operation with an extremely high possibility of data corruption, but do you know what you are doing? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string World_VerDownMsg4 {
+            get {
+                return ResourceManager.GetString("World_VerDownMsg4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   This is invalid as a datapack に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Datapack {
+            get {
+                return ResourceManager.GetString("WorldSettings_Datapack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Do you want to delete  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Delete1 {
+            get {
+                return ResourceManager.GetString("WorldSettings_Delete1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    ? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Delete2 {
+            get {
+                return ResourceManager.GetString("WorldSettings_Delete2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   This is invalid as a custom map に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Map {
+            get {
+                return ResourceManager.GetString("WorldSettings_Map", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   The following players are not registered in Server Starter.
+        ///Do you want to register them?
+        /// に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Player {
+            get {
+                return ResourceManager.GetString("WorldSettings_Player", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   This is invalid as a plugin に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Plugin {
+            get {
+                return ResourceManager.GetString("WorldSettings_Plugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Selected player and group is already registered に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Register {
+            get {
+                return ResourceManager.GetString("WorldSettings_Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Select the column what you want to remove from list に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Remove {
+            get {
+                return ResourceManager.GetString("WorldSettings_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Default server properties saved に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_SaveProp {
+            get {
+                return ResourceManager.GetString("WorldSettings_SaveProp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Select a  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Select1 {
+            get {
+                return ResourceManager.GetString("WorldSettings_Select1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Select2 {
+            get {
+                return ResourceManager.GetString("WorldSettings_Select2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Default server properties applied に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_SetProp {
+            get {
+                return ResourceManager.GetString("WorldSettings_SetProp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   You are not prepared to use ShareWorld.
+        ///Do you want to show the setting window? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_SW {
+            get {
+                return ResourceManager.GetString("WorldSettings_SW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Yes に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Compressed File に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ZipFile {
+            get {
+                return ResourceManager.GetString("ZipFile", resourceCulture);
             }
         }
     }

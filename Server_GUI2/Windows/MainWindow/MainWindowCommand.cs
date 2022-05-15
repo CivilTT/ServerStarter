@@ -4,13 +4,7 @@ using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.SystemSettings;
 using Server_GUI2.Windows.WorldSettings;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 
 namespace Server_GUI2.Windows.MainWindow
 {
@@ -85,15 +79,15 @@ namespace Server_GUI2.Windows.MainWindow
             {
                 string removeType = "";
                 if (removeItemIndex is Version version)
-                    removeType = "バージョン";
+                    removeType = Properties.Resources.Version;
                 else if (removeItemIndex is IWorld world)
-                    removeType = "ワールド";
+                    removeType = Properties.Resources.World;
 
                 string message =
-                    $"この{removeType}を削除しますか？\n" +
-                    $"「{removeItemName}」は完全に削除され、復元ができなくなります。";
-                string result = CustomMessageBox.Show(message, MessageBox.Back.ButtonType.YesNo, MessageBox.Back.Image.Warning);
-                if (result != "Yes")
+                    $"{Properties.Resources.Main_DeleteMsg1}{removeType}{Properties.Resources.Main_DeleteMsg2}\n" +
+                    $"{Properties.Resources.Main_DeleteMsg3}{removeItemName}{Properties.Resources.Main_DeleteMsg4}";
+                int result = CustomMessageBox.Show(message, MessageBox.Back.ButtonType.YesNo, MessageBox.Back.Image.Warning);
+                if (result != 0)
                     return false;
 
                 deleteAction();

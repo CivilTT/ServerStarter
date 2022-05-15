@@ -103,6 +103,7 @@ namespace Server_GUI2
             logger.Info($"<process/> {JavaPath} {argumnets}");
             process.Start();
             process.WaitForExit();
+            process.Dispose();
 
             switch (process.ExitCode)
             {
@@ -115,7 +116,7 @@ namespace Server_GUI2
             }
         }
 
-        private static bool AgreeEula(bool eulaState,string euraURL)
+        private static bool AgreeEula(bool eulaState, string euraURL)
         {
             logger.Info("<AgreeEula>");
 
@@ -125,11 +126,26 @@ namespace Server_GUI2
                 return true;
             }
 
-            string result = CustomMessageBox.Show(
-                $"以下のURLに示されているサーバー利用に関する注意事項に同意しますか？\n\n" +
-                $"【EULAのURL】\n{euraURL}", ButtonType.OKCancel, Image.Infomation);
+            int result;
+            if (euraURL == "")
+            {
+                result = CustomMessageBox.Show(
+                    Properties.Resources.Server_EulaMsg1,
+                    ButtonType.OKCancel,
+                    Image.Infomation
+                    );
+            }
+            else
+            {
+                result = CustomMessageBox.Show(
+                    Properties.Resources.Server_EulaMsg1,
+                    ButtonType.OKCancel,
+                    Image.Infomation,
+                    new LinkMessage(Properties.Resources.Server_EulaMsg2, euraURL)
+                    );
+            }
 
-            if (result == "Cancel")
+            if (result != 0)
             {
                 UserSelectException ex = new UserSelectException("User didn't agree eula");
                 logger.Info("</AgreeEula> not agreed");
@@ -174,7 +190,7 @@ namespace Server_GUI2
                     }
                     else
                     {
-                        result = AgreeEula(eulaValue, "リンクが見つかりません");
+                        result = AgreeEula(eulaValue, "");
                     }
 
                     if (result != eulaValue)
