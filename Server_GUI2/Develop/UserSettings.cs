@@ -3,18 +3,12 @@ using Newtonsoft.Json;
 using Server_GUI2.Develop.Server;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
-using Server_GUI2.Windows;
-using Server_GUI2.Windows.SystemSettings;
-using Server_GUI2.Windows.WelcomeWindow;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Server_GUI2
@@ -38,13 +32,10 @@ namespace Server_GUI2
 
         private void ReadFile()
         {
-            string errorMessage =
-                "個人設定の読み込みに失敗しました。\n" +
-                "個人設定の再設定を行ってください。";
             if (ServerGuiPath.Instance.InfoJson.Exists)
             {
                 logger.Info("Read the local info.json data");
-                userSettings = ReadContents.ReadlocalJson<UserSettingsJson>(ServerGuiPath.Instance.InfoJson.FullName, errorMessage);
+                userSettings = ReadContents.ReadlocalJson<UserSettingsJson>(ServerGuiPath.Instance.InfoJson.FullName, Properties.Resources.User_Read);
                 if (userSettings.StarterVersion != UserSettingsJson.LatestVersion)
                 {
                     // TODO: jsonの中身を変更した場合にはここにバージョン変換の実装を書く（必要であれば）

@@ -1,5 +1,7 @@
 ﻿using log4net;
 using Newtonsoft.Json;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,12 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using Server_GUI2.Windows.MessageBox;
-using Server_GUI2.Windows.MessageBox.Back;
-using MW = ModernWpf;
 
 namespace Server_GUI2.Develop.Util
 {
@@ -52,11 +48,7 @@ namespace Server_GUI2.Develop.Util
             }
             catch (Exception ex)
             {
-                string message =
-                        "Server Starterの更新データの取得に失敗しました。\n" +
-                        "最新バージョンの確認を行わずに起動します。\n\n" +
-                        $"【エラー要因】\n{ex.Message}";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Infomation);
+                CustomMessageBox.Show($"{Properties.Resources.Manage_GetLatestMsg}\n{ex.Message}", ButtonType.OK, Image.Infomation);
                 return null;
             }
         }
@@ -71,14 +63,14 @@ namespace Server_GUI2.Develop.Util
 
             if (File.Exists("tmp.bat"))
             {
-                string message =
-                    "前回起動時にServer Starterのバージョンアップに失敗しました。\n" +
-                    "再度バージョンアップを行う場合は「はい（Yes）」を選択してください。\n\n" +
-                    "「はい（Yes）」を選択しているにも関わらず、このメッセージが繰り返し表示される場合、自動更新がこのPC環境に対応していない可能性があります。\n" +
-                    "最新バージョンはGitのReleaseに公開されていますが、バグ修正のため、作者のTwitterへDMを頂けますと幸いです。\n" +
-                    "お手数をおかけしますが、よろしくお願いします。";
-                string result = CustomMessageBox.Show(message, ButtonType.YesNo, Image.Warning);
-                if (result != "Yes")
+                string giturl = "https://github.com/CivilTT/ServerStarter";
+                int result = CustomMessageBox.Show(
+                    Properties.Resources.Manage_Vup1, 
+                    new string[] { Properties.Resources.Manage_Vup3, Properties.Resources.Manage_Vup4 }, 
+                    Image.Warning, 
+                    new LinkMessage(Properties.Resources.Manage_Vup2, giturl)
+                    );
+                if (result != 0)
                     return;
 
                 tmpBat.Delete();
@@ -117,19 +109,12 @@ namespace Server_GUI2.Develop.Util
             }
             catch (Exception ex)
             {
-                string message =
-                        "Server Starterの更新ファイルの作成に失敗しました。\n" +
-                        "システムの更新をせずに実行します。\n\n" +
-                        $"【エラー要因】\n{ex.Message}";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
+                CustomMessageBox.Show($"{Properties.Resources.Manage_FailUpdate}\n{ex.Message}", ButtonType.OK, Image.Error);
                 logger.Warn($"Failed to write tmp.bat (Error Message : {ex.Message})");
                 return;
             }
 
-            string mes =
-                "Server Starterの更新を開始します。\n" +
-                "Setup_ServerStarter.msiによってシステムを更新するため、次に表示される確認画面で許可してください。";
-            CustomMessageBox.Show(mes, ButtonType.OK, Image.Infomation);
+            CustomMessageBox.Show(Properties.Resources.Manage_Update, ButtonType.OK, Image.Infomation);
             Process.Start(@".\tmp.bat", @" > .\log\tmp(versionUP)_log.txt 2>&1");
             Environment.Exit(0);
         }

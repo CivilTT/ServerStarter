@@ -1,17 +1,14 @@
 ﻿using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
-using Server_GUI2.Util;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Server_GUI2.Windows.MessageBox;
-using Server_GUI2.Windows.MessageBox.Back;
-using MW = ModernWpf;
 
 namespace Server_GUI2.Windows.SystemSettings
 {
@@ -24,11 +21,11 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
-            void AddContent<T>(ObservableCollection<T> list, T content, string alreadyContainMessage, string nullMessage= "追加したいプレイヤーを選択してください。")
+            void AddContent<T>(ObservableCollection<T> list, T content, string alreadyContainMessage)
             {
                 if (content == null)
                 {
-                    CustomMessageBox.Show(nullMessage, ButtonType.OK, Image.Warning);
+                    CustomMessageBox.Show(Properties.Resources.SystemSettings_Remove, ButtonType.OK, Image.Warning);
                     return;
                 }
 
@@ -49,6 +46,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     void Adding(object sender, DoWorkEventArgs e)
                     {
                         Either<GitStorage, Exception> result = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
+                        //result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<IRemoteWorld>())).FailureAction(exception => exception.);
                         result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<IRemoteWorld>()));
                     }
                     void Finished(object sender, RunWorkerCompletedEventArgs e)
@@ -68,17 +66,17 @@ namespace Server_GUI2.Windows.SystemSettings
                     var playerContent = new Player(_vm.PlayerName.Value);
                     if (playerContent.UUID == null)
                     {
-                        CustomMessageBox.Show("このプレイヤー名は存在しません。", ButtonType.OK, Image.Error);
+                        CustomMessageBox.Show(Properties.Resources.SystemSettings_Exist, ButtonType.OK, Image.Error);
                         return;
                     }
-                    AddContent(playerList, playerContent, "このプレイヤーはすでに登録されています。");
+                    AddContent(playerList, playerContent, Properties.Resources.SystemSettings_RegisterP);
                     break;
 
                 case "GroupPlayer":
                     var playerListGroup = _vm.PlayerList_Group;
                     var memberList = _vm.MemberList;
                     var selectedPlayer = _vm.PLGIndex?.Value ?? null;
-                    AddContent(memberList, selectedPlayer, "このプレイヤーはすでにグループメンバーに登録されています。");
+                    AddContent(memberList, selectedPlayer, Properties.Resources.SystemSettings_RegisterP);
                     playerListGroup.Remove(selectedPlayer);
                     break;
 
@@ -87,7 +85,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     var groupList = _vm.GroupList;
                     string groupName = _vm.GroupName.Value;
                     var groupContent = new PlayerGroup(groupName, memberList2);
-                    AddContent(groupList, groupContent, "このグループはすでに登録されています。");
+                    AddContent(groupList, groupContent, Properties.Resources.SystemSettings_RegisterG);
                     break;
 
                 default:
@@ -120,7 +118,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     var groupIndex = _vm.GLIndex;
                     if (groupIndex == null)
                     {
-                        CustomMessageBox.Show("編集したい行を選択してください。", ButtonType.OK, Image.Warning);
+                        CustomMessageBox.Show(Properties.Resources.SystemSettings_Edit, ButtonType.OK, Image.Warning);
                         return;
                     }
                     _vm.MemberList.ChangeCollection(groupIndex.PlayerList);
@@ -143,20 +141,20 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
-            string DeleteContent<T>(ObservableCollection<T> list, T deleteItem, string name, string notSelected= null, string nullMessage= "削除したい行を選択してください。")
+            int DeleteContent<T>(ObservableCollection<T> list, T deleteItem, string name, string notSelected= null)
             {
                 if (name == notSelected)
                 {
-                    CustomMessageBox.Show(nullMessage, ButtonType.OK, Image.Warning);
-                    return string.Empty;
+                    CustomMessageBox.Show(Properties.Resources.WorldSettings_Remove, ButtonType.OK, Image.Warning);
+                    return -2;
                 }
 
-                string result = CustomMessageBox.Show($"{name}を削除しますか？", ButtonType.YesNo, Image.Question);
-                if (result != "Yes")
+                int result = CustomMessageBox.Show($"{Properties.Resources.WorldSettings_Delete1}{name}{Properties.Resources.WorldSettings_Delete2}", ButtonType.YesNo, Image.Question);
+                if (result != 0)
                     return result;
 
                 list.Remove(deleteItem);
-                return "Yes";
+                return 0;
             }
 
             switch (parameter)
@@ -166,8 +164,8 @@ namespace Server_GUI2.Windows.SystemSettings
                     var storageAccount = remoteItem?.Storage.AccountName ?? null;
                     var storageRepo = remoteItem?.Storage.RepositoryName ?? null;
                     var worldName = $"/{remoteItem?.Name ?? null}";
-                    string result = DeleteContent(_vm.RemoteList, remoteItem, $"{storageAccount}/{storageRepo}{worldName}", "//", "削除したいリモートを選択してください。");
-                    if (result == "Yes")
+                    int result = DeleteContent(_vm.RemoteList, remoteItem, $"{storageAccount}/{storageRepo}{worldName}", "//");
+                    if (result == 0)
                     {
                         if (remoteItem is RemoteWorld world)
                             world.Delete();
@@ -195,7 +193,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     }
                     else
                     {
-                        CustomMessageBox.Show("削除したいメンバーを選択してください。", ButtonType.OK, Image.Warning);
+                        CustomMessageBox.Show(Properties.Resources.SystemSettings_Remove, ButtonType.OK, Image.Warning);
                     }
                     break;
 
@@ -275,10 +273,7 @@ namespace Server_GUI2.Windows.SystemSettings
                 _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Close;
             else
             {
-                string message =
-                    "ポートの閉鎖に失敗しました。\n" +
-                    "ポートを開放したまま留置します。";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
+                CustomMessageBox.Show(Properties.Resources.SystemSettings_Port, ButtonType.OK, Image.Error);
 
                 _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Open;
                 _vm.UsingPortMapping.Value = true;

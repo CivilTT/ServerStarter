@@ -136,11 +136,7 @@ namespace Server_GUI2
         private VanillaVersonsJson GetVanillaVersionJson()
         {
             string url = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json";
-            string message =
-                "Vanilaのバージョン一覧の取得に失敗しました。\n" +
-                "新しいバージョンのサーバーの導入はできません";
-
-            VanillaVersonsJson versions = ReadContents.ReadJson<VanillaVersonsJson>(url, message);
+            VanillaVersonsJson versions = ReadContents.ReadJson<VanillaVersonsJson>(url, Properties.Resources.VerFac_Vanilla);
 
             VanillaImportable = versions != null;
 
@@ -162,10 +158,7 @@ namespace Server_GUI2
             logger.Info("Import new Vanilla Version List");
 
             string url = "https://hub.spigotmc.org/versions/";
-            string message =
-                "Spigotのバージョン一覧の取得に失敗しました。\n" +
-                "新しいバージョンのサーバーの導入はできません";
-            IHtmlDocument doc = ReadContents.ReadHtml(url, message);
+            IHtmlDocument doc = ReadContents.ReadHtml(url, Properties.Resources.VerFac_Spigot);
 
             SpigotImportable = doc != null;
 
