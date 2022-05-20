@@ -33,7 +33,7 @@ namespace Server_GUI2.Windows.WorldSettings
                         break;
                     default:
                         e.Cancel = true;
-                        break;
+                        return;
                 }
             }
 

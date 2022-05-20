@@ -381,11 +381,480 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Network に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Network {
+            get {
+                return ResourceManager.GetString("Network", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   No に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Others に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Others {
+            get {
+                return ResourceManager.GetString("Others", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Allowed to fly for more than 5 seconds に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_AllowFlight {
+            get {
+                return ResourceManager.GetString("P_AllowFlight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Possible to move to the Nether に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_AllowNether {
+            get {
+                return ResourceManager.GetString("P_AllowNether", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Notifies the player with OP authority when a command is entered from the server console に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_BroadcastConsoleToOps {
+            get {
+                return ResourceManager.GetString("P_BroadcastConsoleToOps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Notifies the player with OP when a command is input from a remote control. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_BroadcastRconToOps {
+            get {
+                return ResourceManager.GetString("P_BroadcastRconToOps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Game difficulty に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_Difficult {
+            get {
+                return ResourceManager.GetString("P_Difficult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Allow command block execution に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_EnableCommandBlock {
+            get {
+                return ResourceManager.GetString("P_EnableCommandBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Enable JMX (=Java Management Extensions) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_EnableJMXmonitoring {
+            get {
+                return ResourceManager.GetString("P_EnableJMXmonitoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   GameSpy4 connection allowed に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_EnableQuery {
+            get {
+                return ResourceManager.GetString("P_EnableQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Allow remote control に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_EnableRcon {
+            get {
+                return ResourceManager.GetString("P_EnableRcon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Display online status on the server selection screen に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_EnableStatus {
+            get {
+                return ResourceManager.GetString("P_EnableStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Deny participation to non-whitelisted players に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_EnforceWhiteList {
+            get {
+                return ResourceManager.GetString("P_EnforceWhiteList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sets the range of entities to be drawn as a percentage when the initial value is 100. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_EntityBroadcastRangePercentage {
+            get {
+                return ResourceManager.GetString("P_EntityBroadcastRangePercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Enforce game mode at login に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_ForceGamemode {
+            get {
+                return ResourceManager.GetString("P_ForceGamemode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Function permission level (set between 1 to 4) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_FunctionPermissionLevel {
+            get {
+                return ResourceManager.GetString("P_FunctionPermissionLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Gamemode in the game に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_Gamemode {
+            get {
+                return ResourceManager.GetString("P_Gamemode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Set gamemode to hardcore に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_Hardcore {
+            get {
+                return ResourceManager.GetString("P_Hardcore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   World name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_LevelName {
+            get {
+                return ResourceManager.GetString("P_LevelName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   World Seed Value に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_LevelSeed {
+            get {
+                return ResourceManager.GetString("P_LevelSeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   World generation type に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_LevelType {
+            get {
+                return ResourceManager.GetString("P_LevelType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Number of people who can play on the server at the same time に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_MaxPlayers {
+            get {
+                return ResourceManager.GetString("P_MaxPlayers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Time in milliseconds between server inoperability and forced shutdown に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_MaxtickTime {
+            get {
+                return ResourceManager.GetString("P_MaxtickTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   World size specified by radius に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_MaxWorldSize {
+            get {
+                return ResourceManager.GetString("P_MaxWorldSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Description displayed on the server selection screen に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_Motd {
+            get {
+                return ResourceManager.GetString("P_Motd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Specifies the degree of network compression as an integer. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_NetworkCompressionThreshold {
+            get {
+                return ResourceManager.GetString("P_NetworkCompressionThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Verify that the connecting player is a legitimate account holder. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_OnlineMode {
+            get {
+                return ResourceManager.GetString("P_OnlineMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Op permission level in the game (4 is the highest) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_OpPermissionLevel {
+            get {
+                return ResourceManager.GetString("P_OpPermissionLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Description of this property is not registered に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_Other {
+            get {
+                return ResourceManager.GetString("P_Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   If left unattended for a specified number of seconds (= an integer value), the server will kick the user. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_PlayerIdleTimeout {
+            get {
+                return ResourceManager.GetString("P_PlayerIdleTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Allow connection from VPN or Proxy when set to False に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_PreventProxyConnections {
+            get {
+                return ResourceManager.GetString("P_PreventProxyConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Allow players to fight each other に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_Pvp {
+            get {
+                return ResourceManager.GetString("P_Pvp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Query port used for the query server に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_QueryPort {
+            get {
+                return ResourceManager.GetString("P_QueryPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Specifies the maximum amount of packets a client can send per second に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_RateLimit {
+            get {
+                return ResourceManager.GetString("P_RateLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Password used for remote control に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_RconPassword {
+            get {
+                return ResourceManager.GetString("P_RconPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Port number used for remote control に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_RconPort {
+            get {
+                return ResourceManager.GetString("P_RconPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Force players to install server resource packs, otherwise they will not be able to connect to the world に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_RequireResourcePack {
+            get {
+                return ResourceManager.GetString("P_RequireResourcePack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   URL of the server resource pack に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_ResourcePack {
+            get {
+                return ResourceManager.GetString("P_ResourcePack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Hash value of the server resource pack に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_ResourcePacksha1 {
+            get {
+                return ResourceManager.GetString("P_ResourcePacksha1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   IP address to set up a server に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_ServerIP {
+            get {
+                return ResourceManager.GetString("P_ServerIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Port number used for opening my server に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_ServerPort {
+            get {
+                return ResourceManager.GetString("P_ServerPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Send server data logs to Minecraft に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_SnooperEnabled {
+            get {
+                return ResourceManager.GetString("P_SnooperEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Animals appear に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_SpawnAnimals {
+            get {
+                return ResourceManager.GetString("P_SpawnAnimals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Hostile MOB appear に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_SpawnMonsters {
+            get {
+                return ResourceManager.GetString("P_SpawnMonsters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Villagers appear に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_SpawnNpcs {
+            get {
+                return ResourceManager.GetString("P_SpawnNpcs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Specifies the radius from the center of the spawn (integer value) within which blocks and objects are prohibited from being placed or destroyed.
+        ///However, this is not valid for players with OP. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_SpawnProtection {
+            get {
+                return ResourceManager.GetString("P_SpawnProtection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Process chunk writes synchronously に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_SyncChunkWrites {
+            get {
+                return ResourceManager.GetString("P_SyncChunkWrites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Can filter inappropriate chat, but not available now に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_TextFilteringConfig {
+            get {
+                return ResourceManager.GetString("P_TextFilteringConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Optimize packet communication for servers running on Linux. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_UseNativeTransport {
+            get {
+                return ResourceManager.GetString("P_UseNativeTransport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   View distance by a chunk に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_ViewDistance {
+            get {
+                return ResourceManager.GetString("P_ViewDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Manage player login by the white list に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string P_WhiteList {
+            get {
+                return ResourceManager.GetString("P_WhiteList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Players に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Players {
+            get {
+                return ResourceManager.GetString("Players", resourceCulture);
             }
         }
         
@@ -404,6 +873,15 @@ namespace Server_GUI2.Properties {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Server に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Server {
+            get {
+                return ResourceManager.GetString("Server", resourceCulture);
             }
         }
         
@@ -436,6 +914,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Show に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Show {
+            get {
+                return ResourceManager.GetString("Show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Failed to auto port mapping.
         ///I start the server without port mapping. に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -456,11 +943,56 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Add Account に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_AddA {
+            get {
+                return ResourceManager.GetString("SystemSettings_AddA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Add Remote Settings (Git) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_AddRemote {
+            get {
+                return ResourceManager.GetString("SystemSettings_AddRemote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Account E-mail に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Aemail {
+            get {
+                return ResourceManager.GetString("SystemSettings_Aemail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Account Name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_AName {
+            get {
+                return ResourceManager.GetString("SystemSettings_AName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   This Port Number is invalid に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SystemSettings_CheckPort {
             get {
                 return ResourceManager.GetString("SystemSettings_CheckPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Credential Information Manager (Windows) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Cred {
+            get {
+                return ResourceManager.GetString("SystemSettings_Cred", resourceCulture);
             }
         }
         
@@ -483,11 +1015,20 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
-        ///   Description of this property is not registered に類似しているローカライズされた文字列を検索します。
+        ///   Links に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string SystemSettings_Option {
+        public static string SystemSettings_Links {
             get {
-                return ResourceManager.GetString("SystemSettings_Option", resourceCulture);
+                return ResourceManager.GetString("SystemSettings_Links", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Personal Access Token (GitHub) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Personal {
+            get {
+                return ResourceManager.GetString("SystemSettings_Personal", resourceCulture);
             }
         }
         
@@ -549,11 +1090,29 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Remote List に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_RemoteL {
+            get {
+                return ResourceManager.GetString("SystemSettings_RemoteL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Select the player what you want to remove from list に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SystemSettings_Remove {
             get {
                 return ResourceManager.GetString("SystemSettings_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Repository に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Repo {
+            get {
+                return ResourceManager.GetString("SystemSettings_Repo", resourceCulture);
             }
         }
         
