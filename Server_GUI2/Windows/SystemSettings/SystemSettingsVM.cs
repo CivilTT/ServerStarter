@@ -304,7 +304,7 @@ namespace Server_GUI2.Windows.SystemSettings
     public class BoolOption
     {
         public string Property { get; }
-        public string ToolTip { get; } = Properties.Resources.SystemSettings_Option;
+        public string ToolTip { get; } = Properties.Resources.P_Other;
         public bool Value { get; set; }
 
         private BoolOption(string property, bool value)
@@ -334,7 +334,7 @@ namespace Server_GUI2.Windows.SystemSettings
     public class TextOption
     {
         public string Property { get; }
-        public string ToolTip { get; } = Properties.Resources.SystemSettings_Option;
+        public string ToolTip { get; } = Properties.Resources.P_Other;
         public string Value { get; set; }
 
         private TextOption(string property, string value)
