@@ -148,6 +148,9 @@ Please check the error and if you suspect a system bug, please contact us at Git
   <data name="Guide" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Guide.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
   </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
   <data name="Java_Ver1" xml:space="preserve">
     <value>Java </value>
   </data>
@@ -616,6 +619,21 @@ You can't import a new Vanilla version.</value>
   <data name="World" xml:space="preserve">
     <value>World</value>
   </data>
+  <data name="WorldSettings_Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="WorldSettings_Additionals" xml:space="preserve">
+    <value>Additionals</value>
+  </data>
+  <data name="WorldSettings_AddOp" xml:space="preserve">
+    <value>Add Op Player</value>
+  </data>
+  <data name="WorldSettings_AddWhite" xml:space="preserve">
+    <value>Add WhiteList Player</value>
+  </data>
+  <data name="WorldSettings_DataKinds" xml:space="preserve">
+    <value>Data Kinds</value>
+  </data>
   <data name="WorldSettings_Datapack" xml:space="preserve">
     <value>This is invalid as a datapack</value>
   </data>
@@ -625,8 +643,29 @@ You can't import a new Vanilla version.</value>
   <data name="WorldSettings_Delete2" xml:space="preserve">
     <value> ?</value>
   </data>
+  <data name="WorldSettings_ImportDP" xml:space="preserve">
+    <value>Import New Datapack</value>
+  </data>
+  <data name="WorldSettings_Imported" xml:space="preserve">
+    <value>Imported</value>
+  </data>
+  <data name="WorldSettings_ImportMap" xml:space="preserve">
+    <value>Import New Custom Map</value>
+  </data>
+  <data name="WorldSettings_ImportP" xml:space="preserve">
+    <value>Import New Plugin</value>
+  </data>
   <data name="WorldSettings_Map" xml:space="preserve">
     <value>This is invalid as a custom map</value>
+  </data>
+  <data name="WorldSettings_MapName" xml:space="preserve">
+    <value>Map Name   :   </value>
+  </data>
+  <data name="WorldSettings_Op" xml:space="preserve">
+    <value>Op Right</value>
+  </data>
+  <data name="WorldSettings_OpLev" xml:space="preserve">
+    <value>Op Level</value>
   </data>
   <data name="WorldSettings_Player" xml:space="preserve">
     <value>The following players are not registered in Server Starter.
@@ -636,11 +675,23 @@ Do you want to register them?
   <data name="WorldSettings_Plugin" xml:space="preserve">
     <value>This is invalid as a plugin</value>
   </data>
+  <data name="WorldSettings_Properties" xml:space="preserve">
+    <value>Properties</value>
+  </data>
+  <data name="WorldSettings_PropOfWor" xml:space="preserve">
+    <value>Properties of each Worlds</value>
+  </data>
   <data name="WorldSettings_Register" xml:space="preserve">
     <value>Selected player and group is already registered</value>
   </data>
+  <data name="WorldSettings_RemoteWor" xml:space="preserve">
+    <value>Remote World</value>
+  </data>
   <data name="WorldSettings_Remove" xml:space="preserve">
     <value>Select the column what you want to remove from list</value>
+  </data>
+  <data name="WorldSettings_Rpack" xml:space="preserve">
+    <value>Server Resource Pack (URL)</value>
   </data>
   <data name="WorldSettings_SaveProp" xml:space="preserve">
     <value>Default server properties saved</value>
@@ -657,6 +708,15 @@ Do you want to register them?
   <data name="WorldSettings_SW" xml:space="preserve">
     <value>You are not prepared to use ShareWorld.
 Do you want to show the setting window?</value>
+  </data>
+  <data name="WorldSettings_Title" xml:space="preserve">
+    <value>World Settings</value>
+  </data>
+  <data name="WorldSettings_UseSW" xml:space="preserve">
+    <value>Use ShareWorld</value>
+  </data>
+  <data name="WorldSettings_WhiteL" xml:space="preserve">
+    <value>White List</value>
   </data>
   <data name="World_VerDownMsg1" xml:space="preserve">
     <value>I am trying to grade down the world data from</value>

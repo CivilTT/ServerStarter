@@ -144,6 +144,9 @@
   <data name="Group" xml:space="preserve">
     <value>グループ</value>
   </data>
+  <data name="Import" xml:space="preserve">
+    <value>インポート</value>
+  </data>
   <data name="Java_Ver1" xml:space="preserve">
     <value>このバージョンのサーバーを起動するためには Java </value>
   </data>
@@ -612,6 +615,21 @@ Auto Port Mappingを使用しない設定に変更します。</value>
   <data name="World" xml:space="preserve">
     <value>ワールド</value>
   </data>
+  <data name="WorldSettings_Account" xml:space="preserve">
+    <value>アカウント</value>
+  </data>
+  <data name="WorldSettings_Additionals" xml:space="preserve">
+    <value>追加要素</value>
+  </data>
+  <data name="WorldSettings_AddOp" xml:space="preserve">
+    <value>Opプレイヤーを追加</value>
+  </data>
+  <data name="WorldSettings_AddWhite" xml:space="preserve">
+    <value>プレイヤーをホワイトリストに追加</value>
+  </data>
+  <data name="WorldSettings_DataKinds" xml:space="preserve">
+    <value>データパックの種類</value>
+  </data>
   <data name="WorldSettings_Datapack" xml:space="preserve">
     <value>これはデータパックとして無効です。</value>
   </data>
@@ -621,8 +639,29 @@ Auto Port Mappingを使用しない設定に変更します。</value>
   <data name="WorldSettings_Delete2" xml:space="preserve">
     <value>を削除しますか？</value>
   </data>
+  <data name="WorldSettings_ImportDP" xml:space="preserve">
+    <value>新規データパックをインポート</value>
+  </data>
+  <data name="WorldSettings_Imported" xml:space="preserve">
+    <value>導入済み一覧</value>
+  </data>
+  <data name="WorldSettings_ImportMap" xml:space="preserve">
+    <value>新規配布ワールドをインポート</value>
+  </data>
+  <data name="WorldSettings_ImportP" xml:space="preserve">
+    <value>新規プラグインをインポート</value>
+  </data>
   <data name="WorldSettings_Map" xml:space="preserve">
     <value>これは配布マップとして無効です。</value>
+  </data>
+  <data name="WorldSettings_MapName" xml:space="preserve">
+    <value>ワールド名   :   </value>
+  </data>
+  <data name="WorldSettings_Op" xml:space="preserve">
+    <value>Op権限</value>
+  </data>
+  <data name="WorldSettings_OpLev" xml:space="preserve">
+    <value>Opレベル</value>
   </data>
   <data name="WorldSettings_Player" xml:space="preserve">
     <value>以下のプレイヤーがServer Starterに登録されていません。
@@ -632,11 +671,23 @@ Auto Port Mappingを使用しない設定に変更します。</value>
   <data name="WorldSettings_Plugin" xml:space="preserve">
     <value>これはプラグインとして無効です。</value>
   </data>
+  <data name="WorldSettings_Properties" xml:space="preserve">
+    <value>プロパティ</value>
+  </data>
+  <data name="WorldSettings_PropOfWor" xml:space="preserve">
+    <value>各ワールドの設定</value>
+  </data>
   <data name="WorldSettings_Register" xml:space="preserve">
     <value>選択されたプレイヤーとグループはすでに登録されています</value>
   </data>
+  <data name="WorldSettings_RemoteWor" xml:space="preserve">
+    <value>リモートワールド</value>
+  </data>
   <data name="WorldSettings_Remove" xml:space="preserve">
     <value>削除したい行を選択してください</value>
+  </data>
+  <data name="WorldSettings_Rpack" xml:space="preserve">
+    <value>サーバーリソースパック（URL）</value>
   </data>
   <data name="WorldSettings_SaveProp" xml:space="preserve">
     <value>既定のサーバープロパティとして保存されました</value>
@@ -653,6 +704,15 @@ Auto Port Mappingを使用しない設定に変更します。</value>
   <data name="WorldSettings_SW" xml:space="preserve">
     <value>ShareWorldを利用するための準備がされていません。
 設定画面を表示しますか？</value>
+  </data>
+  <data name="WorldSettings_Title" xml:space="preserve">
+    <value>ワールド設定</value>
+  </data>
+  <data name="WorldSettings_UseSW" xml:space="preserve">
+    <value>ShareWorldを利用する</value>
+  </data>
+  <data name="WorldSettings_WhiteL" xml:space="preserve">
+    <value>ホワイトリスト</value>
   </data>
   <data name="World_VerDownMsg1" xml:space="preserve">
     <value>ワールドデータを</value>
