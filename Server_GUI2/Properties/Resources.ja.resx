@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>追加</value>
+  </data>
   <data name="App_Unhandle" xml:space="preserve">
     <value>予期せぬエラーが発生しました。
 エラー内容を確認し、システムバグが疑われる場合はGitのIssueにてお問い合わせください。
@@ -137,6 +140,9 @@
   </data>
   <data name="Folder" xml:space="preserve">
     <value>フォルダ</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>グループ</value>
   </data>
   <data name="Java_Ver1" xml:space="preserve">
     <value>このバージョンのサーバーを起動するためには Java </value>
@@ -236,6 +242,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
     <value>その他</value>
   </data>
   <data name="Player" xml:space="preserve">
+    <value>プレイヤー</value>
+  </data>
+  <data name="Players" xml:space="preserve">
     <value>プレイヤー</value>
   </data>
   <data name="Plugin" xml:space="preserve">
@@ -389,6 +398,12 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   <data name="P_WhiteList" xml:space="preserve">
     <value>ホワイトリストによるプレイヤーのログイン管理を行う</value>
   </data>
+  <data name="Regist" xml:space="preserve">
+    <value>登録</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>削除</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>保存</value>
   </data>
@@ -416,8 +431,17 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
     <value>PCを30秒後にシャットダウンしようとしています。
 シャットダウンしない場合は「キャンセル」を押してください。</value>
   </data>
+  <data name="SystemSettings_Access" xml:space="preserve">
+    <value>マニュアルページ</value>
+  </data>
   <data name="SystemSettings_AddA" xml:space="preserve">
     <value>追加</value>
+  </data>
+  <data name="SystemSettings_AddG" xml:space="preserve">
+    <value>グループ追加</value>
+  </data>
+  <data name="SystemSettings_AddP" xml:space="preserve">
+    <value>プレイヤー追加</value>
   </data>
   <data name="SystemSettings_AddRemote" xml:space="preserve">
     <value>リモート設定（Git）の追加</value>
@@ -428,11 +452,20 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   <data name="SystemSettings_AName" xml:space="preserve">
     <value>アカウント名</value>
   </data>
+  <data name="SystemSettings_APM" xml:space="preserve">
+    <value>自動ポート開放</value>
+  </data>
+  <data name="SystemSettings_Author" xml:space="preserve">
+    <value>作者</value>
+  </data>
   <data name="SystemSettings_CheckPort" xml:space="preserve">
     <value>指定されたポート番号が不正な値です。</value>
   </data>
   <data name="SystemSettings_Cred" xml:space="preserve">
     <value>資格情報マネージャー（Windows）</value>
+  </data>
+  <data name="SystemSettings_DefaultP" xml:space="preserve">
+    <value>デフォルト設定</value>
   </data>
   <data name="SystemSettings_Edit" xml:space="preserve">
     <value>編集したい行を選択してください</value>
@@ -440,15 +473,57 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   <data name="SystemSettings_Exist" xml:space="preserve">
     <value>このプレイヤー名は存在しません</value>
   </data>
+  <data name="SystemSettings_GName" xml:space="preserve">
+    <value>グループ名</value>
+  </data>
+  <data name="SystemSettings_GroupL" xml:space="preserve">
+    <value>登録済みグループ一覧</value>
+  </data>
+  <data name="SystemSettings_LAN" xml:space="preserve">
+    <value>IPアドレス (LAN)</value>
+  </data>
+  <data name="SystemSettings_Lang" xml:space="preserve">
+    <value>言語</value>
+  </data>
   <data name="SystemSettings_Links" xml:space="preserve">
     <value>リンク集</value>
   </data>
+  <data name="SystemSettings_Main" xml:space="preserve">
+    <value>メイン設定</value>
+  </data>
+  <data name="SystemSettings_Manual" xml:space="preserve">
+    <value>マニュアル</value>
+  </data>
+  <data name="SystemSettings_MapTest" xml:space="preserve">
+    <value>開放テスト</value>
+  </data>
+  <data name="SystemSettings_Members" xml:space="preserve">
+    <value>グループメンバー</value>
+  </data>
+  <data name="SystemSettings_NewGName" xml:space="preserve">
+    <value>新規グループ名</value>
+  </data>
+  <data name="SystemSettings_NewPName" xml:space="preserve">
+    <value>新規プレイヤー名</value>
+  </data>
   <data name="SystemSettings_Personal" xml:space="preserve">
-    <value>パーソナルアクセストークン（GItHub）</value>
+    <value>Personal Access Token (GitHub)</value>
+  </data>
+  <data name="SystemSettings_PlayerL" xml:space="preserve">
+    <value>登録済みプレイヤー一覧</value>
+  </data>
+  <data name="SystemSettings_PName" xml:space="preserve">
+    <value>プレイヤー名</value>
   </data>
   <data name="SystemSettings_Port" xml:space="preserve">
     <value>ポートの閉鎖に失敗しました。
 ポートを開放したままにします。</value>
+  </data>
+  <data name="SystemSettings_PortMap" xml:space="preserve">
+    <value>ポート開放</value>
+  </data>
+  <data name="SystemSettings_PortNum" xml:space="preserve">
+    <value>ポート番号</value>
   </data>
   <data name="SystemSettings_PortOn1" xml:space="preserve">
     <value>この機能はルータに対してポート開放を自動的に行います。
@@ -457,6 +532,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   </data>
   <data name="SystemSettings_PortOn2" xml:space="preserve">
     <value>ポート開放の設定方法</value>
+  </data>
+  <data name="SystemSettings_Property" xml:space="preserve">
+    <value>設定項目</value>
   </data>
   <data name="SystemSettings_RegisterG" xml:space="preserve">
     <value>このグループはすでに登録されています</value>
@@ -475,6 +553,36 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   </data>
   <data name="SystemSettings_Repo" xml:space="preserve">
     <value>レポジトリ名</value>
+  </data>
+  <data name="SystemSettings_Status" xml:space="preserve">
+    <value>ネットワーク情報</value>
+  </data>
+  <data name="SystemSettings_SValue" xml:space="preserve">
+    <value>設定値</value>
+  </data>
+  <data name="SystemSettings_SystemInfo" xml:space="preserve">
+    <value>システム情報</value>
+  </data>
+  <data name="SystemSettings_SystemVer" xml:space="preserve">
+    <value>システムバージョン</value>
+  </data>
+  <data name="SystemSettings_Text" xml:space="preserve">
+    <value>テキスト設定</value>
+  </data>
+  <data name="SystemSettings_Title" xml:space="preserve">
+    <value>システム設定</value>
+  </data>
+  <data name="SystemSettings_TrueFalse" xml:space="preserve">
+    <value>True / False 設定</value>
+  </data>
+  <data name="SystemSettings_UseAPM" xml:space="preserve">
+    <value>自動ポート開放機能を使用する</value>
+  </data>
+  <data name="SystemSettings_UserSet" xml:space="preserve">
+    <value>ユーザー設定</value>
+  </data>
+  <data name="SystemSettings_WAN" xml:space="preserve">
+    <value>IPアドレス</value>
   </data>
   <data name="SystemSettings_Warn" xml:space="preserve">
     <value>指定されたポート番号が不正な値です。
