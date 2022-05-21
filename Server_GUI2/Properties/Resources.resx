@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
   <data name="App_Unhandle" xml:space="preserve">
     <value>An unexpected error has occurred.
 Please check the error and if you suspect a system bug, please contact us at Git Issues.
@@ -137,6 +140,9 @@ Please check the error and if you suspect a system bug, please contact us at Git
   </data>
   <data name="Folder" xml:space="preserve">
     <value>folder</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Guide" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -238,6 +244,9 @@ Please give me your log file through Git Issues.</value>
   </data>
   <data name="Others" xml:space="preserve">
     <value>Others</value>
+  </data>
+  <data name="Player" xml:space="preserve">
+    <value>Player</value>
   </data>
   <data name="Players" xml:space="preserve">
     <value>Players</value>
@@ -393,6 +402,12 @@ However, this is not valid for players with OP.</value>
   <data name="P_WhiteList" xml:space="preserve">
     <value>Manage player login by the white list</value>
   </data>
+  <data name="Regist" xml:space="preserve">
+    <value>Regist</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
@@ -420,8 +435,17 @@ I start the server without port mapping.</value>
     <value>I will shutdown this PC after 30 seconds.
 If you don't want to shutdown, click "Cancel" button.</value>
   </data>
+  <data name="SystemSettings_Access" xml:space="preserve">
+    <value>Access Here</value>
+  </data>
   <data name="SystemSettings_AddA" xml:space="preserve">
     <value>Add Account</value>
+  </data>
+  <data name="SystemSettings_AddG" xml:space="preserve">
+    <value>Add Group</value>
+  </data>
+  <data name="SystemSettings_AddP" xml:space="preserve">
+    <value>Add Player</value>
   </data>
   <data name="SystemSettings_AddRemote" xml:space="preserve">
     <value>Add Remote Settings (Git)</value>
@@ -432,11 +456,20 @@ If you don't want to shutdown, click "Cancel" button.</value>
   <data name="SystemSettings_AName" xml:space="preserve">
     <value>Account Name</value>
   </data>
+  <data name="SystemSettings_APM" xml:space="preserve">
+    <value>Auto Port Mapping</value>
+  </data>
+  <data name="SystemSettings_Author" xml:space="preserve">
+    <value>Author</value>
+  </data>
   <data name="SystemSettings_CheckPort" xml:space="preserve">
     <value>This Port Number is invalid</value>
   </data>
   <data name="SystemSettings_Cred" xml:space="preserve">
     <value>Credential Information Manager (Windows)</value>
+  </data>
+  <data name="SystemSettings_DefaultP" xml:space="preserve">
+    <value>Default Properties</value>
   </data>
   <data name="SystemSettings_Edit" xml:space="preserve">
     <value>Select the column what you want to edit from list</value>
@@ -444,15 +477,57 @@ If you don't want to shutdown, click "Cancel" button.</value>
   <data name="SystemSettings_Exist" xml:space="preserve">
     <value>This player name is not exist</value>
   </data>
+  <data name="SystemSettings_GName" xml:space="preserve">
+    <value>Group Name</value>
+  </data>
+  <data name="SystemSettings_GroupL" xml:space="preserve">
+    <value>Group List</value>
+  </data>
+  <data name="SystemSettings_LAN" xml:space="preserve">
+    <value>Local IP Address</value>
+  </data>
+  <data name="SystemSettings_Lang" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="SystemSettings_Links" xml:space="preserve">
     <value>Links</value>
+  </data>
+  <data name="SystemSettings_Main" xml:space="preserve">
+    <value>MAIN Settings</value>
+  </data>
+  <data name="SystemSettings_Manual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="SystemSettings_MapTest" xml:space="preserve">
+    <value>Mapping Test</value>
+  </data>
+  <data name="SystemSettings_Members" xml:space="preserve">
+    <value>Members</value>
+  </data>
+  <data name="SystemSettings_NewGName" xml:space="preserve">
+    <value>New Group Name</value>
+  </data>
+  <data name="SystemSettings_NewPName" xml:space="preserve">
+    <value>New Player Name</value>
   </data>
   <data name="SystemSettings_Personal" xml:space="preserve">
     <value>Personal Access Token (GitHub)</value>
   </data>
+  <data name="SystemSettings_PlayerL" xml:space="preserve">
+    <value>Player List</value>
+  </data>
+  <data name="SystemSettings_PName" xml:space="preserve">
+    <value>Player Name</value>
+  </data>
   <data name="SystemSettings_Port" xml:space="preserve">
     <value>Failed to close the port mapping.
 I leave the port open.</value>
+  </data>
+  <data name="SystemSettings_PortMap" xml:space="preserve">
+    <value>Port Mapping</value>
+  </data>
+  <data name="SystemSettings_PortNum" xml:space="preserve">
+    <value>Port Number</value>
   </data>
   <data name="SystemSettings_PortOn1" xml:space="preserve">
     <value>This function opens ports to the router automatically.
@@ -461,6 +536,9 @@ Please refer to Configuration for details.</value>
   </data>
   <data name="SystemSettings_PortOn2" xml:space="preserve">
     <value>How to configure port mapping</value>
+  </data>
+  <data name="SystemSettings_Property" xml:space="preserve">
+    <value>Property</value>
   </data>
   <data name="SystemSettings_RegisterG" xml:space="preserve">
     <value>Selected group is already registered</value>
@@ -479,6 +557,36 @@ Please refer to Configuration for details.</value>
   </data>
   <data name="SystemSettings_Repo" xml:space="preserve">
     <value>Repository</value>
+  </data>
+  <data name="SystemSettings_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="SystemSettings_SValue" xml:space="preserve">
+    <value>Setting Value</value>
+  </data>
+  <data name="SystemSettings_SystemInfo" xml:space="preserve">
+    <value>System Infomation</value>
+  </data>
+  <data name="SystemSettings_SystemVer" xml:space="preserve">
+    <value>System Version</value>
+  </data>
+  <data name="SystemSettings_Text" xml:space="preserve">
+    <value>Text Settings</value>
+  </data>
+  <data name="SystemSettings_Title" xml:space="preserve">
+    <value>System Settings</value>
+  </data>
+  <data name="SystemSettings_TrueFalse" xml:space="preserve">
+    <value>True / False Settings</value>
+  </data>
+  <data name="SystemSettings_UseAPM" xml:space="preserve">
+    <value>Using auto port mapping</value>
+  </data>
+  <data name="SystemSettings_UserSet" xml:space="preserve">
+    <value>User Settings</value>
+  </data>
+  <data name="SystemSettings_WAN" xml:space="preserve">
+    <value>Global IP Address</value>
   </data>
   <data name="SystemSettings_Warn" xml:space="preserve">
     <value>The port number has an invalid value.
