@@ -686,8 +686,8 @@
         </Grid>
 
         <!--//NetWork//-->
-        <!--<Grid Visibility="{Binding ShowNet, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">-->
-            <Grid Style="{StaticResource SettingContent}">
+        <Grid Visibility="{Binding ShowNet, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+            <!--<Grid Style="{StaticResource SettingContent}">-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="200"/>
                 <RowDefinition/>
