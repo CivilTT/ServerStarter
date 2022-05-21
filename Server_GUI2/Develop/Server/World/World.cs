@@ -219,7 +219,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public World(LocalWorld local)
         {
-            deleteRemoteEvent = new EventHandler((_, __) => UnlinkForce());
+            deleteRemoteEvent = new EventHandler((_, __) => {UnlinkForce(); WorldCollection.Instance.SaveLinkJson();});
             deleteLocalEvent = new EventHandler((_, __) => Delete());
 
             LocalWorld = local;
@@ -232,7 +232,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public World(LocalWorld local, RemoteWorld remote)
         {
-            deleteRemoteEvent = new EventHandler((_, __) => UnlinkForce());
+            deleteRemoteEvent = new EventHandler((_, __) => { UnlinkForce();WorldCollection.Instance.SaveLinkJson(); });
             LocalWorld = local;
             RemoteWorld = remote;
             RemoteWorld.DeleteEvent += deleteRemoteEvent;
