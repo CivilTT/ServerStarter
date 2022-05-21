@@ -1,6 +1,7 @@
 ﻿using log4net;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -28,6 +29,8 @@ namespace Server_GUI2
         {
             // 手動でShutdown()が呼ばれるまでアプリを終了しない（MainWindowの前にWelcomeWindowを呼んだ際に、アプリが落ちてしまう現象を回避）
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            Server_GUI2.Properties.Resources.Culture = CultureInfo.GetCultureInfo("ja");
+
 
             // システムの初期設定（処理）を行う
             SetUp.Initialize();

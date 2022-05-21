@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Server_GUI2.Windows.MessageBox;
+﻿using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
-using MW = ModernWpf;
+using System.ComponentModel;
+using System.Windows.Controls;
+using Image = Server_GUI2.Windows.MessageBox.Back.Image;
 
 namespace Server_GUI2.Windows.WorldSettings
 {
@@ -34,16 +22,14 @@ namespace Server_GUI2.Windows.WorldSettings
 
             if (!vm.Saved)
             {
-                string message =
-                    "Worldに関する設定内容を保存しますか？";
-                string[] buttons = new string[3] { "Save", "Not Save", "Cancel" };
-                string result = CustomMessageBox.Show(message, buttons, MessageBox.Back.Image.Warning);
+                string[] buttons = new string[3] { Properties.Resources.Yes, Properties.Resources.No, Properties.Resources.Cancel };
+                int result = CustomMessageBox.Show(Properties.Resources.Window_CheckSave, buttons, Image.Warning);
                 switch (result)
                 {
-                    case "Save":
+                    case 0:
                         vm.SaveWorldSettings();
                         break;
-                    case "Not Save":
+                    case 1:
                         break;
                     default:
                         e.Cancel = true;

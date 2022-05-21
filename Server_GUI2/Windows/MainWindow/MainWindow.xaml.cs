@@ -54,14 +54,14 @@ namespace Server_GUI2
                 string error_message = eventargs.ExceptionObject.ToString();
                 if (!error_message.Contains("UserSelectException"))
                 {
-                    string message_box =
-                        "予期せぬエラーが発生しました。\n" +
-                        "エラー内容を確認し、システムバグが疑われる場合は制作者（CivilTT）にお問い合わせください。\n\n" +
-                        $"【エラー内容】\n{error_message.Split(separator, StringSplitOptions.None)[0]}";
+                    var result = CustomMessageBox.Show(
+                        $"{Properties.Resources.App_Unhandle}\n{error_message.Split(separator, StringSplitOptions.None)[0]}", 
+                        new string[2] { Properties.Resources.LogFolder, Properties.Resources.Close }, 
+                        Image.Error,
+                        new LinkMessage(Properties.Resources.Manage_Vup2, "https://github.com/CivilTT/ServerStarter/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D")
+                        );
 
-                    var result = CustomMessageBox.Show(message_box, new string[2] { "log Folder", "Close" }, Image.Error);
-
-                    if (result == "log Folder")
+                    if (result == 0)
                         Process.Start(Path.GetFullPath(@".\log\"));
                     logger.Error(error_message);
                 }

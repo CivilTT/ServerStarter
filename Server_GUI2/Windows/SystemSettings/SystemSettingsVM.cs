@@ -1,24 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using Server_GUI2.Develop.Server;
+using Server_GUI2.Develop.Server.World;
+using Server_GUI2.Develop.Util;
+using Server_GUI2.Util;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Data;
-using Server_GUI2.Util;
-using Server_GUI2.Develop.Util;
-using MW = ModernWpf;
-using System.Text.RegularExpressions;
-using Server_GUI2.Develop.Server.World;
-using Server_GUI2.Develop.Server;
-using Server_GUI2.Windows.MessageBox;
-using Server_GUI2.Windows.MessageBox.Back;
 using Image = Server_GUI2.Windows.MessageBox.Back.Image;
 
 namespace Server_GUI2.Windows.SystemSettings
@@ -223,12 +215,12 @@ namespace Server_GUI2.Windows.SystemSettings
 
             if (UsingPortMapping != null && UsingPortMapping.Value)
             {
-                string message =
-                    "この機能はルータに対してポート開放を行います。\n" +
-                    "セキュリティソフトに対してはポート開放されないため、必要に応じてご自身で設定してください。\n" +
-                    "詳細は設定方法をご参照ください。";
-                LinkMessage link = new LinkMessage("ポート開放の設定方法", "https://civiltt.github.io/ServerStarter/");
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Infomation, link);
+                CustomMessageBox.Show(
+                    Properties.Resources.SystemSettings_PortOn1, 
+                    ButtonType.OK, 
+                    Image.Infomation,
+                    new LinkMessage(Properties.Resources.SystemSettings_PortOn2, "https://civiltt.github.io/ServerStarter/")
+                    );
             }
         }
 
@@ -238,7 +230,7 @@ namespace Server_GUI2.Windows.SystemSettings
             {
                 case "PortNumber":
                     if (!ValidPortNumber)
-                        return "This Port Number is not valid";
+                        return Properties.Resources.SystemSettings_CheckPort;
                     break;
                 default:
                     break;
@@ -267,10 +259,7 @@ namespace Server_GUI2.Windows.SystemSettings
         {
             if (!ValidPortNumber)
             {
-                string message =
-                    "指定されたポート番号が不正な値です。\n" +
-                    "Auto Port Mappingを使用しない設定に変更します。";
-                CustomMessageBox.Show(message, ButtonType.OK, Image.Error);
+                CustomMessageBox.Show(Properties.Resources.SystemSettings_Warn, ButtonType.OK, Image.Error);
                 UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = false;
                 UserSettings.Instance.userSettings.PortSettings.PortNumber = 25565;
             }
@@ -315,7 +304,7 @@ namespace Server_GUI2.Windows.SystemSettings
     public class BoolOption
     {
         public string Property { get; }
-        public string ToolTip { get; } = "このプロパティの説明は登録されていません。";
+        public string ToolTip { get; } = Properties.Resources.P_Other;
         public bool Value { get; set; }
 
         private BoolOption(string property, bool value)
@@ -345,7 +334,7 @@ namespace Server_GUI2.Windows.SystemSettings
     public class TextOption
     {
         public string Property { get; }
-        public string ToolTip { get; } = "このプロパティの説明は登録されていません。";
+        public string ToolTip { get; } = Properties.Resources.P_Other;
         public string Value { get; set; }
 
         private TextOption(string property, string value)
