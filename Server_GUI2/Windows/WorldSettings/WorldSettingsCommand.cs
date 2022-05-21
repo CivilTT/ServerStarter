@@ -1,16 +1,9 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using Server_GUI2.Develop.Server.World;
-using Server_GUI2.Util;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
-using MW = ModernWpf;
+using System;
+using System.Collections.ObjectModel;
 
 namespace Server_GUI2.Windows.WorldSettings
 {
@@ -24,7 +17,7 @@ namespace Server_GUI2.Windows.WorldSettings
         public override void Execute(object parameter)
         {
             _vm.PropertyIndexs.Value = new ServerProperty(UserSettings.Instance.userSettings.DefaultProperties);
-            CustomMessageBox.Show("既定のサーバープロパティを適用しました。", ButtonType.OK, Image.Infomation);
+            CustomMessageBox.Show(Properties.Resources.WorldSettings_SetProp, ButtonType.OK, Image.Infomation);
         }
     }
 
@@ -38,7 +31,7 @@ namespace Server_GUI2.Windows.WorldSettings
         public override void Execute(object parameter)
         {
             UserSettings.Instance.userSettings.DefaultProperties = new ServerProperty(_vm.PropertyIndexs.Value);
-            CustomMessageBox.Show("既定のサーバープロパティとして保存されました。", ButtonType.OK, Image.Infomation);
+            CustomMessageBox.Show(Properties.Resources.WorldSettings_SaveProp, ButtonType.OK, Image.Infomation);
         }
     }
 
@@ -59,7 +52,7 @@ namespace Server_GUI2.Windows.WorldSettings
             {
                 case "Datapack":
                     bool isZip = _vm.IsZipDatapack.Value;
-                    string path = ShowDialog(isZip, new CommonFileDialogFilter("圧縮ファイル", "*.zip"));
+                    string path = ShowDialog(isZip, new CommonFileDialogFilter(Properties.Resources.ZipFile, "*.zip"));
 
                     if (path == null)
                         break;
@@ -68,7 +61,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     Datapack datapack = Datapack.TryGenInstance(path, isZip);
                     if (datapack == null)
                     {
-                        CustomMessageBox.Show($"この{(isZip ? "ファイル" : "フォルダ")}はデータパックとして無効です。", ButtonType.OK, Image.Error);
+                        CustomMessageBox.Show(Properties.Resources.WorldSettings_Datapack, ButtonType.OK, Image.Error);
                         break;
                     }
 
@@ -76,7 +69,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     _vm.Datapacks.Add(datapack);
                     break;
                 case "Plugin":
-                    path = ShowDialog(true, new CommonFileDialogFilter("プラグインファイル", "*.jar"));
+                    path = ShowDialog(true, new CommonFileDialogFilter(Properties.Resources.Plugin, "*.jar"));
 
                     if (path == null)
                         break;
@@ -84,7 +77,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     Plugin plugin = Plugin.TryGenInstance(path, false);
                     if (plugin == null)
                     {
-                        CustomMessageBox.Show("Pluginとして無効なファイルです。", ButtonType.OK, Image.Error);
+                        CustomMessageBox.Show(Properties.Resources.WorldSettings_Plugin, ButtonType.OK, Image.Error);
                         break;
                     }
 
@@ -92,7 +85,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     break;
                 case "CustomMap":
                     isZip = _vm.IsZipMap;
-                    path = ShowDialog(isZip, new CommonFileDialogFilter("圧縮ファイル", "*.zip"));
+                    path = ShowDialog(isZip, new CommonFileDialogFilter(Properties.Resources.ZipFile, "*.zip"));
 
                     if (path == null)
                         break;
@@ -100,7 +93,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     CustomMap custom = CustomMap.TryGetInstance(path, isZip);
                     if (custom == null)
                     {
-                        CustomMessageBox.Show($"この{(isZip ? "ファイル" : "フォルダ")}は配布ワールドとして無効です。", ButtonType.OK, Image.Error);
+                        CustomMessageBox.Show(Properties.Resources.WorldSettings_Map, ButtonType.OK, Image.Error);
                         break;
                     }
 
@@ -119,9 +112,10 @@ namespace Server_GUI2.Windows.WorldSettings
         /// </summary>
         private string ShowDialog(bool isFile, CommonFileDialogFilter filter=null)
         {
+            string selectType = isFile ? Properties.Resources.File : Properties.Resources.Folder;
             using (var cofd = new CommonOpenFileDialog()
             {
-                Title = "フォルダを選択してください",
+                Title = Properties.Resources.WorldSettings_Select1 + selectType + Properties.Resources.WorldSettings_Select2,
                 RestoreDirectory = true,
                 IsFolderPicker = !isFile,
             })
@@ -146,16 +140,16 @@ namespace Server_GUI2.Windows.WorldSettings
 
         public override void Execute(object parameter)
         {
-            void DeleteContent(Action DeleteAction, string name, string nullMessage = "削除したい行を選択してください。")
+            void DeleteContent(Action DeleteAction, string name)
             {
                 if (name == null)
                 {
-                    CustomMessageBox.Show(nullMessage, ButtonType.OK, Image.Warning);
+                    CustomMessageBox.Show(Properties.Resources.WorldSettings_Remove, ButtonType.OK, Image.Warning);
                     return;
                 }
 
-                string result = CustomMessageBox.Show($"{name}を削除しますか？", ButtonType.YesNo, Image.Question);
-                if (result == "Yes")
+                int result = CustomMessageBox.Show($"{Properties.Resources.WorldSettings_Delete1}{name}{Properties.Resources.WorldSettings_Delete2}", ButtonType.YesNo, Image.Question);
+                if (result == 0)
                     DeleteAction();
             }
 
@@ -204,7 +198,7 @@ namespace Server_GUI2.Windows.WorldSettings
             bool addedG = AddGroup(opLevel);
             _vm.OpPlayersList.Sort();
             if (!(addedP || addedG))
-                CustomMessageBox.Show("選択されたプレイヤーとグループはすでに登録されています。", ButtonType.OK, Image.Warning);
+                CustomMessageBox.Show(Properties.Resources.WorldSettings_Register, ButtonType.OK, Image.Warning);
         }
 
         /// <summary>
@@ -259,7 +253,7 @@ namespace Server_GUI2.Windows.WorldSettings
             bool addedG = AddGroup();
             _vm.WhitePlayersList.Sort();
             if (!(addedP || addedG))
-                CustomMessageBox.Show("選択されたプレイヤーとグループはすでに登録されています。", ButtonType.OK, Image.Warning);
+                CustomMessageBox.Show(Properties.Resources.WorldSettings_Register, ButtonType.OK, Image.Warning);
         }
 
         private bool AddPlayer()

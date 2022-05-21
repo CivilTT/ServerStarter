@@ -495,10 +495,12 @@ namespace Server_GUI2.Develop.Server.World
             if (version < Version)
             {
                 logger.Warn($"The World-Data will be recreated by {version} from {Version}");
-                string result = CustomMessageBox.Show(
-                    $"ワールドデータを{Version}から{version}へバージョンダウンしようとしています。\n" +
-                    $"データが破損する可能性が極めて高い操作ですが、危険性を理解したうえで実行しますか？", ButtonType.YesNo, Image.Warning);
-                if (result == "No")
+                int result = CustomMessageBox.Show(
+                    $"{Properties.Resources.World_VerDownMsg1}{Version}{Properties.Resources.World_VerDownMsg2}{version}{Properties.Resources.World_VerDownMsg3}\n{Properties.Resources.World_VerDownMsg4}",
+                    ButtonType.YesNo,
+                    Image.Warning
+                    );
+                if (result == 1)
                     throw new ServerStarterException<DowngradeException>(new DowngradeException("User reject downgrading"));
             }
 

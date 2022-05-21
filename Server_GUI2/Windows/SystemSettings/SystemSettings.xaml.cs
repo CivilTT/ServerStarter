@@ -1,24 +1,7 @@
 ﻿using Server_GUI2.Develop.Util;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
-using MW = ModernWpf;
+using System.ComponentModel;
 using Image = Server_GUI2.Windows.MessageBox.Back.Image;
 
 namespace Server_GUI2.Windows.SystemSettings
@@ -46,23 +29,21 @@ namespace Server_GUI2.Windows.SystemSettings
 
             if (vm.RemoteAdding.Value)
             {
-                CustomMessageBox.Show("リモートの登録中はこの画面を閉じることができません", ButtonType.OK, Image.Infomation);
+                CustomMessageBox.Show(Properties.Resources.SystemSettings_Registering, ButtonType.OK, Image.Infomation);
                 e.Cancel = true;
                 return;
             }
 
             if (!vm.Saved)
             {
-                string message =
-                    "Systemに関する設定を保存しますか？";
-                string[] buttons = new string[3] { "Save", "Not Save", "Cancel" };
-                string result = CustomMessageBox.Show(message, buttons, MessageBox.Back.Image.Warning);
+                string[] buttons = new string[3] { Properties.Resources.Yes, Properties.Resources.No, Properties.Resources.Cancel };
+                int result = CustomMessageBox.Show(Properties.Resources.Window_CheckSave, buttons, Image.Warning);
                 switch (result)
                 {
-                    case "Save":
+                    case 0:
                         vm.SaveSystemSettings();
                         break;
-                    case "Not Save":
+                    case 1:
                         break;
                     default:
                         e.Cancel = true;

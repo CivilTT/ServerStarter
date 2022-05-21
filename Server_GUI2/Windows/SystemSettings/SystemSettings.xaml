@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:property="clr-namespace:Server_GUI2.Properties"
         xmlns:local="clr-namespace:Server_GUI2"
         xmlns:vm="clr-namespace:Server_GUI2.Windows.SystemSettings"
         xmlns:base="clr-namespace:Server_GUI2.Windows"
@@ -331,25 +332,25 @@
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Server" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{x:Static property:Resources.Server}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Players" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{x:Static property:Resources.Players}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Network" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{x:Static property:Resources.Network}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Others" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{x:Static property:Resources.Others}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
@@ -357,40 +358,40 @@
 
             </StackPanel>
 
-            <Button Content="Save" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Style="{StaticResource RunStyle}"/>
+            <Button Content="{x:Static property:Resources.Save}" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Style="{StaticResource RunStyle}"/>
 
         </Grid>
 
         <Line X1="3" X2="3" Y1="10" Y2="470" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
 
         <!--//ShareWorldContents//-->
-        <ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">
-        <!--<ScrollViewer Style="{StaticResource ScrollSource}">-->
+        <!--<ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">-->
+        <ScrollViewer Style="{StaticResource ScrollSource}">
             <Grid Style="{StaticResource SettingContent}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="240"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Add Remote Setting" Style="{StaticResource TitleBlock}"/>
+                <TextBlock Text="{x:Static property:Resources.SystemSettings_AddRemote}" Style="{StaticResource TitleBlock}"/>
                 <StackPanel Orientation="Vertical" Margin="40 40 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Account Name" Style="{StaticResource SWBlock}"/>
+                        <TextBlock Text="{x:Static property:Resources.SystemSettings_AName}" Style="{StaticResource SWBlock}"/>
                         <TextBox Text="{Binding AccountName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Account E-mail" Style="{StaticResource SWBlock}"/>
+                        <TextBlock Text="{x:Static property:Resources.SystemSettings_Aemail}" Style="{StaticResource SWBlock}"/>
                         <TextBox Text="{Binding AccountEmail.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Repository" Style="{StaticResource SWBlock}"/>
+                        <TextBlock Text="{x:Static property:Resources.SystemSettings_Repo}" Style="{StaticResource SWBlock}"/>
                         <TextBox Text="{Binding RepoName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 10" HorizontalAlignment="Right">
                         <ui:ProgressRing IsActive="{Binding RemoteAdding.Value}" Width="30" Height="30"/>
-                        <Button Content="Add Account" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_SW}" Command="{Binding AddListCommand}" CommandParameter="Remote" Style="{StaticResource RunStyle}"/>
+                        <Button Content="{x:Static property:Resources.SystemSettings_AddA}" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_SW}" Command="{Binding AddListCommand}" CommandParameter="Remote" Style="{StaticResource RunStyle}"/>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock Text="Remote List" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                <TextBlock Text="{x:Static property:Resources.SystemSettings_RemoteL}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
                 <Button Command="{Binding DeleteListCommand}" CommandParameter="Remote" Style="{StaticResource MiniButton}">
                     <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
@@ -405,10 +406,10 @@
                               HorizontalAlignment="Left"
                               SelectedItem="{Binding RLIndex.Value}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Account Name" IsReadOnly="True" Binding="{Binding Storage.AccountName}"/>
-                            <DataGridTextColumn Header="Repository" IsReadOnly="True" Binding="{Binding Storage.RepositoryName}"/>
-                            <DataGridTextColumn Header="World" IsReadOnly="True" Binding="{Binding Name}"/>
-                            <DataGridTemplateColumn Header="Show" Width="60">
+                            <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_AName}" IsReadOnly="True" Binding="{Binding Storage.AccountName}"/>
+                            <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_Repo}" IsReadOnly="True" Binding="{Binding Storage.RepositoryName}"/>
+                            <DataGridTextColumn Header="{x:Static property:Resources.World}" IsReadOnly="True" Binding="{Binding Name}"/>
+                            <DataGridTemplateColumn Header="{x:Static property:Resources.Show}" Width="60">
                                 <DataGridTemplateColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -424,9 +425,9 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <TextBlock Text="Links" Margin="0 30 0 10" Style="{StaticResource TitleBlock}"/>
-                    <ui:HyperlinkButton Content="Personal Access Token" NavigateUri="https://github.com/settings/tokens" FontSize="20" Margin="20 0"/>
-                    <ui:HyperlinkButton Content="資格情報マネージャー" Command="{Binding CredentialManagerCommand}" FontSize="20" Margin="20 10"/>
+                    <TextBlock Text="{x:Static property:Resources.SystemSettings_Links}" Margin="0 30 0 10" Style="{StaticResource TitleBlock}"/>
+                    <ui:HyperlinkButton Content="{x:Static property:Resources.SystemSettings_Personal}" NavigateUri="https://github.com/settings/tokens" FontSize="20" Margin="20 0"/>
+                    <ui:HyperlinkButton Content="{x:Static property:Resources.SystemSettings_Cred}" Command="{Binding CredentialManagerCommand}" FontSize="20" Margin="20 10"/>
 
                 </StackPanel>
             </Grid>
