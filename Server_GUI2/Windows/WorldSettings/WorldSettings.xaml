@@ -263,7 +263,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.RowSpan="1" Grid.ColumnSpan="3">
-            <TextBlock Text="{x:Static property:Resources.WorldSettings_Title}" Margin="30,15,0,0" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Resources.WorldSettings_Title}" Margin="30,15,0,0" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
             <TextBlock Text="{Binding RunInfo}" MaxWidth="350" TextTrimming="CharacterEllipsis" Margin="20 23" FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
             <Line X1="30" X2="610" Y1="70" Y2="70" Style="{StaticResource LineStyle}"/>
         </Grid>
@@ -274,7 +274,7 @@
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{x:Static property:Resources.WorldSettings_Properties}" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{Binding Resources.WorldSettings_Properties}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
@@ -286,19 +286,19 @@
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{x:Static property:Resources.WorldSettings_Additionals}" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{Binding Resources.WorldSettings_Additionals}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{x:Static property:Resources.WorldSettings_Op}" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{Binding Resources.WorldSettings_Op}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{x:Static property:Resources.WorldSettings_WhiteL}" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{Binding Resources.WorldSettings_WhiteL}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
@@ -306,7 +306,7 @@
 
             </StackPanel>
 
-            <Button Content="{x:Static property:Resources.Save}" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Style="{StaticResource RunStyle}"/>
+            <Button Content="{Binding Resources.Save}" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Style="{StaticResource RunStyle}"/>
 
         </Grid>
 
@@ -330,18 +330,18 @@
                     </TabItem.Header>
                     <Grid Margin="0 10">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{x:Static property:Resources.WorldSettings_PropOfWor}" Style="{StaticResource TitleBlock}"/>
+                            <TextBlock Text="{Binding Resources.WorldSettings_PropOfWor}" Style="{StaticResource TitleBlock}"/>
                             <Button Margin="0 7" Style="{StaticResource Help}"/>
                         </StackPanel>
                         
                         <StackPanel Orientation="Horizontal" Margin="0 35 0 0">
                             <StackPanel Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                <TextBlock Text="{x:Static property:Resources.SystemSettings_Main}" Style="{StaticResource TitleBlock2}"/>
-                                <TextBlock Text="difficulty" ToolTip="{x:Static property:Resources.P_Difficult}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="hardcore" ToolTip="{x:Static property:Resources.P_Hardcore}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="gamemode" ToolTip="{x:Static property:Resources.P_Gamemode}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="white-list" ToolTip="{x:Static property:Resources.P_WhiteList}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="level-type" ToolTip="{x:Static property:Resources.P_LevelType}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="{Binding Resources.SystemSettings_Main}" Style="{StaticResource TitleBlock2}"/>
+                                <TextBlock Text="difficulty" ToolTip="{Binding Resources.P_Difficult}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="hardcore" ToolTip="{Binding Resources.P_Hardcore}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="gamemode" ToolTip="{Binding Resources.P_Gamemode}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="white-list" ToolTip="{Binding Resources.P_WhiteList}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="level-type" ToolTip="{Binding Resources.P_LevelType}" Style="{StaticResource PropertyIndex}"/>
                             </StackPanel>
                             <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
                                 <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,62,0,0" Style="{StaticResource PropertyCombo}"/>
@@ -360,7 +360,7 @@
                         <TextBlock Text="True / False"/>
                     </TabItem.Header>
                     <Grid Margin="0 10">
-                        <TextBlock Text="{x:Static property:Resources.SystemSettings_TrueFalse}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                        <TextBlock Text="{Binding Resources.SystemSettings_TrueFalse}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
                         <DataGrid ItemsSource="{Binding BoolOptions}"
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
@@ -395,7 +395,7 @@
                         <TextBlock Text="Text"/>
                     </TabItem.Header>
                     <Grid Margin="0 10">
-                        <TextBlock Text="{x:Static property:Resources.SystemSettings_Text}" Style="{StaticResource TitleBlock}"/>
+                        <TextBlock Text="{Binding Resources.SystemSettings_Text}" Style="{StaticResource TitleBlock}"/>
                         <DataGrid ItemsSource="{Binding TextOptions}"
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
@@ -425,15 +425,15 @@
         <!--<Grid Style="{StaticResource SettingContent}">-->
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                    <TextBlock Text="{x:Static property:Resources.WorldSettings_UseSW}" FontSize="24" FontWeight="Bold" Margin="20 0"/>
-                    <ui:ToggleSwitch OnContent="{x:Static property:Resources.Yes}" OffContent="{x:Static property:Resources.No}" IsOn="{Binding UseSW.Value}" FontSize="24" Margin="130 0 0 0"/>
+                    <TextBlock Text="{Binding Resources.WorldSettings_UseSW}" FontSize="24" FontWeight="Bold" Margin="20 0"/>
+                    <ui:ToggleSwitch OnContent="{Binding Resources.Yes}" OffContent="{Binding Resources.No}" IsOn="{Binding UseSW.Value}" FontSize="24" Margin="130 0 0 0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20" VerticalAlignment="Top">
-                    <TextBlock Text="{x:Static property:Resources.WorldSettings_Account}" Width="200" FontSize="20" IsEnabled="{Binding CanEdit}"/>
+                    <TextBlock Text="{Binding Resources.WorldSettings_Account}" Width="200" FontSize="20" IsEnabled="{Binding CanEdit}"/>
                     <ComboBox ItemsSource="{Binding Accounts}" DisplayMemberPath="Id" SelectedItem="{Binding AccountIndex.Value}" IsEnabled="{Binding CanEdit}" Style="{StaticResource ShareWorldCombo}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20 0" VerticalAlignment="Top">
-                    <TextBlock Text="{x:Static property:Resources.WorldSettings_RemoteWor}" Width="200" FontSize="20" IsEnabled="{Binding CanEdit}"/>
+                    <TextBlock Text="{Binding Resources.WorldSettings_RemoteWor}" Width="200" FontSize="20" IsEnabled="{Binding CanEdit}"/>
                     <StackPanel Orientation="Vertical">
                         <ComboBox ItemsSource="{Binding RemoteDataList}" DisplayMemberPath="DisplayName" SelectedItem="{Binding RemoteIndex.Value}" IsEnabled="{Binding CanSelectRemoteIndex}" Style="{StaticResource ShareWorldCombo}"/>
                         <TextBox Text="{Binding RemoteName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Visibility="{Binding ShowNewRemoteData, Converter={StaticResource BoolToVisible}}" IsEnabled="{Binding CanEdit}" Style="{StaticResource ShareWorldBox}"/>
@@ -465,14 +465,14 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="{x:Static property:Resources.WorldSettings_ImportDP}" Style="{StaticResource AddBlock}"/>
+                        <TextBlock Text="{Binding Resources.WorldSettings_ImportDP}" Style="{StaticResource AddBlock}"/>
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 30" Orientation="Horizontal">
-                            <ui:ToggleSwitch Header="{x:Static property:Resources.WorldSettings_DataKinds}" OnContent="Zip" OffContent="Folder" IsOn="{Binding IsZipDatapack.Value}" FontSize="18"/>
-                            <Button Content="{x:Static property:Resources.Import}" Command="{Binding ImportAdditionalsCommand}" CommandParameter="Datapack" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
+                            <ui:ToggleSwitch Header="{Binding Resources.WorldSettings_DataKinds}" OnContent="Zip" OffContent="Folder" IsOn="{Binding IsZipDatapack.Value}" FontSize="18"/>
+                            <Button Content="{Binding Resources.Import}" Command="{Binding ImportAdditionalsCommand}" CommandParameter="Datapack" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
                         </StackPanel>
                         <Line X1="0" Y1="130" X2="420" Y2="130" Style="{StaticResource LineStyle}"/>
 
-                        <TextBlock Text="{x:Static property:Resources.WorldSettings_Imported}" Grid.Row="1" Style="{StaticResource AddBlock}"/>
+                        <TextBlock Text="{Binding Resources.WorldSettings_Imported}" Grid.Row="1" Style="{StaticResource AddBlock}"/>
                         <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="Datapack" Style="{StaticResource MiniButton}">
                             <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                             <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
@@ -493,11 +493,11 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="{x:Static property:Resources.WorldSettings_ImportP}" Margin="0 0 20 0" VerticalAlignment="Center" Style="{StaticResource AddBlock}"/>
-                        <Button Content="{x:Static property:Resources.Import}" Command="{Binding ImportAdditionalsCommand}" CommandParameter="Plugin" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0" Style="{StaticResource OtherStyle}"/>
+                        <TextBlock Text="{Binding Resources.WorldSettings_ImportP}" Margin="0 0 20 0" VerticalAlignment="Center" Style="{StaticResource AddBlock}"/>
+                        <Button Content="{Binding Resources.Import}" Command="{Binding ImportAdditionalsCommand}" CommandParameter="Plugin" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0" Style="{StaticResource OtherStyle}"/>
                         <Line X1="0" Y1="80" X2="420" Y2="80" Style="{StaticResource LineStyle}"/>
 
-                        <TextBlock Text="{x:Static property:Resources.WorldSettings_Imported}" Grid.Row="1" Style="{StaticResource AddBlock}"/>
+                        <TextBlock Text="{Binding Resources.WorldSettings_Imported}" Grid.Row="1" Style="{StaticResource AddBlock}"/>
                         <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="Plugin" Style="{StaticResource MiniButton}">
                             <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                             <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
@@ -522,13 +522,13 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="{x:Static property:Resources.WorldSettings_ImportMap}" Style="{StaticResource AddBlock}"/>
+                        <TextBlock Text="{Binding Resources.WorldSettings_ImportMap}" Style="{StaticResource AddBlock}"/>
                         <StackPanel VerticalAlignment="Top" Margin="30 40" Orientation="Horizontal">
-                            <ui:ToggleSwitch Header="{x:Static property:Resources.WorldSettings_DataKinds}" OnContent="Zip" OffContent="Folder" IsOn="{Binding IsZipMap}" FontSize="18"/>
-                            <Button Content="{x:Static property:Resources.Import}" Command="{Binding ImportAdditionalsCommand}" CommandParameter="CustomMap" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
+                            <ui:ToggleSwitch Header="{Binding Resources.WorldSettings_DataKinds}" OnContent="Zip" OffContent="Folder" IsOn="{Binding IsZipMap}" FontSize="18"/>
+                            <Button Content="{Binding Resources.Import}" Command="{Binding ImportAdditionalsCommand}" CommandParameter="CustomMap" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
                         </StackPanel>
                         <StackPanel VerticalAlignment="Top" Margin="30 100 0 0" Orientation="Horizontal">
-                            <TextBlock Text="{x:Static property:Resources.WorldSettings_MapName}" FontSize="18" Height="33" Padding="0 3"/>
+                            <TextBlock Text="{Binding Resources.WorldSettings_MapName}" FontSize="18" Height="33" Padding="0 3"/>
                             <TextBlock Text="{Binding RunWorld.CustomMap.Name}" FontSize="18" Padding="0 3" Height="33" Width="180"/>
                         </StackPanel>
                         <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="CustomMap" Grid.Row="0" Margin="0 100 0 0" Style="{StaticResource MiniButton}">
@@ -537,7 +537,7 @@
                         </Button>
                         <Line X1="0" Y1="150" X2="420" Y2="150" Style="{StaticResource LineStyle}"/>
 
-                        <TextBlock Text="{x:Static property:Resources.WorldSettings_Rpack}" Grid.Row="1" Style="{StaticResource AddBlock}"/>
+                        <TextBlock Text="{Binding Resources.WorldSettings_Rpack}" Grid.Row="1" Style="{StaticResource AddBlock}"/>
                         <TextBox Margin="0 40" Style="{StaticResource AddBox}"/>
                     </Grid>
                 </TabItem>
@@ -555,20 +555,20 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{x:Static property:Resources.WorldSettings_AddOp}" Style="{StaticResource OpTitle}"/>
+                        <TextBlock Text="{Binding Resources.WorldSettings_AddOp}" Style="{StaticResource OpTitle}"/>
                         <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
-                            <TextBlock Text="{x:Static property:Resources.SystemSettings_PName}" Style="{StaticResource OpBlock}"/>
+                            <TextBlock Text="{Binding Resources.SystemSettings_PName}" Style="{StaticResource OpBlock}"/>
                             <ComboBox ItemsSource="{Binding Players}" DisplayMemberPath="Name" SelectedItem="{Binding OpPlayerIndex}" IsEnabled="{Binding ValidPlayers}" Width="200" Style="{StaticResource OpCombo}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="40 10 0 0">
-                            <TextBlock Text="{x:Static property:Resources.SystemSettings_GName}" Style="{StaticResource OpBlock}"/>
+                            <TextBlock Text="{Binding Resources.SystemSettings_GName}" Style="{StaticResource OpBlock}"/>
                             <ComboBox ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding OpGroupIndex}" Width="200" Style="{StaticResource OpCombo}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="40 10 0 0">
-                            <TextBlock Text="{x:Static property:Resources.WorldSettings_OpLev}" Style="{StaticResource OpBlock}"/>
+                            <TextBlock Text="{Binding Resources.WorldSettings_OpLev}" Style="{StaticResource OpBlock}"/>
                             <ComboBox ItemsSource="{Binding OpLevels}" SelectedItem="{Binding OpLevelIndex}" Style="{StaticResource OpCombo}"/>
                         </StackPanel>
-                        <Button Content="{x:Static property:Resources.SystemSettings_AddP}" Command="{Binding AddOpPlayerCommand}" IsEnabled="{Binding CanAddOpPlayer}" HorizontalAlignment="Right" Margin="20" Style="{StaticResource RunStyle}"/>
+                        <Button Content="{Binding Resources.SystemSettings_AddP}" Command="{Binding AddOpPlayerCommand}" IsEnabled="{Binding CanAddOpPlayer}" HorizontalAlignment="Right" Margin="20" Style="{StaticResource RunStyle}"/>
                     </StackPanel>                    
                    
                     <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="Op" Margin="20 0" Style="{StaticResource MiniButton}">
@@ -576,7 +576,7 @@
                         <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
                     </Button>
                     <StackPanel Orientation="Vertical" Grid.Row="1">
-                        <TextBlock Text="{x:Static property:Resources.SystemSettings_PlayerL}" Style="{StaticResource OpTitle}"/>
+                        <TextBlock Text="{Binding Resources.SystemSettings_PlayerL}" Style="{StaticResource OpTitle}"/>
                         <DataGrid ItemsSource="{Binding OpPlayersList}"
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
@@ -615,16 +615,16 @@
             </Grid.RowDefinitions>
             
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="{x:Static property:Resources.WorldSettings_AddWhite}" Style="{StaticResource OpTitle}"/>
+                <TextBlock Text="{Binding Resources.WorldSettings_AddWhite}" Style="{StaticResource OpTitle}"/>
                 <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
-                    <TextBlock Text="{x:Static property:Resources.SystemSettings_PName}" Style="{StaticResource OpBlock}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_PName}" Style="{StaticResource OpBlock}"/>
                     <ComboBox ItemsSource="{Binding Players}" DisplayMemberPath="Name" SelectedItem="{Binding WhitePlayerIndex}" IsEnabled="{Binding ValidPlayers}" Width="200" Style="{StaticResource OpCombo}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="40 10 0 0">
-                    <TextBlock Text="{x:Static property:Resources.SystemSettings_GName}" Style="{StaticResource OpBlock}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_GName}" Style="{StaticResource OpBlock}"/>
                     <ComboBox ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding WhiteGroupIndex}" Width="200" Style="{StaticResource OpCombo}"/>
                 </StackPanel>
-                <Button Content="{x:Static property:Resources.SystemSettings_AddP}" Command="{Binding AddWhiteCommand}" IsEnabled="{Binding CanAddWhitePlayer}" HorizontalAlignment="Right" Margin="20" Style="{StaticResource RunStyle}"/>
+                <Button Content="{Binding Resources.SystemSettings_AddP}" Command="{Binding AddWhiteCommand}" IsEnabled="{Binding CanAddWhitePlayer}" HorizontalAlignment="Right" Margin="20" Style="{StaticResource RunStyle}"/>
             </StackPanel>
 
             <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="WhiteList" Margin="20 0" Style="{StaticResource MiniButton}">
@@ -632,7 +632,7 @@
                 <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
             </Button>
             <StackPanel Orientation="Vertical" Grid.Row="1">
-                <TextBlock Text="{x:Static property:Resources.SystemSettings_PlayerL}" Style="{StaticResource OpTitle}"/>
+                <TextBlock Text="{Binding Resources.SystemSettings_PlayerL}" Style="{StaticResource OpTitle}"/>
                 <DataGrid ItemsSource="{Binding WhitePlayersList}"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"

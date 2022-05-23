@@ -2,6 +2,7 @@
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
 using System.ComponentModel;
+using System.Globalization;
 using Image = Server_GUI2.Windows.MessageBox.Back.Image;
 
 namespace Server_GUI2.Windows.SystemSettings
@@ -44,6 +45,7 @@ namespace Server_GUI2.Windows.SystemSettings
                         vm.SaveSystemSettings();
                         break;
                     case 1:
+                        Properties.Resources.Culture = CultureInfo.GetCultureInfo(UserSettings.Instance.userSettings.Language);
                         break;
                     default:
                         e.Cancel = true;

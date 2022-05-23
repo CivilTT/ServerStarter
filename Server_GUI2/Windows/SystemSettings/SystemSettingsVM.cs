@@ -17,6 +17,7 @@ namespace Server_GUI2.Windows.SystemSettings
 {
     class SystemSettingsVM : GeneralVM, IDataErrorInfo
     {
+        public Properties.Resources Resources { get; private set; }
         static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
         static readonly StorageCollection Storages = StorageCollection.Instance;
 
@@ -109,6 +110,8 @@ namespace Server_GUI2.Windows.SystemSettings
         public BindingValue<string> UserName { get; private set; }
         public TwitterCommand TwitterCommand { get; private set; }
         public GitCommandVM GitCommandVM { get; private set; }
+        public BindingValue<string> LanguageSelected { get; private set; }
+        public Dictionary<string, string> Languages => UserSettings.Languages;
 
 
         // END Process
@@ -127,6 +130,7 @@ namespace Server_GUI2.Windows.SystemSettings
         public SystemSettingsVM()
         {
             // General
+            Resources = new Properties.Resources();
             MenuIndex = new BindingValue<int>(0, () => OnPropertyChanged(new string[5] { "ShowSW", "ShowServer", "ShowPlayers", "ShowNet", "ShowOthers" }));
             AddListCommand = new AddListCommand(this);
             EditListCommand = new EditListCommand(this);
@@ -176,6 +180,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
             // Others
             UserName = new BindingValue<string>(UserSettings.Instance.userSettings.OwnerName, () => OnPropertyChanged("UserName"));
+            LanguageSelected = new BindingValue<string>(Languages.FirstOrDefault(x => x.Value == UserSettings.Instance.userSettings.Language).Key ?? "English", () => UpdateLanguage());
             TwitterCommand = new TwitterCommand(this);
             GitCommandVM = new GitCommandVM(this);
 
@@ -247,7 +252,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
             // 既存のデータを変更する形で処理
             UserSettings.Instance.userSettings.OwnerName = UserName.Value;
-            UserSettings.Instance.userSettings.Language = "English";
+            UserSettings.Instance.userSettings.Language = Languages[LanguageSelected.Value];
             UserSettings.Instance.userSettings.DefaultProperties = new ServerProperty(PropertyIndexs.Value);
             UserSettings.Instance.userSettings.Players = PlayerList.ToList();
             UserSettings.Instance.userSettings.PlayerGroups = new List<PlayerGroup>(GroupList);
@@ -278,6 +283,13 @@ namespace Server_GUI2.Windows.SystemSettings
                 PortSetting portSetting = new PortSetting(this);
                 _ = portSetting.DeletePort();
             }
+        }
+
+        private void UpdateLanguage()
+        {
+            if (LanguageSelected?.Value != null)
+                Properties.Resources.Culture = CultureInfo.GetCultureInfo(Languages[LanguageSelected.Value]);
+            OnPropertyChanged("Resources");
         }
     }
 

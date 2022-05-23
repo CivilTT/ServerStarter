@@ -314,9 +314,13 @@
             <RowDefinition Height="80"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Grid.Resources>
+            <FrameworkElement x:Key="proxyElement" />
+        </Grid.Resources>
+        <ContentControl Visibility="Collapsed" Content="{StaticResource proxyElement}"/>
 
         <Grid Grid.RowSpan="1" Grid.ColumnSpan="3">
-            <TextBlock Text="{x:Static property:Resources.SystemSettings_Title}" Margin="30,15,0,0" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Resources.SystemSettings_Title}" Margin="30,15,0,0" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
             <Line X1="30" X2="610" Y1="70" Y2="70" Style="{StaticResource LineStyle}"/>
         </Grid>
 
@@ -332,25 +336,25 @@
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{x:Static property:Resources.Server}" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{Binding Resources.Server}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{x:Static property:Resources.Players}" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{Binding Resources.Players}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{x:Static property:Resources.Network}" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{Binding Resources.Network}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
                     <ListViewItem Style="{StaticResource MenuItem}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{x:Static property:Resources.Others}" Style="{StaticResource MenuItemBlock}"/>
+                            <TextBlock Text="{Binding Resources.Others}" Style="{StaticResource MenuItemBlock}"/>
                         </StackPanel>
                     </ListViewItem>
 
@@ -358,7 +362,7 @@
 
             </StackPanel>
 
-            <Button Content="{x:Static property:Resources.Save}" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Style="{StaticResource RunStyle}"/>
+            <Button Content="{Binding Resources.Save}" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Style="{StaticResource RunStyle}"/>
 
         </Grid>
 
@@ -372,26 +376,26 @@
                     <RowDefinition Height="240"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{x:Static property:Resources.SystemSettings_AddRemote}" Style="{StaticResource TitleBlock}"/>
+                <TextBlock Text="{Binding Resources.SystemSettings_AddRemote}" Style="{StaticResource TitleBlock}"/>
                 <StackPanel Orientation="Vertical" Margin="40 40 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Static property:Resources.SystemSettings_AName}" Style="{StaticResource SWBlock}"/>
+                        <TextBlock Text="{Binding Resources.SystemSettings_AName}" Style="{StaticResource SWBlock}"/>
                         <TextBox Text="{Binding AccountName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Static property:Resources.SystemSettings_Aemail}" Style="{StaticResource SWBlock}"/>
+                        <TextBlock Text="{Binding Resources.SystemSettings_Aemail}" Style="{StaticResource SWBlock}"/>
                         <TextBox Text="{Binding AccountEmail.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Static property:Resources.SystemSettings_Repo}" Style="{StaticResource SWBlock}"/>
+                        <TextBlock Text="{Binding Resources.SystemSettings_Repo}" Style="{StaticResource SWBlock}"/>
                         <TextBox Text="{Binding RepoName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 10" HorizontalAlignment="Right">
                         <ui:ProgressRing IsActive="{Binding RemoteAdding.Value}" Width="30" Height="30"/>
-                        <Button Content="{x:Static property:Resources.SystemSettings_AddA}" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_SW}" Command="{Binding AddListCommand}" CommandParameter="Remote" Style="{StaticResource RunStyle}"/>
+                        <Button Content="{Binding Resources.SystemSettings_AddA}" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_SW}" Command="{Binding AddListCommand}" CommandParameter="Remote" Style="{StaticResource RunStyle}"/>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock Text="{x:Static property:Resources.SystemSettings_RemoteL}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                <TextBlock Text="{Binding Resources.SystemSettings_RemoteL}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
                 <Button Command="{Binding DeleteListCommand}" CommandParameter="Remote" Style="{StaticResource MiniButton}">
                     <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
@@ -425,9 +429,9 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <TextBlock Text="{x:Static property:Resources.SystemSettings_Links}" Margin="0 30 0 10" Style="{StaticResource TitleBlock}"/>
-                    <ui:HyperlinkButton Content="{x:Static property:Resources.SystemSettings_Personal}" NavigateUri="https://github.com/settings/tokens" FontSize="20" Margin="20 0"/>
-                    <ui:HyperlinkButton Content="{x:Static property:Resources.SystemSettings_Cred}" Command="{Binding CredentialManagerCommand}" FontSize="20" Margin="20 10"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_Links}" Margin="0 30 0 10" Style="{StaticResource TitleBlock}"/>
+                    <ui:HyperlinkButton Content="{Binding Resources.SystemSettings_Personal}" NavigateUri="https://github.com/settings/tokens" FontSize="20" Margin="20 0"/>
+                    <ui:HyperlinkButton Content="{Binding Resources.SystemSettings_Cred}" Command="{Binding CredentialManagerCommand}" FontSize="20" Margin="20 10"/>
 
                 </StackPanel>
             </Grid>
@@ -450,17 +454,17 @@
                         <TextBlock Text="Main"/>
                     </TabItem.Header>
                     <Grid Margin="0 10">
-                        <TextBlock Text="{x:Static property:Resources.SystemSettings_DefaultP}" Style="{StaticResource TitleBlock}"/>
+                        <TextBlock Text="{Binding Resources.SystemSettings_DefaultP}" Style="{StaticResource TitleBlock}"/>
                         <Button Margin="230 7 0 0" Style="{StaticResource Help}"/>
                         
                         <StackPanel Orientation="Horizontal" Margin="0 35 0 0">
                             <StackPanel Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                <TextBlock Text="{x:Static property:Resources.SystemSettings_Main}" Style="{StaticResource TitleBlock2}"/>
-                                <TextBlock Text="difficulty" ToolTip="{x:Static property:Resources.P_Difficult}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="hardcore" ToolTip="{x:Static property:Resources.P_Hardcore}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="gamemode" ToolTip="{x:Static property:Resources.P_Gamemode}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="white-list" ToolTip="{x:Static property:Resources.P_WhiteList}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="level-type" ToolTip="{x:Static property:Resources.P_LevelType}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="{Binding Resources.SystemSettings_Main}" Style="{StaticResource TitleBlock2}"/>
+                                <TextBlock Text="difficulty" ToolTip="{Binding Resources.P_Difficult}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="hardcore" ToolTip="{Binding Resources.P_Hardcore}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="gamemode" ToolTip="{Binding Resources.P_Gamemode}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="white-list" ToolTip="{Binding Resources.P_WhiteList}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="level-type" ToolTip="{Binding Resources.P_LevelType}" Style="{StaticResource PropertyIndex}"/>
                             </StackPanel>
                             <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
                                 <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,62,0,0" Style="{StaticResource PropertyCombo}"/>
@@ -479,7 +483,7 @@
                         <TextBlock Text="True / False"/>
                     </TabItem.Header>
                     <Grid Margin="0 10">
-                        <TextBlock Text="{x:Static property:Resources.SystemSettings_TrueFalse}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                        <TextBlock Text="{Binding Resources.SystemSettings_TrueFalse}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
                         <DataGrid ItemsSource="{Binding BoolOptions}"
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
@@ -514,7 +518,7 @@
                         <TextBlock Text="Text"/>
                     </TabItem.Header>
                     <Grid Margin="0 10">
-                        <TextBlock Text="{x:Static property:Resources.SystemSettings_Text}" Style="{StaticResource TitleBlock}"/>
+                        <TextBlock Text="{Binding Resources.SystemSettings_Text}" Style="{StaticResource TitleBlock}"/>
                         <DataGrid ItemsSource="{Binding TextOptions}"
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
@@ -553,7 +557,7 @@
                 <!--//Player//-->
                 <TabItem>
                     <TabItem.Header>
-                        <TextBlock Text="{x:Static property:Resources.Player}"/>
+                        <TextBlock Text="{Binding Resources.Player}"/>
                     </TabItem.Header>
                     <ScrollViewer>
                         <Grid>
@@ -563,15 +567,15 @@
                             </Grid.RowDefinitions>
 
                             <StackPanel Orientation="Vertical" Margin="0 10">
-                                <TextBlock Text="{x:Static property:Resources.SystemSettings_AddP}" Style="{StaticResource TitleBlock}"/>
+                                <TextBlock Text="{Binding Resources.SystemSettings_AddP}" Style="{StaticResource TitleBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
-                                    <TextBlock Text="{x:Static property:Resources.SystemSettings_NewPName}" Style="{StaticResource PlayerBlock}"/>
+                                    <TextBlock Text="{Binding Resources.SystemSettings_NewPName}" Style="{StaticResource PlayerBlock}"/>
                                     <TextBox Width="210" Text="{Binding PlayerName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerBox}"/>
                                 </StackPanel>
-                                <Button Content="{x:Static property:Resources.Regist}" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" IsEnabled="{Binding CanAddition_Pl}" Command="{Binding AddListCommand}" CommandParameter="Player" Style="{StaticResource RunStyle}"/>
+                                <Button Content="{Binding Resources.Regist}" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" IsEnabled="{Binding CanAddition_Pl}" Command="{Binding AddListCommand}" CommandParameter="Player" Style="{StaticResource RunStyle}"/>
                             </StackPanel>
 
-                            <TextBlock Text="{x:Static property:Resources.SystemSettings_PlayerL}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                            <TextBlock Text="{Binding Resources.SystemSettings_PlayerL}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
                             <Button Command="{Binding DeleteListCommand}" CommandParameter="Player" Margin="20 0" Style="{StaticResource MiniButton}">
                                 <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                                 <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
@@ -603,7 +607,7 @@
                 <!--//Group//-->
                 <TabItem>
                     <TabItem.Header>
-                        <TextBlock Text="{x:Static property:Resources.Group}"/>
+                        <TextBlock Text="{Binding Resources.Group}"/>
                     </TabItem.Header>
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid>
@@ -613,15 +617,15 @@
                             </Grid.RowDefinitions>
 
                             <StackPanel Orientation="Vertical" Margin="0 10">
-                                <TextBlock Text="{x:Static property:Resources.SystemSettings_AddG}" Style="{StaticResource TitleBlock}"/>
+                                <TextBlock Text="{Binding Resources.SystemSettings_AddG}" Style="{StaticResource TitleBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
-                                    <TextBlock Text="{x:Static property:Resources.SystemSettings_NewGName}" Style="{StaticResource PlayerBlock}"/>
+                                    <TextBlock Text="{Binding Resources.SystemSettings_NewGName}" Style="{StaticResource PlayerBlock}"/>
                                     <TextBox Width="210" Text="{Binding GroupName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerBox}"/>
                                 </StackPanel>
                                 <!--<TextBlock Text="New Group Member" Margin="40 20 0 0" Style="{StaticResource PlayerBlock}"/>-->
                                 <UniformGrid Rows="1" Margin="40 20 20 0">
                                     <StackPanel Orientation="Vertical" Width="180" HorizontalAlignment="Left">
-                                        <TextBlock Text="{x:Static property:Resources.Players}" Style="{StaticResource PlayerBlock}"/>
+                                        <TextBlock Text="{Binding Resources.Players}" Style="{StaticResource PlayerBlock}"/>
                                         <ListBox ItemsSource="{Binding PlayerList_Group}" SelectedItem="{Binding PLGIndex.Value}" Height="170">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
@@ -629,11 +633,11 @@
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
-                                        <Button Content="{x:Static property:Resources.Add}" Command="{Binding AddListCommand}" CommandParameter="GroupPlayer" Style="{StaticResource GroupButton}"/>
+                                        <Button Content="{Binding Resources.Add}" Command="{Binding AddListCommand}" CommandParameter="GroupPlayer" Style="{StaticResource GroupButton}"/>
 
                                     </StackPanel>
                                     <StackPanel Orientation="Vertical" Width="180" HorizontalAlignment="Right">
-                                        <TextBlock Text="{x:Static property:Resources.SystemSettings_Members}" Style="{StaticResource PlayerBlock}"/>
+                                        <TextBlock Text="{Binding Resources.SystemSettings_Members}" Style="{StaticResource PlayerBlock}"/>
                                         <ListBox ItemsSource="{Binding MemberList}" SelectedItem="{Binding MLIndex.Value}" Height="170">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
@@ -641,14 +645,14 @@
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
-                                        <Button Content="{x:Static property:Resources.Remove}" Command="{Binding DeleteListCommand}" CommandParameter="GroupMember" Style="{StaticResource GroupButton}"/>
+                                        <Button Content="{Binding Resources.Remove}" Command="{Binding DeleteListCommand}" CommandParameter="GroupMember" Style="{StaticResource GroupButton}"/>
 
                                     </StackPanel>
                                 </UniformGrid>
-                                <Button Content="{x:Static property:Resources.Regist}" Width="100" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_Gr}" Command="{Binding AddListCommand}" CommandParameter="Group" Style="{StaticResource RunStyle}"/>
+                                <Button Content="{Binding Resources.Regist}" Width="100" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_Gr}" Command="{Binding AddListCommand}" CommandParameter="Group" Style="{StaticResource RunStyle}"/>
                             </StackPanel>
 
-                            <TextBlock Text="{x:Static property:Resources.SystemSettings_GroupL}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                            <TextBlock Text="{Binding Resources.SystemSettings_GroupL}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
                             <Button Command="{Binding DeleteListCommand}" CommandParameter="Group" Margin="20 0" Style="{StaticResource MiniButton}">
                                 <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
                                 <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
@@ -694,26 +698,26 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{x:Static property:Resources.SystemSettings_PortMap}" Style="{StaticResource TitleBlock}"/>
+                <TextBlock Text="{Binding Resources.SystemSettings_PortMap}" Style="{StaticResource TitleBlock}"/>
                 <Button Margin="0 7" Style="{StaticResource Help}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="40 30 0 0">
-                <TextBlock Text="{x:Static property:Resources.SystemSettings_UseAPM}" Width="275" TextAlignment="Left" Style="{StaticResource PropertyIndex}"/>
-                <ui:ToggleSwitch OnContent="{x:Static property:Resources.Yes}" OffContent="{x:Static property:Resources.No}" FontSize="20" VerticalAlignment="Top" Margin="0 20" IsOn="{Binding UsingPortMapping.Value}"/>
+                <TextBlock Text="{Binding Resources.SystemSettings_UseAPM}" Width="275" TextAlignment="Left" Style="{StaticResource PropertyIndex}"/>
+                <ui:ToggleSwitch OnContent="{Binding Resources.Yes}" OffContent="{Binding Resources.No}" FontSize="20" VerticalAlignment="Top" Margin="0 20" IsOn="{Binding UsingPortMapping.Value}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="40 80 0 0">
-                <TextBlock Text="{x:Static property:Resources.SystemSettings_PortNum}" Width="225" TextAlignment="Left" Style="{StaticResource PropertyIndex}"/>
+                <TextBlock Text="{Binding Resources.SystemSettings_PortNum}" Width="225" TextAlignment="Left" Style="{StaticResource PropertyIndex}"/>
                 <!--<TextBox Text="{Binding PortNumber.Value, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="47 15" IsEnabled="{Binding CanWritePortNumber}" Style="{StaticResource PortBox}"/>-->
                 <TextBox Text="{Binding PortNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="0 15" IsEnabled="{Binding CanWritePortNumber}" Style="{StaticResource PortBox}"/>
             </StackPanel>
-            <Button Content="{x:Static property:Resources.SystemSettings_MapTest}" HorizontalAlignment="Right" Margin="30 15" IsEnabled="{Binding CanAddition_Po}" Command="{Binding AddPortCommand}" Style="{StaticResource RunStyle}"/>
+            <Button Content="{Binding Resources.SystemSettings_MapTest}" HorizontalAlignment="Right" Margin="30 15" IsEnabled="{Binding CanAddition_Po}" Command="{Binding AddPortCommand}" Style="{StaticResource RunStyle}"/>
 
-            <TextBlock Text="{x:Static property:Resources.SystemSettings_Status}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+            <TextBlock Text="{Binding Resources.SystemSettings_Status}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="20 30 0 0">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{x:Static property:Resources.SystemSettings_WAN}" Style="{StaticResource PropertyIndex}"/>
-                    <TextBlock Text="{x:Static property:Resources.SystemSettings_LAN}" Style="{StaticResource PropertyIndex}"/>
-                    <TextBlock Text="{x:Static property:Resources.SystemSettings_APM}" IsEnabled="{Binding UsingPortMapping.Value}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_WAN}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_LAN}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_APM}" IsEnabled="{Binding UsingPortMapping.Value}" Style="{StaticResource PropertyIndex}"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <TextBox Text="{Binding GlobalIP, Mode=OneWay}" Style="{StaticResource ShowIP}"/>
@@ -746,32 +750,28 @@
                 <RowDefinition Height="160"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Text="{x:Static property:Resources.SystemSettings_UserSet}" Style="{StaticResource TitleBlock}"/>
+            <TextBlock Text="{Binding Resources.SystemSettings_UserSet}" Style="{StaticResource TitleBlock}"/>
             <StackPanel Orientation="Horizontal" Margin="40 30">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{x:Static property:Resources.UserName}" Style="{StaticResource PropertyIndex}"/>
-                    <TextBlock Text="{x:Static property:Resources.SystemSettings_Lang}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.UserName}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_Lang}" Style="{StaticResource PropertyIndex}"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="30 0">
                     <TextBox Text="{Binding UserName.Value}" Margin="15" Style="{StaticResource PlayerBox}"/>
-                    <ComboBox SelectedIndex="0" HorizontalContentAlignment="Left" Margin="15 0" Style="{StaticResource PlayerCombo}">
-                        <ComboBoxItem>
-                            <TextBlock Text="English"/>
-                        </ComboBoxItem>
-                    </ComboBox>
+                    <ComboBox ItemsSource="{Binding Languages.Keys}" SelectedItem="{Binding LanguageSelected.Value}" HorizontalContentAlignment="Left" Margin="15 0" Style="{StaticResource PlayerCombo}"/>
                 </StackPanel>
             </StackPanel>
 
-            <TextBlock Text="{x:Static property:Resources.SystemSettings_SystemInfo}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+            <TextBlock Text="{Binding Resources.SystemSettings_SystemInfo}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="40 30">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{x:Static property:Resources.SystemSettings_SystemVer}" Style="{StaticResource PropertyIndex}"/>
-                    <TextBlock Text="{x:Static property:Resources.SystemSettings_Manual}" Style="{StaticResource PropertyIndex}"/>
-                    <TextBlock Text="{x:Static property:Resources.SystemSettings_Author}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_SystemVer}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_Manual}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_Author}" Style="{StaticResource PropertyIndex}"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="10 0">
                     <TextBlock Text="{Binding SystemVersion, Mode=OneWay}" Style="{StaticResource NetStatusBlock}"/>
-                    <ui:HyperlinkButton Content="{x:Static property:Resources.SystemSettings_Access}" NavigateUri="https://civiltt.github.io/ServerStarter/" Margin="0,13,20,2" FontSize="20" Height="33" Padding="0"/>
+                    <ui:HyperlinkButton Content="{Binding Resources.SystemSettings_Access}" NavigateUri="https://civiltt.github.io/ServerStarter/" Margin="0,13,20,2" FontSize="20" Height="33" Padding="0"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="CivilTT" Style="{StaticResource NetStatusBlock}"/>
                         <Button Command="{Binding TwitterCommand}" CommandParameter="CivilT_T" Style="{StaticResource OthersMiniButton}">

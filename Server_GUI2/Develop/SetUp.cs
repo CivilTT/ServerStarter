@@ -6,6 +6,7 @@ using Server_GUI2.Windows.MessageBox.Back;
 using Server_GUI2.Windows.ProgressBar;
 using Server_GUI2.Windows.WelcomeWindow;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -39,6 +40,10 @@ namespace Server_GUI2
                     Environment.Exit(0);
             }
 
+            // 言語の決定
+            Properties.Resources.Culture = CultureInfo.GetCultureInfo(UserSettings.Instance.userSettings.Language);
+
+            // インターネット接続の確認
             CheckConnetNet();
 
             // ProgressBarを表示する

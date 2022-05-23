@@ -91,6 +91,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Check に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Check {
+            get {
+                return ResourceManager.GetString("Check", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Close に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Close {
@@ -1504,6 +1513,78 @@ namespace Server_GUI2.Properties {
         public static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Access to the Terms of Use に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Access {
+            get {
+                return ResourceManager.GetString("Welcome_Access", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   I agree to the Terms of Use に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Agree {
+            get {
+                return ResourceManager.GetString("Welcome_Agree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   2. Agreement に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Agreement {
+            get {
+                return ResourceManager.GetString("Welcome_Agreement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Server Starter will help your Minecraft Life! に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Desc {
+            get {
+                return ResourceManager.GetString("Welcome_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Don&apos;t regist your name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_NotRegist {
+            get {
+                return ResourceManager.GetString("Welcome_NotRegist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1. Regist Your Name in Minecraft に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Regist {
+            get {
+                return ResourceManager.GetString("Welcome_Regist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   START ! に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Start {
+            get {
+                return ResourceManager.GetString("Welcome_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Welcome ! に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Title {
+            get {
+                return ResourceManager.GetString("Welcome_Title", resourceCulture);
             }
         }
         

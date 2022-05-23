@@ -15,6 +15,7 @@ namespace Server_GUI2.Windows.WorldSettings
 {
     class WorldSettingsVM : GeneralVM, IDataErrorInfo
     {
+        public Properties.Resources Resources => new Properties.Resources();
         static readonly UserSettingsJson SaveData = UserSettings.Instance.userSettings;
         static readonly StorageCollection Storages = StorageCollection.Instance;
 

@@ -25,6 +25,12 @@ namespace Server_GUI2
 
         public string OldInfoPath => $@"{SetUp.DataPath}\info.txt";
 
+        public static Dictionary<string, string> Languages = new Dictionary<string, string>()
+        {
+            { "English", "en" },
+            { "日本語", "ja" }
+        };
+
         private UserSettings()
         {
             ReadFile();
@@ -65,7 +71,7 @@ namespace Server_GUI2
         public string OwnerName = "";
 
         [JsonProperty("Language")]
-        public string Language;
+        public string Language = "";
 
         [JsonProperty("LatestRun")]
         // LatestRun : {
