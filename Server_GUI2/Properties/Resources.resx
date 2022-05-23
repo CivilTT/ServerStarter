@@ -129,6 +129,9 @@ Please check the error and if you suspect a system bug, please contact us at Git
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check</value>
+  </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
@@ -612,6 +615,30 @@ You can't import a new Vanilla version.</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>
+  </data>
+  <data name="Welcome_Access" xml:space="preserve">
+    <value>Access to the Terms of Use</value>
+  </data>
+  <data name="Welcome_Agree" xml:space="preserve">
+    <value>I agree to the Terms of Use</value>
+  </data>
+  <data name="Welcome_Agreement" xml:space="preserve">
+    <value>2. Agreement</value>
+  </data>
+  <data name="Welcome_Desc" xml:space="preserve">
+    <value>Server Starter will help your Minecraft Life!</value>
+  </data>
+  <data name="Welcome_NotRegist" xml:space="preserve">
+    <value>Don't regist your name</value>
+  </data>
+  <data name="Welcome_Regist" xml:space="preserve">
+    <value>1. Regist Your Name in Minecraft</value>
+  </data>
+  <data name="Welcome_Start" xml:space="preserve">
+    <value>START !</value>
+  </data>
+  <data name="Welcome_Title" xml:space="preserve">
+    <value>Welcome !</value>
   </data>
   <data name="Window_CheckSave" xml:space="preserve">
     <value>Do you want to save these settings?</value>

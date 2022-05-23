@@ -129,6 +129,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
+  <data name="Check" xml:space="preserve">
+    <value>チェック</value>
+  </data>
   <data name="Close" xml:space="preserve">
     <value>閉じる</value>
   </data>
@@ -608,6 +611,30 @@ Auto Port Mappingを使用しない設定に変更します。</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>バージョン</value>
+  </data>
+  <data name="Welcome_Access" xml:space="preserve">
+    <value>利用規約の全文はこちら</value>
+  </data>
+  <data name="Welcome_Agree" xml:space="preserve">
+    <value>Server Starterの利用規約に同意します</value>
+  </data>
+  <data name="Welcome_Agreement" xml:space="preserve">
+    <value>2. 利用規約</value>
+  </data>
+  <data name="Welcome_Desc" xml:space="preserve">
+    <value>Minecraftのサーバーを簡単に起動しましょう！</value>
+  </data>
+  <data name="Welcome_NotRegist" xml:space="preserve">
+    <value>プレイヤー名を登録しない</value>
+  </data>
+  <data name="Welcome_Regist" xml:space="preserve">
+    <value>1. ゲーム内でのプレイヤー名を登録する</value>
+  </data>
+  <data name="Welcome_Start" xml:space="preserve">
+    <value>スタート！</value>
+  </data>
+  <data name="Welcome_Title" xml:space="preserve">
+    <value>ようこそ！</value>
   </data>
   <data name="Window_CheckSave" xml:space="preserve">
     <value>設定を保存しますか？</value>
