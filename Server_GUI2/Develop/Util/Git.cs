@@ -18,6 +18,7 @@ namespace Server_GUI2.Util
         }
     }
 
+
     class GitCommand
     {
         private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -45,23 +46,43 @@ namespace Server_GUI2.Util
         public static (int, string) Execute(string arguments, string directory)
         {
             logger.Info($"<GitCommand> git {arguments} ({directory})");
-            var process = new Process()
+            var output = new StringBuilder(); ;
+            int exitCode;
+
+            var StartInfo = new ProcessStartInfo("git",arguments)
             {
-                StartInfo = new ProcessStartInfo("git")
-                {
-                    Arguments = arguments,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    StandardOutputEncoding = Encoding.UTF8,
-                    WorkingDirectory = directory
-                }
+                Arguments = arguments,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                StandardOutputEncoding = Encoding.UTF8,
+                WorkingDirectory = directory
             };
-            process.Start();
-            process.WaitForExit();
-            string output = process.StandardOutput.ReadToEnd();
-            logger.Info($"</GitCommand> exitcode: {process.ExitCode}");
-            return (process.ExitCode, output);
+
+            using (var process = Process.Start(StartInfo))
+            {
+
+                var stdout = new StringBuilder();
+                var stderr = new StringBuilder();
+
+                process.OutputDataReceived += (sender, e) => { if (e.Data != null) { stdout.AppendLine(e.Data); } }; // 標準出力に書き込まれた文字列を取り出す
+                process.ErrorDataReceived += (sender, e) => { if (e.Data != null) { stderr.AppendLine(e.Data); } }; // 標準エラー出力に書き込まれた文字列を取り出す
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+
+                process.WaitForExit();
+
+                process.CancelOutputRead();
+                process.CancelErrorRead();
+
+                output.AppendLine(stdout.ToString());
+
+                exitCode = process.ExitCode;
+            }
+            var o = output.ToString();
+            logger.Info($"</GitCommand> exitcode: {exitCode},{o}");
+            return (exitCode, o);
         }
     }
 
@@ -101,18 +122,18 @@ namespace Server_GUI2.Util
         /// </summary>
         public Dictionary<string, IGitLocalBranch> GetBranchs()
         {
-            var output = GitCommand.ExecuteThrow($"for-each-ref --format=%(refname:short)...%(upstream:short) refs/heads", new GitException($"failed to get branch list from {Path}"), Path);
+            var output = GitCommand.ExecuteThrow($"for-each-ref --format=%(refname:short)...%(upstream:short) refs/heads", new GitException($"failed to get branch list from {Path}"), Path).Trim();
             var branchMap = new Dictionary<string, IGitLocalBranch>();
 
             if (output.Length == 0) return branchMap;
 
-            var lines = output.Substring(0, output.Length - 1).Split('\n'); //出力を行に分解
+            var lines = output.Split('\n'); //出力を行に分解
 
             var remotes = GetNamedRemotes();
 
             foreach (var i in lines)
             {
-                var splitted = i.Split(new string[]{"..."},StringSplitOptions.RemoveEmptyEntries);
+                var splitted = i.Trim().Split(new string[]{"..."},StringSplitOptions.RemoveEmptyEntries);
 
                 var branchName = splitted[0];
 
@@ -147,7 +168,7 @@ namespace Server_GUI2.Util
         public Dictionary<string, GitNamedRemote> GetNamedRemotes()
         {
             var remotes = new Dictionary<string, GitNamedRemote>();
-            var output = GitCommand.ExecuteThrow($"remote -v", new GitException($"failed to get remotelist of {Path}"), Path);
+            var output = GitCommand.ExecuteThrow($"remote -v", new GitException($"failed to get remotelist of {Path}"), Path).Trim();
 
 
             void GetNamedRemote(string str)
@@ -161,7 +182,8 @@ namespace Server_GUI2.Util
             
             if (output.Length != 0)
             {
-                var remoteData = output.Substring(0, output.Length - 1).Split('\n').Where((_, i) => i % 2 == 0);
+                var remoteData = output.Split('\n').Where((_, i) => i % 2 == 0).Select(x => x.Trim());
+                remoteData.WriteLine();
 
                 foreach (var remote in remoteData) GetNamedRemote(remote);
 
@@ -175,6 +197,20 @@ namespace Server_GUI2.Util
 
         public void AddAllAndCommit(string message)
         {
+            // GitHubで扱えないサイズ(100MB+)のファイルをgitignoreに書く
+            using (var process = new Process())
+            {
+                process.StartInfo = new ProcessStartInfo("forfiles")
+                {
+                    UseShellExecute = false,
+                    RedirectStandardError = true,
+                    WorkingDirectory = Path,
+                    // TODO: @CivilTT '"'の削除し、'\'を'/'に置換
+                    Arguments = $"/s /c \"cmd /q /c if @fsize GTR 100000000 echo @relpath\">{System.IO.Path.Combine(Path, ".gitignore")}"
+                };
+                process.Start();
+                process.WaitForExit();
+            }
             // git add -A
             GitCommand.ExecuteThrow($"add -A", new GitException($"falied to 'git add -A'"), Path);
             // git commit -m "message"
@@ -395,10 +431,13 @@ namespace Server_GUI2.Util
             {
                 return branchMap;
             }
-            var lines = output.Substring(0, output.Length - 1).Split('\n');
+            var lines = output.Trim().Split('\n');
             foreach (var i in lines)
             {
-                var branchName = i.Substring(52);
+                Console.WriteLine("+++");
+                Console.WriteLine(i.Trim().Substring(52));
+                Console.WriteLine("+++");
+                var branchName = i.Trim().Substring(52);
                 branchMap[branchName] = new GitRemoteBranch(this, branchName, true);
             }
             return branchMap;

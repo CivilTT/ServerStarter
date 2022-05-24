@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Util;
+using System.Diagnostics;
 
 namespace UnitTestProject1
 {
@@ -30,6 +31,26 @@ namespace UnitTestProject1
             {
                 Console.WriteLine(i.Key);
                 Console.WriteLine(i.Value);
+            }
+        }
+
+        [TestMethod]
+        public void ConstructGitignore()
+        {
+            using (var process = new Process())
+            {
+                var path = "";
+                process.StartInfo = new ProcessStartInfo("forfiles")
+                {
+                    UseShellExecute = false,
+                    RedirectStandardError = true,
+                    WorkingDirectory = path,
+                    Arguments = $"/s /c \"cmd /q /c if @fsize GTR 100000000 echo @relpath\">{Path.Combine(path,".gitignore")}"
+                };
+                process.Start();
+                process.WaitForExit();
+                process.ExitCode.WriteLine();
+                process.StandardError.ReadToEnd().WriteLine();
             }
         }
     }
