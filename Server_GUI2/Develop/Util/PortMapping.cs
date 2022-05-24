@@ -1,23 +1,16 @@
-﻿using Open.Nat;
-using Server_GUI2.Windows.SystemSettings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MW = ModernWpf;
-using System.Windows;
-using System.ComponentModel;
-using System.Threading;
+﻿using log4net;
+using Open.Nat;
 using Server_GUI2.Windows;
-using log4net;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Server_GUI2.Develop.Util
 {
     public class PortMapping
     {
-        static ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static int LocalPort => 25565;
 

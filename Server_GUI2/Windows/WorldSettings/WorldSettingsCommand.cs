@@ -98,6 +98,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     }
 
                     _vm.RunWorld.CustomMap = custom;
+                    _vm.OnPropertyChanged("RunWorld");
                     break;
                 default:
                     throw new ArgumentException("Unknown Import Parameter");
