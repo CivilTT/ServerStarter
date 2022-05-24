@@ -425,8 +425,8 @@
         <!--<Grid Style="{StaticResource SettingContent}">-->
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                    <TextBlock Text="{Binding Resources.WorldSettings_UseSW}" FontSize="24" FontWeight="Bold" Margin="20 0"/>
-                    <ui:ToggleSwitch OnContent="{Binding Resources.Yes}" OffContent="{Binding Resources.No}" IsOn="{Binding UseSW.Value}" FontSize="24" Margin="130 0 0 0"/>
+                    <TextBlock Text="{Binding Resources.WorldSettings_UseSW}" FontSize="24" FontWeight="Bold" Margin="20 0" Width="250"/>
+                    <ui:ToggleSwitch OnContent="{Binding Resources.Yes}" OffContent="{Binding Resources.No}" IsOn="{Binding UseSW.Value}" FontSize="24" Margin="30 0 0 0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20" VerticalAlignment="Top">
                     <TextBlock Text="{Binding Resources.WorldSettings_Account}" Width="200" FontSize="20" IsEnabled="{Binding CanEdit}"/>
