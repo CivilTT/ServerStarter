@@ -90,29 +90,28 @@ namespace Server_GUI2
         {
             var argumnets = $"-Xmx5G -Xms5G{Log4jArgument} -jar {JarName} nogui{WorldContainerArgument}";
             logger.Info("<Run>");
-            var process = new Process()
+            using (Process process = new Process())
             {
-                StartInfo = new ProcessStartInfo(JavaPath)
+                process.StartInfo = new ProcessStartInfo(JavaPath)
                 {
                     Arguments = argumnets,
                     WorkingDirectory = Path.FullName,
                     UseShellExecute = false
+                };
+
+                logger.Info($"<process/> {JavaPath} {argumnets}");
+                process.Start();
+                process.WaitForExit();
+
+                switch (process.ExitCode)
+                {
+                    case 0:
+                        logger.Info("</Run> success");
+                        return;
+                    default:
+                        logger.Info("</Run> failure");
+                        throw new ServerException($"server was incorrectly closed. exit code: {process.ExitCode}");
                 }
-            };
-
-            logger.Info($"<process/> {JavaPath} {argumnets}");
-            process.Start();
-            process.WaitForExit();
-            process.Dispose();
-
-            switch (process.ExitCode)
-            {
-                case 0:
-                    logger.Info("</Run> success");
-                    return;
-                default:
-                    logger.Info("</Run> failure");
-                    throw new ServerException($"server was incorrectly closed. exit code: {process.ExitCode}");
             }
         }
 
