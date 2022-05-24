@@ -1,4 +1,5 @@
-﻿using Server_GUI2.Windows.MessageBox;
+﻿using Server_GUI2.Util;
+using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
 using System.ComponentModel;
 using System.Windows;
@@ -33,7 +34,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
 
         private void SearchCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (Player.UUID == "")
+            if (Player.UUID == "" || Player.UUID == null)
             {
                 CustomMessageBox.Show(Properties.Resources.SystemSettings_Exist, ButtonType.OK, Image.Error);
                 //MW.MessageBox.Show(Owner, "このプレイヤー名は存在しません。""このプレイヤー名は存在しません。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -70,6 +71,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
                 UserSettings.Instance.userSettings.Players.Add(player);
             }
             UserSettings.Instance.userSettings.Agreement.SystemTerms = _vm.Agreed.Value;
+            UserSettings.Instance.userSettings.Language = _vm.Languages[_vm.LanguageSelected.Value];
 
             UserSettings.Instance.WriteFile();
 

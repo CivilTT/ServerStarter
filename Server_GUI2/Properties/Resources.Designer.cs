@@ -61,6 +61,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Add に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   An unexpected error has occurred.
         ///Please check the error and if you suspect a system bug, please contact us at Git Issues.
         ///
@@ -78,6 +87,15 @@ namespace Server_GUI2.Properties {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Check に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Check {
+            get {
+                return ResourceManager.GetString("Check", resourceCulture);
             }
         }
         
@@ -118,6 +136,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Group に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Group {
+            get {
+                return ResourceManager.GetString("Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   You can build the Minecraft Server easily.
         ///
         ///Using : Server_GUI2.exe (Version_name) (World_Version : Optional) (World_name) [-s(Settings : Optional)]
@@ -133,6 +160,15 @@ namespace Server_GUI2.Properties {
         public static string Guide {
             get {
                 return ResourceManager.GetString("Guide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Import に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Import {
+            get {
+                return ResourceManager.GetString("Import", resourceCulture);
             }
         }
         
@@ -850,6 +886,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Player に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Player {
+            get {
+                return ResourceManager.GetString("Player", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Players に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Players {
@@ -864,6 +909,24 @@ namespace Server_GUI2.Properties {
         public static string Plugin {
             get {
                 return ResourceManager.GetString("Plugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Regist に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Regist {
+            get {
+                return ResourceManager.GetString("Regist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Remove に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
             }
         }
         
@@ -943,11 +1006,38 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Access Here に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Access {
+            get {
+                return ResourceManager.GetString("SystemSettings_Access", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Add Account に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SystemSettings_AddA {
             get {
                 return ResourceManager.GetString("SystemSettings_AddA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Add Group に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_AddG {
+            get {
+                return ResourceManager.GetString("SystemSettings_AddG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Add Player に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_AddP {
+            get {
+                return ResourceManager.GetString("SystemSettings_AddP", resourceCulture);
             }
         }
         
@@ -979,6 +1069,24 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Auto Port Mapping に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_APM {
+            get {
+                return ResourceManager.GetString("SystemSettings_APM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Author に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Author {
+            get {
+                return ResourceManager.GetString("SystemSettings_Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   This Port Number is invalid に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SystemSettings_CheckPort {
@@ -993,6 +1101,15 @@ namespace Server_GUI2.Properties {
         public static string SystemSettings_Cred {
             get {
                 return ResourceManager.GetString("SystemSettings_Cred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Default Properties に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_DefaultP {
+            get {
+                return ResourceManager.GetString("SystemSettings_DefaultP", resourceCulture);
             }
         }
         
@@ -1015,11 +1132,101 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Group Name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_GName {
+            get {
+                return ResourceManager.GetString("SystemSettings_GName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Group List に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_GroupL {
+            get {
+                return ResourceManager.GetString("SystemSettings_GroupL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Local IP Address に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_LAN {
+            get {
+                return ResourceManager.GetString("SystemSettings_LAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Language に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Lang {
+            get {
+                return ResourceManager.GetString("SystemSettings_Lang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Links に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SystemSettings_Links {
             get {
                 return ResourceManager.GetString("SystemSettings_Links", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   MAIN Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Main {
+            get {
+                return ResourceManager.GetString("SystemSettings_Main", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Manual に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Manual {
+            get {
+                return ResourceManager.GetString("SystemSettings_Manual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Mapping Test に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_MapTest {
+            get {
+                return ResourceManager.GetString("SystemSettings_MapTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Members に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Members {
+            get {
+                return ResourceManager.GetString("SystemSettings_Members", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   New Group Name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_NewGName {
+            get {
+                return ResourceManager.GetString("SystemSettings_NewGName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   New Player Name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_NewPName {
+            get {
+                return ResourceManager.GetString("SystemSettings_NewPName", resourceCulture);
             }
         }
         
@@ -1033,12 +1240,48 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Player List に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_PlayerL {
+            get {
+                return ResourceManager.GetString("SystemSettings_PlayerL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Player Name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_PName {
+            get {
+                return ResourceManager.GetString("SystemSettings_PName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Failed to close the port mapping.
         ///I leave the port open. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SystemSettings_Port {
             get {
                 return ResourceManager.GetString("SystemSettings_Port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Port Mapping に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_PortMap {
+            get {
+                return ResourceManager.GetString("SystemSettings_PortMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Port Number に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_PortNum {
+            get {
+                return ResourceManager.GetString("SystemSettings_PortNum", resourceCulture);
             }
         }
         
@@ -1059,6 +1302,15 @@ namespace Server_GUI2.Properties {
         public static string SystemSettings_PortOn2 {
             get {
                 return ResourceManager.GetString("SystemSettings_PortOn2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Property に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Property {
+            get {
+                return ResourceManager.GetString("SystemSettings_Property", resourceCulture);
             }
         }
         
@@ -1113,6 +1365,96 @@ namespace Server_GUI2.Properties {
         public static string SystemSettings_Repo {
             get {
                 return ResourceManager.GetString("SystemSettings_Repo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Status に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Status {
+            get {
+                return ResourceManager.GetString("SystemSettings_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Setting Value に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_SValue {
+            get {
+                return ResourceManager.GetString("SystemSettings_SValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   System Infomation に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_SystemInfo {
+            get {
+                return ResourceManager.GetString("SystemSettings_SystemInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   System Version に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_SystemVer {
+            get {
+                return ResourceManager.GetString("SystemSettings_SystemVer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Text Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Text {
+            get {
+                return ResourceManager.GetString("SystemSettings_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   System Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Title {
+            get {
+                return ResourceManager.GetString("SystemSettings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   True / False Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_TrueFalse {
+            get {
+                return ResourceManager.GetString("SystemSettings_TrueFalse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Using auto port mapping に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_UseAPM {
+            get {
+                return ResourceManager.GetString("SystemSettings_UseAPM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   User Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_UserSet {
+            get {
+                return ResourceManager.GetString("SystemSettings_UserSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Global IP Address に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_WAN {
+            get {
+                return ResourceManager.GetString("SystemSettings_WAN", resourceCulture);
             }
         }
         
@@ -1175,6 +1517,78 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Access to the Terms of Use に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Access {
+            get {
+                return ResourceManager.GetString("Welcome_Access", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   I agree to the Terms of Use に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Agree {
+            get {
+                return ResourceManager.GetString("Welcome_Agree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   2. Agreement に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Agreement {
+            get {
+                return ResourceManager.GetString("Welcome_Agreement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Server Starter will help your Minecraft Life! に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Desc {
+            get {
+                return ResourceManager.GetString("Welcome_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Don&apos;t regist your name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_NotRegist {
+            get {
+                return ResourceManager.GetString("Welcome_NotRegist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1. Regist Your Name in Minecraft に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Regist {
+            get {
+                return ResourceManager.GetString("Welcome_Regist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   START ! に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Start {
+            get {
+                return ResourceManager.GetString("Welcome_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Welcome ! に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Welcome_Title {
+            get {
+                return ResourceManager.GetString("Welcome_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Do you want to save these settings? に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Window_CheckSave {
@@ -1229,6 +1643,51 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Account に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Account {
+            get {
+                return ResourceManager.GetString("WorldSettings_Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Additionals に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Additionals {
+            get {
+                return ResourceManager.GetString("WorldSettings_Additionals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Add Op Player に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_AddOp {
+            get {
+                return ResourceManager.GetString("WorldSettings_AddOp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Add WhiteList Player に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_AddWhite {
+            get {
+                return ResourceManager.GetString("WorldSettings_AddWhite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Data Kinds に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_DataKinds {
+            get {
+                return ResourceManager.GetString("WorldSettings_DataKinds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   This is invalid as a datapack に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string WorldSettings_Datapack {
@@ -1256,11 +1715,74 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Import New Datapack に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_ImportDP {
+            get {
+                return ResourceManager.GetString("WorldSettings_ImportDP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Imported に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Imported {
+            get {
+                return ResourceManager.GetString("WorldSettings_Imported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Import New Custom Map に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_ImportMap {
+            get {
+                return ResourceManager.GetString("WorldSettings_ImportMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Import New Plugin に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_ImportP {
+            get {
+                return ResourceManager.GetString("WorldSettings_ImportP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   This is invalid as a custom map に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string WorldSettings_Map {
             get {
                 return ResourceManager.GetString("WorldSettings_Map", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Map Name   :    に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_MapName {
+            get {
+                return ResourceManager.GetString("WorldSettings_MapName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Op Right に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Op {
+            get {
+                return ResourceManager.GetString("WorldSettings_Op", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Op Level に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_OpLev {
+            get {
+                return ResourceManager.GetString("WorldSettings_OpLev", resourceCulture);
             }
         }
         
@@ -1285,6 +1807,24 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Properties に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Properties {
+            get {
+                return ResourceManager.GetString("WorldSettings_Properties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Properties of each Worlds に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_PropOfWor {
+            get {
+                return ResourceManager.GetString("WorldSettings_PropOfWor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Selected player and group is already registered に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string WorldSettings_Register {
@@ -1294,11 +1834,29 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Remote World に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_RemoteWor {
+            get {
+                return ResourceManager.GetString("WorldSettings_RemoteWor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Select the column what you want to remove from list に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string WorldSettings_Remove {
             get {
                 return ResourceManager.GetString("WorldSettings_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Server Resource Pack (URL) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Rpack {
+            get {
+                return ResourceManager.GetString("WorldSettings_Rpack", resourceCulture);
             }
         }
         
@@ -1345,6 +1903,33 @@ namespace Server_GUI2.Properties {
         public static string WorldSettings_SW {
             get {
                 return ResourceManager.GetString("WorldSettings_SW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   World Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_Title {
+            get {
+                return ResourceManager.GetString("WorldSettings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Use ShareWorld に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_UseSW {
+            get {
+                return ResourceManager.GetString("WorldSettings_UseSW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   White List に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WorldSettings_WhiteL {
+            get {
+                return ResourceManager.GetString("WorldSettings_WhiteL", resourceCulture);
             }
         }
         

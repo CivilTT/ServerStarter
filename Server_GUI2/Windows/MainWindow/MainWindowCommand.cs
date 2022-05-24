@@ -41,6 +41,8 @@ namespace Server_GUI2.Windows.MainWindow
             _vm.Hide();
             var systemSettingWindow = new SystemSettingsVM();
             SSwindow.ShowDialog(systemSettingWindow);
+            _vm.OnPropertyChanged("Resources");
+            _vm.OnPropertyChanged("OpContents");
             _vm.Show();
         }
     }
