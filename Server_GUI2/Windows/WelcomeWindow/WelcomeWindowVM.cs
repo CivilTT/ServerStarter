@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Globalization;
 
 namespace Server_GUI2.Windows.WelcomeWindow
 {
@@ -12,6 +9,9 @@ namespace Server_GUI2.Windows.WelcomeWindow
         public WelcomeWindow OwnerWindow { get; private set; }
         public bool CanStart => (check || NotRegistName.Value) && Agreed.Value;
         public StartCommand StartCommand { get; private set; }
+        public BindingValue<string> LanguageSelected { get; private set; }
+        public Dictionary<string, string> Languages => UserSettings.Languages;
+        public Properties.Resources Resources => new Properties.Resources();
 
         // 1.
         public BindingValue<string> PlayerName { get; private set; }
@@ -33,6 +33,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
             // General
             OwnerWindow = ownerWindow;
             StartCommand = new StartCommand(this);
+            LanguageSelected = new BindingValue<string>("English", () => UpdateLanguage());
 
             // 1.
             PlayerName = new BindingValue<string>("Your Name", () => OnPropertyChanged(new string[3] { "PlayerName", "OwnerName", "CanStart" }));
@@ -45,6 +46,13 @@ namespace Server_GUI2.Windows.WelcomeWindow
             Agreed = new BindingValue<bool>(false, () => OnPropertyChanged("CanStart"));
 
 
+        }
+
+        private void UpdateLanguage()
+        {
+            if (LanguageSelected?.Value != null)
+                Properties.Resources.Culture = CultureInfo.GetCultureInfo(Languages[LanguageSelected.Value]);
+            OnPropertyChanged("Resources");
         }
     }
 }

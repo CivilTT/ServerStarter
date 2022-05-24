@@ -22,6 +22,7 @@ namespace Server_GUI2.Windows.MainWindow
         public string StarterVersion { get { return $"ver {ManageSystemVersion.StarterVersion}"; } }
         public string PlayerName { get { return UserSettings.Instance.userSettings.OwnerName; } }
         public string OpContents { get { return $"{PlayerName} {Properties.Resources.Main_Op}"; } }
+        public Properties.Resources Resources => new Properties.Resources();
         readonly ObservableCollection<Version> AllVers = VersionFactory.Instance.Versions;
         readonly ObservableCollection<IWorld> AllWorlds = WorldCollection.Instance.Worlds;
 
