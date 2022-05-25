@@ -39,18 +39,22 @@ namespace UnitTestProject1
         {
             using (var process = new Process())
             {
-                var path = "";
+                var path = @"";
                 process.StartInfo = new ProcessStartInfo("forfiles")
                 {
                     UseShellExecute = false,
+                    RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     WorkingDirectory = path,
-                    Arguments = $"/s /c \"cmd /q /c if @fsize GTR 100000000 echo @relpath\">{Path.Combine(path,".gitignore")}"
+                    Arguments = $"/s /c \"cmd /q /c if @fsize GTR 10000000 echo @relpath\""
                 };
                 process.Start();
                 process.WaitForExit();
                 process.ExitCode.WriteLine();
-                process.StandardError.ReadToEnd().WriteLine();
+                //process.StandardError.ReadToEnd().WriteLine();
+                string[] del = { "\n" };
+                string output = process.StandardOutput.ReadToEnd().Replace(@"\", "/").Replace("./", "/").Replace("\"", "");
+                Console.WriteLine(output);
             }
         }
     }
