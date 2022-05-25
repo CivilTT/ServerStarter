@@ -205,6 +205,7 @@ namespace Server_GUI2.Util
                 {
                     UseShellExecute = false,
                     RedirectStandardError = true,
+                    RedirectStandardOutput = true,
                     WorkingDirectory = Path,
                     // TODO: @CivilTT '"'の削除し、'\'を'/'に置換
                     Arguments = $"/s /c \"cmd /q /c if @fsize GTR 100000000 echo @relpath\""
