@@ -86,7 +86,7 @@ namespace Server_GUI2.Windows.WorldSettings
         // Custom Map
         public bool ShowMapTab => RunWorld is NewWorld;
         public bool IsZipMap { get; set; } = true;
-        public CustomMap CustomMap { get; set; }
+        public BindingValue<CustomMap> CustomMap { get; private set; }
         public string ServerResourcePack
         {
             get => PropertyIndexs.Value.StringOption["resource-pack"];
@@ -161,6 +161,7 @@ namespace Server_GUI2.Windows.WorldSettings
                 //IsCrossPlay = new BindingValue<bool>(false, () => CrossPlay());
             }
             // Custom Map
+            CustomMap = new BindingValue<CustomMap>(RunWorld.CustomMap, () => OnPropertyChanged("CustomMap"));
 
             CheckPlayer();
             // Op (new することで参照渡しにならないようにする)
@@ -289,7 +290,7 @@ namespace Server_GUI2.Windows.WorldSettings
             RunWorld.Datapacks = new DatapackCollection(Datapacks);
             if (RunVersion is SpigotVersion)
                 RunWorld.Plugins = new PluginCollection(Plugins);
-            RunWorld.CustomMap = CustomMap;
+            RunWorld.CustomMap = CustomMap.Value;
 
             RunWorld.Settings.Ops = new List<OpsRecord>(OpPlayersList);
             RunWorld.Settings.WhiteList = new List<Player>(WhitePlayersList);
