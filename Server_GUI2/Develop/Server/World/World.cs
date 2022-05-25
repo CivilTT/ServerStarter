@@ -130,6 +130,8 @@ namespace Server_GUI2.Develop.Server.World
             if (HasRemote)
                 world.Link(RemoteWorld);
 
+            world.CustomMap = CustomMap;
+
             WorldCollection.Instance.Add(world);
 
             // 実行
