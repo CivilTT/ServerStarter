@@ -124,7 +124,13 @@ namespace Server_GUI2.Develop.Server.World
         public void WrapRun(Version version, Action<ServerSettings, string> runFunc)
         {
             // ローカルワールドを生成
-            var localWorld = new LocalWorld( version.Path.Worlds.GetWorldDirectory(Name), version );
+            var custommapPath = version.Path.Worlds.GetWorldDirectory(Name);
+            Version custommapVersion;
+            if (custommapPath.Nether.Exists)
+                custommapVersion = VersionFactory.Instance.OldestSpigotVersion;
+            else custommapVersion = VersionFactory.Instance.OldestVanillaVersion;
+
+            var localWorld = new LocalWorld(custommapPath, custommapVersion);
 
             World world = new World(localWorld);
             if (HasRemote)
