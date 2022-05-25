@@ -79,6 +79,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             if (IsZip)
             {
+                logger.Info("Import Zip CustomMap");
                 string zipPath = $"{path}.zip";
 
                 File.Move(SourcePath, zipPath);
@@ -89,6 +90,7 @@ namespace Server_GUI2.Develop.Server.World
             }
             else
             {
+                logger.Info("Import non-Zip CustomMap");
                 FileSystem.CopyDirectory(SourcePath, path);
             }
 
