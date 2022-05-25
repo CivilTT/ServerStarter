@@ -2,6 +2,7 @@
 using Microsoft.VisualBasic.FileIO;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Reflection;
 
 namespace Server_GUI2.Develop.Server.World
@@ -55,11 +56,9 @@ namespace Server_GUI2.Develop.Server.World
             using (ZipArchive zipArchive = ZipFile.OpenRead(sourcePath))
             {
                 // フォルダの直下(or一つ下)に ○○ が存在しているかを確認する
-                string dirPath = (zipArchive.GetEntry(name) == null) ? $@"{name}/" : "";
+                string dirPath = (zipArchive.GetEntry(name) != null) ? $@"{name}/" : "";
 
-                ZipArchiveEntry dataEntry = zipArchive.GetEntry($"{dirPath}data/");
-
-                result = dataEntry != null;
+                result = zipArchive.Entries.Where(entry => entry.FullName.StartsWith($"{dirPath}data")).Count() != 0;
             }
 
             return result;
