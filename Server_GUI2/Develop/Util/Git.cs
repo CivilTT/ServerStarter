@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Net.Http;
+using System.IO;
 
 namespace Server_GUI2.Util
 {
@@ -206,10 +207,14 @@ namespace Server_GUI2.Util
                     RedirectStandardError = true,
                     WorkingDirectory = Path,
                     // TODO: @CivilTT '"'の削除し、'\'を'/'に置換
-                    Arguments = $"/s /c \"cmd /q /c if @fsize GTR 100000000 echo @relpath\">{System.IO.Path.Combine(Path, ".gitignore")}"
+                    Arguments = $"/s /c \"cmd /q /c if @fsize GTR 10000000 echo @relpath\""
                 };
                 process.Start();
                 process.WaitForExit();
+
+                string output = process.StandardOutput.ReadToEnd().Replace(@"\", "/").Replace("./", "/").Replace("\"", "");
+                using (var writer = new StreamWriter(System.IO.Path.Combine(Path, ".gitignore")))
+                    writer.WriteLine(output);
             }
             // git add -A
             GitCommand.ExecuteThrow($"add -A", new GitException($"falied to 'git add -A'"), Path);
