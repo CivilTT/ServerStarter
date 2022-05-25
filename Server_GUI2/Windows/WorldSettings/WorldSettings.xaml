@@ -529,7 +529,7 @@
                         </StackPanel>
                         <StackPanel VerticalAlignment="Top" Margin="30 100 0 0" Orientation="Horizontal">
                             <TextBlock Text="{Binding Resources.WorldSettings_MapName}" FontSize="18" Height="33" Padding="0 3"/>
-                            <TextBlock Text="{Binding RunWorld.CustomMap.Name}" FontSize="18" Padding="0 3" Height="33" Width="180"/>
+                            <TextBlock Text="{Binding CustomMap.Value.Name}" FontSize="18" Padding="0 3" Height="33" Width="180"/>
                         </StackPanel>
                         <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="CustomMap" Grid.Row="0" Margin="0 100 0 0" Style="{StaticResource MiniButton}">
                             <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->

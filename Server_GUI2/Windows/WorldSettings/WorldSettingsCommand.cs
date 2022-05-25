@@ -97,8 +97,7 @@ namespace Server_GUI2.Windows.WorldSettings
                         break;
                     }
 
-                    _vm.RunWorld.CustomMap = custom;
-                    _vm.OnPropertyChanged("RunWorld");
+                    _vm.CustomMap.Value = custom;
                     break;
                 default:
                     throw new ArgumentException("Unknown Import Parameter");
@@ -167,7 +166,7 @@ namespace Server_GUI2.Windows.WorldSettings
                     DeleteContent(() => _vm.Plugins.Remove(plugin), name);
                     break;
                 case "CustomMap":
-                    _vm.CustomMap = null;
+                    _vm.CustomMap.Value = null;
                     break;
                 case "Op":
                     OpsRecord ops = _vm.OpPlayersListIndex;
