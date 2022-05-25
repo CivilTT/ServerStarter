@@ -350,11 +350,11 @@ namespace Server_GUI2.Develop.Server.World
 
             // データパックの導入
             logger.Info("Import datapacks");
-            Datapacks.Evaluate(LocalWorld.Path.FullName);
+            Datapacks.Evaluate(LocalWorld.Path.World.Datapccks.FullName);
 
             // プラグインの導入
             logger.Info("Import plugins");
-            Plugins.Evaluate(LocalWorld.Path.FullName);
+            Plugins.Evaluate(LocalWorld.Path.World.Plugins);
             version.Path.Plugins.Delete(true);
             LocalWorld.Path.World.Plugins.Directory.CopyTo(version.Path.Plugins.FullName);
 
@@ -392,10 +392,10 @@ namespace Server_GUI2.Develop.Server.World
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
 
             // データパックの導入
-            Datapacks.Evaluate(LocalWorld.Path.FullName);
+            Datapacks.Evaluate(LocalWorld.Path.World.Datapccks.FullName);
 
             // プラグインの導入
-            Plugins.Evaluate(LocalWorld.Path.FullName);
+            Plugins.Evaluate(LocalWorld.Path.World.Plugins);
             version.Path.Plugins.Delete(true);
             LocalWorld.Path.World.Plugins.Directory.CopyTo(version.Path.Plugins.FullName);
 
@@ -446,10 +446,10 @@ namespace Server_GUI2.Develop.Server.World
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
 
             // データパックの導入
-            Datapacks.Evaluate(LocalWorld.Path.FullName);
+            Datapacks.Evaluate(LocalWorld.Path.World.Datapccks.FullName);
 
             // プラグインの導入
-            Plugins.Evaluate(LocalWorld.Path.FullName);
+            Plugins.Evaluate(LocalWorld.Path.World.Plugins);
             version.Path.Plugins.Delete(true);
             LocalWorld.Path.World.Plugins.Directory.CopyTo(version.Path.Plugins.FullName);
 
@@ -485,6 +485,7 @@ namespace Server_GUI2.Develop.Server.World
 
             if (HasCustomMap)
             {
+                logger.Info("Import CustomMap");
                 CustomMap.Import(local.Path.World.FullName);
                 // LocalWorldの中身に変更を反映(VtoSコンバート等も含む)
                 local.ReConstruct(local.Path, version, version.Type, local.Settings, local.Datapacks, local.Plugins);

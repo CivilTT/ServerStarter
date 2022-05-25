@@ -57,10 +57,11 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// データパックの削除と追加をディレクトリ上で実際に行う
         /// </summary>
-        public void Evaluate(string path)
+        public void Evaluate(PluginsPath path)
         {
+            path.Create();
             foreach (var operation in operations)
-                operation(path);
+                operation(path.FullName);
             StartServer.RunProgressBar.AddMessage("Imported Plugins.");
         }
 
@@ -124,7 +125,11 @@ namespace Server_GUI2.Develop.Server.World
 
         public void Import(string path)
         {
-            File.Move(SourcePath, path);
+
+            var filepath = Path.Combine(path, Path.GetFileName(SourcePath));
+
+            Console.WriteLine(path);
+            File.Move(SourcePath, filepath);
         }
     }
 }
