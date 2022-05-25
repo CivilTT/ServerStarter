@@ -15,6 +15,10 @@ namespace Server_GUI2
     {
         private static Dictionary<string, int> VersionIndex = new Dictionary<string, int>();
 
+        public VanillaVersion OldestVanillaVersion { get; set; }
+
+        public SpigotVersion OldestSpigotVersion { get; set; }
+
         /// <summary>
         /// Vanillaの新しいサーバーがダウンロード可能
         /// </summary>
@@ -111,6 +115,9 @@ namespace Server_GUI2
                 VersionMap[id] = versionInstance;
                 VersionIndex[id] = i;
                 i++;
+
+                // TODO: 最古のバニラバージョン取得方法をよくする
+                OldestVanillaVersion = versionInstance;
             }
         }
 
@@ -202,6 +209,9 @@ namespace Server_GUI2
                 versions.Add(versionInstance);
 
                 VersionMap[ver] = versionInstance;
+
+                // TODO: 最古のSpigotバージョン取得方法をよくする
+                OldestSpigotVersion = versionInstance;
             }
 
             return vers;
