@@ -230,7 +230,7 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
 問題の改善のため，ログファイルをGitのIssuesに投稿していただけると幸いです。</value>
   </data>
   <data name="Manage_Vup2" xml:space="preserve">
-    <value>Server StarterのGitページ</value>
+    <value>このバグを報告する</value>
   </data>
   <data name="Manage_Vup3" xml:space="preserve">
     <value>今すぐ行う！</value>

@@ -390,7 +390,7 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
-        ///   Server Starter&apos;s Git page に類似しているローカライズされた文字列を検索します。
+        ///   Report this Issue に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Manage_Vup2 {
             get {
