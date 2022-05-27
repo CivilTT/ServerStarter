@@ -555,6 +555,9 @@ Please refer to Configuration for details.</value>
   <data name="SystemSettings_RegisterP" xml:space="preserve">
     <value>Selected player is already registered</value>
   </data>
+  <data name="SystemSettings_RemoteFail" xml:space="preserve">
+    <value> does not exist as new remote data</value>
+  </data>
   <data name="SystemSettings_RemoteL" xml:space="preserve">
     <value>Remote List</value>
   </data>

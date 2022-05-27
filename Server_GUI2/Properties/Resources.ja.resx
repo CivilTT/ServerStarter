@@ -551,6 +551,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   <data name="SystemSettings_RegisterP" xml:space="preserve">
     <value>このプレイヤーはすでに登録されています</value>
   </data>
+  <data name="SystemSettings_RemoteFail" xml:space="preserve">
+    <value>は新規のリモートデータとして存在しません</value>
+  </data>
   <data name="SystemSettings_RemoteL" xml:space="preserve">
     <value>リモート設定一覧</value>
   </data>
