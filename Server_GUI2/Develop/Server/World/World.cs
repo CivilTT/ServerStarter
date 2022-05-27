@@ -295,7 +295,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public WorldState ExportWorldState()
         {
-            return new WorldState() ;
+            return new WorldState();
         }
 
         /// <summary>

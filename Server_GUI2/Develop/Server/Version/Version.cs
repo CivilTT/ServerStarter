@@ -96,7 +96,10 @@ namespace Server_GUI2
             logger.Info("<ReadyVersion>");
             StartServer.RunProgressBar.AddMessage("Ready Version Data.");
             if (!Exists)
+            {
+                StartServer.RunProgressBar.AddMessage("Downloading new Server data");
                 SetNewVersion();
+            }
             logger.Info("</ReadyVersion>");
             StartServer.RunProgressBar.AddMessage("Get Best Java Version.");
             return (Path, JarName, GetJavaVersion());
@@ -333,24 +336,9 @@ namespace Server_GUI2
                     Arguments = $"-jar BuildTools.jar --rev { NameWithoutPrefix }",
                     WorkingDirectory = Path.FullName,
                     UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true
                 }
             };
-            void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
-            {
-                //出力された文字列を表示する
-                StartServer.RunProgressBar.AddMessage(e.Data, moving: true, addCount: false);
-            }
-            p.OutputDataReceived += p_OutputDataReceived;
-            p.ErrorDataReceived += p_OutputDataReceived;
             p.Start();
-
-            //非同期で出力の読み取りを開始
-            p.BeginErrorReadLine();
-            p.BeginOutputReadLine();
-
             p.WaitForExit();
 
             // 余計なファイルの削除

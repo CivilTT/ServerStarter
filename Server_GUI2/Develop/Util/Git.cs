@@ -204,6 +204,7 @@ namespace Server_GUI2.Util
                 process.StartInfo = new ProcessStartInfo("forfiles")
                 {
                     UseShellExecute = false,
+                    CreateNoWindow = true,
                     RedirectStandardError = true,
                     RedirectStandardOutput = true,
                     WorkingDirectory = Path,

@@ -1342,6 +1342,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///    does not exist as new remote data に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_RemoteFail {
+            get {
+                return ResourceManager.GetString("SystemSettings_RemoteFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Remote List に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SystemSettings_RemoteL {
