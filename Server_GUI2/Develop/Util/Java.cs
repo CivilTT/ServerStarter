@@ -1,4 +1,4 @@
-﻿using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,10 @@ namespace Server_GUI2.Develop.Util
         {
             var versionMap = new Dictionary<int, string>();
             var maxVersion = 0;
-            foreach ( var dir in new DirectoryInfo(@"C:\Program Files\Java").GetDirectories())
+            var javaPath = new DirectoryInfo(@"C:\Program Files\Java");
+            if (!javaPath.Exists)
+                ShowErrorMsg(versionNum);
+            foreach ( var dir in javaPath.GetDirectories())
             {
                 var match = Regex.Match(dir.Name, @"jdk-(?<ver>[0-9]+)\.[0-9]+\.[0-9]+");
                 // jdk-??.?.?
@@ -44,18 +47,22 @@ namespace Server_GUI2.Develop.Util
             {
                 bestVersion += 1;
                 if (bestVersion > maxVersion)
-                {
-                    CustomMessageBox.Show(
+                    ShowErrorMsg(versionNum);
+            }
+            return $@"{versionMap[bestVersion]}\bin\java.exe";
+        }
+
+        private static void ShowErrorMsg(int versionNum)
+        {
+            StartServer.RunProgressBar.Close();
+            CustomMessageBox.Show(
                         $"{Properties.Resources.Java_Ver1}{versionNum}{Properties.Resources.Java_Ver2}\n" +
                         Properties.Resources.Java_Ver3,
                         ButtonType.OK,
                         Image.Error,
                         new LinkMessage(Properties.Resources.Java_Ver4, "https://www.oracle.com/java/technologies/downloads/")
                         );
-                    throw new JaveVersionException($"java version later than {versionNum} is needed");
-                }
-            }
-            return $@"{versionMap[bestVersion]}\bin\java.exe";
+            throw new JaveVersionException($"java version later than {versionNum} is needed");
         }
     }
 }
