@@ -503,7 +503,7 @@
                                 <DataGridTemplateColumn Header="{x:Static property:Resources.SystemSettings_SValue}" Width="100">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.BoolCombo}" SelectedItem="{Binding Value}" HorizontalAlignment="Center" Width="80" Style="{StaticResource ComboSource}"/>
+                                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.BoolCombo}" SelectedItem="{Binding Value, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Width="80" Style="{StaticResource ComboSource}"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
