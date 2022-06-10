@@ -274,6 +274,8 @@ namespace Server_GUI2.Windows.WorldSettings
 
         public void SaveWorldSettings()
         {
+            PropertyIndexs.Value = BoolOption.SetBoolOption(BoolOptions, PropertyIndexs.Value);
+            PropertyIndexs.Value = TextOption.SetStringOption(TextOptions, PropertyIndexs.Value);
             RunWorld.Settings.ServerProperties = new ServerProperty(PropertyIndexs.Value);
 
             if (UseSW.Value && !RunWorld.HasRemote)
