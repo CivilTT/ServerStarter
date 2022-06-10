@@ -69,7 +69,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public ServerType? Type { get; } = null;
 
-        private string _name = "input_name";
+        private string _name = Properties.Resources.Main_InputName;
 
         public string Name
         {
