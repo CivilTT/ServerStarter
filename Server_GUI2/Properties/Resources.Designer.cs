@@ -254,6 +254,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Input_Name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_InputName {
+            get {
+                return ResourceManager.GetString("Main_InputName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   has op rights in this version&apos;s server に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Main_Op {

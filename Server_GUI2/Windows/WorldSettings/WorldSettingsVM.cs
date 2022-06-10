@@ -140,7 +140,9 @@ namespace Server_GUI2.Windows.WorldSettings
                 AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => UpdateRemoteList());
                 RemoteDataList = new ObservableCollection<IRemoteWorld>(AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<IRemoteWorld>());
                 RemoteDataList.RemoveAll(remote => (remote is RemoteWorld world) && !world.IsVisible);
-                RemoteIndex = new BindingValue<IRemoteWorld>(RunWorld.HasRemote ? RunWorld.RemoteWorld : AccountIndex.Value.RemoteWorlds.Last(), () => OnPropertyChanged(new string[2] { "RemoteIndex", "ShowNewRemoteData" }));
+                RemoteIndex = new BindingValue<IRemoteWorld>(
+                    RunWorld.HasRemote ? RunWorld.RemoteWorld : AccountIndex.Value.RemoteWorlds.Last(), 
+                    () => OnPropertyChanged(new string[2] { "RemoteIndex", "ShowNewRemoteData" }));
                 RemoteName = RunWorld.RemoteWorld?.Name ?? RunWorld.Name;
             }
 
@@ -276,6 +278,7 @@ namespace Server_GUI2.Windows.WorldSettings
 
             if (UseSW.Value && !RunWorld.HasRemote)
             {
+                // TODO: CreateRemoteWorldするのはRunの後にしないと，再度WorldSettingsを開いた際にすでにSWになったワールドのように表示されてしまう（アカウントやブランチ名の変更ができない）
                 if (RemoteIndex.Value is RemoteWorld world)
                     RunWorld.Link(world);
                 else
