@@ -510,7 +510,7 @@ namespace Server_GUI2.Develop.Server.World
                     Image.Warning
                     );
                 if (result == 1)
-                    throw new ServerStarterException<DowngradeException>(new DowngradeException("User reject downgrading"));
+                    throw new ServerStarterException(new DowngradeException("User reject downgrading"));
             }
 
             // version変更

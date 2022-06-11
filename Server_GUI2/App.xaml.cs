@@ -1,19 +1,21 @@
 ﻿using log4net;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 
 namespace Server_GUI2
 {
     /// <summary>
     /// App.xaml の相互作用ロジック
     /// </summary>
-    public partial class App : System.Windows.Application
+    public partial class App : Application
     {
         [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
         public static extern bool AttachConsole(int processId);
@@ -30,6 +32,7 @@ namespace Server_GUI2
             // 手動でShutdown()が呼ばれるまでアプリを終了しない（MainWindowの前にWelcomeWindowを呼んだ際に、アプリが落ちてしまう現象を回避）
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
+            SetUnhandledDetecter();
 
             // システムの初期設定（処理）を行う
             SetUp.Initialize();
@@ -107,26 +110,52 @@ namespace Server_GUI2
                     }
                 }
 
-                Data_delete(delete_data);
+                //Data_delete(delete_data);
                 
-                MainWindow main = new MainWindow();
-                //More_Settings m_settings = new More_Settings();
-                //main.Reset_world = reset_data;
-                //main.Save_world = save_data;
+                //MainWindow main = new MainWindow();
+                ////More_Settings m_settings = new More_Settings();
+                ////main.Reset_world = reset_data;
+                ////main.Save_world = save_data;
 
-                bool result = Check_valid(main);
+                //bool result = Check_valid(main);
 
-                if (result)
-                {
-                    //main.Get_op = op;
-                    Change_properties();
-                    //m_settings.Read_properties();
-                    //main.Start(false);
-                }
+                //if (result)
+                //{
+                //    //main.Get_op = op;
+                //    Change_properties();
+                //    //m_settings.Read_properties();
+                //    //main.Start(false);
+                //}
 
-                Console.Write(end_str);
-                Finish();
+                //Console.Write(end_str);
+                //Finish();
             }
+        }
+
+        private void SetUnhandledDetecter()
+        {
+            void ShowWindow(object exception)
+            {
+                var separator = new[] { Environment.NewLine };
+                string error_message = exception.ToString();
+                if (!(exception is ServerStarterException))
+                {
+                    var result = CustomMessageBox.Show(
+                        $"{Server_GUI2.Properties.Resources.App_Unhandle}\n{error_message.Split(separator, StringSplitOptions.None)[0]}",
+                        new string[2] { Server_GUI2.Properties.Resources.LogFolder, Server_GUI2.Properties.Resources.Close },
+                        Image.Error,
+                        new LinkMessage(Server_GUI2.Properties.Resources.Manage_Vup2, "https://github.com/CivilTT/ServerStarter/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D")
+                        );
+
+                    if (result == 0)
+                        Process.Start(Path.GetFullPath(@".\log\"));
+                    logger.Error(error_message);
+                }
+            }
+            // 想定外のエラーを処理する
+            DispatcherUnhandledException += (sender, eventargs) => ShowWindow(eventargs.Exception);
+            TaskScheduler.UnobservedTaskException += (sender, eventargs) => ShowWindow(eventargs.Exception.InnerException);
+            AppDomain.CurrentDomain.UnhandledException += (sender, eventargs) => ShowWindow(eventargs.ExceptionObject);
         }
 
         private void AnalizeArgs(string[] args)

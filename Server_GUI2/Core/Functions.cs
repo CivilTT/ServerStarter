@@ -209,7 +209,7 @@ namespace Server_GUI2
                     string message =
                         "サーバーの実行ファイル(start.bat)の作成に失敗しました。\n\n" +
                         $"【エラー要因】\n{ex.Message}";
-                    ServerStarterException<IOException>.ShowError(message, new IOException($"Failed to write start.bat (Error Message : {ex.Message})"));
+                    ServerStarterException.ShowError(message, new IOException($"Failed to write start.bat (Error Message : {ex.Message})"));
                 }
             }
         }

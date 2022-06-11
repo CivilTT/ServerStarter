@@ -7,13 +7,13 @@ using MW = ModernWpf;
 
 namespace Server_GUI2
 {
-    public class ServerStarterException<T> : Exception where T : Exception 
+    public class ServerStarterException : Exception
     {
         private readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public T Exception;
+        public Exception Exception;
 
-        public ServerStarterException(T exception) : base(exception.Message)
+        public ServerStarterException(Exception exception) : base(exception.Message)
         {
             logger.Error(exception.Message);
             Console.WriteLine(App.end_str);
@@ -24,7 +24,7 @@ namespace Server_GUI2
         {
             CustomMessageBox.Show(showMessage, ButtonType.OK, Image.Error);
 
-            throw new ServerStarterException<Ex>(ex);
+            throw new ServerStarterException(ex);
         }
     }
 

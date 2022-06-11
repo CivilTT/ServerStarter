@@ -615,6 +615,18 @@ Auto Port Mappingを使用しない設定に変更します。</value>
   <data name="Version" xml:space="preserve">
     <value>バージョン</value>
   </data>
+  <data name="Version_BuildSpigot" xml:space="preserve">
+    <value>Spigotサーバーのビルドに失敗しました</value>
+  </data>
+  <data name="Version_DownloadSpigot" xml:space="preserve">
+    <value>Spigot サーバーのダウンロードに失敗しました。</value>
+  </data>
+  <data name="Version_DownloadVanilla" xml:space="preserve">
+    <value>Vanila サーバーのダウンロードに失敗しました。</value>
+  </data>
+  <data name="Version_notExist" xml:space="preserve">
+    <value>はマルチサーバーが存在しない可能性があります。</value>
+  </data>
   <data name="Welcome_Access" xml:space="preserve">
     <value>利用規約の全文はこちら</value>
   </data>
