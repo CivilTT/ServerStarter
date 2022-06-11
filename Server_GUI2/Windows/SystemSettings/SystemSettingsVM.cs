@@ -147,6 +147,8 @@ namespace Server_GUI2.Windows.SystemSettings
             CredentialManagerCommand = new CredentialManagerCommand(this);
 
             // Server
+            // TODO: デフォルトプロパティの適用ボタンと反映ボタンを作成
+            // TODO: システム更新ツールの改修（GitHubの読み込みを変更）
             ServerProperty defaultProperties = SaveData.DefaultProperties;
             PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(defaultProperties), () => OnPropertyChanged("PropertyIndexs"));
             BoolOptions = BoolOption.GetBoolCollection(PropertyIndexs.Value.BoolOption, new string[2] { "hardcore", "white-list" });

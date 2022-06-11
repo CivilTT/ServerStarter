@@ -1535,6 +1535,42 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Failed to build the Spigot server. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Version_BuildSpigot {
+            get {
+                return ResourceManager.GetString("Version_BuildSpigot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to download the Spigot server. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Version_DownloadSpigot {
+            get {
+                return ResourceManager.GetString("Version_DownloadSpigot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to download the Vanilla server. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Version_DownloadVanilla {
+            get {
+                return ResourceManager.GetString("Version_DownloadVanilla", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   may not be exist. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Version_notExist {
+            get {
+                return ResourceManager.GetString("Version_notExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Access to the Terms of Use に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Welcome_Access {

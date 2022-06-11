@@ -622,6 +622,18 @@ You can't import a new Vanilla version.</value>
   <data name="Version" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="Version_BuildSpigot" xml:space="preserve">
+    <value>Failed to build the Spigot server.</value>
+  </data>
+  <data name="Version_DownloadSpigot" xml:space="preserve">
+    <value>Failed to download the Spigot server.</value>
+  </data>
+  <data name="Version_DownloadVanilla" xml:space="preserve">
+    <value>Failed to download the Vanilla server.</value>
+  </data>
+  <data name="Version_notExist" xml:space="preserve">
+    <value>may not be exist.</value>
+  </data>
   <data name="Welcome_Access" xml:space="preserve">
     <value>Access to the Terms of Use</value>
   </data>
