@@ -250,7 +250,7 @@ namespace Server_GUI2.Windows.WorldSettings
             {
                 RemoteDataList.ChangeCollection(AccountIndex.Value.RemoteWorlds);
                 RemoteDataList.RemoveAll(remote => (remote is RemoteWorld world) && !world.IsVisible);
-                RemoteIndex.Value = RemoteDataList[0];
+                RemoteIndex.Value = RemoteDataList.Last();
             }
         }
 
