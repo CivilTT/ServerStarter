@@ -138,7 +138,9 @@ namespace Server_GUI2
             {
                 var separator = new[] { Environment.NewLine };
                 string error_message = exception.ToString();
-                if (!(exception is ServerStarterException))
+                logger.Error("Unhandled error has occurred");
+                logger.Error(error_message);
+                if (typeof(ServerStarterException) != exception.GetType())
                 {
                     var result = CustomMessageBox.Show(
                         $"{Server_GUI2.Properties.Resources.App_Unhandle}\n{error_message.Split(separator, StringSplitOptions.None)[0]}",
@@ -149,7 +151,7 @@ namespace Server_GUI2
 
                     if (result == 0)
                         Process.Start(Path.GetFullPath(@".\log\"));
-                    logger.Error(error_message);
+                    logger.Info("Show unhandled error message window");
                 }
             }
             // 想定外のエラーを処理する
