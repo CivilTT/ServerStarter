@@ -188,6 +188,11 @@
         <Style TargetType="TextBox" x:Key="PropertyBox" BasedOn="{StaticResource BoxSource}">
             <Setter Property="Width" Value="145"/>
         </Style>
+        <Style TargetType="Button" x:Key="PropertyButton" BasedOn="{StaticResource OtherStyle}">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0 10"/>
+        </Style>
 
         <!--//ShareWorld//-->
         <Style TargetType="ComboBox" x:Key="ShareWorldCombo" BasedOn="{StaticResource ComboSource}">
@@ -328,30 +333,46 @@
                     <TabItem.Header>
                         <TextBlock Text="Main"/>
                     </TabItem.Header>
-                    <Grid Margin="0 10">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Resources.WorldSettings_PropOfWor}" Style="{StaticResource TitleBlock}"/>
-                            <Button Margin="0 7" Style="{StaticResource Help}"/>
-                        </StackPanel>
-                        
-                        <StackPanel Orientation="Horizontal" Margin="0 35 0 0">
-                            <StackPanel Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                <TextBlock Text="{Binding Resources.SystemSettings_Main}" Style="{StaticResource TitleBlock2}"/>
-                                <TextBlock Text="difficulty" ToolTip="{Binding Resources.P_Difficult}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="hardcore" ToolTip="{Binding Resources.P_Hardcore}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="gamemode" ToolTip="{Binding Resources.P_Gamemode}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="white-list" ToolTip="{Binding Resources.P_WhiteList}" Style="{StaticResource PropertyIndex}"/>
-                                <TextBlock Text="level-type" ToolTip="{Binding Resources.P_LevelType}" Style="{StaticResource PropertyIndex}"/>
+                    <ScrollViewer>
+                        <Grid Margin="0 10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="370"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Resources.WorldSettings_PropOfWor}" Style="{StaticResource TitleBlock}"/>
+                                <Button Margin="0 7" Style="{StaticResource Help}"/>
                             </StackPanel>
-                            <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
-                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,62,0,0" Style="{StaticResource PropertyCombo}"/>
-                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Hardcore}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
-                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Gamemode}" ItemsSource="{Binding GamemodeCombo}" Style="{StaticResource PropertyCombo}"/>
-                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.WhiteList}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
-                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.LevelType}" ItemsSource="{Binding TypeCombo}" Style="{StaticResource PropertyCombo}"/>
+
+                            <StackPanel Orientation="Horizontal" Margin="0 35 0 0">
+                                <StackPanel Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <TextBlock Text="{Binding Resources.SystemSettings_Main}" Style="{StaticResource TitleBlock2}"/>
+                                    <TextBlock Text="difficulty" ToolTip="{Binding Resources.P_Difficult}" Style="{StaticResource PropertyIndex}"/>
+                                    <TextBlock Text="hardcore" ToolTip="{Binding Resources.P_Hardcore}" Style="{StaticResource PropertyIndex}"/>
+                                    <TextBlock Text="gamemode" ToolTip="{Binding Resources.P_Gamemode}" Style="{StaticResource PropertyIndex}"/>
+                                    <TextBlock Text="white-list" ToolTip="{Binding Resources.P_WhiteList}" Style="{StaticResource PropertyIndex}"/>
+                                    <TextBlock Text="level-type" ToolTip="{Binding Resources.P_LevelType}" Style="{StaticResource PropertyIndex}"/>
+                                </StackPanel>
+                                <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                    <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,62,0,0" Style="{StaticResource PropertyCombo}"/>
+                                    <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Hardcore}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
+                                    <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Gamemode}" ItemsSource="{Binding GamemodeCombo}" Style="{StaticResource PropertyCombo}"/>
+                                    <ComboBox SelectedItem="{Binding PropertyIndexs.Value.WhiteList}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
+                                    <ComboBox SelectedItem="{Binding PropertyIndexs.Value.LevelType}" ItemsSource="{Binding TypeCombo}" Style="{StaticResource PropertyCombo}"/>
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </Grid>
+
+                            <TextBlock Text="{Binding Resources.SystemSettings_Ope}" Grid.Row="1" Style="{StaticResource TitleBlock2}"/>
+                            <StackPanel Grid.Row="1" Margin="40 55 0 0" VerticalAlignment="Top" Orientation="Horizontal">
+                                <TextBlock Text="{Binding Resources.SystemSettings_Apply}" FontSize="20" Width="270" VerticalAlignment="Center"/>
+                                <Button Content="{Binding Resources.Apply}" Command="{Binding SavePropCommand}" VerticalAlignment="Center" Margin="15 0" Style="{StaticResource PropertyButton}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Margin="40 105 0 0" VerticalAlignment="Top" Orientation="Horizontal">
+                                <TextBlock Text="{Binding Resources.SystemSettings_Reset}" FontSize="20" Width="270" VerticalAlignment="Center"/>
+                                <Button Content="{Binding Resources.Reset}" Command="{Binding SetPropCommand}" VerticalAlignment="Center" Margin="15 0" Style="{StaticResource PropertyButton}"/>
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
                 </TabItem>
 
                 <!--//True / False//-->

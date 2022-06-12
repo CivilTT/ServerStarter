@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>追加</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>適用</value>
+  </data>
   <data name="App_Unhandle" xml:space="preserve">
     <value>予期せぬエラーが発生しました。
 エラー内容を確認し、システムバグが疑われる場合はGitのIssueにてお問い合わせください。
@@ -410,6 +413,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   <data name="Remove" xml:space="preserve">
     <value>削除</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>リセット</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>保存</value>
   </data>
@@ -460,6 +466,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   </data>
   <data name="SystemSettings_APM" xml:space="preserve">
     <value>自動ポート開放</value>
+  </data>
+  <data name="SystemSettings_Apply" xml:space="preserve">
+    <value>この設定を規定値として適用する</value>
   </data>
   <data name="SystemSettings_Author" xml:space="preserve">
     <value>作者</value>
@@ -512,6 +521,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   <data name="SystemSettings_NewPName" xml:space="preserve">
     <value>新規プレイヤー名</value>
   </data>
+  <data name="SystemSettings_Ope" xml:space="preserve">
+    <value>設定の操作</value>
+  </data>
   <data name="SystemSettings_Personal" xml:space="preserve">
     <value>Personal Access Token (GitHub)</value>
   </data>
@@ -562,6 +574,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   </data>
   <data name="SystemSettings_Repo" xml:space="preserve">
     <value>レポジトリ名</value>
+  </data>
+  <data name="SystemSettings_Reset" xml:space="preserve">
+    <value>規定値にリセットする</value>
   </data>
   <data name="SystemSettings_Status" xml:space="preserve">
     <value>ネットワーク情報</value>
