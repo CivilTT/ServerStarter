@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="App_Unhandle" xml:space="preserve">
     <value>An unexpected error has occurred.
 Please check the error and if you suspect a system bug, please contact us at Git Issues.
@@ -417,6 +420,9 @@ However, this is not valid for players with OP.</value>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
@@ -467,6 +473,9 @@ If you don't want to shutdown, click "Cancel" button.</value>
   </data>
   <data name="SystemSettings_APM" xml:space="preserve">
     <value>Auto Port Mapping</value>
+  </data>
+  <data name="SystemSettings_Apply" xml:space="preserve">
+    <value>Apply these settings to default settings</value>
   </data>
   <data name="SystemSettings_Author" xml:space="preserve">
     <value>Author</value>
@@ -519,6 +528,9 @@ If you don't want to shutdown, click "Cancel" button.</value>
   <data name="SystemSettings_NewPName" xml:space="preserve">
     <value>New Player Name</value>
   </data>
+  <data name="SystemSettings_Ope" xml:space="preserve">
+    <value>Operation of Properties</value>
+  </data>
   <data name="SystemSettings_Personal" xml:space="preserve">
     <value>Personal Access Token (GitHub)</value>
   </data>
@@ -569,6 +581,9 @@ Please refer to Configuration for details.</value>
   </data>
   <data name="SystemSettings_Repo" xml:space="preserve">
     <value>Repository</value>
+  </data>
+  <data name="SystemSettings_Reset" xml:space="preserve">
+    <value>Reset these settings to default settings</value>
   </data>
   <data name="SystemSettings_Status" xml:space="preserve">
     <value>Status</value>

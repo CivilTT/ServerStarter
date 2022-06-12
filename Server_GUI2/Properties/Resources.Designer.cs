@@ -82,6 +82,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Apply に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cancel に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Cancel {
@@ -940,6 +949,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Reset に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Save に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Save {
@@ -1083,6 +1101,15 @@ namespace Server_GUI2.Properties {
         public static string SystemSettings_APM {
             get {
                 return ResourceManager.GetString("SystemSettings_APM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Apply these settings to default settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Apply {
+            get {
+                return ResourceManager.GetString("SystemSettings_Apply", resourceCulture);
             }
         }
         
@@ -1240,6 +1267,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Operation of Properties に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Ope {
+            get {
+                return ResourceManager.GetString("SystemSettings_Ope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Personal Access Token (GitHub) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SystemSettings_Personal {
@@ -1383,6 +1419,15 @@ namespace Server_GUI2.Properties {
         public static string SystemSettings_Repo {
             get {
                 return ResourceManager.GetString("SystemSettings_Repo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Reset these settings to default settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Reset {
+            get {
+                return ResourceManager.GetString("SystemSettings_Reset", resourceCulture);
             }
         }
         

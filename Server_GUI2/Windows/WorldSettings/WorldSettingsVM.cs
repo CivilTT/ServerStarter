@@ -41,6 +41,8 @@ namespace Server_GUI2.Windows.WorldSettings
         public string[] DifficultyCombo => new string[4] { "peaceful", "easy", "normal", "hard" };
         public string[] GamemodeCombo => new string[4] { "survival", "creative", "adventure", "spectator" };
         public string[] TypeCombo => new string[4] { "default", "flat", "largeBiomes", "amplified" };
+        public SetDefaultProperties SetPropCommand { get; private set; }
+        public SaveDefaultProperties SavePropCommand { get; private set; }
         /// <summary>
         /// MainSettingsで使用（最終保存データを格納）
         /// </summary>
@@ -129,6 +131,8 @@ namespace Server_GUI2.Windows.WorldSettings
 
             // ServerProperty
             PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(RunWorld.Settings.ServerProperties), () => OnPropertyChanged("PropertyIndexs"));
+            SetPropCommand = new SetDefaultProperties(this);
+            SavePropCommand = new SaveDefaultProperties(this);
             BoolOptions = BoolOption.GetBoolCollection(PropertyIndexs.Value.BoolOption, new string[2] { "hardcore", "white-list" });
             TextOptions = TextOption.GetTextCollection(PropertyIndexs.Value.StringOption, new string[4] { "difficulty", "gamemode", "level-type", "level-name" });
 
