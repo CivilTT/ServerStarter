@@ -102,7 +102,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public virtual void AddWorld(RemoteWorld world)
         {
-            RemoteWorlds.Insert(RemoteWorlds.Count-2, world);
+            RemoteWorlds.Insert(RemoteWorlds.Count<2 ? 0 : RemoteWorlds.Count-2, world);
             world.DeleteEvent += new EventHandler((_, __) => RemoteWorlds.Remove(world));
         }
 
