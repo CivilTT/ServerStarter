@@ -744,8 +744,8 @@
         </Grid>
 
         <!--//Others//-->
-        <!--<Grid Visibility="{Binding ShowOthers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">-->
-            <Grid Style="{StaticResource SettingContent}">
+        <Grid Visibility="{Binding ShowOthers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <!--<Grid Style="{StaticResource SettingContent}">-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="160"/>
                 <RowDefinition/>
