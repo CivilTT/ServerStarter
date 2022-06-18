@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>追加</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>適用</value>
+  </data>
   <data name="App_Unhandle" xml:space="preserve">
     <value>予期せぬエラーが発生しました。
 エラー内容を確認し、システムバグが疑われる場合はGitのIssueにてお問い合わせください。
@@ -230,7 +233,7 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
 問題の改善のため，ログファイルをGitのIssuesに投稿していただけると幸いです。</value>
   </data>
   <data name="Manage_Vup2" xml:space="preserve">
-    <value>Server StarterのGitページ</value>
+    <value>このバグを報告する</value>
   </data>
   <data name="Manage_Vup3" xml:space="preserve">
     <value>今すぐ行う！</value>
@@ -410,6 +413,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   <data name="Remove" xml:space="preserve">
     <value>削除</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>リセット</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>保存</value>
   </data>
@@ -460,6 +466,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   </data>
   <data name="SystemSettings_APM" xml:space="preserve">
     <value>自動ポート開放</value>
+  </data>
+  <data name="SystemSettings_Apply" xml:space="preserve">
+    <value>この設定を規定値として適用する</value>
   </data>
   <data name="SystemSettings_Author" xml:space="preserve">
     <value>作者</value>
@@ -512,6 +521,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   <data name="SystemSettings_NewPName" xml:space="preserve">
     <value>新規プレイヤー名</value>
   </data>
+  <data name="SystemSettings_Ope" xml:space="preserve">
+    <value>設定の操作</value>
+  </data>
   <data name="SystemSettings_Personal" xml:space="preserve">
     <value>Personal Access Token (GitHub)</value>
   </data>
@@ -551,6 +563,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   <data name="SystemSettings_RegisterP" xml:space="preserve">
     <value>このプレイヤーはすでに登録されています</value>
   </data>
+  <data name="SystemSettings_RemoteFail" xml:space="preserve">
+    <value>は新規のリモートデータとして存在しません</value>
+  </data>
   <data name="SystemSettings_RemoteL" xml:space="preserve">
     <value>リモート設定一覧</value>
   </data>
@@ -559,6 +574,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   </data>
   <data name="SystemSettings_Repo" xml:space="preserve">
     <value>レポジトリ名</value>
+  </data>
+  <data name="SystemSettings_Reset" xml:space="preserve">
+    <value>規定値にリセットする</value>
   </data>
   <data name="SystemSettings_Status" xml:space="preserve">
     <value>ネットワーク情報</value>
@@ -611,6 +629,18 @@ Auto Port Mappingを使用しない設定に変更します。</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>バージョン</value>
+  </data>
+  <data name="Version_BuildSpigot" xml:space="preserve">
+    <value>Spigotサーバーのビルドに失敗しました</value>
+  </data>
+  <data name="Version_DownloadSpigot" xml:space="preserve">
+    <value>Spigot サーバーのダウンロードに失敗しました。</value>
+  </data>
+  <data name="Version_DownloadVanilla" xml:space="preserve">
+    <value>Vanila サーバーのダウンロードに失敗しました。</value>
+  </data>
+  <data name="Version_notExist" xml:space="preserve">
+    <value>はマルチサーバーが存在しない可能性があります。</value>
   </data>
   <data name="Welcome_Access" xml:space="preserve">
     <value>利用規約の全文はこちら</value>

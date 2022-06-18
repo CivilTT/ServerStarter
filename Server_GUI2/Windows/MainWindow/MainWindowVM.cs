@@ -153,7 +153,7 @@ namespace Server_GUI2.Windows.MainWindow
             // World
             Worlds = new ObservableCollection<IWorld>(AllWorlds);
             WorldIndex = new BindingValue<IWorld>(SetFirstWor(), () => OnPropertyChanged(new string[4] { "WorldIndex", "ShowNewWorld", "CanRun", "OwnerHasOp" }));
-            NewWorldName = "InputWorldName";
+            NewWorldName = Properties.Resources.Main_InputName;
             SetUp.InitProgressBar.AddMessage("Set Minecraft Worlds in Main Window");
 
 

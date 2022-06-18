@@ -2,6 +2,7 @@
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
+using Server_GUI2.Windows.SystemSettings;
 using System;
 using System.Collections.ObjectModel;
 
@@ -17,19 +18,23 @@ namespace Server_GUI2.Windows.WorldSettings
         public override void Execute(object parameter)
         {
             _vm.PropertyIndexs.Value = new ServerProperty(UserSettings.Instance.userSettings.DefaultProperties);
+            _vm.BoolOptions.ChangeCollection(BoolOption.GetBoolCollection(_vm.PropertyIndexs.Value.BoolOption, new string[2] { "hardcore", "white-list" }));
+            _vm.TextOptions.ChangeCollection(TextOption.GetTextCollection(_vm.PropertyIndexs.Value.StringOption, new string[4] { "difficulty", "gamemode", "level-type", "level-name" }));
             CustomMessageBox.Show(Properties.Resources.WorldSettings_SetProp, ButtonType.OK, Image.Infomation);
         }
     }
 
-    class SetAsDefaultProperties : GeneralCommand<WorldSettingsVM>
+    class SaveDefaultProperties : GeneralCommand<WorldSettingsVM>
     {
-        public SetAsDefaultProperties(WorldSettingsVM vm)
+        public SaveDefaultProperties(WorldSettingsVM vm)
         {
             _vm = vm;
         }
 
         public override void Execute(object parameter)
         {
+            _vm.PropertyIndexs.Value = BoolOption.SetBoolOption(_vm.BoolOptions, _vm.PropertyIndexs.Value);
+            _vm.PropertyIndexs.Value = TextOption.SetStringOption(_vm.TextOptions, _vm.PropertyIndexs.Value);
             UserSettings.Instance.userSettings.DefaultProperties = new ServerProperty(_vm.PropertyIndexs.Value);
             CustomMessageBox.Show(Properties.Resources.WorldSettings_SaveProp, ButtonType.OK, Image.Infomation);
         }

@@ -47,26 +47,6 @@ namespace Server_GUI2
 
         public MainWindow()
         {
-            // 想定外のエラーを処理する
-            AppDomain.CurrentDomain.UnhandledException += (sender, eventargs) =>
-            {
-                var separator = new[] { Environment.NewLine };
-                string error_message = eventargs.ExceptionObject.ToString();
-                if (!error_message.Contains("UserSelectException"))
-                {
-                    var result = CustomMessageBox.Show(
-                        $"{Properties.Resources.App_Unhandle}\n{error_message.Split(separator, StringSplitOptions.None)[0]}", 
-                        new string[2] { Properties.Resources.LogFolder, Properties.Resources.Close }, 
-                        Image.Error,
-                        new LinkMessage(Properties.Resources.Manage_Vup2, "https://github.com/CivilTT/ServerStarter/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D")
-                        );
-
-                    if (result == 0)
-                        Process.Start(Path.GetFullPath(@".\log\"));
-                    logger.Error(error_message);
-                }
-            };
-
             InitializeComponent();
 
             var systemSettingWindow = new ShowNewWindow<SystemSettings, SystemSettingsVM>()

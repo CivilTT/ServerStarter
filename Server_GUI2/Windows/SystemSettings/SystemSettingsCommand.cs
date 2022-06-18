@@ -46,8 +46,9 @@ namespace Server_GUI2.Windows.SystemSettings
                     void Adding(object sender, DoWorkEventArgs e)
                     {
                         Either<GitStorage, Exception> result = GitStorage.AddStorage(_vm.AccountName.Value, _vm.RepoName.Value, _vm.AccountEmail.Value);
-                        //result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<IRemoteWorld>())).FailureAction(exception => exception.);
-                        result.SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<IRemoteWorld>()));
+                        result
+                            .SuccessAction(storage => _vm.RemoteList.AddRange(storage.RemoteWorlds.OfType<IRemoteWorld>()))
+                            .FailureAction(exception => CustomMessageBox.Show(_vm.RepoName.Value + Properties.Resources.SystemSettings_RemoteFail, ButtonType.OK, Image.Warning));
                     }
                     void Finished(object sender, RunWorkerCompletedEventArgs e)
                     {

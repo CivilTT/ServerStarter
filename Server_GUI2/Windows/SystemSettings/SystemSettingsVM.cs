@@ -1,4 +1,4 @@
-﻿using Server_GUI2.Develop.Server;
+using Server_GUI2.Develop.Server;
 using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
 using Server_GUI2.Util;
@@ -147,10 +147,10 @@ namespace Server_GUI2.Windows.SystemSettings
             CredentialManagerCommand = new CredentialManagerCommand(this);
 
             // Server
+            // TODO: システム更新ツールの改修（GitHubの読み込みを変更）
             ServerProperty defaultProperties = SaveData.DefaultProperties;
             PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(defaultProperties), () => OnPropertyChanged("PropertyIndexs"));
             BoolOptions = BoolOption.GetBoolCollection(PropertyIndexs.Value.BoolOption, new string[2] { "hardcore", "white-list" });
-            PropertyIndexs.Value.StringOption.WriteLine();
             TextOptions = TextOption.GetTextCollection(PropertyIndexs.Value.StringOption, new string[4] { "difficulty", "gamemode", "level-type", "level-name" });
 
             // Players
@@ -253,6 +253,8 @@ namespace Server_GUI2.Windows.SystemSettings
             // 既存のデータを変更する形で処理
             UserSettings.Instance.userSettings.OwnerName = UserName.Value;
             UserSettings.Instance.userSettings.Language = Languages[LanguageSelected.Value];
+            PropertyIndexs.Value = BoolOption.SetBoolOption(BoolOptions, PropertyIndexs.Value);
+            PropertyIndexs.Value = TextOption.SetStringOption(TextOptions, PropertyIndexs.Value);
             UserSettings.Instance.userSettings.DefaultProperties = new ServerProperty(PropertyIndexs.Value);
             UserSettings.Instance.userSettings.Players = PlayerList.ToList();
             UserSettings.Instance.userSettings.PlayerGroups = new List<PlayerGroup>(GroupList);
@@ -341,6 +343,14 @@ namespace Server_GUI2.Windows.SystemSettings
 
             return resultCollection;
         }
+
+        public static ServerProperty SetBoolOption(ObservableCollection<BoolOption> boolCollection, ServerProperty sourceProp)
+        {
+            foreach (var boolPart in boolCollection)
+                sourceProp.BoolOption[boolPart.Property] = boolPart.Value;
+
+            return sourceProp;
+        }
     }
 
     public class TextOption
@@ -370,6 +380,14 @@ namespace Server_GUI2.Windows.SystemSettings
             }
 
             return resultCollection;
+        }
+
+        public static ServerProperty SetStringOption(ObservableCollection<TextOption> textCollection, ServerProperty sourceProp)
+        {
+            foreach (var boolPart in textCollection)
+                sourceProp.StringOption[boolPart.Property] = boolPart.Value;
+
+            return sourceProp;
         }
     }
 }

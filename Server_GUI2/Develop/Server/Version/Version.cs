@@ -96,7 +96,10 @@ namespace Server_GUI2
             logger.Info("<ReadyVersion>");
             StartServer.RunProgressBar.AddMessage("Ready Version Data.");
             if (!Exists)
+            {
+                StartServer.RunProgressBar.AddMessage("Downloading new Server data");
                 SetNewVersion();
+            }
             logger.Info("</ReadyVersion>");
             StartServer.RunProgressBar.AddMessage("Get Best Java Version.");
             return (Path, JarName, GetJavaVersion());
@@ -254,10 +257,10 @@ namespace Server_GUI2
             catch (Exception ex)
             {
                 string message =
-                        "Vanila サーバーのダウンロードに失敗しました。\n" +
-                        $"{Name}はマルチサーバーが存在しない可能性があります。\n\n" +
-                        $"【エラー要因】\n{ex.Message}";
-                ServerStarterException<DownloadException>.ShowError(message, new DownloadException($"Failed to get url to download server.jar (Error Message : {ex.Message})"));
+                        $"{Properties.Resources.Version_DownloadVanilla}\n" +
+                        $"{Name} {Properties.Resources.Version_notExist}\n\n" +
+                        $"{Properties.Resources.Contents_error}\n{ex.Message}";
+                ServerStarterException.ShowError(message, new DownloadException($"Failed to get url to download server.jar (Error Message : {ex.Message})"));
             }
 
             Path.Create();
@@ -270,10 +273,10 @@ namespace Server_GUI2
             catch (Exception ex)
             {
                 string message =
-                        "Vanila サーバーのダウンロードに失敗しました。\n\n" +
-                        $"【エラー要因】\n{ex.Message}";
+                        $"{Properties.Resources.Version_DownloadVanilla}\n\n" +
+                        $"{Properties.Resources.Contents_error}\n{ex.Message}";
                 Directory.Delete(Path.FullName);
-                ServerStarterException<DownloadException>.ShowError(message, new DownloadException($"Failed to download server.jar (Error Message : {ex.Message})"));
+                ServerStarterException.ShowError(message, new DownloadException($"Failed to download server.jar (Error Message : {ex.Message})"));
             }
 
             var javaVersion = GetJavaVersion();
@@ -320,9 +323,10 @@ namespace Server_GUI2
             catch (Exception ex)
             {
                 Path.Delete();
-                string message = "Spigot サーバーのビルドファイルのダウンロードに失敗しました。\n\n" +
-                        $"【エラー要因】\n{ex.Message}";
-                ServerStarterException<DownloadException>.ShowError(message, new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})"));
+                string message = 
+                    $"{Properties.Resources.Version_DownloadSpigot}\n\n" +
+                    $"{Properties.Resources.Contents_error} \n{ex.Message}";
+                ServerStarterException.ShowError(message, new DownloadException($"Failed to download BuildTools.jar (Error Message : {ex.Message})"));
             }
 
             logger.Info($"Start to build the Spigot Server ({NameWithoutPrefix})");
@@ -333,24 +337,9 @@ namespace Server_GUI2
                     Arguments = $"-jar BuildTools.jar --rev { NameWithoutPrefix }",
                     WorkingDirectory = Path.FullName,
                     UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true
                 }
             };
-            void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
-            {
-                //出力された文字列を表示する
-                StartServer.RunProgressBar.AddMessage(e.Data, moving: true, addCount: false);
-            }
-            p.OutputDataReceived += p_OutputDataReceived;
-            p.ErrorDataReceived += p_OutputDataReceived;
             p.Start();
-
-            //非同期で出力の読み取りを開始
-            p.BeginErrorReadLine();
-            p.BeginOutputReadLine();
-
             p.WaitForExit();
 
             // 余計なファイルの削除
@@ -372,16 +361,16 @@ namespace Server_GUI2
                 switch (p.ExitCode)
                 {
                     case 1:
-                        message = $"バージョン{Name}はインポート可能なSpigotサーバーとして見つけられませんでした。";
+                        message = $"{Name} {Properties.Resources.Version_notExist}";
                         break;
                     default:
                         message = 
-                            $"Spigotサーバーのビルドに失敗しました\n" +
-                            $"（エラーコード：{p.ExitCode}）";
+                            $"{Properties.Resources.Version_BuildSpigot}\n\n" +
+                            $"{Properties.Resources.Contents_error}\n{p.ExitCode}";
                         break;
                 }
 
-                ServerStarterException<ServerException>.ShowError(message, new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})"));
+                ServerStarterException.ShowError(message, new ServerException($"Failed to build the spigot server (Error Code : {p.ExitCode})"));
             }
 
             var javaVersion = GetJavaVersion();
