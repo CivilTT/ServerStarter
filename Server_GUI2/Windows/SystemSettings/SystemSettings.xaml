@@ -744,27 +744,27 @@
         </Grid>
 
         <!--//Others//-->
-        <Grid Visibility="{Binding ShowOthers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
-            <!--<Grid Style="{StaticResource SettingContent}">-->
+        <!--<Grid Visibility="{Binding ShowOthers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">-->
+            <Grid Style="{StaticResource SettingContent}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="160"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock Text="{Binding Resources.SystemSettings_UserSet}" Style="{StaticResource TitleBlock}"/>
-            <StackPanel Orientation="Horizontal" Margin="40 30">
-                <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" Margin="40 30 0 0">
+                <StackPanel Orientation="Vertical" Width="165">
                     <TextBlock Text="{Binding Resources.UserName}" Style="{StaticResource PropertyIndex}"/>
                     <TextBlock Text="{Binding Resources.SystemSettings_Lang}" Style="{StaticResource PropertyIndex}"/>
                 </StackPanel>
-                <StackPanel Orientation="Vertical" Margin="30 0">
-                    <TextBox Text="{Binding UserName.Value}" Margin="15" Style="{StaticResource PlayerBox}"/>
+                <StackPanel Orientation="Vertical" Margin="-10 0">
+                    <TextBox Text="{Binding UserName.Value}" Margin="15 20" Style="{StaticResource PlayerBox}"/>
                     <ComboBox ItemsSource="{Binding Languages.Keys}" SelectedItem="{Binding LanguageSelected.Value}" HorizontalContentAlignment="Left" Margin="15 0" Style="{StaticResource PlayerCombo}"/>
                 </StackPanel>
             </StackPanel>
 
             <TextBlock Text="{Binding Resources.SystemSettings_SystemInfo}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="40 30">
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Width="165">
                     <TextBlock Text="{Binding Resources.SystemSettings_SystemVer}" Style="{StaticResource PropertyIndex}"/>
                     <TextBlock Text="{Binding Resources.SystemSettings_Manual}" Style="{StaticResource PropertyIndex}"/>
                     <TextBlock Text="{Binding Resources.SystemSettings_Author}" Style="{StaticResource PropertyIndex}"/>
