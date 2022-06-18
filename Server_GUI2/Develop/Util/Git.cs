@@ -204,10 +204,10 @@ namespace Server_GUI2.Util
                 process.StartInfo = new ProcessStartInfo("forfiles")
                 {
                     UseShellExecute = false,
+                    CreateNoWindow = true,
                     RedirectStandardError = true,
                     RedirectStandardOutput = true,
                     WorkingDirectory = Path,
-                    // TODO: @CivilTT '"'の削除し、'\'を'/'に置換
                     Arguments = $"/s /c \"cmd /q /c if @fsize GTR 100000000 echo @relpath\""
                 };
                 process.Start();

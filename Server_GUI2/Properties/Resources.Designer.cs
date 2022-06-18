@@ -82,6 +82,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Apply に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cancel に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Cancel {
@@ -254,6 +263,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Input_Name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_InputName {
+            get {
+                return ResourceManager.GetString("Main_InputName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   has op rights in this version&apos;s server に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Main_Op {
@@ -390,7 +408,7 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
-        ///   Server Starter&apos;s Git page に類似しているローカライズされた文字列を検索します。
+        ///   Report this Issue に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Manage_Vup2 {
             get {
@@ -931,6 +949,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Reset に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Save に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Save {
@@ -1074,6 +1101,15 @@ namespace Server_GUI2.Properties {
         public static string SystemSettings_APM {
             get {
                 return ResourceManager.GetString("SystemSettings_APM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Apply these settings to default settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Apply {
+            get {
+                return ResourceManager.GetString("SystemSettings_Apply", resourceCulture);
             }
         }
         
@@ -1231,6 +1267,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Operation of Properties に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Ope {
+            get {
+                return ResourceManager.GetString("SystemSettings_Ope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Personal Access Token (GitHub) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SystemSettings_Personal {
@@ -1342,6 +1387,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///    does not exist as new remote data に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_RemoteFail {
+            get {
+                return ResourceManager.GetString("SystemSettings_RemoteFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Remote List に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SystemSettings_RemoteL {
@@ -1365,6 +1419,15 @@ namespace Server_GUI2.Properties {
         public static string SystemSettings_Repo {
             get {
                 return ResourceManager.GetString("SystemSettings_Repo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Reset these settings to default settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_Reset {
+            get {
+                return ResourceManager.GetString("SystemSettings_Reset", resourceCulture);
             }
         }
         
@@ -1513,6 +1576,42 @@ namespace Server_GUI2.Properties {
         public static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to build the Spigot server. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Version_BuildSpigot {
+            get {
+                return ResourceManager.GetString("Version_BuildSpigot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to download the Spigot server. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Version_DownloadSpigot {
+            get {
+                return ResourceManager.GetString("Version_DownloadSpigot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to download the Vanilla server. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Version_DownloadVanilla {
+            get {
+                return ResourceManager.GetString("Version_DownloadVanilla", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   may not be exist. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Version_notExist {
+            get {
+                return ResourceManager.GetString("Version_notExist", resourceCulture);
             }
         }
         

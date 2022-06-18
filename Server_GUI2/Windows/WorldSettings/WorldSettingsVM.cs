@@ -41,6 +41,8 @@ namespace Server_GUI2.Windows.WorldSettings
         public string[] DifficultyCombo => new string[4] { "peaceful", "easy", "normal", "hard" };
         public string[] GamemodeCombo => new string[4] { "survival", "creative", "adventure", "spectator" };
         public string[] TypeCombo => new string[4] { "default", "flat", "largeBiomes", "amplified" };
+        public SetDefaultProperties SetPropCommand { get; private set; }
+        public SaveDefaultProperties SavePropCommand { get; private set; }
         /// <summary>
         /// MainSettingsで使用（最終保存データを格納）
         /// </summary>
@@ -129,6 +131,8 @@ namespace Server_GUI2.Windows.WorldSettings
 
             // ServerProperty
             PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(RunWorld.Settings.ServerProperties), () => OnPropertyChanged("PropertyIndexs"));
+            SetPropCommand = new SetDefaultProperties(this);
+            SavePropCommand = new SaveDefaultProperties(this);
             BoolOptions = BoolOption.GetBoolCollection(PropertyIndexs.Value.BoolOption, new string[2] { "hardcore", "white-list" });
             TextOptions = TextOption.GetTextCollection(PropertyIndexs.Value.StringOption, new string[4] { "difficulty", "gamemode", "level-type", "level-name" });
 
@@ -140,7 +144,9 @@ namespace Server_GUI2.Windows.WorldSettings
                 AccountIndex = new BindingValue<Storage>(Accounts.FirstOrDefault(), () => UpdateRemoteList());
                 RemoteDataList = new ObservableCollection<IRemoteWorld>(AccountIndex.Value?.RemoteWorlds ?? new ObservableCollection<IRemoteWorld>());
                 RemoteDataList.RemoveAll(remote => (remote is RemoteWorld world) && !world.IsVisible);
-                RemoteIndex = new BindingValue<IRemoteWorld>(RunWorld.HasRemote ? RunWorld.RemoteWorld : AccountIndex.Value.RemoteWorlds.Last(), () => OnPropertyChanged(new string[2] { "RemoteIndex", "ShowNewRemoteData" }));
+                RemoteIndex = new BindingValue<IRemoteWorld>(
+                    RunWorld.HasRemote ? RunWorld.RemoteWorld : AccountIndex.Value.RemoteWorlds.Last(), 
+                    () => OnPropertyChanged(new string[2] { "RemoteIndex", "ShowNewRemoteData" }));
                 RemoteName = RunWorld.RemoteWorld?.Name ?? RunWorld.Name;
             }
 
@@ -248,7 +254,7 @@ namespace Server_GUI2.Windows.WorldSettings
             {
                 RemoteDataList.ChangeCollection(AccountIndex.Value.RemoteWorlds);
                 RemoteDataList.RemoveAll(remote => (remote is RemoteWorld world) && !world.IsVisible);
-                RemoteIndex.Value = RemoteDataList[0];
+                RemoteIndex.Value = RemoteDataList.Last();
             }
         }
 
@@ -272,10 +278,13 @@ namespace Server_GUI2.Windows.WorldSettings
 
         public void SaveWorldSettings()
         {
+            PropertyIndexs.Value = BoolOption.SetBoolOption(BoolOptions, PropertyIndexs.Value);
+            PropertyIndexs.Value = TextOption.SetStringOption(TextOptions, PropertyIndexs.Value);
             RunWorld.Settings.ServerProperties = new ServerProperty(PropertyIndexs.Value);
 
             if (UseSW.Value && !RunWorld.HasRemote)
             {
+                // TODO: CreateRemoteWorldするのはRunの後にしないと，再度WorldSettingsを開いた際にすでにSWになったワールドのように表示されてしまう（アカウントやブランチ名の変更ができない）
                 if (RemoteIndex.Value is RemoteWorld world)
                     RunWorld.Link(world);
                 else

@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="App_Unhandle" xml:space="preserve">
     <value>An unexpected error has occurred.
 Please check the error and if you suspect a system bug, please contact us at Git Issues.
@@ -181,6 +184,9 @@ Please check the error and if you suspect a system bug, please contact us at Git
   <data name="Main_DeleteMsg4" xml:space="preserve">
     <value>" is completely removed and cannot be restored</value>
   </data>
+  <data name="Main_InputName" xml:space="preserve">
+    <value>Input_Name</value>
+  </data>
   <data name="Main_Op" xml:space="preserve">
     <value>has op rights in this version's server</value>
   </data>
@@ -234,7 +240,7 @@ You can get latest version from Git Release.
 Please give me your log file through Git Issues.</value>
   </data>
   <data name="Manage_Vup2" xml:space="preserve">
-    <value>Server Starter's Git page</value>
+    <value>Report this Issue</value>
   </data>
   <data name="Manage_Vup3" xml:space="preserve">
     <value>Update now!</value>
@@ -414,6 +420,9 @@ However, this is not valid for players with OP.</value>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
@@ -464,6 +473,9 @@ If you don't want to shutdown, click "Cancel" button.</value>
   </data>
   <data name="SystemSettings_APM" xml:space="preserve">
     <value>Auto Port Mapping</value>
+  </data>
+  <data name="SystemSettings_Apply" xml:space="preserve">
+    <value>Apply these settings to default settings</value>
   </data>
   <data name="SystemSettings_Author" xml:space="preserve">
     <value>Author</value>
@@ -516,6 +528,9 @@ If you don't want to shutdown, click "Cancel" button.</value>
   <data name="SystemSettings_NewPName" xml:space="preserve">
     <value>New Player Name</value>
   </data>
+  <data name="SystemSettings_Ope" xml:space="preserve">
+    <value>Operation of Properties</value>
+  </data>
   <data name="SystemSettings_Personal" xml:space="preserve">
     <value>Personal Access Token (GitHub)</value>
   </data>
@@ -555,6 +570,9 @@ Please refer to Configuration for details.</value>
   <data name="SystemSettings_RegisterP" xml:space="preserve">
     <value>Selected player is already registered</value>
   </data>
+  <data name="SystemSettings_RemoteFail" xml:space="preserve">
+    <value> does not exist as new remote data</value>
+  </data>
   <data name="SystemSettings_RemoteL" xml:space="preserve">
     <value>Remote List</value>
   </data>
@@ -563,6 +581,9 @@ Please refer to Configuration for details.</value>
   </data>
   <data name="SystemSettings_Repo" xml:space="preserve">
     <value>Repository</value>
+  </data>
+  <data name="SystemSettings_Reset" xml:space="preserve">
+    <value>Reset these settings to default settings</value>
   </data>
   <data name="SystemSettings_Status" xml:space="preserve">
     <value>Status</value>
@@ -615,6 +636,18 @@ You can't import a new Vanilla version.</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>
+  </data>
+  <data name="Version_BuildSpigot" xml:space="preserve">
+    <value>Failed to build the Spigot server.</value>
+  </data>
+  <data name="Version_DownloadSpigot" xml:space="preserve">
+    <value>Failed to download the Spigot server.</value>
+  </data>
+  <data name="Version_DownloadVanilla" xml:space="preserve">
+    <value>Failed to download the Vanilla server.</value>
+  </data>
+  <data name="Version_notExist" xml:space="preserve">
+    <value>may not be exist.</value>
   </data>
   <data name="Welcome_Access" xml:space="preserve">
     <value>Access to the Terms of Use</value>

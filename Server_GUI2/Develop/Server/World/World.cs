@@ -69,7 +69,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public ServerType? Type { get; } = null;
 
-        private string _name = "input_name";
+        private string _name = Properties.Resources.Main_InputName;
 
         public string Name
         {
@@ -295,7 +295,7 @@ namespace Server_GUI2.Develop.Server.World
 
         public WorldState ExportWorldState()
         {
-            return new WorldState() ;
+            return new WorldState();
         }
 
         /// <summary>
@@ -510,7 +510,7 @@ namespace Server_GUI2.Develop.Server.World
                     Image.Warning
                     );
                 if (result == 1)
-                    throw new ServerStarterException<DowngradeException>(new DowngradeException("User reject downgrading"));
+                    throw new ServerStarterException(new DowngradeException("User reject downgrading"));
             }
 
             // version変更
