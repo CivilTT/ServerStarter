@@ -69,10 +69,10 @@ namespace Server_GUI2
             Log4jArgument = log4jArgument;
             WorldContainerArgument = worldContainerArgument;
 
-            var euraResult = CheckEula();
-            StartServer.RunProgressBar.AddMessage("Checked Eura.");
+            var eulaResult = CheckEula();
+            StartServer.RunProgressBar.AddMessage("Checked Eula.");
 
-            if (euraResult)
+            if (eulaResult)
             {
                 StartServer.RunProgressBar.Close();
                 StartServer.RunProgressBar.ShowCount();
@@ -115,7 +115,7 @@ namespace Server_GUI2
             }
         }
 
-        private static bool AgreeEula(bool eulaState, string euraURL)
+        private static bool AgreeEula(bool eulaState, string eulaURL)
         {
             logger.Info("<AgreeEula>");
 
@@ -126,7 +126,7 @@ namespace Server_GUI2
             }
 
             int result;
-            if (euraURL == "")
+            if (eulaURL == "")
             {
                 result = CustomMessageBox.Show(
                     Properties.Resources.Server_EulaMsg1,
@@ -140,7 +140,7 @@ namespace Server_GUI2
                     Properties.Resources.Server_EulaMsg1,
                     ButtonType.OKCancel,
                     Image.Infomation,
-                    new LinkMessage(Properties.Resources.Server_EulaMsg2, euraURL)
+                    new LinkMessage(Properties.Resources.Server_EulaMsg2, euiaURL)
                     );
             }
 
@@ -161,7 +161,7 @@ namespace Server_GUI2
 
             var result = false;
             
-            logger.Info("load eura.text");
+            logger.Info("load eula.text");
             Path.Eula.ReadAllText()
                 // eula.txtがない場合
                 .FailureAction(
@@ -169,20 +169,20 @@ namespace Server_GUI2
                 )
                 // eula.txtがある場合
                 .SuccessAction(
-                euracontent =>
+                eulacontent =>
                 {
                     var eulaValue = false;
 
-                    var eulaValueMatch = Regex.Match(euracontent, @"[^|\n]\s*eula\s*=\s*(true|True|TRUE|false|False|FALSE)\s*[\n|$]");
+                    var eulaValueMatch = Regex.Match(eulacontent, @"[^|\n]\s*eula\s*=\s*(true|True|TRUE|false|False|FALSE)\s*[\n|$]");
                     if (!eulaValueMatch.Success)
-                        logger.Info("eula.txt has no segment \"eura=(true|false)\"");
+                        logger.Info("eula.txt has no segment \"eula=(true|false)\"");
                     else
                     {
                         eulaValue = eulaValueMatch.Groups[1].Value.ToLower() == "true";
-                        logger.Info($"eula.txt has segment \"eura={eulaValue.ToString().ToLower()}\"");
+                        logger.Info($"eula.txt has segment \"eula={eulaValue.ToString().ToLower()}\"");
                     }
 
-                    var match = Regex.Match(euracontent, @"https://[a-zA-Z0-9\._/-]+");
+                    var match = Regex.Match(eulacontent, @"https://[a-zA-Z0-9\._/-]+");
                     if (match.Success)
                     {
                         result = AgreeEula(eulaValue, match.Value);
@@ -195,7 +195,7 @@ namespace Server_GUI2
                     if (result != eulaValue)
                     {
                         logger.Info("rewrite eula.txt");
-                        Path.Eula.WriteAllText(Regex.Replace(euracontent,@"(?<=[^|\n]\s*eula\s*=\s*)true|false(?=\s*[\n|$])",result.ToString().ToLower()));
+                        Path.Eula.WriteAllText(Regex.Replace(eulacontent,@"(?<=[^|\n]\s*eula\s*=\s*)true|false(?=\s*[\n|$])",result.ToString().ToLower()));
                     }
                     else
                     {
