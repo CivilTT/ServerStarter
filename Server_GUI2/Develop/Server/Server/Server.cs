@@ -140,7 +140,7 @@ namespace Server_GUI2
                     Properties.Resources.Server_EulaMsg1,
                     ButtonType.OKCancel,
                     Image.Infomation,
-                    new LinkMessage(Properties.Resources.Server_EulaMsg2, euiaURL)
+                    new LinkMessage(Properties.Resources.Server_EulaMsg2, eulaURL)
                     );
             }
 
