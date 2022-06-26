@@ -382,7 +382,7 @@ namespace Server_GUI2.Develop.Server.World
 
             // .gitディレクトリを作る
             var gitLocal = new GitLocal(LocalWorld.Path.FullName);
-            gitLocal.Init();
+            gitLocal.Init(RemoteWorld.Storage.AccountName,RemoteWorld.Storage.Email);
             gitLocal.AddAllAndCommit("first commit");
 
             // ワールドのリンク先を固定する

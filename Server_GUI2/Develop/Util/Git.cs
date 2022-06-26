@@ -98,8 +98,9 @@ namespace Server_GUI2.Util
         /// <summary>
         /// gitリポジトリを初期化
         /// </summary>
-        public void Init()
+        public void Init(string account, string email)
         {
+            SetUser(account, email);
             GitCommand.ExecuteThrow("init", new GitException("cannot initialize local repository."), Path);
         }
 
@@ -170,7 +171,6 @@ namespace Server_GUI2.Util
         {
             var remotes = new Dictionary<string, GitNamedRemote>();
             var output = GitCommand.ExecuteThrow($"remote -v", new GitException($"failed to get remotelist of {Path}"), Path).Trim();
-
 
             void GetNamedRemote(string str)
             {
@@ -382,12 +382,34 @@ namespace Server_GUI2.Util
     {
         public string Account;
         public string Repository;
+        public string Email;
+
+        private static Dictionary<string, string> emailMap = new Dictionary<string, string>();
+
+        /// <summary>
+        // https://{Account}@github.com/{Account}/{Repository}.git
+        /// </summary>
         public string Expression => $"https://{Account}@github.com/{Account}/{Repository}.git";
 
-        public GitRemote(string account, string repository)
+        public GitRemote(string account, string repository, string email=null)
         {
             Account = account;
             Repository = repository;
+
+            if (email == null) {
+                if (emailMap.ContainsKey(account)) {
+                    Email = emailMap[account];
+                }
+                else
+                {
+                    throw new KeyNotFoundException($"email argument is needed for unknown account.({Account})");
+                }
+            }
+            else
+            {
+                Email = email;
+                emailMap[account] = email;
+            }
         }
 
         public bool Equals(GitRemote value)

@@ -41,7 +41,7 @@ namespace Server_GUI2.Develop.Server.World
                 {
                     var storage = StorageCollection.Instance.FindStorage(linkData.RemoteStorage);
                     var remote = storage.FindRemoteWorld(linkData.RemoteWorld);
-                    var world = new World(local,remote);
+                    var world = remote.SuccessFunc(r => new World(local, r)).SuccessOrDefault(new World(local));
                     Add(world);
 
                     // usingフラグが立ちっぱなしだったらpushする

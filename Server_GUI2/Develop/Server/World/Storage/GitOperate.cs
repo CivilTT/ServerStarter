@@ -30,15 +30,13 @@ namespace Server_GUI2.Develop.Server.World
             logger.Info("<GitStorageManager>");
             stateDirectory = ServerGuiPath.Instance.GitState;
             gitLocal = new GitLocal(stateDirectory.FullName);
-            // ディレクトリ生成
-            CreateDirectory();
             logger.Info("</GitStorageManager>");
         }
 
         /// <summary>
-        /// ディレクトリが存在しなかった場合生成し初期化
+        /// ディレクトリが存在しなかった場合生成しlocal uesrを設定し初期化
         /// </summary>
-        private void CreateDirectory()
+        private void SetUser(string account, string email)
         {
             logger.Info("<CreateDirectory>");
             if (stateDirectory.Exists)
@@ -48,7 +46,7 @@ namespace Server_GUI2.Develop.Server.World
             }
             stateDirectory.Create(true);
             // git init
-            gitLocal.Init();
+            gitLocal.Init(account,email);
             // git commit --allow-empty -m "empty"
             gitLocal.AddAllAndCommit("first commit");
             // リモートとローカルのブランチ名が違っていてもgit pushが実行できる
@@ -61,7 +59,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public Either<EitherVoid,Exception> WriteWorldState(GitRemote remote, string email, Dictionary<string, WorldState> worldState)
         {
-            gitLocal.SetUser(remote.Account, email);
+            SetUser(remote.Account, email);
             logger.Info("<WriteWorldState>");
             return GetRemoteBranch(remote).SuccessFunc(branch => { 
                 branch.LocalBranch.Checkout();
@@ -76,9 +74,9 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// worldstateをpull
         /// </summary>
-        public Either<Dictionary<string, WorldState>,Exception> ReadWorldState(GitRemote remote,string email)
+        public Either<Dictionary<string, WorldState>,Exception> ReadWorldState(GitRemote remote)
         {
-            gitLocal.SetUser(remote.Account, email);
+            SetUser(remote.Account, remote.Email);
             logger.Info("<ReadWorldState>");
             return GetRemoteBranch(remote).SuccessFunc(branch =>
             {

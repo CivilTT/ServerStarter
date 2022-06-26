@@ -226,7 +226,6 @@ namespace Server_GUI2.Develop.Server.World
         {
             if (!Available) throw new RemoteWorldException($"remoteworld {Id} is not available");
 
-
             var gitlocal = new GitLocal(local.Path.FullName);
             bool isRepository = gitlocal.IsGitRepository();
 
@@ -257,7 +256,8 @@ namespace Server_GUI2.Develop.Server.World
                 DirectoryPath.RemoveReadonlyAttribute(new DirectoryInfo(gitPath));
                 Directory.Delete(gitPath, true);
             }
-            gitlocal.Init();
+            
+            gitlocal.Init(remote.Account, remote.Email);
             gitlocal.AddAllAndCommit("First Commit");
 
             // リモートの追加
@@ -303,7 +303,7 @@ namespace Server_GUI2.Develop.Server.World
                 DirectoryPath.RemoveReadonlyAttribute(new DirectoryInfo(gitPath));
                 Directory.Delete(gitPath, true);
             }
-            gitlocal.Init();
+            gitlocal.Init(remote.Account,remote.Email);
             gitlocal.AddAllAndCommit("First Commit");
 
             // リモートの追加
