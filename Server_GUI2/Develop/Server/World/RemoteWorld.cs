@@ -106,6 +106,8 @@ namespace Server_GUI2.Develop.Server.World
 
         public string DisplayName => Name;
 
+        public bool AlreadyUsing;
+
         /// <summary>
         /// WorldStateからRemotoworldを構成する
         /// </summary>
@@ -117,11 +119,12 @@ namespace Server_GUI2.Develop.Server.World
             Id = id;
             Version = VersionFactory.Instance.GetVersionFromName(state.Version);
             Type = ServerTypeExt.FromStr(state.Type);
+            AlreadyUsing = state.Using;
             Settings = state.ServerSetting;
             Datapacks = new DatapackCollection(state.Datapacks);
             Plugins = new PluginCollection(state.Plugins);
             Using = false;
-            Available = available;
+            Available = available && AlreadyUsing;
         }
 
         public RemoteWorld(
