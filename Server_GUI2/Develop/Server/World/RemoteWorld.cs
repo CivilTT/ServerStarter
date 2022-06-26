@@ -293,8 +293,9 @@ namespace Server_GUI2.Develop.Server.World
                     branches[Id] is GitLinkedLocalBranch branch
                     )
                 {
+                    var owner = UserSettings.Instance.userSettings.OwnerName;
                     // push
-                    branch.CommitPush(UserSettings.Instance.userSettings.OwnerName ?? "Anonymus");
+                    branch.CommitPush( owner == "" ? "Anonymus" : owner);
                     return;
                 }
             }
