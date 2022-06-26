@@ -38,6 +38,9 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void SetUser(string account, string email)
         {
+            // リモートとローカルのブランチ名が違っていてもgit pushが実行できる
+            gitLocal.ExecuteThrow("config --local push.default upstream");
+
             logger.Info("<CreateDirectory>");
             if (stateDirectory.Exists)
             {
@@ -49,8 +52,6 @@ namespace Server_GUI2.Develop.Server.World
             gitLocal.Init(account,email);
             // git commit --allow-empty -m "empty"
             gitLocal.AddAllAndCommit("first commit");
-            // リモートとローカルのブランチ名が違っていてもgit pushが実行できる
-            gitLocal.ExecuteThrow("config --local push.default upstream");
             logger.Info("</CreateDirectory> successfully created");
         }
 
