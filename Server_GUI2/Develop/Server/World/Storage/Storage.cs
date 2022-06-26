@@ -109,18 +109,28 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 与えられたidに該当するリモートワールドを返す
         /// </summary>
-        public RemoteWorld FindRemoteWorld(string worldId)
+        public Either<RemoteWorld,string> FindRemoteWorld(string worldId)
         {
-            logger.Info($"<FindRemoteWorld> {worldId}");
+            logger.Info($"<FindRemoteWorld> {AccountName}/{RepositoryName}/{worldId}");
             if (Available)
             {
                 logger.Info($"</FindRemoteWorld> available");
-                return RemoteWorlds.OfType<RemoteWorld>().Where(x => x.Id == worldId).First();
+                var world = RemoteWorlds.OfType<RemoteWorld>().Where(x => x.Id == worldId).FirstOrDefault();
+                if (world != null)
+                {
+                    logger.Info($"world found");
+                    return new Success<RemoteWorld, string>(world);
+                }
+                else
+                {
+                    logger.Info($"world not found");
+                    return new Failure<RemoteWorld, string>($"remoteworld {AccountName}/{RepositoryName}/{worldId} is missing");
+                }
             }
             else
             {
                 logger.Info($"</FindRemoteWorld> inavailable");
-                return CreateUnavailableRemoteWorld(worldId);
+                return new Failure<RemoteWorld, string>($"network is not available");
             }
         }
         
@@ -204,8 +214,8 @@ namespace Server_GUI2.Develop.Server.World
             {
                 json.Account.WriteLine();
                 json.Repository.WriteLine();
-                var remote = new GitRemote(json.Account, json.Repository);
-                var storage = GitStorageManager.Instance.ReadWorldState(remote, json.Email).SuccessFunc(
+                var remote = new GitRemote(json.Account, json.Repository, json.Email);
+                var storage = GitStorageManager.Instance.ReadWorldState(remote).SuccessFunc(
                     worldstate => new GitStorage(remote, worldstate, json.Email, true)
                 ).SuccessOrDefault( new GitStorage(remote, json.WorldStates, json.Email, false));
                 result.Add(storage);
@@ -225,8 +235,8 @@ namespace Server_GUI2.Develop.Server.World
         public static Either<GitStorage,Exception> AddStorage(string account, string repository, string email)
         {
             logger.Info($"<AddStorage>");
-            var remote = new GitRemote(account,repository);
-            return GitStorageManager.Instance.ReadWorldState(remote, email).SuccessFunc<GitStorage>(
+            var remote = new GitRemote(account,repository, email);
+            return GitStorageManager.Instance.ReadWorldState(remote).SuccessFunc<GitStorage>(
                 state => {
                     var exists = StorageCollection.Instance.Storages.Any(s => s.RepositoryName == repository && s.AccountName == account);
                     if (exists)
