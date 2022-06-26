@@ -124,7 +124,7 @@ namespace Server_GUI2.Develop.Server.World
             Datapacks = new DatapackCollection(state.Datapacks);
             Plugins = new PluginCollection(state.Plugins);
             Using = false;
-            Available = available && AlreadyUsing;
+            Available = available;
         }
 
         public RemoteWorld(
