@@ -100,8 +100,8 @@ namespace Server_GUI2.Util
         /// </summary>
         public void Init(string account, string email)
         {
-            SetUser(account, email);
             GitCommand.ExecuteThrow("init", new GitException("cannot initialize local repository."), Path);
+            SetUser(account, email);
         }
 
         /// <summary>
