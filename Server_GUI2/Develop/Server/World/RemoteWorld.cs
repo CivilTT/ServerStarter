@@ -314,7 +314,7 @@ namespace Server_GUI2.Develop.Server.World
             var named = gitlocal.AddRemote(remote, "origin");
 
             // push
-            gitlocal.CreateBranch(Id).CreateLinkedBranch(named, Id).CommitPush("MESSAGE");
+            gitlocal.CreateBranch(Id).CreateLinkedBranch(named, Id).CommitPush("created branch");
         }
 
         /// <summary>
