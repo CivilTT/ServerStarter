@@ -70,6 +70,10 @@ namespace Server_GUI2
             // PortMapping
             DeletePort(successPortMapping);
 
+            // Close Progress Bar
+            CloseProgressBar.ShowCount();
+            CloseProgressBar.Close();
+
             //Shutdown
             ShutDown();
 
