@@ -146,7 +146,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         ///worldstate.jsonを更新してpush
         /// </summary>
-        public abstract void SaveWorldStates();
+        public abstract void UpdateWorldStates(string name,WorldState state);
 
         /// <summary>
         /// リモートワールドを新規作成
@@ -315,27 +315,33 @@ namespace Server_GUI2.Develop.Server.World
         }
 
         /// <summary>
-        /// Worldstateを#state/worldstate.jsonに保存
+        /// 特定のワールドのWorldstateを#state/worldstate.jsonとマージ
         /// </summary>
-        public override void SaveWorldStates()
+        public override void UpdateWorldStates(string name,WorldState state)
         {
             logger.Info($"<SaveWorldStates>");
             // 通信可能な場合のみ発動
             if (Available)
             {
-                // 存在しているリモートだけをフィルタして保存
-                GitStorageManager.Instance.WriteWorldState
-                    (
-                        Remote,
-                        Email,
-                        ExportWorldStates()
-                        ).SuccessAction
-                    (
-                        x => logger.Info($"</SaveWorldStates> success")
-                    ).FailureAction
-                    (
-                        x => logger.Info($"</SaveWorldStates> failure")
-                    );
+                GitStorageManager.Instance.ReadWorldState(Remote).SuccessAction(
+                    new_state =>
+                    {
+                        new_state[name] = state;
+                        // 存在しているリモートだけをフィルタして保存
+                        GitStorageManager.Instance.WriteWorldState
+                            (
+                                Remote,
+                                Email,
+                                new_state
+                                ).SuccessAction
+                            (
+                                x => logger.Info($"</SaveWorldStates> success")
+                            ).FailureAction
+                            (
+                                x => logger.Info($"</SaveWorldStates> failure")
+                            );
+                    }
+                );
             }
         }
 

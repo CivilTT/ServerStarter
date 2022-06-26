@@ -159,7 +159,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <param name="worldState"></param>
         public void UpdateWorldState()
         {
-            Storage.SaveWorldStates();
+            Storage.UpdateWorldStates(Id,ExportWorldState());
         }
 
         /// <summary>
