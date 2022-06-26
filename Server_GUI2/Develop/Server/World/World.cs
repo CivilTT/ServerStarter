@@ -445,6 +445,11 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void WrapRun_Linked(Version version, Action<ServerSettings, string> runFunc)
         {
+            if (RemoteWorld.AlreadyUsing) {
+                // TODO:英訳
+                ServerStarterException.ShowError("このワールドは現在に他のメンバーによって開かれています。", new RemoteWorldException("remoteworld is now used by other member"));
+            }
+
             logger.Info("ready already linked world data");
 
             // 起動中フラグを立てる
