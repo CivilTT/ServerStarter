@@ -77,6 +77,8 @@ namespace Server_GUI2
                 StartServer.RunProgressBar.Close();
                 StartServer.RunProgressBar.ShowCount();
                 Run();
+                // TODO: フラグ数の更新
+                StartServer.CloseProgressBar = new Windows.ProgressBar.ProgressBar($"Closing server", 1000);
             }
             else
             {
