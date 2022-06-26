@@ -345,6 +345,7 @@ namespace Server_GUI2.Util
             linked = true;
             RemoteBranch.Exists = true;
         }
+
         public void CommitPush(string message)
         {
             LocalBranch.Checkout();
