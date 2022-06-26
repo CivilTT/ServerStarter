@@ -116,6 +116,7 @@ namespace Server_GUI2.Develop.Server.World
             Exist = true;
             Storage = storage;
             Name = state.Name;
+            LastUser = state.LastUser;
             Id = id;
             Version = VersionFactory.Instance.GetVersionFromName(state.Version);
             Type = ServerTypeExt.FromStr(state.Type);
