@@ -47,7 +47,8 @@ namespace Server_GUI2.Util
         public static (int, string) Execute(string arguments, string directory)
         {
             logger.Info($"<GitCommand> git {arguments} ({directory})");
-            var output = new StringBuilder(); ;
+            var output = new StringBuilder();
+            var error_output = new StringBuilder();
             int exitCode;
 
             var StartInfo = new ProcessStartInfo("git",arguments)
@@ -78,11 +79,11 @@ namespace Server_GUI2.Util
                 process.CancelErrorRead();
 
                 output.AppendLine(stdout.ToString());
-
+                error_output.AppendLine(stderr.ToString());
                 exitCode = process.ExitCode;
             }
             var o = output.ToString();
-            logger.Info($"</GitCommand> exitcode: {exitCode},{o}");
+            logger.Info($"</GitCommand> exitcode: {exitCode},{o} {error_output}");
             return (exitCode, o);
         }
     }
