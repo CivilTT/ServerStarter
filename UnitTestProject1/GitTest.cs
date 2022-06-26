@@ -23,7 +23,7 @@ namespace UnitTestProject1
             Directory.CreateDirectory(gitpath);
 
             var local = new GitLocal(gitpath);
-            local.Init();
+            //local.Init();
             var remote = new GitRemote("txkodo", "GitTest");
             var namedRemote = local.AddRemote(remote, "GITTEST");
 

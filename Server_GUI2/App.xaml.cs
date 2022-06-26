@@ -7,8 +7,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Server_GUI2
 {
@@ -17,6 +19,7 @@ namespace Server_GUI2
     /// </summary>
     public partial class App : Application
     {
+        // TODO: Kernel32.dllはWindows 11から廃止されたため，コマンド実行の出力を表示できない
         [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
         public static extern bool AttachConsole(int processId);
 
@@ -54,12 +57,12 @@ namespace Server_GUI2
             }
             SetUp.InitProgressBar.Close();
 
-
             AttachConsole(-1);
             Console.WriteLine();
             Args = e.Args;
             if (e.Args[0] == "/?")
             {
+                Console.Out.WriteLine(Server_GUI2.Properties.Resources.Guide);
                 Console.Write(Server_GUI2.Properties.Resources.Guide);
                 Finish();
             }
@@ -134,12 +137,13 @@ namespace Server_GUI2
 
         private void SetUnhandledDetecter()
         {
-            void ShowWindow(object exception)
+            void ShowWindow(object exception, EventArgs eventArgs)
             {
                 var separator = new[] { Environment.NewLine };
                 string error_message = exception.ToString();
                 logger.Error("Unhandled error has occurred");
                 logger.Error(error_message);
+
                 if (typeof(ServerStarterException) != exception.GetType())
                 {
                     var result = CustomMessageBox.Show(
@@ -149,15 +153,17 @@ namespace Server_GUI2
                         new LinkMessage(Server_GUI2.Properties.Resources.Manage_Vup2, "https://github.com/CivilTT/ServerStarter/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D")
                         );
 
+                    logger.Info("Show unhandled error message window");
                     if (result == 0)
                         Process.Start(Path.GetFullPath(@".\log\"));
-                    logger.Info("Show unhandled error message window");
                 }
+
+                Environment.Exit(0);
             }
             // 想定外のエラーを処理する
-            DispatcherUnhandledException += (sender, eventargs) => ShowWindow(eventargs.Exception);
-            TaskScheduler.UnobservedTaskException += (sender, eventargs) => ShowWindow(eventargs.Exception.InnerException);
-            AppDomain.CurrentDomain.UnhandledException += (sender, eventargs) => ShowWindow(eventargs.ExceptionObject);
+            DispatcherUnhandledException += (sender, eventargs) => ShowWindow(eventargs.Exception, eventargs);
+            TaskScheduler.UnobservedTaskException += (sender, eventargs) => ShowWindow(eventargs.Exception.InnerException, eventargs);
+            AppDomain.CurrentDomain.UnhandledException += (sender, eventargs) => ShowWindow(eventargs.ExceptionObject, eventargs);
         }
 
         private void AnalizeArgs(string[] args)
