@@ -20,6 +20,8 @@ namespace Server_GUI2
 
         public static Windows.ProgressBar.ProgressBar RunProgressBar;
 
+        public static Windows.ProgressBar.ProgressBar CloseProgressBar;
+
         /// <summary>
         /// Runボタンが押された時に呼ばれる処理
         /// </summary>

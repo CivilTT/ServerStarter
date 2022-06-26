@@ -410,14 +410,20 @@ namespace Server_GUI2.Develop.Server.World
             // 実行
             LocalWorld.WrapRun(version, runFunc);
 
+            StartServer.CloseProgressBar.AddMessage("push world");
             // Push
             try
             {
                 RemoteWorld.FromLocal(LocalWorld);
 
+                StartServer.CloseProgressBar.AddMessage("unlock remote world");
+
                 // リモートのワールドデータを更新し、ロック解除
                 RemoteWorld.Using = false;
                 RemoteWorld.EnableWorld(version, version.Type);
+
+                StartServer.CloseProgressBar.AddMessage("update world state");
+
                 RemoteWorld.UpdateWorldState();
 
                 // 起動中フラグを回収
@@ -427,6 +433,7 @@ namespace Server_GUI2.Develop.Server.World
             {
             }
 
+            StartServer.CloseProgressBar.AddMessage("update link data");
             // LinkJsonを更新
             WorldCollection.Instance.SaveLinkJson();
         }
@@ -464,13 +471,17 @@ namespace Server_GUI2.Develop.Server.World
             // 実行
             LocalWorld.WrapRun(version,runFunc);
 
+
+            StartServer.CloseProgressBar.AddMessage("push world");
             // Push
             try
             {
+                StartServer.CloseProgressBar.AddMessage("unlock remote world");
                 RemoteWorld.FromLocal(LocalWorld);
 
                 // リモートのワールドデータを更新し、ロック解除
                 RemoteWorld.Using = false;
+                StartServer.CloseProgressBar.AddMessage("update world state");
                 RemoteWorld.UpdateWorldState();
 
                 // 起動中フラグを回収
@@ -480,6 +491,7 @@ namespace Server_GUI2.Develop.Server.World
             {
             }
 
+            StartServer.CloseProgressBar.AddMessage("update link data");
             // LinkJsonを更新
             WorldCollection.Instance.SaveLinkJson();
         }
