@@ -446,8 +446,11 @@ namespace Server_GUI2.Develop.Server.World
         private void WrapRun_Linked(Version version, Action<ServerSettings, string> runFunc)
         {
             if (RemoteWorld.AlreadyUsing) {
+                var is_annonimus = RemoteWorld.LastUser == "Annonymus";
+
+                var msg = is_annonimus ? $"このワールドは現在{RemoteWorld.LastUser}によって開かれています。" : "このワールドは現在匿名ユーザーによって開かれています。"
                 // TODO:英訳
-                ServerStarterException.ShowError("このワールドは現在に他のメンバーによって開かれています。", new RemoteWorldException("remoteworld is now used by other member"));
+                ServerStarterException.ShowError(msg, new RemoteWorldException("remoteworld is now used by other member"));
             }
 
             logger.Info("ready already linked world data");
