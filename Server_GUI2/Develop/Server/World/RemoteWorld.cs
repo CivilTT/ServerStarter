@@ -184,7 +184,7 @@ namespace Server_GUI2.Develop.Server.World
         public WorldState ExportWorldState()
         {
             if (!Exist) throw new WorldException("non-exist world must not export worldstate");
-            return new WorldState(Name, Type.ToString(), Version.Name, Using, LastUser, Datapacks.ExportList(), Plugins.ExportList(), Settings);
+            return new WorldState(Name, Type.ToString(), Version.Name, Using, UserSettings.Instance.userSettings.OwnerName, Datapacks.ExportList(), Plugins.ExportList(), Settings);
         }
 
         public void EnableWorld(Version version, ServerType type)
