@@ -69,6 +69,12 @@ namespace Server_GUI2
             Log4jArgument = log4jArgument;
             WorldContainerArgument = worldContainerArgument;
 
+            if (!Path.Eula.Exists)
+            {
+                //Eulaがない場合一度実行し、eula.txtなどの必要ファイルを書き出す
+                StartWithoutEula(Path, javaPath, JarName, Log4jArgument, ServerProperty.GetUserDefault());
+            }
+
             var eulaResult = CheckEula();
             StartServer.RunProgressBar.AddMessage("Checked Eula.");
 
@@ -165,11 +171,11 @@ namespace Server_GUI2
             
             logger.Info("load eula.text");
             Path.Eula.ReadAllText()
-                // eula.txtがない場合
+                // eula.txtの読み込みに失敗した場合
                 .FailureAction(
-                x => logger.Info("</CheckEula> not exists")
+                    x => logger.Info("</CheckEula> not exists")
                 )
-                // eula.txtがある場合
+                // eula.txtの読み込みに成功した場合
                 .SuccessAction(
                 eulacontent =>
                 {
