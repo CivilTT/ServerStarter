@@ -81,6 +81,7 @@ namespace Server_GUI2.Develop.Server.World
             logger.Info("<ReadWorldState>");
             return GetRemoteBranch(remote).SuccessFunc(branch =>
             {
+                branch.CommitPush("checkout other branch");
                 branch.LocalBranch.Checkout();
                 branch.Pull();
                 var worldState = stateDirectory.WorldStateJson.ReadJson().SuccessOrDefault(new Dictionary<string, WorldState>());
