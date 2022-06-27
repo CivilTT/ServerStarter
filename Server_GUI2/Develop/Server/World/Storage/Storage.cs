@@ -238,11 +238,18 @@ namespace Server_GUI2.Develop.Server.World
             var remote = new GitRemote(account,repository, email);
             return GitStorageManager.Instance.ReadWorldState(remote).SuccessFunc<GitStorage>(
                 state => {
+                    // 登録済みの場合
                     var exists = StorageCollection.Instance.Storages.Any(s => s.RepositoryName == repository && s.AccountName == account);
                     if (exists)
                     {
                         return new Failure<GitStorage, Exception>(new ServerException("this remote is arleady added to remote list."));
                     }
+                    // リポジトリが存在しない場合
+                    if (remote.Exists())
+                    {
+                        return new Failure<GitStorage, Exception>(new ServerException($"git remote {account}/{repository} is not exists."));
+                    }
+
                     var storage = new GitStorage(remote, state, email, true);
                     StorageCollection.Instance.Add(storage);
                     logger.Info($"</AddStorage>");

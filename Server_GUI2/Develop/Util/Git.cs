@@ -44,9 +44,9 @@ namespace Server_GUI2.Util
             }
         }
 
-        public static (int, string) Execute(string arguments, string directory)
+        public static (int, string) Execute(string arguments, string directory = null)
         {
-            logger.Info($"<GitCommand> git {arguments} ({directory})");
+            logger.Info($"<GitCommand> git {arguments}" + directory == null ? $"({directory})" : "");
             var output = new StringBuilder();
             var error_output = new StringBuilder();
             int exitCode;
@@ -59,8 +59,13 @@ namespace Server_GUI2.Util
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 StandardOutputEncoding = Encoding.UTF8,
-                WorkingDirectory = directory
             };
+
+            if (directory == null)
+            {
+                StartInfo.WorkingDirectory = directory;
+            }
+
 
             using (var process = Process.Start(StartInfo))
             {
@@ -417,6 +422,12 @@ namespace Server_GUI2.Util
         public bool Equals(GitRemote value)
         {
             return value != null && Account == value.Account && Repository == value.Repository;
+        }
+
+        public bool Exists()
+        {
+            var (code, _) = GitCommand.Execute($"ls-remote https://{Account}@github.com/{Account}/{Repository}");
+            return code == 0;
         }
     }
 
