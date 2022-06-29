@@ -24,6 +24,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/system',
     name: 'system',
     component: () => import(/* webpackChunkName: "about" */ '../views/SystemSettings.vue')
+  },
+  {
+    path: '/ShareWorld',
+    name: 'sw',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ShareWorld.vue')
   }
 ]
 
