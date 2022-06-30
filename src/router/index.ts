@@ -29,6 +29,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/ShareWorld',
     name: 'sw',
     component: () => import(/* webpackChunkName: "about" */ '../views/ShareWorld.vue')
+  },
+  {
+    path: '/AutoPortMapping',
+    name: 'apm',
+    component: () => import(/* webpackChunkName: "about" */ '../views/AutoPortMapping.vue')
   }
 ]
 
