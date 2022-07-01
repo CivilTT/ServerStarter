@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import Additional from '@/components/WorldSettings/Additional.vue'; // @ is an alias to /src
+import Server from '@/components/SystemSettings/Server.vue';
+import Player from '../components/SystemSettings/Player.vue'; // @ is an alias to /src
 </script>
 
 <template>
   <div class="system">
-    <Additional/>
+    <Server/>
+    <Player/>
   </div>
 </template>
 
