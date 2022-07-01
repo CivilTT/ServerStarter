@@ -60,7 +60,9 @@ namespace Server_GUI2
             logger.Info("<Start>");
 
             logger.Info("save server settings");
+
             settings.Save(path);
+
             StartServer.RunProgressBar.AddMessage("Reflected World Settings.");
 
             Path = path;
@@ -82,7 +84,11 @@ namespace Server_GUI2
             {
                 StartServer.RunProgressBar.Close();
                 StartServer.RunProgressBar.ShowCount();
+
                 Run();
+
+                settings.Load(Path);
+
                 // TODO: フラグ数の更新
                 StartServer.CloseProgressBar = new Windows.ProgressBar.ProgressBar($"Closing server", 4);
             }

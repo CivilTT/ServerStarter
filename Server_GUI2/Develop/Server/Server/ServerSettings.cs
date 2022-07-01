@@ -67,5 +67,14 @@ namespace Server_GUI2
             path.BannedPlayers.WriteJson(BannedPlayers);
             path.BannedIps.WriteJson(BannedIps);
         }
+
+        public void Load(VersionPath path)
+        {
+            path.ServerProperties.ReadAllText().SuccessAction( prop => ServerProperties = new ServerProperty(prop) );
+            path.Ops.ReadJson().SuccessAction( ops => Ops = ops);
+            path.WhiteList.ReadJson().SuccessAction( whiteList => WhiteList = whiteList);
+            path.BannedPlayers.ReadJson().SuccessAction(bannedPlayers => BannedPlayers = bannedPlayers);
+            path.BannedIps.ReadJson().SuccessAction(bannedIps => BannedIps = bannedIps);
+        }
     }
 }
