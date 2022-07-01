@@ -290,6 +290,10 @@ namespace Server_GUI2.Develop.Server.World
                     break;
             }
 
+
+            // 設定データを保存
+            Settings.Save(Path);
+
             // 起動
             runFunc(Settings, arg);
 
