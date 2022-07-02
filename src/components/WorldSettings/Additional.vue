@@ -15,8 +15,8 @@
 
       <h2>注記</h2>
       <ul>
-        <li>配布ワールドについては新規ワールド（【new World】）の時にのみ導入可能になります</li>
-        <li>プラグインについてはSpigotサーバーの時にのみ導入可能になります</li>
+        <li>配布ワールドについては新規ワールド（【new World】）のみ導入可能になります</li>
+        <li>プラグインについてはSpigotサーバーのみ導入可能になります</li>
       </ul>
       <!-- <img alt="Quasar logo" src="../assets/logo.svg" style="width: 200px; height: 200px">
       <p>{{a}}</p>
