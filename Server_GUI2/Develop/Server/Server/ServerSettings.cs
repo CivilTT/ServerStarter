@@ -64,8 +64,8 @@ namespace Server_GUI2
             path.ServerProperties.WriteAllText(ServerProperties.ExportProperty());
             path.Ops.WriteJson(Ops, indented: true);
             path.WhiteList.WriteJson(WhiteList, indented: true);
-            path.BannedPlayers.WriteJson(BannedPlayers);
-            path.BannedIps.WriteJson(BannedIps);
+            path.BannedPlayers.WriteJson(BannedPlayers, indented: true);
+            path.BannedIps.WriteJson(BannedIps, indented: true);
         }
 
         public void Load(VersionPath path)
