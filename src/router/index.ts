@@ -39,6 +39,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/AutoPortMapping',
     name: 'apm',
     component: () => import(/* webpackChunkName: "about" */ '../views/AutoPortMapping.vue')
+  },
+  {
+    path: '/credit',
+    name: 'credit',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Credit.vue')
   }
 ]
 
