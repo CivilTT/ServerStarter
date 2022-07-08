@@ -2,14 +2,18 @@
   <q-card flat style="max-width: 100%;">
     <q-card-section>
       <h1>ShareWorldとは？</h1>
-      ShareWorldとはマルチプレイのワールドデータを複数人で共有できる機能のことです<br/>
-      こんな状況になったことはありませんか？
+      <p>
+        ShareWorldとはマルチプレイのワールドデータを複数人で共有できる機能のことです<br/>
+        こんな状況になったことはありませんか？
+      </p>
       <ul>
         <li>前回サーバーを開いた人がいないから最新のワールドで遊べない</li>
         <li>最新のワールドデータを複数人で共有したい</li>
         <li>ワールドのバックアップを取っておきたい</li>
       </ul>
-      ShareWorldを使ってこれらの問題を解決しましょう！
+      <p>
+        ShareWorldを使ってこれらの問題を解決しましょう！
+      </p>
     </q-card-section>
   </q-card>
 </template>
