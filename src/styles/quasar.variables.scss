@@ -1,7 +1,7 @@
 // It's highly recommended to change the default colors
 // to match your app's branding.
 
-$primary   : #027BE3;
+$primary   : #699E00;
 $secondary : #26A69A;
 $accent    : #9C27B0;
 
@@ -14,9 +14,9 @@ $warning   : #F2C037;
 
 
 $body-font-size   : calc(13px + 0.4vw) !default;
+
 $h1: (size: 2rem,     line-height: 2rem,     letter-spacing: normal,  weight: 300) !default;
 $h2: (size: 1.75rem,  line-height: 1.75rem,  letter-spacing: normal,  weight: 300) !default;
-$h3: (size: 1.5rem,     line-height: 1.5rem, letter-spacing: normal,  weight: 400) !default;
-
+$h3: (size: 1.5rem,   line-height: 1.5rem,   letter-spacing: normal,  weight: 400) !default;
 
 @import '~quasar-variables-styl';
