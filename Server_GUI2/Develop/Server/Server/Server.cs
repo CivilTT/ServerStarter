@@ -95,6 +95,7 @@ namespace Server_GUI2
             }
             else
             {
+                StartServer.RunProgressBar.Close();
                 logger.Info("cannot start server without eula agreement");
             }
 
