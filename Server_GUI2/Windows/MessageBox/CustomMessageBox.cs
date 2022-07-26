@@ -33,6 +33,7 @@ namespace Server_GUI2.Windows.MessageBox
         /// 選択したボタンの内容を文字列として返すが、ユーザーが選択しなかった場合は -2 を返す<br/>
         /// timeoutはミリ秒で指定し、Timeoutによって終了した場合は -1 を返す
         /// </summary>
+        [STAThread]
         public static int Show(string message, string title, string[] buttons, Image icon, LinkMessage link, int timeout)
         {
             var window = new ShowNewWindow<Back.MessageBox, MessageBoxVM>();
