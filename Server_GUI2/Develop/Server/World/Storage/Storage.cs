@@ -215,10 +215,12 @@ namespace Server_GUI2.Develop.Server.World
                 json.Account.WriteLine();
                 json.Repository.WriteLine();
                 var remote = new GitRemote(json.Account, json.Repository, json.Email);
-                var storage = GitStorageManager.Instance.ReadWorldState(remote).SuccessFunc(
-                    worldstate => new GitStorage(remote, worldstate, json.Email, true)
-                ).SuccessOrDefault( new GitStorage(remote, json.WorldStates, json.Email, false));
-                result.Add(storage);
+                GitStorageManager.Instance.ReadWorldState(remote).SuccessAction(
+                    worldstate => {
+                        var storage = new GitStorage(remote, worldstate, json.Email, true);
+                        result.Add(storage);
+                   }
+                );
             }
             logger.Info($"</GetStorages>");
             return result;
