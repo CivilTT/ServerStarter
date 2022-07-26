@@ -10,6 +10,7 @@ using System.Windows;
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
+using Server_GUI2.Util;
 
 namespace Server_GUI2
 {
@@ -59,9 +60,6 @@ namespace Server_GUI2
         {
             logger.Info("<Start>");
 
-            logger.Info("save server settings");
-
-            settings.Save(path);
 
             StartServer.RunProgressBar.AddMessage("Reflected World Settings.");
 
@@ -75,7 +73,13 @@ namespace Server_GUI2
             {
                 //Eulaがない場合一度実行し、eula.txtなどの必要ファイルを書き出す
                 StartWithoutEula(Path, javaPath, JarName, Log4jArgument, ServerProperty.GetUserDefault());
+
             }
+
+            logger.Info("save server settings");
+            settings.Save(path);
+
+            settings.Ops.WriteLine();
 
             var eulaResult = CheckEula();
             StartServer.RunProgressBar.AddMessage("Checked Eula.");

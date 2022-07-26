@@ -38,21 +38,27 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void SetUser(string account, string email)
         {
+            logger.Info("<SetUser>");
+            if (!stateDirectory.Exists)
+            {
+                stateDirectory.Create(true);
+                logger.Info("create directory");
+            }
+
+
+            if (!gitLocal.IsGitRepository())
+            {
+                // git init
+                gitLocal.Init(account,email);
+                // git commit --allow-empty -m "empty"
+                gitLocal.AddAllAndCommit("first commit");
+                logger.Info("init repository");
+            }
+
             // リモートとローカルのブランチ名が違っていてもgit pushが実行できる
             gitLocal.ExecuteThrow("config --local push.default upstream");
 
-            logger.Info("<CreateDirectory>");
-            if (stateDirectory.Exists)
-            {
-                logger.Info("</CreateDirectory> already exists");
-                return;
-            }
-            stateDirectory.Create(true);
-            // git init
-            gitLocal.Init(account,email);
-            // git commit --allow-empty -m "empty"
-            gitLocal.AddAllAndCommit("first commit");
-            logger.Info("</CreateDirectory> successfully created");
+            logger.Info("</SetUser> already exists");
         }
 
         /// <summary>

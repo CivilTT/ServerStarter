@@ -245,7 +245,7 @@ namespace Server_GUI2.Develop.Server.World
                         return new Failure<GitStorage, Exception>(new ServerException("this remote is arleady added to remote list."));
                     }
                     // リポジトリが存在しない場合
-                    if (remote.Exists())
+                    if (! remote.Exists())
                     {
                         return new Failure<GitStorage, Exception>(new ServerException($"git remote {account}/{repository} is not exists."));
                     }

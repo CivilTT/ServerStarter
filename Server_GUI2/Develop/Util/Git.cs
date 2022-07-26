@@ -46,7 +46,7 @@ namespace Server_GUI2.Util
 
         public static (int, string) Execute(string arguments, string directory = null)
         {
-            logger.Info($"<GitCommand> git {arguments}" + directory == null ? $"({directory})" : "");
+            logger.Info($"<GitCommand> git {arguments}" + ( directory != null ? $"({directory})" : ""));
             var output = new StringBuilder();
             var error_output = new StringBuilder();
             int exitCode;
@@ -61,11 +61,10 @@ namespace Server_GUI2.Util
                 StandardOutputEncoding = Encoding.UTF8,
             };
 
-            if (directory == null)
+            if (directory != null)
             {
                 StartInfo.WorkingDirectory = directory;
             }
-
 
             using (var process = Process.Start(StartInfo))
             {
@@ -88,7 +87,7 @@ namespace Server_GUI2.Util
                 exitCode = process.ExitCode;
             }
             var o = output.ToString();
-            logger.Info($"</GitCommand> exitcode: {exitCode},{o} {error_output}");
+            logger.Info($"</GitCommand> exitcode: {exitCode}");
             return (exitCode, o);
         }
     }

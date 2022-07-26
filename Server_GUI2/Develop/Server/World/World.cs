@@ -268,8 +268,6 @@ namespace Server_GUI2.Develop.Server.World
             if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
             if (HasRemote) throw new WorldException($"World \"{DisplayName}\" is already linked");
 
-
-            //LocalWorld.Path 
             // TODO: .gitディレクトリを生成して初期化
             CanCahngeRemote = !remote.Exist;
 
@@ -355,6 +353,7 @@ namespace Server_GUI2.Develop.Server.World
 
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
+            
 
             // データパックの導入
             logger.Info("Import datapacks");
@@ -380,6 +379,15 @@ namespace Server_GUI2.Develop.Server.World
         {
             logger.Info("ready newly linked world data");
 
+            if (RemoteWorld.AlreadyUsing)
+            {
+                var is_annonimus = RemoteWorld.LastUser == null || RemoteWorld.LastUser == "" || RemoteWorld.LastUser == "Anonymus";
+
+                var msg = is_annonimus ? "このワールドは現在匿名ユーザーによって開かれています。" : $"このワールドは現在{RemoteWorld.LastUser}によって開かれています。";
+                // TODO:英訳
+                ServerStarterException.ShowError(msg, new RemoteWorldException("remoteworld is now used by other member"));
+            }
+
             // .gitディレクトリを作る
             var gitLocal = new GitLocal(LocalWorld.Path.FullName);
             gitLocal.Init(RemoteWorld.Storage.AccountName,RemoteWorld.Storage.Email);
@@ -395,6 +403,9 @@ namespace Server_GUI2.Develop.Server.World
             RemoteWorld.LastUser = UserSettings.Instance.userSettings.OwnerName ?? "";
             RemoteWorld.Using = true;
             RemoteWorld.UpdateWorldState();
+
+            // ローカルのワールドの設定情報を更新
+            LocalWorld.Settings = Settings;
 
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
@@ -445,6 +456,8 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         private void WrapRun_Linked(Version version, Action<ServerSettings, string> runFunc)
         {
+            logger.Info("ready already linked world data");
+            
             if (RemoteWorld.AlreadyUsing) {
                 var is_annonimus = RemoteWorld.LastUser == null || RemoteWorld.LastUser == "" || RemoteWorld.LastUser == "Anonymus";
 
@@ -453,17 +466,20 @@ namespace Server_GUI2.Develop.Server.World
                 ServerStarterException.ShowError(msg, new RemoteWorldException("remoteworld is now used by other member"));
             }
 
-            logger.Info("ready already linked world data");
 
             // 起動中フラグを立てる
             Using = true;
 
             // リモートワールドを複数人が同時に開かないようにロック
+            RemoteWorld.LastUser = UserSettings.Instance.userSettings.OwnerName ?? "";
             RemoteWorld.Using = true;
             RemoteWorld.UpdateWorldState();
 
             // Pull
             RemoteWorld.ToLocal(LocalWorld);
+
+            // ローカルのワールドの設定情報を更新
+            LocalWorld.Settings = Settings;
 
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
