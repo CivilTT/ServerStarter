@@ -92,14 +92,15 @@ namespace Server_GUI2
                 Run();
 
                 settings.Load(Path);
-
-                // TODO: フラグ数の更新
-                StartServer.CloseProgressBar = new Windows.ProgressBar.ProgressBar($"Closing server", 4);
             }
             else
             {
+                StartServer.RunProgressBar.Close();
                 logger.Info("cannot start server without eula agreement");
             }
+
+            // TODO: フラグ数の更新
+            StartServer.CloseProgressBar = new Windows.ProgressBar.ProgressBar($"Closing server", 4);
 
             logger.Info("</Start>");
         }
@@ -164,8 +165,8 @@ namespace Server_GUI2
 
             if (result != 0)
             {
-                UserSelectException ex = new UserSelectException("User didn't agree eula");
-                logger.Info("</AgreeEula> not agreed");
+                UserSelectException ex = new UserSelectException("User denied eula");
+                logger.Info("</AgreeEula> denied");
                 return false;
             }
             logger.Info("</AgreeEula>");

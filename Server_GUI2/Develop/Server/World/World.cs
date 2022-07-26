@@ -402,7 +402,6 @@ namespace Server_GUI2.Develop.Server.World
             // リモートワールドを複数人が同時に開かないようにロックし、最終使用者を更新
             RemoteWorld.LastUser = UserSettings.Instance.userSettings.OwnerName ?? "";
             RemoteWorld.Using = true;
-            RemoteWorld.UpdateWorldState();
 
             // ローカルのワールドの設定情報を更新
             LocalWorld.Settings = Settings;
