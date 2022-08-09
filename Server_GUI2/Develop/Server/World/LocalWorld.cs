@@ -97,6 +97,11 @@ namespace Server_GUI2.Develop.Server.World
             ReConstruct(path, version, type, settings, datapacks, plugins);
         }
 
+        public void SetVersion(Version version)
+        {
+            Version = version;
+        }
+
         /// <summary>
         /// ワールドの設定をディレクトリから取得する
         /// </summary>
@@ -145,8 +150,10 @@ namespace Server_GUI2.Develop.Server.World
             Version.DeleteEvent -= WhenVersionDeleted;
 
             Path = path;
-            Version = version;
             Name = path.Name;
+
+            Version = version;
+
             // フォルダ存在しない場合は新規作成
             if (!Path.Exists)
                 CreateWorldData();
@@ -169,6 +176,7 @@ namespace Server_GUI2.Develop.Server.World
 
             // 新しいバージョンにイベントを登録
             version.DeleteEvent += WhenVersionDeleted;
+
         }
 
 
@@ -202,8 +210,8 @@ namespace Server_GUI2.Develop.Server.World
             bool addSuffixWhenNameCollided = false
             )
         {
-            // パスが同じだった場合何もしない
-            if (Path.FullName == path.FullName)
+            // パスとバージョンが同じだった場合何もしない
+            if (Path.FullName == path.FullName && Version == version)
                 return;
 
             var name = path.Name;

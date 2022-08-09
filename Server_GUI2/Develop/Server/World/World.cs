@@ -138,6 +138,7 @@ namespace Server_GUI2.Develop.Server.World
 
             world.CustomMap = CustomMap;
 
+
             WorldCollection.Instance.Add(world);
 
             // 実行
@@ -379,15 +380,6 @@ namespace Server_GUI2.Develop.Server.World
         {
             logger.Info("ready newly linked world data");
 
-            if (RemoteWorld.AlreadyUsing)
-            {
-                var is_annonimus = RemoteWorld.LastUser == null || RemoteWorld.LastUser == "" || RemoteWorld.LastUser == "Anonymus";
-
-                var msg = is_annonimus ? "このワールドは現在匿名ユーザーによって開かれています。" : $"このワールドは現在{RemoteWorld.LastUser}によって開かれています。";
-                // TODO:英訳
-                ServerStarterException.ShowError(msg, new RemoteWorldException("remoteworld is now used by other member"));
-            }
-
             // .gitディレクトリを作る
             var gitLocal = new GitLocal(LocalWorld.Path.FullName);
             gitLocal.Init(RemoteWorld.Storage.AccountName,RemoteWorld.Storage.Email);
@@ -408,6 +400,7 @@ namespace Server_GUI2.Develop.Server.World
 
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
+
 
             // データパックの導入
             Datapacks.Evaluate(LocalWorld.Path.World.Datapccks.FullName);
@@ -444,6 +437,7 @@ namespace Server_GUI2.Develop.Server.World
             }
 
             StartServer.CloseProgressBar.AddMessage("update link data");
+
             // LinkJsonを更新
             WorldCollection.Instance.SaveLinkJson();
         }
@@ -549,7 +543,7 @@ namespace Server_GUI2.Develop.Server.World
             }
 
             // version変更
-            if (local.Path.Parent.Parent != version.Path)
+            if (local.Path.Parent.Parent.Name != version.Path.Name)
             {
                 // versionのフォルダに移動するとともにVtoS変換
                 //Console.WriteLine($"local.path: {local.Path}");
@@ -557,6 +551,13 @@ namespace Server_GUI2.Develop.Server.World
                 var newPath = version.Path.Worlds.GetWorldDirectory(local.Path.Name);
                 local.Move(newPath, version, version.Type, local.Settings, local.Datapacks, local.Plugins, addSuffixWhenNameCollided: true);
             }
+            else if(local.Version != version)
+            {
+                // 新規ワールドの場合のみ起動
+                local.SetVersion(version);
+            }
+
+
             StartServer.RunProgressBar.AddMessage("Converted World Version.");
 
             logger.Info("</TryImportCustomMapAndChangeVersion>");
