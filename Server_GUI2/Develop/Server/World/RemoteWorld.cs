@@ -1,8 +1,10 @@
-﻿using Server_GUI2.Util;
+﻿using log4net;
+using Server_GUI2.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -197,6 +199,8 @@ namespace Server_GUI2.Develop.Server.World
 
     public class GitRemoteWorld : RemoteWorld
     {
+        protected static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private GitRemote remote;
 
         public GitRemoteWorld( GitRemote remote, string id, WorldState state, Storage storage, bool available ):

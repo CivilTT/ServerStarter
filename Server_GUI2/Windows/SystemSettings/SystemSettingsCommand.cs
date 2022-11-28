@@ -1,4 +1,5 @@
-﻿using Server_GUI2.Develop.Server.World;
+﻿using log4net;
+using Server_GUI2.Develop.Server.World;
 using Server_GUI2.Develop.Util;
 using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
@@ -7,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -135,6 +137,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
     class DeleteListCommand : GeneralCommand<SystemSettingsVM>
     {
+        protected static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public DeleteListCommand(SystemSettingsVM vm)
         {
             _vm = vm;
@@ -142,6 +145,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
         public override void Execute(object parameter)
         {
+            logger.Info($"Execute {parameter}");
             int DeleteContent<T>(ObservableCollection<T> list, T deleteItem, string name, string notSelected= null)
             {
                 if (name == notSelected)
@@ -166,6 +170,7 @@ namespace Server_GUI2.Windows.SystemSettings
                     var storageRepo = remoteItem?.Storage.RepositoryName ?? null;
                     var worldName = $"/{remoteItem?.Name ?? null}";
                     int result = DeleteContent(_vm.RemoteList, remoteItem, $"{storageAccount}/{storageRepo}{worldName}", "//");
+                    logger.Info($"Remote {result}");
                     if (result == 0)
                     {
                         if (remoteItem is RemoteWorld world)

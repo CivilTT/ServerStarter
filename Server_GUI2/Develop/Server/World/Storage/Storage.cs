@@ -63,6 +63,7 @@ namespace Server_GUI2.Develop.Server.World
             Storages.Add(storage);
             // Storage削除時にリストから排除
             storage.DeleteEvent += new EventHandler((_,__) => {
+                storage.UpdateWorldStates();
                 Storages.Remove(storage);
                 SaveJson();
             });
@@ -146,7 +147,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         ///worldstate.jsonを更新してpush
         /// </summary>
-        public abstract void UpdateWorldStates(string name,WorldState state);
+        public abstract void UpdateWorldStates(string name=null,WorldState state = null);
 
         /// <summary>
         /// リモートワールドを新規作成
@@ -326,7 +327,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 特定のワールドのWorldstateを#state/worldstate.jsonとマージ
         /// </summary>
-        public override void UpdateWorldStates(string name,WorldState state)
+        public override void UpdateWorldStates(string name = null,WorldState state = null)
         {
             logger.Info($"<SaveWorldStates>");
             // 通信可能な場合のみ発動
@@ -335,7 +336,10 @@ namespace Server_GUI2.Develop.Server.World
                 GitStorageManager.Instance.ReadWorldState(Remote).SuccessAction(
                     new_state =>
                     {
-                        new_state[name] = state;
+                        if (name != null && state == null)
+                        {
+                            new_state[name] = state;
+                        }
                         // 存在しているリモートだけをフィルタして保存
                         GitStorageManager.Instance.WriteWorldState
                             (
