@@ -468,18 +468,23 @@ namespace Server_GUI2.Develop.Server.World
             RemoteWorld.Using = true;
             RemoteWorld.UpdateWorldState();
 
+            StartServer.RunProgressBar.AddMessage("fetching remote world data",true);
+
             // Pull
             RemoteWorld.ToLocal(LocalWorld);
 
             // ローカルのワールドの設定情報を更新
             LocalWorld.Settings = Settings;
 
+            StartServer.RunProgressBar.AddMessage("checking version");
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, version);
 
+            StartServer.RunProgressBar.AddMessage("importing datapacks");
             // データパックの導入
             Datapacks.Evaluate(LocalWorld.Path.World.Datapccks.FullName);
 
+            StartServer.RunProgressBar.AddMessage("importing plugins");
             // プラグインの導入
             Plugins.Evaluate(LocalWorld.Path.World.Plugins);
             version.Path.Plugins.Delete(true);
@@ -498,7 +503,7 @@ namespace Server_GUI2.Develop.Server.World
 
                 // リモートのワールドデータを更新し、ロック解除
                 RemoteWorld.Using = false;
-                StartServer.CloseProgressBar.AddMessage("update world state");
+                StartServer.CloseProgressBar.AddMessage("update world state",true);
                 RemoteWorld.UpdateWorldState();
 
                 // 起動中フラグを回収

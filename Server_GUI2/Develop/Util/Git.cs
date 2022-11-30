@@ -26,17 +26,17 @@ namespace Server_GUI2.Util
 
         public static string ExecuteThrow(string arguments, string directory)
         {
-             return  ExecuteThrow(arguments, new GitException($"failed to execute \"git {arguments}\""), directory);
+             return  ExecuteThrow(arguments, (code,str) => new GitException($"failed to execute \"git {arguments}\", errorcode: {code}, error: {str}"), directory);
         }
 
-        public static string ExecuteThrow(string arguments, Exception exception, string directory)
+        public static string ExecuteThrow(string arguments, Func<int,string,Exception> errofunc, string directory)
         {
-            var (code, output) = Execute(arguments, directory);
+            var (code, output,outerror) = Execute(arguments, directory);
 
             if (code != 0)
             {
                 Console.WriteLine(output);
-                throw exception;
+                throw errofunc(code,outerror);
             }
             else
             {
@@ -44,7 +44,7 @@ namespace Server_GUI2.Util
             }
         }
 
-        public static (int, string) Execute(string arguments, string directory = null)
+        public static (int, string, string) Execute(string arguments, string directory = null)
         {
             logger.Info($"<GitCommand> git {arguments}" + ( directory != null ? $"({directory})" : ""));
             var output = new StringBuilder();
@@ -86,9 +86,10 @@ namespace Server_GUI2.Util
                 error_output.AppendLine(stderr.ToString());
                 exitCode = process.ExitCode;
             }
-            var o = output.ToString();
+            var output_str = output.ToString();
+            var error_str = error_output.ToString();
             logger.Info($"</GitCommand> exitcode: {exitCode}");
-            return (exitCode, o);
+            return (exitCode, output_str, error_str);
         }
     }
 
@@ -105,7 +106,7 @@ namespace Server_GUI2.Util
         /// </summary>
         public void Init(string account, string email)
         {
-            GitCommand.ExecuteThrow("init", new GitException("cannot initialize local repository."), Path);
+            GitCommand.ExecuteThrow("init", Path);
             SetUser(account, email);
         }
 
@@ -114,7 +115,7 @@ namespace Server_GUI2.Util
         /// </summary>
         public bool IsGitRepository()
         {
-            var (code, output) = GitCommand.Execute("rev-parse --show-toplevel", Path);
+            var (code, output,_) = GitCommand.Execute("rev-parse --show-toplevel", Path);
             return code == 0 && System.IO.Path.GetFullPath(output).Equals(System.IO.Path.GetFullPath(Path));
         }
 
@@ -129,7 +130,7 @@ namespace Server_GUI2.Util
         /// </summary>
         public Dictionary<string, IGitLocalBranch> GetBranchs()
         {
-            var output = GitCommand.ExecuteThrow($"for-each-ref --format=%(refname:short)...%(upstream:short) refs/heads", new GitException($"failed to get branch list from {Path}"), Path).Trim();
+            var output = GitCommand.ExecuteThrow($"for-each-ref --format=%(refname:short)...%(upstream:short) refs/heads", Path).Trim();
             var branchMap = new Dictionary<string, IGitLocalBranch>();
 
             if (output.Length == 0) return branchMap;
@@ -175,7 +176,7 @@ namespace Server_GUI2.Util
         public Dictionary<string, GitNamedRemote> GetNamedRemotes()
         {
             var remotes = new Dictionary<string, GitNamedRemote>();
-            var output = GitCommand.ExecuteThrow($"remote -v", new GitException($"failed to get remotelist of {Path}"), Path).Trim();
+            var output = GitCommand.ExecuteThrow($"remote -v",Path).Trim();
 
             void GetNamedRemote(string str)
             {
@@ -223,16 +224,16 @@ namespace Server_GUI2.Util
                     writer.WriteLine(output);
             }
             // git add -A
-            GitCommand.ExecuteThrow($"add -A", new GitException($"falied to 'git add -A'"), Path);
+            GitCommand.ExecuteThrow($"add -A", Path);
             // git commit -m "message"
-            GitCommand.ExecuteThrow($"commit --allow-empty -m \"{message}\"", new GitException($"falied to 'commit --allow-empty -m \"{message}\"'"), Path);
+            GitCommand.ExecuteThrow($"commit --allow-empty -m \"{message}\"", Path);
         }
 
 
         public void ExecuteThrow(string argument)
         {
             // git add -A
-            GitCommand.ExecuteThrow(argument, new GitException($"falied to 'git {argument}'"), Path);
+            GitCommand.ExecuteThrow(argument, Path);
         }
 
 
@@ -249,7 +250,7 @@ namespace Server_GUI2.Util
         /// </summary>
         public GitLocalBranch CreateBranch(string name)
         {
-            GitCommand.ExecuteThrow($"branch \"{name}\"", new GitException($"falied to 'git branch \"{name}\"'"), Path);
+            GitCommand.ExecuteThrow($"branch \"{name}\"", Path);
             return new GitLocalBranch(this, name);
         }
 
@@ -258,7 +259,7 @@ namespace Server_GUI2.Util
         /// </summary>
         public GitNamedRemote AddRemote(GitRemote remote, string name)
         {
-            GitCommand.ExecuteThrow($"remote add \"{name}\" \"{remote.Expression}\"", new GitException($"failed to add remote repository :{remote.Expression} {Path}"), Path);
+            GitCommand.ExecuteThrow($"remote add \"{name}\" \"{remote.Expression}\"", Path);
             return new GitNamedRemote(this, remote, name);
         }
     }
@@ -273,7 +274,7 @@ namespace Server_GUI2.Util
         {
             get
             {
-                var (code,_) = GitCommand.Execute($"rev-parse --verify {Name}", Local.Path);
+                var (code,_,_) = GitCommand.Execute($"rev-parse --verify {Name}", Local.Path);
                 return code == 0;
             }
         }
@@ -286,7 +287,7 @@ namespace Server_GUI2.Util
 
         public void Checkout()
         {
-            GitCommand.ExecuteThrow($"checkout {Name}", new GitException($"falied to 'git checkout {Name}'"), Local.Path);
+            GitCommand.ExecuteThrow($"checkout {Name}", Local.Path);
         }
 
         /// <summary>
@@ -303,7 +304,7 @@ namespace Server_GUI2.Util
         /// </summary>
         public void Remove()
         {
-            GitCommand.ExecuteThrow($"branch -D {Name}", new GitException($"falied to 'branch -D {Name}'"), Local.Path);
+            GitCommand.ExecuteThrow($"branch -D {Name}", Local.Path);
         }
     }
 
@@ -330,8 +331,8 @@ namespace Server_GUI2.Util
             {     
                 LocalBranch.Checkout();
                 // git pull
-                GitCommand.ExecuteThrow($"fetch {RemoteBranch.NamedRemote.Name} {RemoteBranch.Name}", new GitException($"falied to 'git fetch { RemoteBranch.Expression }'"), LocalBranch.Local.Path);
-                GitCommand.ExecuteThrow("merge", new GitException("falied to 'git merge'"), LocalBranch.Local.Path);
+                GitCommand.ExecuteThrow($"fetch {RemoteBranch.NamedRemote.Name} {RemoteBranch.Name}", LocalBranch.Local.Path);
+                GitCommand.ExecuteThrow("merge", LocalBranch.Local.Path);
             }
             else
             {
@@ -340,10 +341,10 @@ namespace Server_GUI2.Util
                     throw new GitException($"local branch '{LocalBranch.Name}' already exists.");
 
                 // git fetch remote_branch
-                GitCommand.ExecuteThrow($"fetch {RemoteBranch.NamedRemote.Name} {RemoteBranch.Name}", new GitException($"falied to 'git fetch { RemoteBranch.Expression }'"), LocalBranch.Local.Path);
+                GitCommand.ExecuteThrow($"fetch {RemoteBranch.NamedRemote.Name} {RemoteBranch.Name}", LocalBranch.Local.Path);
 
                 // git branch local_branch --t remote_branch
-                GitCommand.ExecuteThrow($"branch {LocalBranch.Name} --t {RemoteBranch.Expression}", new GitException($"falied to 'git branch {LocalBranch.Name} --t {RemoteBranch.Expression}'"), LocalBranch.Local.Path);
+                GitCommand.ExecuteThrow($"branch {LocalBranch.Name} --t {RemoteBranch.Expression}", LocalBranch.Local.Path);
 
                 LocalBranch.Checkout();
             }
@@ -368,7 +369,7 @@ namespace Server_GUI2.Util
             if (linked)
             {
                 // git push
-                GitCommand.ExecuteThrow($"push", new GitException($"falied to 'git push'"), LocalBranch.Local.Path);
+                GitCommand.ExecuteThrow($"push", LocalBranch.Local.Path);
             }
             else
             {
@@ -377,7 +378,7 @@ namespace Server_GUI2.Util
                     throw new GitException($"remote branch '{RemoteBranch.Expression}' already exists.");
 
                 // git push -u remote_branch
-                GitCommand.ExecuteThrow($"push --set-upstream \"{RemoteBranch.NamedRemote.Name}\" \"{LocalBranch.Name}:{RemoteBranch.Name}\"", new GitException($"falied to 'git push --set-upstream \"{RemoteBranch.NamedRemote.Name}\" \"{LocalBranch.Name}:{RemoteBranch.Name}\"'"), LocalBranch.Local.Path);
+                GitCommand.ExecuteThrow($"push --set-upstream \"{RemoteBranch.NamedRemote.Name}\" \"{LocalBranch.Name}:{RemoteBranch.Name}\"", LocalBranch.Local.Path);
             }
             linked = true;
             RemoteBranch.Exists = true;
@@ -425,7 +426,7 @@ namespace Server_GUI2.Util
 
         public bool Exists()
         {
-            var (code, _) = GitCommand.Execute($"ls-remote https://{Account}@github.com/{Account}/{Repository}");
+            var (code, _,_) = GitCommand.Execute($"ls-remote https://{Account}@github.com/{Account}/{Repository}");
             return code == 0;
         }
     }
@@ -465,7 +466,7 @@ namespace Server_GUI2.Util
 
         public Dictionary<string, GitRemoteBranch> GetBranchs()
         {
-            var output = GitCommand.ExecuteThrow($"ls-remote --heads {Name}", new GitException($"failed to get branch list from {Name}"),Local.Path );
+            var output = GitCommand.ExecuteThrow($"ls-remote --heads {Name}",Local.Path );
             var branchMap = new Dictionary<string, GitRemoteBranch>();
             if (output.Length == 0)
             {
@@ -488,7 +489,7 @@ namespace Server_GUI2.Util
         /// </summary>
         public void Remove()
         {
-            GitCommand.ExecuteThrow($"remote rm \"{Name}\"", new GitException($"failed to remove remote repository"), Local.Path);
+            GitCommand.ExecuteThrow($"remote rm \"{Name}\"",Local.Path);
         }
     }
 
@@ -521,7 +522,7 @@ namespace Server_GUI2.Util
         /// </summary>
         public void Delete()
         {
-            GitCommand.ExecuteThrow($"push {NamedRemote.Name} :{Name}", new GitException($"failed to remove remote repository"), NamedRemote.Local.Path);
+            GitCommand.ExecuteThrow($"push {NamedRemote.Name} :{Name}", NamedRemote.Local.Path);
         }
     }
 }

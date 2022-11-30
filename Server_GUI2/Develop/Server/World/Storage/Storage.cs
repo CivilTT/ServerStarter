@@ -52,9 +52,9 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 条件に合うリモートリポジトリを返す
         /// </summary>
-        public Storage FindStorage(string storage)
+        public Storage FindStorage(string id)
         {
-            var storageValue = Storages.Where(x => x.Id == storage).First();
+            var storageValue = Storages.Where(x => x.Id == id).First();
             return storageValue;
         }
 
@@ -101,14 +101,17 @@ namespace Server_GUI2.Develop.Server.World
 
         public bool Available { get; set; }
 
-        public virtual void AddWorld(RemoteWorld world)
+        /// <summary>
+        /// ストレージの持つワールド一覧にワールドを追加
+        /// </summary>
+        protected virtual void AddWorld(RemoteWorld world)
         {
-            RemoteWorlds.Insert(RemoteWorlds.Count<2 ? 0 : RemoteWorlds.Count-2, world);
+            RemoteWorlds.Insert(RemoteWorlds.Count < 2 ? 0 : RemoteWorlds.Count-2, world);
             world.DeleteEvent += new EventHandler((_, __) => RemoteWorlds.Remove(world));
         }
 
         /// <summary>
-        /// 与えられたidに該当するリモートワールドを返す
+        /// 与えられたidに該当するリモートワールドがあれば返す
         /// </summary>
         public Either<RemoteWorld,string> FindRemoteWorld(string worldId)
         {
@@ -134,8 +137,7 @@ namespace Server_GUI2.Develop.Server.World
                 return new Failure<RemoteWorld, string>($"network is not available");
             }
         }
-        
-        protected abstract RemoteWorld CreateUnavailableRemoteWorld(string worldId);
+
 
         public virtual void Delete()
         {
@@ -207,6 +209,9 @@ namespace Server_GUI2.Develop.Server.World
             return Regex.IsMatch(name, "^[a-zA-Z0-9_-]+$") && !usedNames.Contains(name);
         }
 
+        /// <summary>
+        /// Gitのストレージを全取得
+        /// </summary>
         public static List<GitStorage> GetStorages(List<GitStorageJson> gitStorageJsons)
         {
             logger.Info($"<GetStorages>");
@@ -225,11 +230,6 @@ namespace Server_GUI2.Develop.Server.World
             }
             logger.Info($"</GetStorages>");
             return result;
-        }
-
-        protected override RemoteWorld CreateUnavailableRemoteWorld(string worldId)
-        {
-            return new GitRemoteWorld(Remote, worldId, null, this, true);
         }
 
         /// <summary>
@@ -265,13 +265,16 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public override RemoteWorld CreateRemoteWorld(string worldName)
         {
+
             logger.Info($"<CreateRemoteWorld>");
 
             // ストレージにアクセスできない場合はエラー
             if (!Available) throw new RemoteWorldException($"git storage \"{Remote.Expression}\" is not accessible.");
 
+            // ワールド設定データ
             var prop = new ServerSettings();
 
+            // ブランチ名をuuidに
             var id = Guid.NewGuid();
 
             var remote = Remote;
@@ -312,14 +315,13 @@ namespace Server_GUI2.Develop.Server.World
                 if (newUsedNames.Contains(worldState.Key))
                 {
                     var remoteWorld = new GitRemoteWorld(Remote, worldState.Key, worldState.Value, this, Available);
-                    RemoteWorlds.Add(remoteWorld);
-                    // 削除イベントを追加
-                    remoteWorld.DeleteEvent += new EventHandler((_, __) => RemoteWorlds.Remove(remoteWorld));
+                    AddWorld(remoteWorld);
                 }
             }
 
             RemoteWorlds.Add(new NewRemoteWorld(this));
 
+            // 使用済みの名前一覧を保存
             usedNames.UnionWith(newUsedNames);
             logger.Info($"</GitStorage>");
         }
@@ -330,32 +332,36 @@ namespace Server_GUI2.Develop.Server.World
         public override void UpdateWorldStates(string name = null,WorldState state = null)
         {
             logger.Info($"<SaveWorldStates>");
-            // 通信可能な場合のみ発動
-            if (Available)
+
+            // 通信可能な場合のみ実行
+            if (!Available)
             {
-                GitStorageManager.Instance.ReadWorldState(Remote).SuccessAction(
-                    new_state =>
-                    {
-                        if (name != null && state == null)
-                        {
-                            new_state[name] = state;
-                        }
-                        // 存在しているリモートだけをフィルタして保存
-                        GitStorageManager.Instance.WriteWorldState
-                            (
-                                Remote,
-                                Email,
-                                new_state
-                                ).SuccessAction
-                            (
-                                x => logger.Info($"</SaveWorldStates> success")
-                            ).FailureAction
-                            (
-                                x => logger.Info($"</SaveWorldStates> failure")
-                            );
-                    }
-                );
+                logger.Info($"</SaveWorldStates> network inavailable");
+                return;
             }
+
+            GitStorageManager.Instance.ReadWorldState(Remote).SuccessAction(
+                new_state =>
+                {
+                    if (name != null && state == null)
+                    {
+                        new_state[name] = state;
+                    }
+                    // 存在しているリモートだけをフィルタして保存
+                    GitStorageManager.Instance.WriteWorldState
+                        (
+                            Remote,
+                            Email,
+                            new_state
+                            ).SuccessAction
+                        (
+                            x => logger.Info($"</SaveWorldStates> success")
+                        ).FailureAction
+                        (
+                            x => logger.Info($"</SaveWorldStates> failure")
+                        );
+                    }
+                ).FailureAction( error => logger.Info($"</SaveWorldStates> fail reading worldstate {error}"));
         }
 
         private Dictionary<string,WorldState> ExportWorldStates()
