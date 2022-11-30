@@ -25,7 +25,7 @@ namespace Server_GUI2
         /// <summary>
         /// Runボタンが押された時に呼ばれる処理
         /// </summary>
-        public static async void Run(Version version, IWorld world)
+        public static async void Run(Version version,bool regGnerate, IWorld world)
         {
             logger.Info($"<Run>");
             Version = version;
@@ -57,6 +57,7 @@ namespace Server_GUI2
             // TODO: Run内にプログレスバーのチェックポイントを立て、起動直前にBarを閉じる
             World.WrapRun(
                 Version,
+                regGnerate,
                 (serverProperty,arg) => Server.Start(
                     path,
                     javaPath,

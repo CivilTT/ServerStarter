@@ -13,6 +13,7 @@ using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
 using Server_GUI2.Util;
 using Server_GUI2.Develop.Util;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Server_GUI2.Develop.Server.World
 {
@@ -39,7 +40,7 @@ namespace Server_GUI2.Develop.Server.World
 
         void Link(RemoteWorld remote);
 
-        void WrapRun(Version version, Action<ServerSettings, string> runFunc);
+        void WrapRun(Version version, bool reGenerate, Action<ServerSettings, string> runFunc);
     }
 
     /// <summary>
@@ -121,7 +122,7 @@ namespace Server_GUI2.Develop.Server.World
             RemoteWorld = remote;
         }
 
-        public void WrapRun(Version version, Action<ServerSettings, string> runFunc)
+        public void WrapRun(Version version, bool reGenerate, Action<ServerSettings, string> runFunc)
         {
             // ローカルワールドを生成
             var custommapPath = version.Path.Worlds.GetWorldDirectory(Name);
@@ -142,7 +143,7 @@ namespace Server_GUI2.Develop.Server.World
             WorldCollection.Instance.Add(world);
 
             // 実行
-            world.WrapRun(version,runFunc);
+            world.WrapRun(version, reGenerate, runFunc);
         }
     }
 
@@ -300,18 +301,18 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public void WrapRun(Version version, Action<ServerSettings, string> runFunc)
+        public void WrapRun(Version version, bool reGenerate, Action<ServerSettings, string> runFunc)
         {
             logger.Info("<WrapRun>");
             // リモートがない場合
             if (!HasRemote)
-                WrapRun_Unlinked(version, runFunc);
+                WrapRun_Unlinked(version, reGenerate, runFunc);
             // 起動前からリンクされていたリモートがある場合
             else if (!CanCahngeRemote)
-                WrapRun_Linked(version, runFunc);
+                WrapRun_Linked(version, reGenerate, runFunc);
             // 新しくローカルをリンクする場合
             else
-                WrapRun_NewLink(version, runFunc);
+                WrapRun_NewLink(version, reGenerate, runFunc);
             logger.Info("</WrapRun>");
         }
 
@@ -348,14 +349,13 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 起動関数を引数に取って起動
         /// </summary>
-        public void WrapRun_Unlinked(Version version, Action<ServerSettings, string> runFunc)
+        public void WrapRun_Unlinked(Version version, bool reGenerate, Action<ServerSettings, string> runFunc)
         {
             logger.Info("<WrapRun_Unlinked>");
 
             // カスタムマップの導入＋バージョン変更
-            TryImportCustomMapAndChangeVersion(LocalWorld, version);
+            TryImportCustomMapAndChangeVersion(LocalWorld, reGenerate, version);
             
-
             // データパックの導入
             logger.Info("Import datapacks");
             Datapacks.Evaluate(LocalWorld.Path.World.Datapccks.FullName);
@@ -376,7 +376,7 @@ namespace Server_GUI2.Develop.Server.World
         /// 起動関数を引数に取って起動
         /// 新規リモートワールドにPush
         /// </summary>
-        private void WrapRun_NewLink(Version version, Action<ServerSettings, string> runFunc)
+        private void WrapRun_NewLink(Version version, bool reGenerate, Action<ServerSettings, string> runFunc)
         {
             logger.Info("ready newly linked world data");
 
@@ -399,7 +399,7 @@ namespace Server_GUI2.Develop.Server.World
             LocalWorld.Settings = Settings;
 
             // カスタムマップの導入＋バージョン変更
-            TryImportCustomMapAndChangeVersion(LocalWorld, version);
+            TryImportCustomMapAndChangeVersion(LocalWorld, reGenerate, version);
 
 
             // データパックの導入
@@ -447,7 +447,7 @@ namespace Server_GUI2.Develop.Server.World
         /// 起動関数を引数に取って起動
         /// 既存リモートワールドにPush
         /// </summary>
-        private void WrapRun_Linked(Version version, Action<ServerSettings, string> runFunc)
+        private void WrapRun_Linked(Version version, bool reGenerate , Action<ServerSettings, string> runFunc)
         {
             logger.Info("ready already linked world data");
             
@@ -478,7 +478,7 @@ namespace Server_GUI2.Develop.Server.World
 
             StartServer.RunProgressBar.AddMessage("checking version");
             // カスタムマップの導入＋バージョン変更
-            TryImportCustomMapAndChangeVersion(LocalWorld, version);
+            TryImportCustomMapAndChangeVersion(LocalWorld, reGenerate, version);
 
             StartServer.RunProgressBar.AddMessage("importing datapacks");
             // データパックの導入
@@ -521,7 +521,7 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// 必要に応じてCutomMapを導入し、必要に応じてバージョンを変更する
         /// </summary>
-        private void TryImportCustomMapAndChangeVersion(LocalWorld local, Version version)
+        private void TryImportCustomMapAndChangeVersion(LocalWorld local, bool reGenerate, Version version)
         {
             logger.Info("<TryImportCustomMapAndChangeVersion>");
 
@@ -531,6 +531,13 @@ namespace Server_GUI2.Develop.Server.World
                 CustomMap.Import(local.Path.World.FullName);
                 // LocalWorldの中身に変更を反映(VtoSコンバート等も含む)
                 local.ReConstruct(local.Path, version, version.Type, local.Settings, local.Datapacks, local.Plugins);
+            }
+            else if (reGenerate)
+            {
+                // ワールドデータをリセット
+                // TODO: 同一のseed値を使用(level.datの中身見ないとseedが取得できないので先送り)
+                FileSystem.DeleteDirectory(local.Path.World.FullName, DeleteDirectoryOption.DeleteAllContents);
+
             }
             StartServer.RunProgressBar.AddMessage("Checked Custom Map.");
 
