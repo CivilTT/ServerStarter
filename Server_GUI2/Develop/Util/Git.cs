@@ -403,6 +403,8 @@ namespace Server_GUI2.Util
             Account = account;
             Repository = repository;
 
+            emailMap.WriteLine();
+            account.WriteLine();
             if (email == null) {
                 if (emailMap.ContainsKey(account)) {
                     Email = emailMap[account];

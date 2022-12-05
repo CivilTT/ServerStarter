@@ -356,19 +356,28 @@ namespace Server_GUI2.Develop.Server.World
 
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, reGenerate, version);
-            
+
             // データパックの導入
             logger.Info("Import datapacks");
             Datapacks.Evaluate(LocalWorld.Path.World.Datapccks.FullName);
 
             // プラグインの導入
             logger.Info("Import plugins");
+
             Plugins.Evaluate(LocalWorld.Path.World.Plugins);
+
             version.Path.Plugins.Delete(true);
+
             LocalWorld.Path.World.Plugins.Directory.CopyTo(version.Path.Plugins.FullName);
 
             // 実行
             LocalWorld.WrapRun(version, runFunc);
+
+            // プラグインの設定の反映
+            logger.Info("save plugin settings");
+
+            LocalWorld.Path.World.Plugins.Delete(true);
+            version.Path.Plugins.Directory.CopyTo(LocalWorld.Path.World.Plugins.FullName);
 
             logger.Info("</WrapRun_Unlinked>");
         }
@@ -413,6 +422,12 @@ namespace Server_GUI2.Develop.Server.World
 
             // 実行
             LocalWorld.WrapRun(version, runFunc);
+
+            // プラグインの設定の反映
+            logger.Info("save plugin settings");
+
+            LocalWorld.Path.World.Plugins.Delete(true);
+            version.Path.Plugins.Directory.CopyTo(LocalWorld.Path.World.Plugins.FullName);
 
             StartServer.CloseProgressBar.AddMessage("push world");
             // Push
@@ -493,6 +508,12 @@ namespace Server_GUI2.Develop.Server.World
 
             // 実行
             LocalWorld.WrapRun(version,runFunc);
+
+            // プラグインの設定の反映
+            logger.Info("save plugin settings");
+
+            LocalWorld.Path.World.Plugins.Delete(true);
+            version.Path.Plugins.Directory.CopyTo(LocalWorld.Path.World.Plugins.FullName);
 
 
             StartServer.CloseProgressBar.AddMessage("push world");
