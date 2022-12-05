@@ -159,7 +159,6 @@ namespace Server_GUI2.Develop.Server.World
         /// <summary>
         /// WorldStateを更新
         /// </summary>
-        /// <param name="worldState"></param>
         public void UpdateWorldState()
         {
             Storage.UpdateWorldStates(Id,ExportWorldState());
@@ -225,7 +224,6 @@ namespace Server_GUI2.Develop.Server.World
         {
             this.remote = remote;
         }
-
 
         /// <summary>
         /// ワールドデータを指定パスにPull/Cloneする

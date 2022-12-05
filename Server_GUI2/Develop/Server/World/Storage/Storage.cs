@@ -343,10 +343,11 @@ namespace Server_GUI2.Develop.Server.World
             GitStorageManager.Instance.ReadWorldState(Remote).SuccessAction(
                 new_state =>
                 {
-                    if (name != null && state == null)
+                    if (name != null && state != null)
                     {
                         new_state[name] = state;
                     }
+                    new_state.WriteLine();
                     // 存在しているリモートだけをフィルタして保存
                     GitStorageManager.Instance.WriteWorldState
                         (

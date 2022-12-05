@@ -454,6 +454,9 @@ namespace Server_GUI2.Develop.Server.World
             {
             }
 
+            // #stateブランチを更新
+            RemoteWorld.UpdateWorldState();
+
             StartServer.CloseProgressBar.AddMessage("update link data");
 
             // LinkJsonを更新
@@ -499,6 +502,7 @@ namespace Server_GUI2.Develop.Server.World
             TryImportCustomMapAndChangeVersion(LocalWorld, reGenerate, version);
 
             StartServer.RunProgressBar.AddMessage("importing datapacks");
+
             // データパックの導入
             Datapacks.Evaluate(LocalWorld.Path.World.Datapccks.FullName);
 
@@ -536,6 +540,9 @@ namespace Server_GUI2.Develop.Server.World
             catch (GitException)
             {
             }
+
+            // #stateブランチを更新
+            RemoteWorld.UpdateWorldState();
 
             StartServer.CloseProgressBar.AddMessage("update link data");
             // LinkJsonを更新
