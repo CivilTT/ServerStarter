@@ -18,7 +18,7 @@ namespace Server_GUI2.Windows.MainWindow
         public override void Execute(object parameter)
         {
             _vm.Hide();
-            StartServer.Run(_vm.RunVersion, _vm.RunWorld);
+            StartServer.Run(_vm.RunVersion, false, _vm.RunWorld);
 
             // TODO: 必要に応じて再表示する
 
