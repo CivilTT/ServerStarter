@@ -202,14 +202,14 @@
         <Line StrokeThickness="0.3" Y1="390" Y2="390" Grid.Column="1" Style="{StaticResource LineStyle}"/>
 
         <StackPanel Orientation="Vertical" Margin="50,400,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1">
-            <CheckBox Content="{Binding Resources.Main_ReWorld}" FontSize="16" IsChecked="{Binding ResetWorld.Value}"/>
-            <CheckBox Content="{Binding Resources.Main_SaveWorld}" FontSize="16" Margin="40,0,0,10" IsChecked="{Binding SaveWorld}" IsEnabled="{Binding ShowSaveWorld}"/>
+            <!--<CheckBox Content="{Binding Resources.Main_ReWorld}" FontSize="16" IsChecked="{Binding ResetWorld.Value}"/>-->
+            <!--<CheckBox Content="{Binding Resources.Main_SaveWorld}" FontSize="16" Margin="40,0,0,10" IsChecked="{Binding SaveWorld}" IsEnabled="{Binding ShowSaveWorld}"/>-->
 
             <CheckBox Content="{Binding OpContents}" FontSize="16" IsChecked="{Binding OwnerHasOp}" Visibility="{Binding HasOwner, Converter={StaticResource BoolToVisible}}"/>
             <CheckBox Content="{Binding Resources.Main_Shutdown}" FontSize="16" IsChecked="{Binding ShutdownPC}" Command="{Binding SetShutdown}"/>
         </StackPanel>
-        <Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="61" Y1="425" X2="61" Y2="448" Grid.Column="1"/>
-        <Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="61" Y1="448" X2="91" Y2="448" Grid.Column="1"/>
+        <!--<Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="61" Y1="425" X2="61" Y2="448" Grid.Column="1"/>-->
+        <!--<Line Stroke="#FFBDBCBC" StrokeThickness="1" X1="61" Y1="448" X2="91" Y2="448" Grid.Column="1"/>-->
 
 
         <Button VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40" Margin="30,0,0,10" Grid.Column="1" Command="{Binding SettingCommand}" Style="{StaticResource OtherStyle}">
