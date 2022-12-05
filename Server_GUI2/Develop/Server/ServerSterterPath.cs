@@ -54,6 +54,11 @@ namespace Server_GUI2.Develop.Server
             Directory.Create();
         }
 
+        /// <summary>
+        /// ディレクトリを同期的に削除する
+        /// </summary>
+        /// <param name="deletedOk"></param>
+        /// <param name="force"></param>
         public void Delete(bool deletedOk = false,bool force = false)
         {
             Console.WriteLine($"DELETED {Directory.FullName}");
@@ -62,6 +67,11 @@ namespace Server_GUI2.Develop.Server
             if (force)
                 RemoveReadonlyAttribute(Directory);
             Directory.Delete(true);
+
+            while (Directory.Exists)
+            {
+                Directory.Refresh();
+            }
         }
 
         protected void _MoveTo(DirectoryInfo destination)
