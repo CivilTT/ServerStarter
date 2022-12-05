@@ -90,7 +90,7 @@ namespace Server_GUI2.Develop.Server.World
             else
             {
                 logger.Info("Import non-Zip CustomMap");
-                FileSystem.CopyDirectory(SourcePath, path);
+                FileSystem.MoveDirectory(SourcePath, path);
             }
 
             // 一層深くなっているときは、それを上げる処理をする

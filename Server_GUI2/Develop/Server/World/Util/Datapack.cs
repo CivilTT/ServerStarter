@@ -201,7 +201,7 @@ namespace Server_GUI2.Develop.Server.World
             }
             else
             {
-                FileSystem.CopyDirectory(SourcePath, path);
+                FileSystem.MoveDirectory(SourcePath, path);
             }
 
             // data, pack.mcmetaが一層深くなっているときは、それを上げる処理をする
