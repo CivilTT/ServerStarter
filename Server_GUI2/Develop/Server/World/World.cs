@@ -137,6 +137,7 @@ namespace Server_GUI2.Develop.Server.World
             if (HasRemote)
                 world.Link(RemoteWorld);
 
+            world.Settings = Settings;
             world.CustomMap = CustomMap;
 
 
