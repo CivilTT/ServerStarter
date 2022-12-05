@@ -138,6 +138,8 @@ namespace Server_GUI2.Develop.Server.World
                 world.Link(RemoteWorld);
 
             world.Settings = Settings;
+            world.Datapacks = Datapacks;
+            world.Plugins = Plugins;
             world.CustomMap = CustomMap;
 
 
