@@ -118,7 +118,7 @@
         <!--<TextBlock HorizontalAlignment="Left" Margin="40,21,0,0" TextWrapping="Wrap" Text="Info Builder" VerticalAlignment="Top" Height="48" Width="300" FontSize="28" FontWeight="Bold"/>-->
 
         <TextBlock Text="{Binding Resources.Welcome_Agreement}" Grid.Row="2" Margin="40 0 0 0" Style="{StaticResource BlockStyle}"/>
-        <ui:HyperlinkButton Content="{Binding Resources.Welcome_Access}" NavigateUri="" FontSize="18" Grid.Row="2" VerticalAlignment="Top" Margin="60 30 0 0"/>
+        <ui:HyperlinkButton Content="{Binding Resources.Welcome_Access}" NavigateUri="https://civiltt.github.io/ServerStarter/credit" FontSize="18" Grid.Row="2" VerticalAlignment="Top" Margin="60 30 0 0"/>
         <CheckBox Content="{Binding Resources.Welcome_Agree}" IsChecked="{Binding Agreed.Value}" VerticalAlignment="Top" Margin="60 70 0 0" Grid.Row="2" FontSize="18"/>
 
         <Button Content="{Binding Resources.Welcome_Start}" Command="{Binding StartCommand}" IsEnabled="{Binding CanStart}" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15" Style="{StaticResource RunStyle}"/>
