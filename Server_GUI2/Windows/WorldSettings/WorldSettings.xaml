@@ -140,17 +140,17 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Margin" Value="20 0 10 0"/>
         </Style>
-        <Style TargetType="Button" x:Key="Help">
+        <Style TargetType="Button" x:Key="Help" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Width" Value="25"/>
             <Setter Property="Height" Value="25"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0 7 30 0"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="Content">
                 <Setter.Value>
-                    <Image Source="pack://application:,,,/Resources/help.png"/>
+                    <svgc:SvgViewbox Source="/Resources/help.svg"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -339,10 +339,10 @@
                                 <RowDefinition Height="370"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Resources.WorldSettings_PropOfWor}" Style="{StaticResource TitleBlock}"/>
-                                <Button Margin="0 7" Style="{StaticResource Help}"/>
-                            </StackPanel>
+
+                            
+                            <TextBlock Text="{Binding Resources.WorldSettings_PropOfWor}" Style="{StaticResource TitleBlock}"/>
+                            <Button Command="{Binding HelpCommand}" CommandParameter="world" Style="{StaticResource Help}"/>
 
                             <StackPanel Orientation="Horizontal" Margin="0 35 0 0">
                                 <StackPanel Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">

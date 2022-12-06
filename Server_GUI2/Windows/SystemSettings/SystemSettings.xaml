@@ -159,17 +159,17 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Margin" Value="20 0 10 0"/>
         </Style>
-        <Style TargetType="Button" x:Key="Help">
+        <Style TargetType="Button" x:Key="Help" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Width" Value="25"/>
             <Setter Property="Height" Value="25"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0 7 30 0"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="Content">
                 <Setter.Value>
-                    <Image Source="pack://application:,,,/Resources/help.png"/>
+                    <svgc:SvgViewbox Source="/Resources/help.svg"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -376,8 +376,13 @@
                     <RowDefinition Height="240"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
+                
+
                 <TextBlock Text="{Binding Resources.SystemSettings_AddRemote}" Style="{StaticResource TitleBlock}"/>
-                <StackPanel Orientation="Vertical" Margin="40 40 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Button Command="{Binding HelpCommand}" CommandParameter="ShareWorld" Style="{StaticResource Help}">
+                    <svgc:SvgViewbox Source="/Resources/help.svg"/>
+                </Button>
+                <StackPanel Orientation="Vertical" Margin="40 40 0 0" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Resources.SystemSettings_AName}" Style="{StaticResource SWBlock}"/>
                         <TextBox Text="{Binding AccountName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
@@ -406,6 +411,7 @@
                               CanUserDeleteRows="False"
                               RowHeaderWidth="0"
                               AutoGenerateColumns="False"
+                              IsHitTestVisible="False"
                               VirtualizingPanel.ScrollUnit="Pixel"
                               HorizontalAlignment="Left"
                               SelectedItem="{Binding RLIndex.Value}">
@@ -588,11 +594,12 @@
                                       RowHeaderWidth="0"
                                       VirtualizingPanel.ScrollUnit="Pixel"
                                       AutoGenerateColumns="False"
+                                      IsHitTestVisible="False"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       Grid.Row="1"
                                       SelectedItem="{Binding PLIndex}"
-                                      Margin="20 50 0 0">
+                                      Margin="20 50 0 10">
                                 <DataGrid.Columns>
                                     <!--//Typeは Player or Group を表示する//-->
                                     <!--<DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>-->
@@ -667,8 +674,8 @@
                                       CanUserResizeRows="False"
                                       CanUserResizeColumns="False"
                                       RowHeaderWidth="0"
-                                      VirtualizingPanel.ScrollUnit="Pixel"
                                       AutoGenerateColumns="False"
+                                      IsHitTestVisible="False"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       Grid.Row="1"
@@ -677,8 +684,8 @@
                                 <DataGrid.Columns>
                                     <!--//Typeは Player or Group を表示する//-->
                                     <!--<DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>-->
-                                    <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_GName}" IsReadOnly="True" Binding="{Binding GroupName}" ElementStyle="{StaticResource DataGridSource}"/>
-                                    <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_Members}" IsReadOnly="True" Binding="{Binding PlayerList, Converter={StaticResource MemberListConverter}}" ElementStyle="{StaticResource DataGridSource}"/>
+                                    <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_GName}" IsReadOnly="True" Binding="{Binding GroupName}" ElementStyle="{StaticResource DataGridSource}" Width="1*"/>
+                                    <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_Members}" IsReadOnly="True" Binding="{Binding PlayerList, Converter={StaticResource MemberListConverter}}" ElementStyle="{StaticResource DataGridSource}" Width="3*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <StackPanel Orientation="Vertical" Grid.Row="1">
@@ -691,16 +698,14 @@
 
         <!--//NetWork//-->
         <Grid Visibility="{Binding ShowNet, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
-            <!--<Grid Style="{StaticResource SettingContent}">-->
+        <!--<Grid Style="{StaticResource SettingContent}">-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="200"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Resources.SystemSettings_PortMap}" Style="{StaticResource TitleBlock}"/>
-                <Button Margin="0 7" Style="{StaticResource Help}"/>
-            </StackPanel>
+            <TextBlock Text="{Binding Resources.SystemSettings_PortMap}" Style="{StaticResource TitleBlock}"/>
+            <Button Command="{Binding HelpCommand}" CommandParameter="AutoPortMapping" Style="{StaticResource Help}"/>
             <StackPanel Orientation="Horizontal" Margin="40 30 0 0">
                 <TextBlock Text="{Binding Resources.SystemSettings_UseAPM}" Width="275" TextAlignment="Left" Style="{StaticResource PropertyIndex}"/>
                 <ui:ToggleSwitch OnContent="{Binding Resources.Yes}" OffContent="{Binding Resources.No}" FontSize="20" VerticalAlignment="Top" Margin="0 20" IsOn="{Binding UsingPortMapping.Value}"/>

@@ -5,6 +5,7 @@ using Server_GUI2.Windows.MessageBox.Back;
 using Server_GUI2.Windows.SystemSettings;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Server_GUI2.Windows.WorldSettings
 {
@@ -293,6 +294,20 @@ namespace Server_GUI2.Windows.WorldSettings
             }
 
             return added;
+        }
+    }
+
+    class HelpCommand : GeneralCommand<WorldSettingsVM>
+    {
+        public HelpCommand(WorldSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            string url = $"https://civiltt.github.io/ServerStarter/{parameter}";
+            Process.Start(url);
         }
     }
 

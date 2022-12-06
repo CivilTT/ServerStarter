@@ -310,6 +310,20 @@ namespace Server_GUI2.Windows.SystemSettings
         }
     }
 
+    class HelpCommand : GeneralCommand<SystemSettingsVM>
+    {
+        public HelpCommand(SystemSettingsVM vm)
+        {
+            _vm = vm;
+        }
+
+        public override void Execute(object parameter)
+        {
+            string url = $"https://civiltt.github.io/ServerStarter/{parameter}";
+            Process.Start(url);
+        }
+    }
+
     class TwitterCommand : GeneralCommand<SystemSettingsVM>
     {
         public TwitterCommand(SystemSettingsVM vm)

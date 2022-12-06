@@ -35,6 +35,7 @@ namespace Server_GUI2.Windows.WorldSettings
         public bool CanSave => !UseSW.Value || (!ShowNewRemoteData || ValidRemoteName);
         public SaveCommand SaveCommand { get; private set; }
         public bool Saved = false;
+        public HelpCommand HelpCommand { get; private set; }
 
         // ServerProperty
         public bool[] BoolCombo => new bool[2] { true, false };
@@ -128,6 +129,7 @@ namespace Server_GUI2.Windows.WorldSettings
             // General
             MenuIndex = new BindingValue<int>(0, () => OnPropertyChanged(new string[5] { "ShowProp", "ShowSW", "ShowAdd", "ShowOp", "ShowWhite" }));
             SaveCommand = new SaveCommand(this);
+            HelpCommand = new HelpCommand(this);
 
             // ServerProperty
             PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(RunWorld.Settings.ServerProperties), () => OnPropertyChanged("PropertyIndexs"));

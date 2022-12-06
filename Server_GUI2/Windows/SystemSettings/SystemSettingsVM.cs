@@ -108,6 +108,7 @@ namespace Server_GUI2.Windows.SystemSettings
         // Others
         public string SystemVersion { get { return ManageSystemVersion.StarterVersion; } }
         public BindingValue<string> UserName { get; private set; }
+        public HelpCommand HelpCommand { get; private set; }
         public TwitterCommand TwitterCommand { get; private set; }
         public GitCommandVM GitCommandVM { get; private set; }
         public BindingValue<string> LanguageSelected { get; private set; }
@@ -181,6 +182,7 @@ namespace Server_GUI2.Windows.SystemSettings
             // Others
             UserName = new BindingValue<string>(UserSettings.Instance.userSettings.OwnerName, () => OnPropertyChanged("UserName"));
             LanguageSelected = new BindingValue<string>(Languages.FirstOrDefault(x => x.Value == UserSettings.Instance.userSettings.Language).Key ?? "English", () => UpdateLanguage());
+            HelpCommand = new HelpCommand(this);
             TwitterCommand = new TwitterCommand(this);
             GitCommandVM = new GitCommandVM(this);
 
