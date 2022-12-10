@@ -299,6 +299,7 @@ namespace Server_GUI2.Develop.Server.World
             }
 
             StartServer.RunProgressBar.AddMessage("saving setting data");
+
             // 設定データをサーバー起動用に保存
             Settings.Save(version.Path);
 

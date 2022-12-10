@@ -116,7 +116,7 @@ namespace Server_GUI2.Develop.Server.World
         // リモートをリンク
         public void Link(RemoteWorld remote)
         {
-            if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
+            if (!CanCahngeRemote) throw new WorldException($"Cannot link World \"{DisplayName}\"");
             if (HasRemote) throw new WorldException($"World \"{DisplayName}\" is unlinked");
 
             RemoteWorld = remote;
@@ -255,7 +255,7 @@ namespace Server_GUI2.Develop.Server.World
         // リンクを解除
         public void Unlink()
         {
-            if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
+            //if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
             UnlinkForce();
         }
 
@@ -270,7 +270,7 @@ namespace Server_GUI2.Develop.Server.World
         // リモートをリンク
         public void Link(RemoteWorld remote)
         {
-            if (!CanCahngeRemote) throw new WorldException($"Cannot unlink World \"{DisplayName}\"");
+            if (!CanCahngeRemote) throw new WorldException($"Cannot link World \"{DisplayName}\"");
             if (HasRemote) throw new WorldException($"World \"{DisplayName}\" is already linked");
 
             // TODO: .gitディレクトリを生成して初期化
@@ -443,7 +443,12 @@ namespace Server_GUI2.Develop.Server.World
                 RemoteWorld.Using = false;
                 RemoteWorld.EnableWorld(version, version.Type);
 
-                StartServer.CloseProgressBar.AddMessage("update world state");
+                StartServer.CloseProgressBar.AddMessage("update world state",true);
+
+                // リモートの内容をローカルと同期
+                RemoteWorld.Settings = LocalWorld.Settings;
+                RemoteWorld.Plugins = LocalWorld.Plugins;
+                RemoteWorld.Datapacks= LocalWorld.Datapacks;
 
                 RemoteWorld.UpdateWorldState();
 

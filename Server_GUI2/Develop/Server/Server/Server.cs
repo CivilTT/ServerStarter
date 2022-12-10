@@ -11,6 +11,7 @@ using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
 using MW = ModernWpf;
 using Server_GUI2.Util;
+using Server_GUI2.Develop.Server.World;
 
 namespace Server_GUI2
 {
@@ -78,9 +79,11 @@ namespace Server_GUI2
 
             logger.Info("save server settings");
             settings.Save(path);
-
             settings.Ops.WriteLine();
 
+            // リモートのリンク情報一覧を更新する
+            WorldCollection.Instance.SaveLinkJson();
+            
             var eulaResult = CheckEula();
             StartServer.RunProgressBar.AddMessage("Checked Eula.");
 
