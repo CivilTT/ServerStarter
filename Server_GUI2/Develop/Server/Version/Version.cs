@@ -192,7 +192,7 @@ namespace Server_GUI2
                 {
                     return " -Dlog4j2.formatMsgNoLookups=true";
                 }
-                else if (index11 < versionIndex && versionIndex <= index18)
+                else if (index11 < versionIndex && versionIndex <= index16)
                 {
                     return " -Dlog4j.configurationFile=log4j2_112-116.xml";
                 }
