@@ -56,9 +56,7 @@ namespace Server_GUI2.Develop.Server.World
             using (ZipArchive zipArchive = ZipFile.OpenRead(sourcePath))
             {
                 // フォルダの直下(or一つ下)に ○○ が存在しているかを確認する
-                string dirPath = (zipArchive.GetEntry(name) != null) ? $@"{name}/" : "";
-
-                result = zipArchive.Entries.Where(entry => entry.FullName.StartsWith($"{dirPath}data")).Count() != 0;
+                result = zipArchive.Entries.Where(entry => entry.FullName.Contains("data/")).Count() != 0;
             }
 
             return result;
@@ -94,13 +92,18 @@ namespace Server_GUI2.Develop.Server.World
             }
 
             // 一層深くなっているときは、それを上げる処理をする
-            if (Directory.Exists($@"{path}\{Name}"))
+            if (!Directory.Exists($@"{path}\data"))
             {
-                var dir = new DirectoryInfo($@"{path}\{Name}");
-                dir.MoveTo("temp");
-                FileSystem.DeleteDirectory(path, DeleteDirectoryOption.DeleteAllContents);
-                var tmp = new DirectoryInfo("temp");
-                tmp.MoveTo(path);
+                foreach (string folderPath in Directory.GetDirectories(path))
+                {
+                    if (!Directory.Exists($@"{folderPath}\data")) { continue; }
+                    
+                    var dir = new DirectoryInfo(folderPath);
+                    dir.MoveTo("temp");
+                    FileSystem.DeleteDirectory(path, DeleteDirectoryOption.DeleteAllContents);
+                    var tmp = new DirectoryInfo("temp");
+                    tmp.MoveTo(path);
+                }
             }
         }
     }
