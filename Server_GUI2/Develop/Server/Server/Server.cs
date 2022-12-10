@@ -90,7 +90,7 @@ namespace Server_GUI2
             if (eulaResult)
             {
                 StartServer.RunProgressBar.Close();
-                StartServer.RunProgressBar.ShowCount();
+                //StartServer.RunProgressBar.ShowCount();
 
                 Run();
 

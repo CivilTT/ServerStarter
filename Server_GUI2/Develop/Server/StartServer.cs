@@ -72,7 +72,7 @@ namespace Server_GUI2
             DeletePort(successPortMapping);
 
             // Close Progress Bar
-            CloseProgressBar.ShowCount();
+            //CloseProgressBar.ShowCount();
             CloseProgressBar.Close();
 
             //Shutdown

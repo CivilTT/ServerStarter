@@ -63,6 +63,7 @@ namespace Server_GUI2.Windows.MainWindow
             var worldSettingWindow = new WorldSettingsVM(_vm.RunVersion, _vm.RunWorld);
             WSwindow.ShowDialog(worldSettingWindow);
 
+            _vm.OnPropertyChanged("OwnerHasOp");
             // OnClosingにコメントアウトの理由あり
             //_vm.Show?.Invoke();
         }
