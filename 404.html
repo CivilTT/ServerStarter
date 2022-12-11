@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
-    <script>
-      (function (l) {
-        l.replace(l.origin + "/#" + l.pathname);
-      })(window.location);
-    </script>
-  </head>
-  <body>
-    <h1>404</h1>
-  </body>
+    <head>
+        <script>
+            (function (l) {
+                const parts = l.pathname.split('/')
+                l.replace(l.origin + "/" + parts[0] + "/#" + parts.slice(1).join('/'));
+            })(window.location);
+        </script>
+    </head>
+    <body>
+        <h1>404</h1>
+    </body>
 </html>
