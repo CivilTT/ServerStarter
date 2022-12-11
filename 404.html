@@ -5,7 +5,7 @@
             (function (l) {
               console.log(l.origin,l.pathname)
                 const parts = l.pathname.split('/')
-                l.replace(l.origin + "/" + parts[0] + "/#" + parts.slice(1).join('/'));
+                l.replace(l.origin + "/" + parts[1] + "/#" + parts.slice(2).join('/'));
             })(window.location);
         </script>
     </head>
