@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu" />
 
-        <q-btn stretch flat href="..">
+        <q-btn stretch flat to="/">
           <q-toolbar-title>
             <span class="title">
               <b>Server Starter</b> for <b>Minecraft</b>
