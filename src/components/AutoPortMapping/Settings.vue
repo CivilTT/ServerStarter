@@ -18,7 +18,7 @@
           <li>ポート番号　　25565（-25565）</li>
         </ul>
         <li>設定を保存し、サーバーにほかの人がログインできれば設定終了</li>
-        ※一人でポート開放の確認を行う場合は、サーバーが起動した後に<a href="https://www.cman.jp/network/support/port.html">株式会社シーマンが運営するこちらのHP</a>にアクセスすることで確認することができます
+        ※一人でポート開放の確認を行う場合は、サーバーが起動した後に<a href="https://www.cman.jp/network/support/port.html" class="a">株式会社シーマンが運営するこちらのHP</a>にアクセスすることで確認することができます
       </ol>
     </q-card-section>
   </q-card>

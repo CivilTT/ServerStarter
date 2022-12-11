@@ -8,26 +8,26 @@ const props = defineProps<Props>();
 </script>
 
 <template>
-  <q-card flat style="max-width: 100%;">
-    <div class="row justify-center"  style="height: 90vh;">
-      <q-img src="images/main_image4.png" alt=""/>
-      <div class="title_box_full row justify-center items-center">
-        <div class="title_box">
-          <h1 class="title">
+  <q-page>
+      <div class="row justify-center" style="min-height: inherit;">
+        <q-img src="images/main_image4.png" alt=""/>
+        <div class="title_box_full row justify-center items-center">
+          <div class="title_box">
+            <h1 class="title">
             <span>
               <b>Server Starter</b> for <b>Minecraft</b>
             </span>
           </h1>
           <div class="row justify-center">
-              <span class="title_text">- start Minecraft server only <strong>ONE</strong> click ! -</span>
+            <span class="title_text">- start Minecraft server only <strong>ONE</strong> click ! -</span>
           </div>
         </div>
       </div>
     </div>
-      <!-- <div class="row justify-center desc">
-          <p>ServerStarterはJava版マインクラフトのサーバーのインストールと起動をサポートするwindowsアプリケーションです。</p>
-      </div> -->
-  </q-card>
+    <!-- <div class="row justify-center desc">
+      <p>ServerStarterはJava版マインクラフトのサーバーのインストールと起動をサポートするwindowsアプリケーションです。</p>
+    </div> -->
+</q-page>
 </template>
 
 <style lang="scss">
