@@ -3,6 +3,7 @@
     <head>
         <script>
             (function (l) {
+              console.log(l.origin,l.pathname)
                 const parts = l.pathname.split('/')
                 l.replace(l.origin + "/" + parts[0] + "/#" + parts.slice(1).join('/'));
             })(window.location);
