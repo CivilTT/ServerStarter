@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css2?family=PT+Sans&family=Quicksand:wght@500&family=Shadows+Into+Light&family=Zen+Kaku+Gothic+Antique&display=swap);.title_box_full{height:90vh;width:100%;position:absolute}.title_box{position:relative;top:0;bottom:0;padding:auto;margin:auto;color:#fff}.title{font-size:3rem;line-height:3rem;font-family:Quicksand;font-weight:400}.title b{font-size:4rem;font-family:PT Sans,sans-serif;font-weight:900}.title_text{font-size:1.7rem;line-height:2rem;font-family:Quicksand;font-weight:400}.desc{padding-top:10rem}
 /*!
  * * Quasar Framework v2.7.0
  * * (c) 2015-present Razvan Stoenescu
