@@ -22,7 +22,16 @@ namespace Server_GUI2.Windows.ProgressBar
         private readonly int MaxV;
         private readonly int MinV;
 
-        private int Percent = 0;
+        private int _Percent = 0;
+        private int Percent
+        {
+            get => _Percent;
+            set
+            {
+                if (value > 100) { _Percent = 100; }
+                else { _Percent = value; }
+            }
+        }
         private int Counter = 0;
         private readonly int AllCount = 0;
 
