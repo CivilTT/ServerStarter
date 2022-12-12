@@ -635,8 +635,8 @@
         </Grid>
 
         <!--//WhiteListContents//-->
-        <!--<Grid Visibility="{Binding ShowWhite, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">-->
-        <Grid Style="{StaticResource SettingContent}">
+        <Grid Visibility="{Binding ShowWhite, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <!--<Grid Style="{StaticResource SettingContent}">-->
             <ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                 <Grid>
                     <Grid.RowDefinitions>
