@@ -2,6 +2,7 @@
 using Server_GUI2.Windows.MessageBox.Back;
 using System.ComponentModel;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Image = Server_GUI2.Windows.MessageBox.Back.Image;
 
 namespace Server_GUI2.Windows.WorldSettings
@@ -40,5 +41,13 @@ namespace Server_GUI2.Windows.WorldSettings
             // ShowDialog中にさらにShowDialogすると、最後のDialogが終了した際に元の画面とその子画面が両方表示されるため、これを避けるためにここでShowし、Main側に再表示の機能を持たせない
             Owner.Show();
         }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scrollViewer = sender as ScrollViewer;
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
+
     }
 }

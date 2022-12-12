@@ -575,7 +575,7 @@
         <!--//OPContents//-->
         <Grid Visibility="{Binding ShowOp, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
         <!--<Grid Style="{StaticResource SettingContent}">-->
-            <ScrollViewer Margin="0 0 0 10">
+            <ScrollViewer Margin="0 0 0 10" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="250"/>
@@ -635,49 +635,53 @@
         </Grid>
 
         <!--//WhiteListContents//-->
-        <Grid Visibility="{Binding ShowWhite, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
-        <!--<Grid Style="{StaticResource SettingContent}">-->
-            <Grid.RowDefinitions>
-                <RowDefinition Height="200"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+        <!--<Grid Visibility="{Binding ShowWhite, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">-->
+        <Grid Style="{StaticResource SettingContent}">
+            <ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
             
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding Resources.WorldSettings_AddWhite}" Style="{StaticResource OpTitle}"/>
-                <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
-                    <TextBlock Text="{Binding Resources.SystemSettings_PName}" Style="{StaticResource OpBlock}"/>
-                    <ComboBox ItemsSource="{Binding Players}" DisplayMemberPath="Name" SelectedItem="{Binding WhitePlayerIndex}" IsEnabled="{Binding ValidPlayers}" Width="200" Style="{StaticResource OpCombo}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="40 10 0 0">
-                    <TextBlock Text="{Binding Resources.SystemSettings_GName}" Style="{StaticResource OpBlock}"/>
-                    <ComboBox ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding WhiteGroupIndex}" Width="200" Style="{StaticResource OpCombo}"/>
-                </StackPanel>
-                <Button Content="{Binding Resources.SystemSettings_AddP}" Command="{Binding AddWhiteCommand}" IsEnabled="{Binding CanAddWhitePlayer}" HorizontalAlignment="Right" Margin="20" Style="{StaticResource RunStyle}"/>
-            </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Resources.WorldSettings_AddWhite}" Style="{StaticResource OpTitle}"/>
+                        <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
+                            <TextBlock Text="{Binding Resources.SystemSettings_PName}" Style="{StaticResource OpBlock}"/>
+                            <ComboBox ItemsSource="{Binding Players}" DisplayMemberPath="Name" SelectedItem="{Binding WhitePlayerIndex}" IsEnabled="{Binding ValidPlayers}" Width="200" Style="{StaticResource OpCombo}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="40 10 0 0">
+                            <TextBlock Text="{Binding Resources.SystemSettings_GName}" Style="{StaticResource OpBlock}"/>
+                            <ComboBox ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding WhiteGroupIndex}" Width="200" Style="{StaticResource OpCombo}"/>
+                        </StackPanel>
+                        <Button Content="{Binding Resources.SystemSettings_AddP}" Command="{Binding AddWhiteCommand}" IsEnabled="{Binding CanAddWhitePlayer}" HorizontalAlignment="Right" Margin="20" Style="{StaticResource RunStyle}"/>
+                    </StackPanel>
 
-            <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="WhiteList" Margin="20 0" Style="{StaticResource MiniButton}">
-                <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
-                <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
-            </Button>
-            <StackPanel Orientation="Vertical" Grid.Row="1">
-                <TextBlock Text="{Binding Resources.SystemSettings_PlayerL}" Style="{StaticResource OpTitle}"/>
-                <DataGrid ItemsSource="{Binding WhitePlayersList}"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              CanUserResizeRows="False"
-                              CanUserResizeColumns="False"
-                              AutoGenerateColumns="False"
-                              RowHeaderWidth="0"
-                              VirtualizingPanel.ScrollUnit="Pixel"
-                              HorizontalAlignment="Left"
-                              SelectedItem="{Binding WhitePlayersListIndex}"
-                              Margin="20 10">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_PName}" MaxWidth="180" IsReadOnly="True" Binding="{Binding Name}"/>
-                        <DataGridTextColumn Header="UUID" Width="220" IsReadOnly="True" Binding="{Binding UUID}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
+                    <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="WhiteList" Margin="20 0" Style="{StaticResource MiniButton}">
+                        <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                        <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                    </Button>
+                    <StackPanel Orientation="Vertical" Grid.Row="1">
+                        <TextBlock Text="{Binding Resources.SystemSettings_PlayerL}" Style="{StaticResource OpTitle}"/>
+                        <DataGrid ItemsSource="{Binding WhitePlayersList}"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      CanUserResizeRows="False"
+                                      CanUserResizeColumns="False"
+                                      AutoGenerateColumns="False"
+                                      RowHeaderWidth="0"
+                                      VirtualizingPanel.ScrollUnit="Pixel"
+                                      HorizontalAlignment="Left"
+                                      SelectedItem="{Binding WhitePlayersListIndex}"
+                                      Margin="20 10">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_PName}" MaxWidth="180" IsReadOnly="True" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="UUID" Width="220" IsReadOnly="True" Binding="{Binding UUID}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </base:GeneralCB>

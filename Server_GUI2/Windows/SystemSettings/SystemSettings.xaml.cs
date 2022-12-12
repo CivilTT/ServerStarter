@@ -3,6 +3,8 @@ using Server_GUI2.Windows.MessageBox;
 using Server_GUI2.Windows.MessageBox.Back;
 using System.ComponentModel;
 using System.Globalization;
+using System.Windows.Controls;
+using System.Windows.Input;
 using Image = Server_GUI2.Windows.MessageBox.Back.Image;
 
 namespace Server_GUI2.Windows.SystemSettings
@@ -53,5 +55,13 @@ namespace Server_GUI2.Windows.SystemSettings
                 }
             }
         }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scrollViewer = sender as ScrollViewer;
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
+
     }
 }

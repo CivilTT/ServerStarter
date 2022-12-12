@@ -369,7 +369,7 @@
         <Line X1="3" X2="3" Y1="10" Y2="470" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
 
         <!--//ShareWorldContents//-->
-        <ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource ScrollSource}">
+        <ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" Style="{StaticResource ScrollSource}">
         <!--<ScrollViewer Style="{StaticResource ScrollSource}">-->
             <Grid Style="{StaticResource SettingContent}">
                 <Grid.RowDefinitions>
@@ -411,7 +411,6 @@
                               CanUserDeleteRows="False"
                               RowHeaderWidth="0"
                               AutoGenerateColumns="False"
-                              IsHitTestVisible="False"
                               VirtualizingPanel.ScrollUnit="Pixel"
                               HorizontalAlignment="Left"
                               SelectedItem="{Binding RLIndex.Value}">
@@ -565,7 +564,7 @@
                     <TabItem.Header>
                         <TextBlock Text="{Binding Resources.Player}"/>
                     </TabItem.Header>
-                    <ScrollViewer>
+                    <ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="180"/>
@@ -594,7 +593,6 @@
                                       RowHeaderWidth="0"
                                       VirtualizingPanel.ScrollUnit="Pixel"
                                       AutoGenerateColumns="False"
-                                      IsHitTestVisible="False"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       Grid.Row="1"
@@ -616,7 +614,7 @@
                     <TabItem.Header>
                         <TextBlock Text="{Binding Resources.Group}"/>
                     </TabItem.Header>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="450"/>
@@ -675,7 +673,6 @@
                                       CanUserResizeColumns="False"
                                       RowHeaderWidth="0"
                                       AutoGenerateColumns="False"
-                                      IsHitTestVisible="False"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       Grid.Row="1"
