@@ -19,7 +19,7 @@
         があります。
         削除したいバージョンやワールドを選択したうえでこのボタンを押すことで、データを削除することができます。
       </p>
-      <q-img alt="delete window" src="../../assets/MainWindow/delete2.png" width="calc(100% - 5em)"/>
+      <q-img alt="delete window" src="../../assets/MainWindow/delete2.png"/>
 
 
       <h2>OP権限の付与</h2>
