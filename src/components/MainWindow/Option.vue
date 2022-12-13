@@ -19,7 +19,7 @@
         があります。
         削除したいバージョンやワールドを選択したうえでこのボタンを押すことで、データを削除することができます。
       </p>
-      <q-img alt="delete window" src="../../assets/MainWindow/delete2.png"/>
+      <q-img alt="delete window" src="../../assets/MainWindow/delete2.png" width="min(500px,100%)"/>
 
 
       <h2>OP権限の付与</h2>
@@ -29,7 +29,7 @@
         この際、付与する権限レベルは最高の4になり、ほかの参加者に自動的にOP権限を付与するわけではありません。
         他の参加者にもOP権限を付与する場合は，「ワールド設定」の「Op権限」タブにて付与してください．
       </p>
-      <q-img alt="op check" src="../../assets/MainWindow/op.png"/>
+      <q-img alt="op check" src="../../assets/MainWindow/op.png" width="min(500px,100%)"/>
 
       <h2>自動シャットダウン</h2>
       <p>
@@ -38,7 +38,7 @@
         サーバーを停止する必要はあるため、最後に抜ける人（Op権限4を持つ人）にゲーム内で/stopのコマンドを打ってもらう必要があります。
         なお、シャットダウンする前に確認のダイアログが表示されるため、サーバー終了後にシャットダウンしないことも選択できます。
       </p>
-      <q-img alt="shutdown" src="../../assets/MainWindow/shutdown.png"/>
+      <q-img alt="shutdown" src="../../assets/MainWindow/shutdown.png" width="min(500px,100%)"/>
 
     </q-card-section>
   </q-card>
