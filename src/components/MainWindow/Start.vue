@@ -10,11 +10,17 @@
         ワールドの諸設定は「ワールド設定」から行ってください．
         準備ができたら「実行」を押してサーバーを起動しましょう！
       </p>
-      <AdjustImage src="/images/MainWindow/main1.png" max_width="800px"/>
+      <q-img src="@/assets/MainWindow/main1.png" :width="`min(100%,800px)`" class="img"/>
     </q-card-section>
   </q-card>
 </template>
 
 <script lang="ts" setup>
-import AdjustImage from '@/components/Util/AdjustImage.vue';
 </script>
+
+<style>
+.img {
+  display: block;
+  margin : 0 auto;
+}
+</style>
