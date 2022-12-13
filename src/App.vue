@@ -53,17 +53,17 @@ export default {
         {
           to:"/main",
           caption:"main",
-          label:"main"
+          label:"メイン画面"
         },
         {
           to:"/world",
           caption:"world",
-          label:"world"
+          label:"ワールド設定"
         },
         {
           to:"/system",
           caption:"system",
-          label:"system"
+          label:"システム設定"
         },
         {
           to:"/ShareWorld",
@@ -73,12 +73,12 @@ export default {
         {
           to:"/AutoPortMapping",
           caption:"AutoPortMapping",
-          label:"AutoPortMapping"
+          label:"自動ポート開放"
         },
         {
           to:"/credit",
           caption:"credit",
-          label:"credit"
+          label:"利用規約"
         },
       ]
     }
