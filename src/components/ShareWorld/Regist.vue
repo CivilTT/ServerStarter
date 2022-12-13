@@ -3,9 +3,9 @@
     <q-card-section>
       <h1>ServerStarterに設定を登録する</h1>
       <ol>
-        <li><a href="https://github.com/">GitHub</a>に新しく空のレポジトリを作成する</li>
+        <li><a href="https://github.com/" class="a">GitHub</a>に新しく空のレポジトリを作成する</li>
         <ol>
-          <li><a href="https://github.com/">GitHub</a>にアクセスし，緑色の「New」ボタンを押す</li>
+          <li><a href="https://github.com/" class="a">GitHub</a>にアクセスし，緑色の「New」ボタンを押す</li>
           <li>各設定項目を次のように指定する</li>
           <ul>
             <li>Repository name  ShareWorld</li>

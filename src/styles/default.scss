@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;500;700&family=PT+Sans&family=Quicksand:wght@500&display=swap');
+
+*{
+    font-family: 'Noto Sans JP';
+}
+
+p{
+    font-weight: 300;
+    line-height: 1.7em;
+    font-size: 1.2rem;
+}
+
+.a{
+    color: #699E00;
+    font-weight: 700;
+    text-decoration: none;
+    &:visited {
+        color: #699E00;
+    }
+}

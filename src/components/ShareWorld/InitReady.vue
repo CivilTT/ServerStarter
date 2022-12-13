@@ -3,8 +3,8 @@
     <q-card-section>
       <h1>初期設定</h1>
       <ol>
-        <li><a href="https://gitforwindows.org/">git bash</a>のインストールを行う</li>
-        <li><a href="https://github.com/">GitHub</a>のアカウントを作成する</li>
+        <li><a href="https://gitforwindows.org/" class="a">git bash</a>のインストールを行う</li>
+        <li><a href="https://github.com/" class="a">GitHub</a>のアカウントを作成する</li>
         <li>ServerStarterを起動し，左下の設定ボタンから System Settings を開く</li>
         <li>ShareWorldタブをスクロールし，「Personal access tokens」を開く</li>
         <li>Generate new token ボタンを押し，次のように設定したうえで「Generate token」を押す</li>
