@@ -11,7 +11,7 @@
         d:DataContext="{d:DesignInstance vm:WelcomeWindowVM}"
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="Server Starter" Height="480" Width="450" WindowStartupLocation="CenterScreen">
+        Title="Server Starter" Height="450" Width="450" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style TargetType="Button" x:Key="RunStyle" BasedOn="{StaticResource {x:Type Button}}">
@@ -96,7 +96,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="130"/>
-            <RowDefinition Height="160"/>
+            <RowDefinition Height="130"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.Background>
@@ -114,7 +114,7 @@
         <ui:ProgressRing IsActive="{Binding IsActive.Value}" Grid.Row="1" Margin="20 40" Height="33" Width="33" HorizontalAlignment="Right" VerticalAlignment="Top"/>
         <TextBlock Text="UUID : " IsEnabled="{Binding NotRegistName.Value, Converter={StaticResource InverseBool}}" Grid.Row="1" Margin="60 80 0 0" FontSize="16" Style="{StaticResource BlockStyle}"/>
         <TextBlock Text="{Binding UUID.Value}" IsEnabled="{Binding NotRegistName.Value, Converter={StaticResource InverseBool}}" Grid.Row="1" Margin="110 80 0 0" FontSize="16" Style="{StaticResource BlockStyle}"/>
-        <CheckBox Content="{Binding Resources.Welcome_NotRegist}" IsChecked="{Binding NotRegistName.Value}" VerticalAlignment="Top" Margin="60 110 0 0" Grid.Row="1" FontSize="16"/>
+        <!--<CheckBox Content="{Binding Resources.Welcome_NotRegist}" IsChecked="{Binding NotRegistName.Value}" VerticalAlignment="Top" Margin="60 110 0 0" Grid.Row="1" FontSize="16"/>-->
         <!--<TextBlock HorizontalAlignment="Left" Margin="40,21,0,0" TextWrapping="Wrap" Text="Info Builder" VerticalAlignment="Top" Height="48" Width="300" FontSize="28" FontWeight="Bold"/>-->
 
         <TextBlock Text="{Binding Resources.Welcome_Agreement}" Grid.Row="2" Margin="40 0 0 0" Style="{StaticResource BlockStyle}"/>

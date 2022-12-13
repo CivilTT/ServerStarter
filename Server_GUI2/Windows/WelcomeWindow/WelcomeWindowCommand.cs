@@ -61,12 +61,12 @@ namespace Server_GUI2.Windows.WelcomeWindow
 
         public override void Execute(object parameter)
         {
-            string playerName = _vm.PlayerName.Value;
-            string playerUUID = _vm.UUID.Value;
-            Player player = new Player(playerName, playerUUID);
 
             if (!_vm.NotRegistName.Value)
             {
+                string playerName = _vm.PlayerName.Value;
+                string playerUUID = _vm.UUID.Value;
+                Player player = new Player(playerName, playerUUID);
                 UserSettings.Instance.userSettings.OwnerName = playerName;
                 UserSettings.Instance.userSettings.Players.Add(player);
             }

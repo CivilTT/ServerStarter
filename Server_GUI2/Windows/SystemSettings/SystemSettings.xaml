@@ -759,7 +759,7 @@
                     <TextBlock Text="{Binding Resources.SystemSettings_Lang}" Style="{StaticResource PropertyIndex}"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="-10 0">
-                    <TextBox Text="{Binding UserName.Value}" Margin="15 20" Style="{StaticResource PlayerBox}"/>
+                    <TextBlock Text="{Binding UserName.Value}" Margin="15 20" Style="{StaticResource BlockSource}"/>
                     <ComboBox ItemsSource="{Binding Languages.Keys}" SelectedItem="{Binding LanguageSelected.Value}" HorizontalContentAlignment="Left" Margin="15 0" Style="{StaticResource PlayerCombo}"/>
                 </StackPanel>
             </StackPanel>
