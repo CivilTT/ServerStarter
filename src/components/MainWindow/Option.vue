@@ -2,14 +2,14 @@
   <q-card flat style="max-width: 100%;">
     <q-card-section>
       <h1>オプション項目</h1>
-      <h2>ワールドのリセット</h2>
+      <!-- <h2>ワールドのリセット</h2>
       <p>
         同じ名前のワールドを新しく作り直す場合、ワールドのリセットができます。
         以下の画像のように、メイン画面にあるRecreate Worldのチェックボックスを入れてください。
         また、前のワールドを保存する場合はその下のSave Worldのチェックボックスも入れてください。
         同じシード値のワールドにはならないのでお気を付けください
       </p>
-      <img alt="reset world" src="../../assets/MainWindow/Reset.png" style="height: 4cm;"/>
+      <img alt="reset world" src="../../assets/MainWindow/Reset.png" style="height: 4cm;"/> -->
 
       <h2>データの削除</h2>
       <p>
