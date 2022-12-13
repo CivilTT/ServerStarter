@@ -8,7 +8,7 @@
         以下の写真のように、起動したいサーバーバージョンと、バージョンアップしたいワールドを選択してください。
         この場合、1.17.1でサーバーを起動するため、1.16.1のworldを1.17.1にバージョンアップします。
       </p>
-      <img alt="version up img" src="../../assets/MainWindow/main2.png" style="height: 2cm;"/>
+      <q-img alt="version up img" src="../../assets/MainWindow/main2.png"/>
       
       <h2>既存ワールドの導入</h2>
       <p>
@@ -26,7 +26,7 @@
         これにより、バージョンの一覧がSpigotのものに切り替わります。
         次回以降Spigotがすでに導入されている状態では、普通のバージョンと同じようにバージョン一覧から選択できるようになっています。
       </p>
-      <img alt="spigot img" src="../../assets/MainWindow/Spigot1.png" style="height: 5cm;"/>
+      <q-img alt="spigot img" src="../../assets/MainWindow/Spigot1.png" width="min(500px,100%)"/>
 
       <h2>SpigotとVanila</h2>
       <p>
@@ -34,7 +34,7 @@
         また、逆にSpigotからVanilaに変換することもできます。
         バージョンアップの際と同様に起動したいサーバーともともとのワールドを選択するだけで自動的にサーバーデータの変換が行われます。
       </p>
-      <img alt="spigot and vanila" src="../../assets/MainWindow/Spigot2.png" style="height: 3cm;"/>
+      <q-img alt="spigot and vanila" src="../../assets/MainWindow/Spigot2.png"/>
     </q-card-section>
   </q-card>
 </template>

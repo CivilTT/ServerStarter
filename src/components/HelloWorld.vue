@@ -9,17 +9,22 @@ const props = defineProps<Props>();
 
 <template>
   <q-page>
-      <div class="row justify-center" style="min-height: inherit;">
-        <q-img src="images/main_image4.png" alt=""/>
-        <div class="title_box_full row justify-center items-center">
-          <div class="title_box">
-            <h1 class="title">
-            <span>
+    <div class="row justify-center" style="min-height: inherit;">
+      <q-img src="images/main_image4.png" alt=""/>
+      <div class="title_box_full row justify-center items-center">
+        <div class="title_box">
+          <h1 class="title">
               <b>Server Starter</b> for <b>Minecraft</b>
-            </span>
           </h1>
-          <div class="row justify-center">
-            <span class="title_text">- start Minecraft server only <strong>ONE</strong> click ! -</span>
+          <h1 class="row justify-center">
+            <span class="title_text">- start Minecraft server only <strong class="title_text_strong">ONE</strong> click ! -</span>
+          </h1>
+          <div class="row justify-center download_button">
+            <q-btn color="white" text-color="primary" size="lg" padding="md">
+              <span class="download">
+                Download ver 1.2.0.0
+              </span>
+            </q-btn>
           </div>
         </div>
       </div>
@@ -30,7 +35,13 @@ const props = defineProps<Props>();
 </q-page>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.download_button{
+  margin-top: 5rem;
+}
+.download{
+  text-transform: none;
+}
 .title_box_full{
   height: 90vh;
   width: 100%;
@@ -63,6 +74,9 @@ const props = defineProps<Props>();
   line-height: 2rem;
   font-family: 'Quicksand';
   font-weight: 400;
+}
+.title_text_strong{
+  font-size: inherit;
 }
 .desc{
   padding-top: 10rem;
