@@ -50,11 +50,9 @@ namespace Server_GUI2
             RunProgressBar.AddMessage($"Decide to using java {javaVersion}");
 
             // Port Mapping
-            bool successPortMapping = await AddPort();
-            RunProgressBar.AddMessage("Finished Port Mapping");
+            var portMapper = Task.Run(AddPort);
 
             //サーバー実行
-            // TODO: Run内にプログレスバーのチェックポイントを立て、起動直前にBarを閉じる
             World.WrapRun(
                 Version,
                 reGenerate,
@@ -69,7 +67,7 @@ namespace Server_GUI2
                 );
 
             // PortMapping
-            DeletePort(successPortMapping);
+            DeletePort(portMapper.Result);
 
             // Close Progress Bar
             //CloseProgressBar.ShowCount();
@@ -78,22 +76,7 @@ namespace Server_GUI2
             //Shutdown
             ShutDown();
 
-            ////サーバー実行
-            //World.WrapRun(
-            //    Version,
-            //    serverProperty => DummyRun(
-            //        path,
-            //        jarName,
-            //        Version.Log4jArgument,
-            //        serverProperty
-            //        )
-            //    );
             logger.Info($"</Run>");
-        }
-
-        static void DummyRun(VersionPath path, string javaPath,string jarName, string log4jArgument, ServerSettings settings,string arg)
-        {
-            settings.Save(path);
         }
 
         private static void RecordLatestVerWor()

@@ -90,15 +90,14 @@ namespace Server_GUI2.Develop.Util
             //Console.WriteLine("The external IP Address is: {0} ", await device.GetExternalIPAsync());
             foreach (var mapping1 in await getMappings)
             {
-                //Console.WriteLine(mapping1.PublicPort);
                 if (mapping1.PublicPort == portNum)
                 {
-                    logger.Info($"Success to port mapping! ({portNum})");
-                    return true;
+                    logger.Info($"Failed to close port {portNum}");
+                    return false;
                 }
             }
 
-            logger.Info($"Failed to close port {portNum}");
+            logger.Info($"Success to close port! ({portNum})");
             return true;
         }
 

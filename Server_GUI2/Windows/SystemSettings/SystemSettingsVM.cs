@@ -250,7 +250,6 @@ namespace Server_GUI2.Windows.SystemSettings
         {
             // Auto Port Mappingの設定確認
             WarningPort();
-            RemovePort();
 
             // 既存のデータを変更する形で処理
             UserSettings.Instance.userSettings.OwnerName = UserName.Value;
@@ -276,16 +275,6 @@ namespace Server_GUI2.Windows.SystemSettings
             {
                 UserSettings.Instance.userSettings.PortSettings.UsingPortMapping = UsingPortMapping.Value;
                 UserSettings.Instance.userSettings.PortSettings.PortNumber = int.Parse(PortNumber);
-            }
-        }
-
-        private void RemovePort()
-        {
-            if (PortStatus.Value.StatusEnum.Value == Develop.Util.PortStatus.Status.Open)
-            {
-
-                PortSetting portSetting = new PortSetting(this);
-                _ = portSetting.DeletePort();
             }
         }
 
