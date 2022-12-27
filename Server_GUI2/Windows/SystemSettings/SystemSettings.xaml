@@ -724,7 +724,7 @@
                 <StackPanel Orientation="Vertical">
                     <TextBox Text="{Binding GlobalIP, Mode=OneWay}" Style="{StaticResource ShowIP}"/>
                     <TextBox Text="{Binding LocalIP, Mode=OneWay}" Style="{StaticResource ShowIP}"/>
-                    <TextBlock Text="{Binding PortStatus.Value.DisplayStatus}" IsEnabled="{Binding UsingPortMapping.Value}" Foreground="Green" FontWeight="Bold" Style="{StaticResource NetStatusBlock}"/>
+                    <TextBlock Text="{Binding PortStatus.Value.DisplayStatus}" IsEnabled="{Binding UsingPortMapping.Value}" Foreground="{Binding StatusColor}" FontWeight="Bold" Style="{StaticResource NetStatusBlock}"/>
                 </StackPanel>
             </StackPanel>
 

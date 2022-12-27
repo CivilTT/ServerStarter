@@ -97,13 +97,28 @@ namespace Server_GUI2.Windows.SystemSettings
         }
         public bool CanWritePortNumber => UsingPortMapping != null && UsingPortMapping.Value;
         public bool ValidPortNumber => int.TryParse(PortNumber, out int port) && (0 < port && port < 65535);
-        public bool AlreadyOpened => (PortStatus.Value?.StatusEnum.Value) != null && PortStatus.Value.StatusEnum.Value == Develop.Util.PortStatus.Status.Open;
+        public bool AlreadyOpened => (PortStatus.Value?.StatusEnum) != null && PortStatus.Value.StatusEnum == Develop.Util.PortStatus.Status.Open;
         public bool CanAddition_Po => ValidPortNumber && CanWritePortNumber && !AlreadyOpened;
         public AddPortCommand AddPortCommand { get; private set; }
         public string GlobalIP { get { return NetWork.GlobalIP; } }
         public string LocalIP { get { return NetWork.LocalIP; } }
         public ClipbordCommand ClipbordCommand { get; private set; }
         public BindingValue<PortStatus> PortStatus { get; private set; }
+        public string StatusColor
+        {
+            get
+            {
+                switch (PortStatus.Value.StatusEnum)
+                {
+                    case Develop.Util.PortStatus.Status.Failed:
+                        return "Red";
+                    case Develop.Util.PortStatus.Status.Registering:
+                        return "Yellow";
+                    default:
+                        return "#7CBB00";
+                }
+            }
+        }
 
         // Others
         public string SystemVersion { get { return ManageSystemVersion.StarterVersion; } }
@@ -177,7 +192,7 @@ namespace Server_GUI2.Windows.SystemSettings
             PortNumber = portNum.ToString();
             AddPortCommand = new AddPortCommand(this);
             ClipbordCommand = new ClipbordCommand(this);
-            PortStatus = new BindingValue<PortStatus>(new PortStatus(portNum, Develop.Util.PortStatus.Status.Ready), () => OnPropertyChanged("PortStatus"));
+            PortStatus = new BindingValue<PortStatus>(new PortStatus(portNum, Develop.Util.PortStatus.Status.Ready), () => OnPropertyChanged(new string[2] { "PortStatus", "StatusColor" }));
 
             // Others
             UserName = new BindingValue<string>(UserSettings.Instance.userSettings.OwnerName, () => OnPropertyChanged("UserName"));

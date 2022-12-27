@@ -260,9 +260,9 @@ namespace Server_GUI2.Windows.SystemSettings
             bool isSuccess = await PortMapping.AddPort(portNum);
 
             if (isSuccess)
-                _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Open;
+                _vm.PortStatus.Value = new PortStatus(portNum, PortStatus.Status.Open);
             else
-                _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Failed;
+                _vm.PortStatus.Value = new PortStatus(portNum, PortStatus.Status.Failed);
         }
 
         public async Task DeletePort()
@@ -270,18 +270,18 @@ namespace Server_GUI2.Windows.SystemSettings
             PortStatus status = _vm.PortStatus.Value;
 
             // そもそもポート開放していない場合は何もしない
-            if (status == null || (status.StatusEnum.Value != PortStatus.Status.Open && status.StatusEnum.Value != PortStatus.Status.Registering))
+            if (status == null || (status.StatusEnum != PortStatus.Status.Open && status.StatusEnum != PortStatus.Status.Registering))
                 return;
 
             bool isSuccess = await PortMapping.DeletePort(status.PortNumber);
 
             if (isSuccess)
-                _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Close;
+                _vm.PortStatus.Value = new PortStatus(status.PortNumber, PortStatus.Status.Close);
             else
             {
                 CustomMessageBox.Show(Properties.Resources.SystemSettings_Port, ButtonType.OK, Image.Error);
 
-                _vm.PortStatus.Value.StatusEnum.Value = PortStatus.Status.Open;
+                _vm.PortStatus.Value = new PortStatus(status.PortNumber, PortStatus.Status.Open);
                 _vm.UsingPortMapping.Value = true;
             }
         }

@@ -1,27 +1,18 @@
-﻿using Server_GUI2.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
 namespace Server_GUI2.Windows
 {
-    abstract class GeneralVM : INotifyPropertyChanged, IOperateWindows
+    public class GeneralNotify : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public Action Show { get; set; }
-        public Action ShowDialog { get; set; }
-        public Action Hide { get; set; }
-        public Action Close { get; set; }
 
         /// <summary>
         /// PropertyChanged?.Invokeの記述を省略する
@@ -56,6 +47,14 @@ namespace Server_GUI2.Windows
         {
             return collection != null && collection.Count != 0;
         }
+    }
+
+    abstract class GeneralVM : GeneralNotify, IOperateWindows
+    {
+        public Action Show { get; set; }
+        public Action ShowDialog { get; set; }
+        public Action Hide { get; set; }
+        public Action Close { get; set; }
     }
 
     public static class AdditionalCollectionFuncs

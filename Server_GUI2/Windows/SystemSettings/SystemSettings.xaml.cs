@@ -24,7 +24,7 @@ namespace Server_GUI2.Windows.SystemSettings
             SystemSettingsVM vm = (SystemSettingsVM)DataContext;
 
             // Windowを閉じるときには一度ポートを必ず閉鎖する（MainWindowに戻ってRunするとは限らないから）
-            if (vm.PortStatus.Value.StatusEnum.Value == PortStatus.Status.Open)
+            if (vm.PortStatus.Value.StatusEnum == PortStatus.Status.Open)
             {
                 PortSetting portSetting = new PortSetting(vm);
                 _ = portSetting.DeletePort();

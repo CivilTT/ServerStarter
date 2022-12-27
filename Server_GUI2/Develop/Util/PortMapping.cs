@@ -111,10 +111,8 @@ namespace Server_GUI2.Develop.Util
         }
     }
 
-    public class PortStatus : INotifyPropertyChanged
+    public class PortStatus
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public enum Status
         {
             Open,
@@ -124,14 +122,14 @@ namespace Server_GUI2.Develop.Util
             Ready
         }
 
-        public BindingValue<Status> StatusEnum { get; private set; }
+        public Status StatusEnum { get; private set; }
 
         public string DisplayStatus
         {
             get
             {
                 string display;
-                switch (StatusEnum.Value)
+                switch (StatusEnum)
                 {
                     case Status.Open:
                         display = "Opened !";
@@ -162,7 +160,7 @@ namespace Server_GUI2.Develop.Util
         public PortStatus(int portNumber, Status status)
         {
             PortNumber = portNumber;
-            StatusEnum = new BindingValue<Status>(status, () => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DisplayStatus")));
+            StatusEnum = status;
         }
     }
 }
