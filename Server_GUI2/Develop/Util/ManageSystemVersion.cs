@@ -104,7 +104,10 @@ namespace Server_GUI2.Develop.Util
             {
                 using (var writer = new StreamWriter(tmpBat.FullName, false))
                 {
-                    writer.WriteLine(versionUP);
+                    foreach (var line in versionUP)
+                    {
+                        writer.WriteLine(line);
+                    }
                 }
             }
             catch (Exception ex)
