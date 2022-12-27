@@ -65,6 +65,7 @@
                 <Setter Property="VerticalAlignment" Value="Top"/>
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Padding" Value="10 3"/>
                 <Setter Property="BorderBrush" Value="Gray"/>
                 <Setter Property="Background" Value="#EBEBEB"/>
                 <Setter Property="Foreground" Value="Black"/>
