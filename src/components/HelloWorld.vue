@@ -20,7 +20,7 @@ const props = defineProps<Props>();
             <span class="title_text">- start Minecraft server only <strong class="title_text_strong">ONE</strong> click ! -</span>
           </h1>
           <div class="row justify-center download_button">
-            <q-btn color="white" text-color="primary" size="lg" padding="md" href="https://github.com/CivilTT/ServerStarter/releases/download/v1.2.0.0/Setup_ServerStarter.msi">
+            <q-btn color="white" text-color="primary" size="lg" padding="md" href="https://github.com/CivilTT/ServerStarter/releases/latest/download/Setup_ServerStarter.msi">
               <span class="download">
                 Download ver 1.2.0.0
               </span>

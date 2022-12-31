@@ -51,6 +51,11 @@ export default {
       select:ref(null),
       menuList:[
         {
+          to:"/intro",
+          caption:"Introduction",
+          label:"はじめに"
+        },
+        {
           to:"/main",
           caption:"main",
           label:"メイン画面"
