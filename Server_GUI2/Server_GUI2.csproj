@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -91,24 +91,102 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Windows\ViewModels\MainWindowViewModel.cs" />
-    <Page Include="Windows\dp_Settings.xaml">
+    <Compile Include="Develop\Server\NetWork.cs" />
+    <Compile Include="Develop\Server\Server\BannedPlayers.cs" />
+    <Compile Include="Develop\Server\Server\BannedIps.cs" />
+    <Compile Include="Develop\Server\Server\ServerSettings.cs" />
+    <Compile Include="Develop\Server\Server\Player.cs" />
+    <Compile Include="Develop\Server\Server\Ops.cs" />
+    <Compile Include="Develop\Server\ServerSterterPath.cs" />
+    <Compile Include="Develop\Server\World\WorldCollection.cs" />
+    <Compile Include="Develop\Server\World\World.cs" />
+    <Compile Include="Develop\Server\World\IWorldBase.cs" />
+    <Compile Include="Develop\Server\World\RemoteWorld.cs" />
+    <Compile Include="Develop\Util\DirectoryInfoExt.cs" />
+    <Compile Include="Develop\Util\Java.cs" />
+    <Compile Include="Develop\Util\ManageSystemVersion.cs" />
+    <Compile Include="Properties\Resources.ja.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.ja.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MessageBox\Back\MessageBox.xaml.cs">
+      <DependentUpon>MessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MessageBox\Back\MessageBoxCommand.cs" />
+    <Compile Include="Windows\MessageBox\Back\MessageBoxVM.cs" />
+    <Compile Include="Windows\MessageBox\CustomMessageBox.cs" />
+    <Compile Include="Windows\ProgressBar\ProgressBar.cs" />
+    <Compile Include="Windows\ProgressBar\Back\ProgressBarDialog.xaml.cs">
+      <DependentUpon>ProgressBarDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ProgressBar\Back\ProgressBarDialogVM.cs" />
+    <Compile Include="Windows\WelcomeWindow\WelcomeWindowCommand.cs" />
+    <Compile Include="Windows\WelcomeWindow\WelcomeWindowVM.cs" />
+    <Content Include="Develop\Server\World\WorldWrapper.txt" />
+    <Compile Include="Develop\Server\ServerType.cs" />
+    <Compile Include="Develop\Server\World\LocalWorld.cs" />
+    <Compile Include="Develop\Server\StartServer.cs" />
+    <Compile Include="Develop\Server\World\Util\Plugin.cs" />
+    <Compile Include="Develop\Server\World\Storage\Storage.cs" />
+    <Compile Include="Develop\Server\World\Util\CustomMap.cs" />
+    <Compile Include="Develop\Server\World\Storage\GitOperate.cs" />
+    <Compile Include="Develop\Server\World\Util\Datapack.cs" />
+    <Compile Include="Develop\UserSettings.cs" />
+    <Compile Include="Develop\Util\RemovableCollection.cs" />
+    <Compile Include="Develop\Util\Either.cs" />
+    <Compile Include="Develop\Util\LogExt.cs" />
+    <Compile Include="Develop\Util\PortMapping.cs" />
+    <Compile Include="Develop\Util\ReadOnlyProperty.cs" />
+    <Compile Include="Develop\Util\JsonItemConverter.cs" />
+    <Compile Include="Develop\Util\Git.cs" />
+    <Compile Include="Develop\Util\ReadContents.cs" />
+    <Compile Include="Planning\World\World.cs" />
+    <Compile Include="Windows\GeneralCB.cs" />
+    <Compile Include="Windows\GeneralCommand.cs" />
+    <Compile Include="Windows\WelcomeWindow\WelcomeWindow.xaml.cs">
+      <DependentUpon>WelcomeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WorldSettings\WorldSettingsCommand.cs" />
+    <Compile Include="Windows\ShowNewWindow.cs" />
+    <Compile Include="Windows\SystemSettings\SystemSettingsCommand.cs" />
+    <Compile Include="Windows\SystemSettings\SystemSettingsVM.cs" />
+    <Compile Include="Windows\MainWindow\MainWindowCommand.cs" />
+    <Compile Include="Windows\GeneralVM.cs" />
+    <Compile Include="Windows\MainWindow\MainWindowVM.cs" />
+    <Resource Include="Resources\help.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MessageBox\Error%28B%29.png" />
+    <Resource Include="Resources\MessageBox\Error%28W%29.png" />
+    <Resource Include="Resources\MessageBox\Warning%28B%29.png" />
+    <Resource Include="Resources\MessageBox\Warning%28W%29.png" />
+    <Resource Include="Resources\MessageBox\Question%28B%29.png" />
+    <Resource Include="Resources\MessageBox\Question%28W%29.png" />
+    <Resource Include="Resources\MessageBox\Infomation%28B%29.png" />
+    <Resource Include="Resources\MessageBox\Infomation%28W%29.png" />
+    <None Include="Planning\storages.json" />
+    <Resource Include="Resources\MainWindow\setting.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\SystemSettings\pen.svg" />
+    <Page Include="Windows\MessageBox\Back\MessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\haihu.xaml">
+    <Page Include="Windows\ProgressBar\Back\ProgressBarDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Infomation.xaml">
+    <Page Include="Windows\WelcomeWindow\WelcomeWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SystemSettings\SystemSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\info_builder.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\MainWindow.xaml">
+    <Page Include="Windows\MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -117,52 +195,34 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\Data_list.cs" />
-    <Compile Include="Core\Server\Vanila.cs" />
-    <Compile Include="Windows\dp_Settings.xaml.cs">
-      <DependentUpon>dp_Settings.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Develop\Server\Server\Server.cs" />
+    <Compile Include="Develop\Server\Server\ServerProperty.cs" />
+    <Compile Include="Develop\SetUp.cs" />
+    <Compile Include="Develop\Server\Version\Version.cs" />
+    <Compile Include="Develop\Server\Version\VersionFactory.cs" />
     <Compile Include="Core\Exception.cs" />
     <Compile Include="Core\Functions.cs" />
     <Compile Include="Core\Git.cs" />
-    <Compile Include="Windows\haihu.xaml.cs">
-      <DependentUpon>haihu.xaml</DependentUpon>
+    <Compile Include="Windows\SystemSettings\SystemSettings.xaml.cs">
+      <DependentUpon>SystemSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Infomation.xaml.cs">
-      <DependentUpon>Infomation.xaml</DependentUpon>
+    <Compile Include="Windows\WorldSettings\WorldSettings.xaml.cs">
+      <DependentUpon>WorldSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Progress_Bar.xaml.cs">
-      <DependentUpon>Progress_Bar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Spigot.xaml.cs">
-      <DependentUpon>Spigot.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Windows\WorldSettings\WorldSettingsVM.cs" />
     <Compile Include="Core\Spigot_Function.cs" />
     <Compile Include="Core\UPnP.cs" />
     <Compile Include="Core\ReadContents.cs" />
-    <Compile Include="Windows\info_builder.xaml.cs">
-      <DependentUpon>info_builder.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\More_Settings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\Progress_Bar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\Spigot.xaml">
+    <Page Include="Windows\WorldSettings\WorldSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Windows\More_Settings.xaml.cs">
-      <DependentUpon>More_Settings.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -176,8 +236,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\Resources.ja.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.ja.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="Fonts\minecraft_font.ttf" />
@@ -186,6 +250,8 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Planning\remotes.json" />
+    <None Include="Planning\worldstate.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -193,13 +259,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\MainWindow\main_image.png" />
-    <Resource Include="Resources\MainWindow\trash-alt-regular.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <EmbeddedResource Include="Resources\Guide.txt" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="NATUPNPLib">
@@ -228,9 +287,6 @@
     <PackageReference Include="AngleSharp">
       <Version>0.16.0</Version>
     </PackageReference>
-    <PackageReference Include="AutoClosingMessageBox">
-      <Version>1.0.0.2</Version>
-    </PackageReference>
     <PackageReference Include="Costura.Fody">
       <Version>5.6.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -251,6 +307,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Open.Nat">
+      <Version>2.1.0</Version>
+    </PackageReference>
     <PackageReference Include="SharpVectors">
       <Version>1.7.6</Version>
     </PackageReference>
@@ -266,21 +325,32 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\f279e8b23161526e8ba6ae11abbf85b3_xxo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\SettingMenu\folder.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Resources\Guide.txt" />
+    <Resource Include="Resources\MainWindow\main_image.png" />
+    <Resource Include="Resources\MainWindow\trash-alt-regular.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\main_image2.png" />
+    <Resource Include="Resources\main_image3.png" />
+    <Resource Include="Resources\main_image4.png" />
+    <Resource Include="Resources\main_image5.png" />
     <Resource Include="Resources\SettingMenu\database.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Resources\SettingMenu\folder.png" />
+    <Resource Include="Resources\SettingMenu\global-network.png" />
     <Resource Include="Resources\SettingMenu\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\SettingMenu\settings.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\SettingMenu\global-network.png" />
+    <None Include="Planning\Paln.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SystemSettings\copy-solid.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SystemSettings\github-brands.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SystemSettings\twitter-brands.svg" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

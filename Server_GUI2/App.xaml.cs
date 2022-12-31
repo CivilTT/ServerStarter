@@ -1,11 +1,16 @@
 ﻿using log4net;
+using Server_GUI2.Windows.MessageBox;
+using Server_GUI2.Windows.MessageBox.Back;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace Server_GUI2
 {
@@ -14,6 +19,7 @@ namespace Server_GUI2
     /// </summary>
     public partial class App : System.Windows.Application
     {
+        // TODO: Kernel32.dllはWindows 11から廃止されたため，コマンド実行の出力を表示できない
         [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
         public static extern bool AttachConsole(int processId);
 
@@ -26,25 +32,37 @@ namespace Server_GUI2
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
+            // 手動でShutdown()が呼ばれるまでアプリを終了しない（MainWindowの前にWelcomeWindowを呼んだ際に、アプリが落ちてしまう現象を回避）
+            Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            SetUnhandledDetecter();
+
+            // システムの初期設定（処理）を行う
+            SetUp.Initialize();
+
+            // TODO: 実装の整理
             // base.OnStartup(e);
-            bool reset_data = false;
-            bool save_data = false;
+            //bool reset_data = false;
+            //bool save_data = false;
             bool delete_data = false;
 
             if (e.Args.Length == 0)
             {
                 // GUIを立ち上げる
-                MainWindow main = new MainWindow(true);
+                SetUp.InitProgressBar.AddMessage("Opening Main Window", moving:true);
+                MainWindow main = new MainWindow();
                 main.Show();
+                main.Activate();
                 return;
             }
-
+            SetUp.InitProgressBar.Close();
 
             AttachConsole(-1);
             Console.WriteLine();
             Args = e.Args;
             if (e.Args[0] == "/?")
             {
+                Console.Out.WriteLine(Server_GUI2.Properties.Resources.Guide);
                 Console.Write(Server_GUI2.Properties.Resources.Guide);
                 Finish();
             }
@@ -79,13 +97,13 @@ namespace Server_GUI2
                             Server_GUI2.Properties.Settings.Default.Save();
                             continue;
                         case "-r":
-                            reset_data = true;
+                            //reset_data = true;
                             continue;
                         case "/save":
-                            save_data = true;
+                            //save_data = true;
                             continue;
                         case "/delete":
-                            delete_data = true;
+                            //delete_data = true;
                             continue;
                         default:
                             Console.WriteLine($"'{key}' is unknown paramater.");
@@ -95,26 +113,62 @@ namespace Server_GUI2
                     }
                 }
 
-                Data_delete(delete_data);
+                //Data_delete(delete_data);
                 
-                MainWindow main = new MainWindow(false);
-                More_Settings m_settings = new More_Settings();
-                main.Reset_world = reset_data;
-                main.Save_world = save_data;
+                //MainWindow main = new MainWindow();
+                ////More_Settings m_settings = new More_Settings();
+                ////main.Reset_world = reset_data;
+                ////main.Save_world = save_data;
 
-                bool result = Check_valid(main);
+                //bool result = Check_valid(main);
 
-                if (result)
+                //if (result)
+                //{
+                //    //main.Get_op = op;
+                //    Change_properties();
+                //    //m_settings.Read_properties();
+                //    //main.Start(false);
+                //}
+
+                //Console.Write(end_str);
+                //Finish();
+            }
+        }
+
+        private void SetUnhandledDetecter()
+        {
+            void ShowWindow(object exception, EventArgs eventArgs)
+            {
+                var separator = new[] { Environment.NewLine };
+                string error_message = exception.ToString();
+                logger.Error("Unhandled error has occurred");
+                logger.Error(error_message);
+
+                if (typeof(ServerStarterException) != exception.GetType())
                 {
-                    main.Get_op = op;
-                    Change_properties();
-                    m_settings.Read_properties();
-                    main.Start(false);
+                    var result = CustomMessageBox.Show(
+                        $"{Server_GUI2.Properties.Resources.App_Unhandle}\n{error_message.Split(separator, StringSplitOptions.None)[0]}",
+                        new string[2] { Server_GUI2.Properties.Resources.LogFolder, Server_GUI2.Properties.Resources.Close },
+                        Image.Error,
+                        new LinkMessage(Server_GUI2.Properties.Resources.Manage_Vup2, "https://github.com/CivilTT/ServerStarter/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D")
+                        );
+
+                    logger.Info("Show unhandled error message window");
+                    if (result == 0)
+                        Process.Start(Path.GetFullPath(@".\log\"));
                 }
 
-                Console.Write(end_str);
-                Finish();
+                Environment.Exit(0);
             }
+            // 想定外のエラーを処理する
+            DispatcherUnhandledException += (sender, eventargs) => ShowWindow(eventargs.Exception, eventargs);
+            TaskScheduler.UnobservedTaskException += (sender, eventargs) => ShowWindow(eventargs.Exception.InnerException, eventargs);
+            AppDomain.CurrentDomain.UnhandledException += (sender, eventargs) => ShowWindow(eventargs.ExceptionObject, eventargs);
+        }
+
+        private void AnalizeArgs(string[] args)
+        {
+
         }
 
         private bool Check_valid(MainWindow main)
