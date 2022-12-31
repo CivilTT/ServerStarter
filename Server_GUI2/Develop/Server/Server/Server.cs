@@ -110,6 +110,7 @@ namespace Server_GUI2
 
         private static void Run()
         {
+            // TODO: サーバーの割り当てメモリをGUIから変更できるようにする
             var argumnets = $"-Xmx5G -Xms5G{Log4jArgument} -jar {JarName} nogui{WorldContainerArgument}";
             logger.Info("<Run>");
             using (Process process = new Process())
