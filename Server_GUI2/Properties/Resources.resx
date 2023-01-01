@@ -187,6 +187,9 @@ Please check the error and if you suspect a system bug, please contact us at Git
   <data name="Main_InputName" xml:space="preserve">
     <value>Input_Name</value>
   </data>
+  <data name="Main_InvalidName" xml:space="preserve">
+    <value>You can use only capital and small letters</value>
+  </data>
   <data name="Main_Op" xml:space="preserve">
     <value>has op rights in this version's server</value>
   </data>

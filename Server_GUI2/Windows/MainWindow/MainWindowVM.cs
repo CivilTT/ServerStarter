@@ -235,7 +235,7 @@ namespace Server_GUI2.Windows.MainWindow
             {
                 case "NewWorldName":
                     if (!ValidWorldName)
-                        return "You can use only capital and small letters";
+                        return Properties.Resources.Main_InvalidName;
                     break;
                 default:
                     break;

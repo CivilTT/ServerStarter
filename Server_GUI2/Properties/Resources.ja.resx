@@ -180,6 +180,9 @@
   <data name="Main_DeleteMsg4" xml:space="preserve">
     <value>」は完全に削除され、復元ができなくなります。</value>
   </data>
+  <data name="Main_InvalidName" xml:space="preserve">
+    <value>ワールド名は小文字英数字でなければなりません</value>
+  </data>
   <data name="Main_Op" xml:space="preserve">
     <value>はこのバージョンにおいてOp権限を持つ</value>
   </data>

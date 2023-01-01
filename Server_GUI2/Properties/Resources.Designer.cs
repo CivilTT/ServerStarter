@@ -272,6 +272,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   You can use only capital and small letters に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Main_InvalidName {
+            get {
+                return ResourceManager.GetString("Main_InvalidName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   has op rights in this version&apos;s server に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Main_Op {
