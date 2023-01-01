@@ -138,6 +138,21 @@
   <data name="Close" xml:space="preserve">
     <value>閉じる</value>
   </data>
+  <data name="CloseBar_Push" xml:space="preserve">
+    <value>ワールドデータをリモートにアップロード</value>
+  </data>
+  <data name="CloseBar_Title" xml:space="preserve">
+    <value>サーバーの終了処理</value>
+  </data>
+  <data name="CloseBar_Unlock" xml:space="preserve">
+    <value>リモートへのアップロード制限を解除</value>
+  </data>
+  <data name="CloseBar_UpdateLink" xml:space="preserve">
+    <value>リモートとローカルの同期関係情報を更新</value>
+  </data>
+  <data name="CloseBar_UpdateState" xml:space="preserve">
+    <value>リモートの状態記録を更新</value>
+  </data>
   <data name="Contents_error" xml:space="preserve">
     <value>【エラー要因】</value>
   </data>
@@ -152,6 +167,36 @@
   </data>
   <data name="Import" xml:space="preserve">
     <value>インポート</value>
+  </data>
+  <data name="InitBar_beforeVup" xml:space="preserve">
+    <value>システムのバージョンを確認</value>
+  </data>
+  <data name="InitBar_ChangeSpe" xml:space="preserve">
+    <value>ファイル構成の確認</value>
+  </data>
+  <data name="InitBar_Close" xml:space="preserve">
+    <value>メイン画面の準備が完了</value>
+  </data>
+  <data name="InitBar_MCVer" xml:space="preserve">
+    <value>メイン画面にMinecraftのサーバーバージョンを登録</value>
+  </data>
+  <data name="InitBar_MCWor" xml:space="preserve">
+    <value>メイン画面にMinecraftのワールドを登録</value>
+  </data>
+  <data name="InitBar_OpenMain" xml:space="preserve">
+    <value>メイン画面を構成中</value>
+  </data>
+  <data name="InitBar_SetCommands" xml:space="preserve">
+    <value>メイン画面にボタンの挙動を登録</value>
+  </data>
+  <data name="InitBar_Title" xml:space="preserve">
+    <value>ServerStarterを起動中</value>
+  </data>
+  <data name="InitBar_UserSetting" xml:space="preserve">
+    <value>ユーザー設定の読み込み</value>
+  </data>
+  <data name="InitBar_VersionUp" xml:space="preserve">
+    <value>システムが最新であることを確認</value>
   </data>
   <data name="Java_Ver1" xml:space="preserve">
     <value>このバージョンのサーバーを起動するためには Java </value>
@@ -261,6 +306,15 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   </data>
   <data name="Plugin" xml:space="preserve">
     <value>プラグインファイル</value>
+  </data>
+  <data name="ProgressBar_MoreInfo" xml:space="preserve">
+    <value>詳細情報</value>
+  </data>
+  <data name="ProgressBra_Count1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ProgressBra_Count2" xml:space="preserve">
+    <value>完了</value>
   </data>
   <data name="P_AllowFlight" xml:space="preserve">
     <value>5秒以上の飛行を許可</value>
@@ -418,6 +472,63 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   </data>
   <data name="Reset" xml:space="preserve">
     <value>リセット</value>
+  </data>
+  <data name="RunBar_CheckEula" xml:space="preserve">
+    <value>Eulaへの同意を確認</value>
+  </data>
+  <data name="RunBar_CheckVer" xml:space="preserve">
+    <value>リモートのサーバーバージョンを確認</value>
+  </data>
+  <data name="RunBar_Convert" xml:space="preserve">
+    <value>ワールドのサーバーバージョンを変更</value>
+  </data>
+  <data name="RunBar_CustomMap" xml:space="preserve">
+    <value>配布ワールドの導入</value>
+  </data>
+  <data name="RunBar_Datapack" xml:space="preserve">
+    <value>データパックの導入</value>
+  </data>
+  <data name="RunBar_Download" xml:space="preserve">
+    <value>サーバーデータのダウンロード</value>
+  </data>
+  <data name="RunBar_Eula" xml:space="preserve">
+    <value>サーバーの試験起動とEulaの生成</value>
+  </data>
+  <data name="RunBar_Fetch" xml:space="preserve">
+    <value>リモートの状態を取得</value>
+  </data>
+  <data name="RunBar_Java" xml:space="preserve">
+    <value>サーバーで使用するJavaのバージョンは</value>
+  </data>
+  <data name="RunBar_Plugin" xml:space="preserve">
+    <value>プラグインの導入</value>
+  </data>
+  <data name="RunBar_ReadyVer" xml:space="preserve">
+    <value>サーバーデータの準備中</value>
+  </data>
+  <data name="RunBar_Record" xml:space="preserve">
+    <value>起動したワールドとバージョンの情報を記録</value>
+  </data>
+  <data name="RunBar_RemoteDatapack" xml:space="preserve">
+    <value>リモートからデータパックを導入</value>
+  </data>
+  <data name="RunBar_RemotePlugin" xml:space="preserve">
+    <value>リモートからプラグインを導入</value>
+  </data>
+  <data name="RunBar_RunJava" xml:space="preserve">
+    <value>起動するJavaを取得</value>
+  </data>
+  <data name="RunBar_SaveSettings" xml:space="preserve">
+    <value>設定の保存</value>
+  </data>
+  <data name="RunBar_Title1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RunBar_Title2" xml:space="preserve">
+    <value> を起動中</value>
+  </data>
+  <data name="RunBar_World" xml:space="preserve">
+    <value>ワールド設定の読み込み</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>保存</value>

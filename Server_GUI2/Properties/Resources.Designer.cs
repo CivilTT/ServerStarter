@@ -118,6 +118,51 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Push the world data to the remote repository に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string CloseBar_Push {
+            get {
+                return ResourceManager.GetString("CloseBar_Push", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Closing server に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string CloseBar_Title {
+            get {
+                return ResourceManager.GetString("CloseBar_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Unlock the remote world&apos;s restricts に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string CloseBar_Unlock {
+            get {
+                return ResourceManager.GetString("CloseBar_Unlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Update the synchoronized relation&apos;s data between Remote and Local に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string CloseBar_UpdateLink {
+            get {
+                return ResourceManager.GetString("CloseBar_UpdateLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Update the world state data in the remote repository に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string CloseBar_UpdateState {
+            get {
+                return ResourceManager.GetString("CloseBar_UpdateState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   【What happened?】 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Contents_error {
@@ -178,6 +223,96 @@ namespace Server_GUI2.Properties {
         public static string Import {
             get {
                 return ResourceManager.GetString("Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Check the versionUP about this system, Server Starter に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InitBar_beforeVup {
+            get {
+                return ResourceManager.GetString("InitBar_beforeVup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Checked ChangeSpecification に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InitBar_ChangeSpe {
+            get {
+                return ResourceManager.GetString("InitBar_ChangeSpe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Finished to ready Main Window に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InitBar_Close {
+            get {
+                return ResourceManager.GetString("InitBar_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Set Minecraft Versions in Main Window に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InitBar_MCVer {
+            get {
+                return ResourceManager.GetString("InitBar_MCVer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Set Minecraft Worlds in Main Window に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InitBar_MCWor {
+            get {
+                return ResourceManager.GetString("InitBar_MCWor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Opening Main Window に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InitBar_OpenMain {
+            get {
+                return ResourceManager.GetString("InitBar_OpenMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Set General Commands in Main Window に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InitBar_SetCommands {
+            get {
+                return ResourceManager.GetString("InitBar_SetCommands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ready for Server Starter に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InitBar_Title {
+            get {
+                return ResourceManager.GetString("InitBar_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Checked first User Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InitBar_UserSetting {
+            get {
+                return ResourceManager.GetString("InitBar_UserSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Checked the versionUP about this system, Server Starter に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InitBar_VersionUp {
+            get {
+                return ResourceManager.GetString("InitBar_VersionUp", resourceCulture);
             }
         }
         
@@ -940,6 +1075,33 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   More Infomation に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ProgressBar_MoreInfo {
+            get {
+                return ResourceManager.GetString("ProgressBar_MoreInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Finished に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ProgressBra_Count1 {
+            get {
+                return ResourceManager.GetString("ProgressBra_Count1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ProgressBra_Count2 {
+            get {
+                return ResourceManager.GetString("ProgressBra_Count2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Regist に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Regist {
@@ -963,6 +1125,177 @@ namespace Server_GUI2.Properties {
         public static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Checked to agree eula に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_CheckEula {
+            get {
+                return ResourceManager.GetString("RunBar_CheckEula", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Checking the remote data&apos;s Minecraft version に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_CheckVer {
+            get {
+                return ResourceManager.GetString("RunBar_CheckVer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Converted the world version に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_Convert {
+            get {
+                return ResourceManager.GetString("RunBar_Convert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Importing the Custom Map に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_CustomMap {
+            get {
+                return ResourceManager.GetString("RunBar_CustomMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Importing Datapacks に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_Datapack {
+            get {
+                return ResourceManager.GetString("RunBar_Datapack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Downloading new Server data に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_Download {
+            get {
+                return ResourceManager.GetString("RunBar_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Temporary Run Server to Generate Eula に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_Eula {
+            get {
+                return ResourceManager.GetString("RunBar_Eula", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Fetching the remote data に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_Fetch {
+            get {
+                return ResourceManager.GetString("RunBar_Fetch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Decide to using に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_Java {
+            get {
+                return ResourceManager.GetString("RunBar_Java", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Importing Plugins に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_Plugin {
+            get {
+                return ResourceManager.GetString("RunBar_Plugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ready Version Data に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_ReadyVer {
+            get {
+                return ResourceManager.GetString("RunBar_ReadyVer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recorded Latest Version and World に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_Record {
+            get {
+                return ResourceManager.GetString("RunBar_Record", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Importing datapacks from the remote data に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_RemoteDatapack {
+            get {
+                return ResourceManager.GetString("RunBar_RemoteDatapack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Importing plugins from the remote data に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_RemotePlugin {
+            get {
+                return ResourceManager.GetString("RunBar_RemotePlugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Get Best Java Version に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_RunJava {
+            get {
+                return ResourceManager.GetString("RunBar_RunJava", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Saving setting data に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_SaveSettings {
+            get {
+                return ResourceManager.GetString("RunBar_SaveSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Start  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_Title1 {
+            get {
+                return ResourceManager.GetString("RunBar_Title1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_Title2 {
+            get {
+                return ResourceManager.GetString("RunBar_Title2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Set World Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RunBar_World {
+            get {
+                return ResourceManager.GetString("RunBar_World", resourceCulture);
             }
         }
         

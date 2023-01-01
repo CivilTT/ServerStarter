@@ -47,16 +47,16 @@ namespace Server_GUI2
             CheckConnetNet();
 
             // ProgressBarを表示する
-            InitProgressBar = new ProgressBar("Ready for Server Starter", 9);
-            InitProgressBar.AddMessage("Checked first User Settings");
+            InitProgressBar = new ProgressBar(Properties.Resources.InitBar_Title, 9);
+            InitProgressBar.AddMessage(Properties.Resources.InitBar_UserSetting);
 
             // 仕様変更が必要な場合に実装
             ChangeSpecification(lastVersion);
-            InitProgressBar.AddMessage("Checked ChangeSpecification");
+            InitProgressBar.AddMessage(Properties.Resources.InitBar_ChangeSpe);
 
             // SystemVersionの確認＆バージョンアップ
             ManageSystemVersion.CheckVersion();
-            InitProgressBar.AddMessage("Checked the versionUP about this system, Server Starter");
+            InitProgressBar.AddMessage(Properties.Resources.InitBar_VersionUp);
         }
 
         /// <summary>

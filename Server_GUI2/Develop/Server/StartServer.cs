@@ -32,7 +32,7 @@ namespace Server_GUI2
             World = world;
 
             // ProgressBarの表示
-            RunProgressBar = new Windows.ProgressBar.ProgressBar($"Starting {version.Name} / {world.Name}", 12);
+            RunProgressBar = new Windows.ProgressBar.ProgressBar($"{Properties.Resources.RunBar_Title1}{version.Name} / {world.Name}{Properties.Resources.RunBar_Title2}", 12);
             //RunProgressBar.AddMessage("これは追加の例");
             //RunProgressBar.AddMessage("これは追加の例", addCount:false); -> これはメッセージを追加するが数字を進めない
             //RunProgressBar.AddCount(); -> これはメッセージを追加せずに数字だけ進める
@@ -40,14 +40,14 @@ namespace Server_GUI2
 
             // 最新の起動記録を保存
             RecordLatestVerWor();
-            RunProgressBar.AddMessage("Recorded Latest Version and World");
+            RunProgressBar.AddMessage(Properties.Resources.RunBar_Record);
 
             // versionの導入
             var ( path, jarName, javaVersion) = Version.ReadyVersion();
             logger.Info($"best java version ({javaVersion})");
             var javaPath = Java.GetBestJavaPath(javaVersion);
             logger.Info($"use java path ({javaPath})");
-            RunProgressBar.AddMessage($"Decide to using java {javaVersion}");
+            RunProgressBar.AddMessage($"{Properties.Resources.RunBar_Java} java {javaVersion}");
 
             // Port Mapping
             var portMapper = Task.Run(AddPort);

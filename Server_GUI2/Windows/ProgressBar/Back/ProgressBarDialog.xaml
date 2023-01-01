@@ -21,7 +21,7 @@
         <ui:ProgressBar Minimum="{Binding MinValue}" Maximum="{Binding MaxValue}" Value="{Binding ProgressValue.Value}" IsIndeterminate="{Binding Moving.Value}" Height="20" Margin="15,70,15,0" VerticalAlignment="Top" Background="#EBEBEB"/>
         <TextBlock Text="{Binding SubMessage.Value}" Visibility="{Binding Moving.Value, Converter={StaticResource BoolToVisible}}" Margin="15,95,15,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="300" FontSize="18" TextTrimming="CharacterEllipsis"/>
         <TextBlock Text="{Binding DisplayProgressValue}" Margin="15,95,15,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="25" Width="150" FontSize="18" TextAlignment="Right"/>
-        <Expander Margin="15,130,15,10" Header="More infomation" FontSize="15" VerticalAlignment="Top" ExpandDirection="Down">
+        <Expander Margin="15,130,15,10" Header="{Binding Resources.ProgressBar_MoreInfo}" FontSize="15" VerticalAlignment="Top" ExpandDirection="Down">
             <Border BorderBrush="DimGray" BorderThickness="1" Margin="5 5 0 0">
                 <ScrollViewer Height="100" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Top" FontSize="16" BorderBrush="#FFABADB3">
                     <TextBlock Text="{Binding Messages.Value}" FontSize="16"/>

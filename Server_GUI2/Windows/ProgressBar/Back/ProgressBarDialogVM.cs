@@ -12,10 +12,12 @@ namespace Server_GUI2.Windows.ProgressBar.Back
 {
     class ProgressBarDialogVM : GeneralVM
     {
+        public Properties.Resources Resources => new Properties.Resources();
+
         public string Title { get; private set; }
         public BindingValue<int> ProgressValue { get; private set; }
         public BindingValue<string> SubMessage { get; private set; }
-        public string DisplayProgressValue => $"Finished {ProgressValue.Value}%";
+        public string DisplayProgressValue => $"{Properties.Resources.ProgressBra_Count1} {ProgressValue.Value}% {Properties.Resources.ProgressBra_Count2}";
         public int MaxValue { get; private set; }
         public int MinValue { get; private set; }
         public BindingValue<bool> Moving { get; private set; }

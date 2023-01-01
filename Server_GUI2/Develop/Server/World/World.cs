@@ -431,19 +431,19 @@ namespace Server_GUI2.Develop.Server.World
             LocalWorld.Path.World.Plugins.Delete(true);
             version.Path.Plugins.Directory.CopyTo(LocalWorld.Path.World.Plugins.FullName);
 
-            StartServer.CloseProgressBar.AddMessage("push world");
+            StartServer.CloseProgressBar.AddMessage(Properties.Resources.CloseBar_Push);
             // Push
             try
             {
                 RemoteWorld.FromLocal(LocalWorld);
 
-                StartServer.CloseProgressBar.AddMessage("unlock remote world");
+                StartServer.CloseProgressBar.AddMessage(Properties.Resources.CloseBar_Unlock);
 
                 // リモートのワールドデータを更新し、ロック解除
                 RemoteWorld.Using = false;
                 RemoteWorld.EnableWorld(version, version.Type);
 
-                StartServer.CloseProgressBar.AddMessage("update world state",true);
+                StartServer.CloseProgressBar.AddMessage(Properties.Resources.CloseBar_UpdateState, true);
 
                 // リモートの内容をローカルと同期
                 RemoteWorld.Settings = LocalWorld.Settings;
@@ -462,7 +462,7 @@ namespace Server_GUI2.Develop.Server.World
             // #stateブランチを更新
             RemoteWorld.UpdateWorldState();
 
-            StartServer.CloseProgressBar.AddMessage("update link data");
+            StartServer.CloseProgressBar.AddMessage(Properties.Resources.CloseBar_UpdateLink);
 
             // LinkJsonを更新
             WorldCollection.Instance.SaveLinkJson();
@@ -494,7 +494,7 @@ namespace Server_GUI2.Develop.Server.World
             RemoteWorld.Using = true;
             RemoteWorld.UpdateWorldState();
 
-            StartServer.RunProgressBar.AddMessage("fetching remote world data",true);
+            StartServer.RunProgressBar.AddMessage(Properties.Resources.RunBar_Fetch, true);
 
             // Pull
             RemoteWorld.ToLocal(LocalWorld);
@@ -502,16 +502,16 @@ namespace Server_GUI2.Develop.Server.World
             // ローカルのワールドの設定情報を更新
             LocalWorld.Settings = Settings;
 
-            StartServer.RunProgressBar.AddMessage("checking version");
+            StartServer.RunProgressBar.AddMessage(Properties.Resources.RunBar_CheckVer);
             // カスタムマップの導入＋バージョン変更
             TryImportCustomMapAndChangeVersion(LocalWorld, reGenerate, version);
 
-            StartServer.RunProgressBar.AddMessage("importing datapacks");
+            StartServer.RunProgressBar.AddMessage(Properties.Resources.RunBar_RemoteDatapack);
 
             // データパックの導入
             Datapacks.Evaluate(LocalWorld.Path.World.Datapccks.FullName);
 
-            StartServer.RunProgressBar.AddMessage("importing plugins");
+            StartServer.RunProgressBar.AddMessage(Properties.Resources.RunBar_RemotePlugin);
             // プラグインの導入
             Plugins.Evaluate(LocalWorld.Path.World.Plugins);
             version.Path.Plugins.Delete(true);
@@ -527,16 +527,16 @@ namespace Server_GUI2.Develop.Server.World
             version.Path.Plugins.Directory.CopyTo(LocalWorld.Path.World.Plugins.FullName);
 
 
-            StartServer.CloseProgressBar.AddMessage("push world");
+            StartServer.CloseProgressBar.AddMessage(Properties.Resources.CloseBar_Push);
             // Push
             try
             {
-                StartServer.CloseProgressBar.AddMessage("unlock remote world");
+                StartServer.CloseProgressBar.AddMessage(Properties.Resources.CloseBar_Unlock);
                 RemoteWorld.FromLocal(LocalWorld);
 
                 // リモートのワールドデータを更新し、ロック解除
                 RemoteWorld.Using = false;
-                StartServer.CloseProgressBar.AddMessage("update world state",true);
+                StartServer.CloseProgressBar.AddMessage(Properties.Resources.CloseBar_UpdateState, true);
                 RemoteWorld.UpdateWorldState();
 
                 // 起動中フラグを回収
@@ -549,7 +549,7 @@ namespace Server_GUI2.Develop.Server.World
             // #stateブランチを更新
             RemoteWorld.UpdateWorldState();
 
-            StartServer.CloseProgressBar.AddMessage("update link data");
+            StartServer.CloseProgressBar.AddMessage(Properties.Resources.CloseBar_UpdateLink);
             // LinkJsonを更新
             WorldCollection.Instance.SaveLinkJson();
         }
@@ -575,7 +575,7 @@ namespace Server_GUI2.Develop.Server.World
                 FileSystem.DeleteDirectory(local.Path.World.FullName, DeleteDirectoryOption.DeleteAllContents);
 
             }
-            StartServer.RunProgressBar.AddMessage("Checked Custom Map.");
+            StartServer.RunProgressBar.AddMessage(Properties.Resources.RunBar_CustomMap);
 
             //versionのダウングレードを確認して警告表示
             if (version < Version)
@@ -606,7 +606,7 @@ namespace Server_GUI2.Develop.Server.World
             }
 
 
-            StartServer.RunProgressBar.AddMessage("Converted World Version.");
+            StartServer.RunProgressBar.AddMessage(Properties.Resources.RunBar_Convert);
 
             logger.Info("</TryImportCustomMapAndChangeVersion>");
         }

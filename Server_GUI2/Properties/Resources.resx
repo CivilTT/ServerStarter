@@ -138,6 +138,21 @@ Please check the error and if you suspect a system bug, please contact us at Git
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="CloseBar_Push" xml:space="preserve">
+    <value>Push the world data to the remote repository</value>
+  </data>
+  <data name="CloseBar_Title" xml:space="preserve">
+    <value>Closing server</value>
+  </data>
+  <data name="CloseBar_Unlock" xml:space="preserve">
+    <value>Unlock the remote world's restricts</value>
+  </data>
+  <data name="CloseBar_UpdateLink" xml:space="preserve">
+    <value>Update the synchoronized relation's data between Remote and Local</value>
+  </data>
+  <data name="CloseBar_UpdateState" xml:space="preserve">
+    <value>Update the world state data in the remote repository</value>
+  </data>
   <data name="Contents_error" xml:space="preserve">
     <value>【What happened?】</value>
   </data>
@@ -156,6 +171,36 @@ Please check the error and if you suspect a system bug, please contact us at Git
   </data>
   <data name="Import" xml:space="preserve">
     <value>Import</value>
+  </data>
+  <data name="InitBar_beforeVup" xml:space="preserve">
+    <value>Check the versionUP about this system, Server Starter</value>
+  </data>
+  <data name="InitBar_ChangeSpe" xml:space="preserve">
+    <value>Checked ChangeSpecification</value>
+  </data>
+  <data name="InitBar_Close" xml:space="preserve">
+    <value>Finished to ready Main Window</value>
+  </data>
+  <data name="InitBar_MCVer" xml:space="preserve">
+    <value>Set Minecraft Versions in Main Window</value>
+  </data>
+  <data name="InitBar_MCWor" xml:space="preserve">
+    <value>Set Minecraft Worlds in Main Window</value>
+  </data>
+  <data name="InitBar_OpenMain" xml:space="preserve">
+    <value>Opening Main Window</value>
+  </data>
+  <data name="InitBar_SetCommands" xml:space="preserve">
+    <value>Set General Commands in Main Window</value>
+  </data>
+  <data name="InitBar_Title" xml:space="preserve">
+    <value>Ready for Server Starter</value>
+  </data>
+  <data name="InitBar_UserSetting" xml:space="preserve">
+    <value>Checked first User Settings</value>
+  </data>
+  <data name="InitBar_VersionUp" xml:space="preserve">
+    <value>Checked the versionUP about this system, Server Starter</value>
   </data>
   <data name="Java_Ver1" xml:space="preserve">
     <value>Java </value>
@@ -268,6 +313,15 @@ Please give me your log file through Git Issues.</value>
   </data>
   <data name="Plugin" xml:space="preserve">
     <value>Plugin File</value>
+  </data>
+  <data name="ProgressBar_MoreInfo" xml:space="preserve">
+    <value>More Infomation</value>
+  </data>
+  <data name="ProgressBra_Count1" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="ProgressBra_Count2" xml:space="preserve">
+    <value />
   </data>
   <data name="P_AllowFlight" xml:space="preserve">
     <value>Allowed to fly for more than 5 seconds</value>
@@ -425,6 +479,63 @@ However, this is not valid for players with OP.</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
+  </data>
+  <data name="RunBar_CheckEula" xml:space="preserve">
+    <value>Checked to agree eula</value>
+  </data>
+  <data name="RunBar_CheckVer" xml:space="preserve">
+    <value>Checking the remote data's Minecraft version</value>
+  </data>
+  <data name="RunBar_Convert" xml:space="preserve">
+    <value>Converted the world version</value>
+  </data>
+  <data name="RunBar_CustomMap" xml:space="preserve">
+    <value>Importing the Custom Map</value>
+  </data>
+  <data name="RunBar_Datapack" xml:space="preserve">
+    <value>Importing Datapacks</value>
+  </data>
+  <data name="RunBar_Download" xml:space="preserve">
+    <value>Downloading new Server data</value>
+  </data>
+  <data name="RunBar_Eula" xml:space="preserve">
+    <value>Temporary Run Server to Generate Eula</value>
+  </data>
+  <data name="RunBar_Fetch" xml:space="preserve">
+    <value>Fetching the remote data</value>
+  </data>
+  <data name="RunBar_Java" xml:space="preserve">
+    <value>Decide to using</value>
+  </data>
+  <data name="RunBar_Plugin" xml:space="preserve">
+    <value>Importing Plugins</value>
+  </data>
+  <data name="RunBar_ReadyVer" xml:space="preserve">
+    <value>Ready Version Data</value>
+  </data>
+  <data name="RunBar_Record" xml:space="preserve">
+    <value>Recorded Latest Version and World</value>
+  </data>
+  <data name="RunBar_RemoteDatapack" xml:space="preserve">
+    <value>Importing datapacks from the remote data</value>
+  </data>
+  <data name="RunBar_RemotePlugin" xml:space="preserve">
+    <value>Importing plugins from the remote data</value>
+  </data>
+  <data name="RunBar_RunJava" xml:space="preserve">
+    <value>Get Best Java Version</value>
+  </data>
+  <data name="RunBar_SaveSettings" xml:space="preserve">
+    <value>Saving setting data</value>
+  </data>
+  <data name="RunBar_Title1" xml:space="preserve">
+    <value>Start </value>
+  </data>
+  <data name="RunBar_Title2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RunBar_World" xml:space="preserve">
+    <value>Set World Settings</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>

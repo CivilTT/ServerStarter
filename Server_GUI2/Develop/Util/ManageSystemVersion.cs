@@ -22,7 +22,7 @@ namespace Server_GUI2.Develop.Util
 
         public static void CheckVersion()
         {
-            SetUp.InitProgressBar.AddMessage("Check the versionUP about this system, Server Starter");
+            SetUp.InitProgressBar.AddMessage(Properties.Resources.InitBar_beforeVup);
 
             GitReleaseJson result = ReadJsonFromGit();
 

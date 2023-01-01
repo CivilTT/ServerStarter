@@ -36,7 +36,7 @@ namespace Server_GUI2
         public static void StartWithoutEula(VersionPath path, string javaPath, string jarName, string log4jArgument, ServerProperty property, string worldContainerArgument = "")
         {
             logger.Info("<StartWithoutEula>");
-            StartServer.RunProgressBar.AddMessage("Temporary Run Server to Generate Eula.");
+            StartServer.RunProgressBar.AddMessage(Properties.Resources.RunBar_Eula);
 
             logger.Info("save server.properties");
             path.ServerProperties.WriteAllText(property.ExportProperty());
@@ -62,7 +62,7 @@ namespace Server_GUI2
             logger.Info("<Start>");
 
 
-            StartServer.RunProgressBar.AddMessage("Reflected World Settings.");
+            StartServer.RunProgressBar.AddMessage(Properties.Resources.RunBar_World);
 
             Path = path;
             JavaPath = javaPath;
@@ -85,7 +85,7 @@ namespace Server_GUI2
             WorldCollection.Instance.SaveLinkJson();
             
             var eulaResult = CheckEula();
-            StartServer.RunProgressBar.AddMessage("Checked Eula.");
+            StartServer.RunProgressBar.AddMessage(Properties.Resources.RunBar_CheckEula);
 
             if (eulaResult)
             {
@@ -103,7 +103,7 @@ namespace Server_GUI2
             }
 
             // TODO: フラグ数の更新
-            StartServer.CloseProgressBar = new Windows.ProgressBar.ProgressBar($"Closing server", 4);
+            StartServer.CloseProgressBar = new Windows.ProgressBar.ProgressBar(Properties.Resources.CloseBar_Title, 4);
 
             logger.Info("</Start>");
         }

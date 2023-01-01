@@ -134,7 +134,7 @@ namespace Server_GUI2.Windows.MainWindow
             RunCommand = new RunCommand(this);
             DeleteCommand = new DeleteCommand(this);
             CloseCommand = new CloseCommand(this);
-            SetUp.InitProgressBar.AddMessage("Set General Commands in Main Window");
+            SetUp.InitProgressBar.AddMessage(Properties.Resources.InitBar_SetCommands);
 
 
             // Version
@@ -147,14 +147,14 @@ namespace Server_GUI2.Windows.MainWindow
             NewVersionIndex = new BindingValue<Version>(NewVersions.FirstOrDefault(), () => OnPropertyChanged("NewVersionIndex"));
             ShowAll = new BindingValue<bool>(false, () => UpdateNewVersions());
             ShowSpigot = new BindingValue<bool>(false, () => UpdateNewVersions());
-            SetUp.InitProgressBar.AddMessage("Set Minecraft Versions in Main Window");
+            SetUp.InitProgressBar.AddMessage(Properties.Resources.InitBar_MCVer);
 
 
             // World
             Worlds = new ObservableCollection<IWorld>(AllWorlds);
             WorldIndex = new BindingValue<IWorld>(SetFirstWor(), () => OnPropertyChanged(new string[4] { "WorldIndex", "ShowNewWorld", "CanRun", "OwnerHasOp" }));
             NewWorldName = Properties.Resources.Main_InputName;
-            SetUp.InitProgressBar.AddMessage("Set Minecraft Worlds in Main Window");
+            SetUp.InitProgressBar.AddMessage(Properties.Resources.InitBar_MCWor);
 
 
             // Setting
@@ -165,7 +165,7 @@ namespace Server_GUI2.Windows.MainWindow
             // Window
             SettingCommand = new SettingCommand(this, ssWindow);
             WorldSettingCommand = new WorldSettingCommand(this, wsWindow);
-            SetUp.InitProgressBar.AddMessage("Finished to ready Main Window");
+            SetUp.InitProgressBar.AddMessage(Properties.Resources.InitBar_Close);
             SetUp.InitProgressBar.Close();
         }
 
