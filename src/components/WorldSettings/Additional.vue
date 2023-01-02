@@ -4,13 +4,15 @@
 <template>
   <q-card flat style="max-width: 100%;">
     <q-card-section>
-      <h1>データパックやPlugin，配布ワールドの導入を行います</h1>
+      <h1>追加要素</h1>
+      <p>
+        データパックやPlugin，配布ワールド（Custom Map）の導入を行います
+      </p>
       <h2>導入方法</h2>
       <ol>
-        <li>導入するファイルの種類（フォルダ or Zip）を選択する</li>
-        <li>インポートボタンを押す</li>
-        <li>導入する ファイル or Zip を選択する</li>
-        <li>選択した項目が表に表示された状態で保存ボタンを押す</li>
+        <li>「データパックの種類」で導入するファイルの種類（フォルダ or Zip）を選択する</li>
+        <li>インポートを押し，導入する ファイル or Zip を選択する</li>
+        <li>導入済み一覧に追記されたことを確認する</li>
       </ol>
 
       <h2>注記</h2>
@@ -18,12 +20,7 @@
         <li>配布ワールドについては新規ワールド（【new World】）のみ導入可能になります</li>
         <li>プラグインについてはSpigotサーバーのみ導入可能になります</li>
       </ul>
-      <!-- <img alt="Quasar logo" src="../assets/logo.svg" style="width: 200px; height: 200px">
-      <p>{{a}}</p>
-      <p>{{value}}</p> -->
+      <q-img src="@/assets/WorldSettings/Additional.png"  :width="`min(100%,500px)`"/>
     </q-card-section>
   </q-card>
 </template>
-
-<style>
-</style>

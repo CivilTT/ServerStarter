@@ -66,6 +66,9 @@
         </q-step>
         <q-step :name="2" title="2. 起動" :done="step_run > 2">
           <p>
+            Javaのインストールを求められた場合は，ページ一番下の「注意点」を参照
+          </p>
+          <p>
             初回起動時はいくつかのウィンドウが出た後にEulaへの同意を求められる
           </p>
           <p>
@@ -97,10 +100,10 @@
         </q-step>
         <q-step :name="2" title="2. マルチプレイの設定" :done="step_participant > 2">
           <p>
-            起動するとシングルプレイの下にあるマルチプレイを選択し，左下の「サーバーを追加」を押す
+            起動するとシングルプレイの下にあるマルチプレイを選択し，右下の「サーバーを追加」を押す
           </p>
           <p>
-            名前を分かりやすいサーバー名にし，アドレスには「localhost」と記入
+            分かりやすいサーバー名を設定し，サーバーアドレスには「localhost」と記入
           </p>
           <p>
             「完了」を押せばワールドに入ることができる
@@ -141,9 +144,6 @@ var step_participant = ref(1)
 </script>
 
 <style scoped>
-b {
-  font-size: 1.4rem;
-}
 .warning {
   font-size: 1.2rem;
   font-weight: 600;
