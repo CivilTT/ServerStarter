@@ -18,7 +18,32 @@
           <p>
             インストーラーを起動してServerStarterをPCにインストール
           </p>
+
+          <div class="q-pb-md">
+            <q-expansion-item label="ダウンロード時に警告が出た場合" header-class="bg-orange-4">
+              <q-card flat class="bg-orange-2">
+                <q-card-section>
+                  <p>
+                    ServerStarterは個人開発のため，ダウンロード数が十分な数になるまで相当の時間がかかります<br/>
+                    一部のブラウザでは十分なダウンロード数のないソフトに対して警告を出すため，ソフトをダウンロードできないことがあります
+                  </p>
+                  <p>
+                    Edgeでは画像のように右側の「・・・」から保存を押し，次の画面で「保持する」をクリックすることで，インストーラーのダウンロードが始まります
+                  </p>
+                  <p>
+                    なお，ServerStarterのソースコードは
+                    <a href="https://github.com/CivilTT/ServerStarter" target="_blank" class="a">GitHub</a>
+                    にて公開しておりますので，そちらもご確認いただけますと幸いです
+                  </p>
+                  <q-img src="@/assets/Introduction/Edge_Save1.png" width="min(400px,100%)"/>
+                  <q-img src="@/assets/Introduction/Edge_Save2.png" width="min(400px,100%)"/>
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+          </div>
+          
           <q-btn size="20px" color="primary" label="インストーラーのダウンロード" href="https://github.com/CivilTT/ServerStarter/releases/latest/download/Setup_ServerStarter.msi"/>
+          
           <q-stepper-navigation>
             <q-btn @click="step_intro = 2" color="secondary" label="next" />
           </q-stepper-navigation>
