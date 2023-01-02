@@ -47,8 +47,11 @@
 
     サーバーの起動にはJDK（Java Development Kit）が必要です
 
+    ![java-install](./Images/JavaInstall.png)
+
 
 - サーバー終了時は必ず`stop`を黒いコンソール画面の中で入力し，**ウィンドウの「×ボタン」を押さないで下さい**
+
 
 
 # 搭載機能（概要）
@@ -136,10 +139,24 @@ Do you want to more infomation about ServerStarter? Let's go to [official site](
     ![server](./Images/Init/Server.png)
 
 
+# Attentions
+- This system doesn't support a silenct Java installation.
+
+    If Java is not installed on your PC, you will get the following notice.
+
+    You need JDK (Java Development Kit) to start a server.
+
+    ![java-install](./Images/JavaInstall_en.png)
+
+
+- When you finish to play Minecraft, you have to type `stop` in server's black window.
+
+    **DO NOT PUSH the "CLOSE BUTTON" in a window.**
+
 
 # Features
 
-Check [official site](https://civiltt.github.io/ServerStarter/) when you want to know about more details of ServerStarter!
+Look at our [official site](https://civiltt.github.io/ServerStarter/) when you want to know about more details of ServerStarter!
 
 ### World's Version-up (In this figure, update the world 1.16.1 to 1.19.3)
 
@@ -149,11 +166,11 @@ Check [official site](https://civiltt.github.io/ServerStarter/) when you want to
 
 ![Spigot](./Images/Spigot_en.png)
 
-### Setting for each worlds (In "Additional", you can install datapacks and cutom maps)
+### Setting for each worlds (In "Additionals" tab, you can install datapacks and cutom maps)
 
 ![world-settings](./Images/WorldSettings_en.png)
 
-### ShareWorld (World synchronization function when multiple people start a server)
+### ShareWorld (World synchronization system when multiple people start a server)
 
 ![ShareWorld](./Images/ShareWorld_en.png)
 
@@ -163,7 +180,7 @@ Check [official site](https://civiltt.github.io/ServerStarter/) when you want to
 
 
 
-# Terms of Service
+# Terms of Use
 
 It is included with the installer and you must agree to it when you start using it.
 
