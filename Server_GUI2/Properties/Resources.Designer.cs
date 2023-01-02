@@ -579,6 +579,24 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   You must set integer number に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MemorySizeError {
+            get {
+                return ResourceManager.GetString("MemorySizeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Value of Assigned memory size when a server starting に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MemorySizeToolTip {
+            get {
+                return ResourceManager.GetString("MemorySizeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Network に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Network {

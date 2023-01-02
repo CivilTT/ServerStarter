@@ -289,6 +289,12 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   <data name="Manage_Vup4" xml:space="preserve">
     <value>後ほど行う...</value>
   </data>
+  <data name="MemorySizeError" xml:space="preserve">
+    <value>容量は数字で指定する必要があります</value>
+  </data>
+  <data name="MemorySizeToolTip" xml:space="preserve">
+    <value>サーバーを起動する際に割り当てるメモリの容量</value>
+  </data>
   <data name="Network" xml:space="preserve">
     <value>ネットワーク</value>
   </data>

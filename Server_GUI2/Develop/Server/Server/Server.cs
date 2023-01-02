@@ -110,8 +110,8 @@ namespace Server_GUI2
 
         private static void Run()
         {
-            // TODO: サーバーの割り当てメモリをGUIから変更できるようにする
-            var argumnets = $"-Xmx5G -Xms5G{Log4jArgument} -jar {JarName} nogui{WorldContainerArgument}";
+            string memorySize = UserSettings.Instance.userSettings.ServerMemorySize.ToString();
+            var argumnets = $"-Xmx{memorySize} -Xms{memorySize}{Log4jArgument} -jar {JarName} nogui{WorldContainerArgument}";
             logger.Info("<Run>");
             using (Process process = new Process())
             {

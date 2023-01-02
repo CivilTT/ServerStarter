@@ -55,6 +55,20 @@ namespace Server_GUI2.Windows.SystemSettings
         public BindingValue<ServerProperty> PropertyIndexs { get; private set; }
         public ObservableCollection<BoolOption> BoolOptions { get; private set; }
         public ObservableCollection<TextOption> TextOptions { get; private set; }
+        // Server Memory
+        private string _memorySize;
+        public string MemorySize
+        {
+            get => _memorySize;
+            set
+            {
+                _memorySize = value;
+                OnPropertyChanged("CanSave");
+            }
+        }
+        public BindingValue<string> MemoryUnitIndex { get; private set; }
+        public string[] MemoryUnitList => ServerMemorySize.UnitList.Select(x => $"{x}B").ToArray();
+        public bool ValidMemorySize => int.TryParse(MemorySize, out int memory) && memory > 0;
 
         // Players
         public BindingValue<int> PlayersTabIndex { get; private set; }
@@ -92,7 +106,7 @@ namespace Server_GUI2.Windows.SystemSettings
             set
             {
                 _portNumber = value;
-                OnPropertyChanged("CanAddition_Po");
+                OnPropertyChanged(new string[2]{ "CanAddition_Po", "CanSave" });
             }
         }
         public bool CanWritePortNumber => UsingPortMapping != null && UsingPortMapping.Value;
@@ -131,7 +145,7 @@ namespace Server_GUI2.Windows.SystemSettings
 
 
         // END Process
-        public bool CanSave => !RemoteAdding.Value;
+        public bool CanSave => !RemoteAdding.Value & ValidPortNumber & ValidMemorySize;
         public SaveCommand SaveCommand { get; private set; }
         public bool Saved = false;
 
@@ -168,6 +182,8 @@ namespace Server_GUI2.Windows.SystemSettings
             PropertyIndexs = new BindingValue<ServerProperty>(new ServerProperty(defaultProperties), () => OnPropertyChanged("PropertyIndexs"));
             BoolOptions = BoolOption.GetBoolCollection(PropertyIndexs.Value.BoolOption, new string[2] { "hardcore", "white-list" });
             TextOptions = TextOption.GetTextCollection(PropertyIndexs.Value.StringOption, new string[4] { "difficulty", "gamemode", "level-type", "level-name" });
+            MemorySize = UserSettings.Instance.userSettings.ServerMemorySize.Size.ToString();
+            MemoryUnitIndex = new BindingValue<string>($"{UserSettings.Instance.userSettings.ServerMemorySize.Unit}B", () => OnPropertyChanged("MemoryUnitIndex"));
 
             // Players
             PlayersTabIndex = new BindingValue<int>(0, () => UpdateGroupPlayersAndMembers());
@@ -254,6 +270,10 @@ namespace Server_GUI2.Windows.SystemSettings
                     if (!ValidPortNumber)
                         return Properties.Resources.SystemSettings_CheckPort;
                     break;
+                case "MemorySize":
+                    if (!ValidMemorySize)
+                        return Properties.Resources.MemorySizeError;
+                    break;
                 default:
                     break;
             }
@@ -271,6 +291,7 @@ namespace Server_GUI2.Windows.SystemSettings
             UserSettings.Instance.userSettings.Language = Languages[LanguageSelected.Value];
             PropertyIndexs.Value = BoolOption.SetBoolOption(BoolOptions, PropertyIndexs.Value);
             PropertyIndexs.Value = TextOption.SetStringOption(TextOptions, PropertyIndexs.Value);
+            UserSettings.Instance.userSettings.ServerMemorySize = new ServerMemorySize(int.Parse(MemorySize), MemoryUnitIndex.Value[0].ToString());
             UserSettings.Instance.userSettings.DefaultProperties = new ServerProperty(PropertyIndexs.Value);
             UserSettings.Instance.userSettings.Players = PlayerList.ToList();
             UserSettings.Instance.userSettings.PlayerGroups = new List<PlayerGroup>(GroupList);

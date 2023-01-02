@@ -296,6 +296,12 @@ Please give me your log file through Git Issues.</value>
   <data name="Manage_Vup4" xml:space="preserve">
     <value>Update later...</value>
   </data>
+  <data name="MemorySizeError" xml:space="preserve">
+    <value>You must set integer number</value>
+  </data>
+  <data name="MemorySizeToolTip" xml:space="preserve">
+    <value>Value of Assigned memory size when a server starting</value>
+  </data>
   <data name="Network" xml:space="preserve">
     <value>Network</value>
   </data>

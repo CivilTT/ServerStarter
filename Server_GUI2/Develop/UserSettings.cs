@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -80,6 +81,9 @@ namespace Server_GUI2
         // }
         public LatestRun LatestRun;
 
+        [JsonProperty("ServerMemorySize")]
+        public ServerMemorySize ServerMemorySize = new ServerMemorySize(5, "G");
+
         [JsonProperty("ShutdownPC")]
         public bool ShutdownPC;
 
@@ -119,6 +123,28 @@ namespace Server_GUI2
 
         // JsonSerialize用コンストラクタ
         public LatestRun() { }
+    }
+
+    public class ServerMemorySize
+    {
+        public static string[] UnitList = new string[3] { "K", "M", "G" };
+
+        [JsonProperty("Size")]
+        public int Size;
+
+        [JsonProperty("Unit")]
+        public string Unit;
+
+        public ServerMemorySize(int size, string unit)
+        {
+            Size = size;
+            Unit = unit;
+        }
+
+        public override string ToString()
+        {
+            return $"{Size}{Unit}";
+        }
     }
 
     public class PlayerGroup : IEquatable<PlayerGroup>, IComparable<PlayerGroup>

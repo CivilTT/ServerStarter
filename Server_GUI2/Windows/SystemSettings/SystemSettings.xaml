@@ -227,6 +227,13 @@
             <Setter Property="Width" Value="145"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
         </Style>
+        <Style TargetType="TextBox" x:Key="MemoryBox" BasedOn="{StaticResource BoxSource}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
         <!--//Players//-->
         <Style TargetType="ComboBox" x:Key="PlayerCombo" BasedOn="{StaticResource ComboSource}">
@@ -470,13 +477,18 @@
                                 <TextBlock Text="gamemode" ToolTip="{Binding Resources.P_Gamemode}" Style="{StaticResource PropertyIndex}"/>
                                 <TextBlock Text="white-list" ToolTip="{Binding Resources.P_WhiteList}" Style="{StaticResource PropertyIndex}"/>
                                 <TextBlock Text="level-type" ToolTip="{Binding Resources.P_LevelType}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="memory-size" ToolTip="{Binding Resources.MemorySizeToolTip}" Style="{StaticResource PropertyIndex}"/>
                             </StackPanel>
-                            <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
                                 <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,62,0,0" Style="{StaticResource PropertyCombo}"/>
                                 <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Hardcore}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
                                 <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Gamemode}" ItemsSource="{Binding GamemodeCombo}" Style="{StaticResource PropertyCombo}"/>
                                 <ComboBox SelectedItem="{Binding PropertyIndexs.Value.WhiteList}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
                                 <ComboBox SelectedItem="{Binding PropertyIndexs.Value.LevelType}" ItemsSource="{Binding TypeCombo}" Style="{StaticResource PropertyCombo}"/>
+                                <StackPanel Orientation="Horizontal" Margin="10 20">
+                                    <TextBox Text="{Binding MemorySize, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="70" HorizontalAlignment="Left" Style="{StaticResource MemoryBox}"/>
+                                    <ComboBox SelectedItem="{Binding MemoryUnitIndex.Value}" ItemsSource="{Binding MemoryUnitList}" Margin="5 0" Width="70" Style="{StaticResource ComboSource}"/>
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
