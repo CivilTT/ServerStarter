@@ -7,7 +7,8 @@
         設定が終わったところで<b>「保存」</b>を押すと諸設定が反映されます
       </p>
       <p>
-        ※ShareWorldについては左側Menuの「ShareWorld」タブをご覧ください
+        ※ShareWorldについては左側Menuの「ShareWorld」タブをご覧ください<br/>
+        ※ネットワークについては左側Menuの「自動ポート開放」タブをご覧ください
       </p>
       <q-img src="@/assets/SystemSettings/SystemSettings.png" width="min(800px,100%)" class="img"/>
     </q-card-section>
