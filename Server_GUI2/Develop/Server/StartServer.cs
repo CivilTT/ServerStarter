@@ -25,7 +25,7 @@ namespace Server_GUI2
         /// <summary>
         /// Runボタンが押された時に呼ばれる処理
         /// </summary>
-        public static async void Run(Version version, bool reGenerate, IWorld world)
+        public static void Run(Version version, bool reGenerate, IWorld world)
         {
             logger.Info($"<Run>");
             Version = version;
