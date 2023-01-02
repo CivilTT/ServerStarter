@@ -134,7 +134,7 @@ Do you want to more infomation about ServerStarter? Let's go to [official site](
 
     ![eula](./Images/Init/Eula_en.png)
 
-1. A few minites later, it completed the building server. Let's enjoy your Minecraft!
+1. A few minutes later, it completed the building server. Let's enjoy your Minecraft!
 
     ![server](./Images/Init/Server.png)
 
