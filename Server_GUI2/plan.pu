@@ -25,8 +25,8 @@ class SystemEnvironment{
   string java
 }
 
-class Information{
-  Information()
+class UserSettings{
+  UserSettings()
   void ReadFile()
   void CreateFile()
   void ShowInputGui()
@@ -43,7 +43,7 @@ interface Window{
 class SetUp{
   void ShowProgressBar()
   Updatechecker UpdateCheck()
-  Information InformationCheck()
+  UserSettings UsersettingsCheck()
   SystemEnvironment SystemCheck()
   VersionFactory VersionFactory()
   WorldFactory WorldFactory()
@@ -57,7 +57,7 @@ class SettingsWindow{
 }
 
 class MainWindow{
-  Information information
+  UserSettings usersettings
   SystemEnvironment environment
   VersionFactory versionFactory
   WorldFactory worldFactory
@@ -65,7 +65,7 @@ class MainWindow{
 
   void LoadVersionAndWorld()
 
-  void SetInformation(Information info)
+  void SetUsersettings(UserSettings info)
 
   void Start(Version version,World world)
 
@@ -105,7 +105,7 @@ class ReactiveCombobox<T>{
 class VersionFactory{
   {classifier} VersionFactory Instance
   VersionFactory()
-  LoadFromCurrentDirectory() # Servers�f�B���N�g�����瑶�݂���o�[�W������ǂݎ��
+  LoadImported() # Servers�f�B���N�g�����瑶�݂���o�[�W������ǂݎ��
   LoadAllVanillaVersions()
   LoadAllSpigotVersions()
   Version Create()

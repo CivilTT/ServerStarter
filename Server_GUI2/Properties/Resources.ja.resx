@@ -1,0 +1,912 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>追加</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>適用</value>
+  </data>
+  <data name="App_Unhandle" xml:space="preserve">
+    <value>予期せぬエラーが発生しました。
+エラー内容を確認し、システムバグが疑われる場合はGitのIssueにてお問い合わせください。
+
+【エラー要因】</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>チェック</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="CloseBar_Push" xml:space="preserve">
+    <value>ワールドデータをリモートにアップロード</value>
+  </data>
+  <data name="CloseBar_Title" xml:space="preserve">
+    <value>サーバーの終了処理</value>
+  </data>
+  <data name="CloseBar_Unlock" xml:space="preserve">
+    <value>リモートへのアップロード制限を解除</value>
+  </data>
+  <data name="CloseBar_UpdateLink" xml:space="preserve">
+    <value>リモートとローカルの同期関係情報を更新</value>
+  </data>
+  <data name="CloseBar_UpdateState" xml:space="preserve">
+    <value>リモートの状態記録を更新</value>
+  </data>
+  <data name="Contents_error" xml:space="preserve">
+    <value>【エラー要因】</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="Folder" xml:space="preserve">
+    <value>フォルダ</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>グループ</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>インポート</value>
+  </data>
+  <data name="InitBar_beforeVup" xml:space="preserve">
+    <value>システムのバージョンを確認</value>
+  </data>
+  <data name="InitBar_ChangeSpe" xml:space="preserve">
+    <value>ファイル構成の確認</value>
+  </data>
+  <data name="InitBar_Close" xml:space="preserve">
+    <value>メイン画面の準備が完了</value>
+  </data>
+  <data name="InitBar_MCVer" xml:space="preserve">
+    <value>メイン画面にMinecraftのサーバーバージョンを登録</value>
+  </data>
+  <data name="InitBar_MCWor" xml:space="preserve">
+    <value>メイン画面にMinecraftのワールドを登録</value>
+  </data>
+  <data name="InitBar_OpenMain" xml:space="preserve">
+    <value>メイン画面を構成中</value>
+  </data>
+  <data name="InitBar_SetCommands" xml:space="preserve">
+    <value>メイン画面にボタンの挙動を登録</value>
+  </data>
+  <data name="InitBar_Title" xml:space="preserve">
+    <value>ServerStarterを起動中</value>
+  </data>
+  <data name="InitBar_UserSetting" xml:space="preserve">
+    <value>ユーザー設定の読み込み</value>
+  </data>
+  <data name="InitBar_VersionUp" xml:space="preserve">
+    <value>システムが最新であることを確認</value>
+  </data>
+  <data name="Java_Ver1" xml:space="preserve">
+    <value>このバージョンのサーバーを起動するためには Java </value>
+  </data>
+  <data name="Java_Ver2" xml:space="preserve">
+    <value> 以上が必要です。</value>
+  </data>
+  <data name="Java_Ver3" xml:space="preserve">
+    <value>以下のリンクよりJavaをインストールしたうえで、再度起動してください。</value>
+  </data>
+  <data name="Java_Ver4" xml:space="preserve">
+    <value>Javaのインストールリンク</value>
+  </data>
+  <data name="Log Folder" xml:space="preserve">
+    <value>ログフォルダ</value>
+  </data>
+  <data name="Main_DeleteMsg1" xml:space="preserve">
+    <value>この</value>
+  </data>
+  <data name="Main_DeleteMsg2" xml:space="preserve">
+    <value>を削除しますか？</value>
+  </data>
+  <data name="Main_DeleteMsg3" xml:space="preserve">
+    <value>「</value>
+  </data>
+  <data name="Main_DeleteMsg4" xml:space="preserve">
+    <value>」は完全に削除され、復元ができなくなります。</value>
+  </data>
+  <data name="Main_InvalidName" xml:space="preserve">
+    <value>ワールド名は小文字英数字でなければなりません</value>
+  </data>
+  <data name="Main_Op" xml:space="preserve">
+    <value>はこのバージョンにおいてOp権限を持つ</value>
+  </data>
+  <data name="Main_ReWorld" xml:space="preserve">
+    <value>ワールドの再生成</value>
+  </data>
+  <data name="Main_Run" xml:space="preserve">
+    <value>実行</value>
+  </data>
+  <data name="Main_SaveWorld" xml:space="preserve">
+    <value>再生成前に元のワールドのバックアップを作成する</value>
+  </data>
+  <data name="Main_ServerVersion" xml:space="preserve">
+    <value>バージョン名</value>
+  </data>
+  <data name="Main_Show" xml:space="preserve">
+    <value>表示バージョン</value>
+  </data>
+  <data name="Main_Shutdown" xml:space="preserve">
+    <value>サーバー終了後にPCをシャットダウンする</value>
+  </data>
+  <data name="Main_Spigot" xml:space="preserve">
+    <value>Spigotを導入</value>
+  </data>
+  <data name="Main_WorldName" xml:space="preserve">
+    <value>ワールド名</value>
+  </data>
+  <data name="Main_WorldSettings" xml:space="preserve">
+    <value>ワールド設定</value>
+  </data>
+  <data name="Manage_FailUpdate" xml:space="preserve">
+    <value>Server Starterの更新ファイルの作成に失敗しました。
+システムの更新をせずに実行します。
+【エラー要因】</value>
+  </data>
+  <data name="Manage_GetLatestMsg" xml:space="preserve">
+    <value>Server Starterの更新データの取得に失敗しました。
+既存のバージョンで起動します。
+【エラー要因】</value>
+  </data>
+  <data name="Manage_Update" xml:space="preserve">
+    <value>Server Starterの更新を開始します。
+Setup_ServerStarter.msiによってシステムを更新するため、次に表示される確認画面で許可してください。</value>
+  </data>
+  <data name="Manage_Vup1" xml:space="preserve">
+    <value>前回起動時にServer Starterのバージョンアップに失敗しました。
+今すぐアップデートを行いますか？
+
+このメッセージが繰り返し表示される場合、自動更新がこのPC環境に対応していない可能性があります。
+GitのReleaseページにServerStarterの最新バージョンが公開されています。
+問題の改善のため，ログファイルをGitのIssuesに投稿していただけると幸いです。</value>
+  </data>
+  <data name="Manage_Vup2" xml:space="preserve">
+    <value>このバグを報告する</value>
+  </data>
+  <data name="Manage_Vup3" xml:space="preserve">
+    <value>今すぐ行う！</value>
+  </data>
+  <data name="Manage_Vup4" xml:space="preserve">
+    <value>後ほど行う...</value>
+  </data>
+  <data name="MemorySizeError" xml:space="preserve">
+    <value>容量は数字で指定する必要があります</value>
+  </data>
+  <data name="MemorySizeToolTip" xml:space="preserve">
+    <value>サーバーを起動する際に割り当てるメモリの容量</value>
+  </data>
+  <data name="Network" xml:space="preserve">
+    <value>ネットワーク</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>いいえ</value>
+  </data>
+  <data name="Others" xml:space="preserve">
+    <value>その他</value>
+  </data>
+  <data name="Player" xml:space="preserve">
+    <value>プレイヤー</value>
+  </data>
+  <data name="Players" xml:space="preserve">
+    <value>プレイヤー</value>
+  </data>
+  <data name="Plugin" xml:space="preserve">
+    <value>プラグインファイル</value>
+  </data>
+  <data name="ProgressBar_MoreInfo" xml:space="preserve">
+    <value>詳細情報</value>
+  </data>
+  <data name="ProgressBra_Count1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ProgressBra_Count2" xml:space="preserve">
+    <value>完了</value>
+  </data>
+  <data name="P_AllowFlight" xml:space="preserve">
+    <value>5秒以上の飛行を許可</value>
+  </data>
+  <data name="P_AllowNether" xml:space="preserve">
+    <value>ネザーに移動可能</value>
+  </data>
+  <data name="P_BroadcastConsoleToOps" xml:space="preserve">
+    <value>サーバーコンソールからコマンドが入力された際に，OP権限を有するプレイヤーに通知する</value>
+  </data>
+  <data name="P_BroadcastRconToOps" xml:space="preserve">
+    <value>リモートコントロールからコマンドが入力された際に，OP権限を有するプレイヤーに通知する</value>
+  </data>
+  <data name="P_Difficult" xml:space="preserve">
+    <value>ゲーム難易度</value>
+  </data>
+  <data name="P_EnableCommandBlock" xml:space="preserve">
+    <value>コマンドブロックの実行を許可</value>
+  </data>
+  <data name="P_EnableJMXmonitoring" xml:space="preserve">
+    <value>JMX（＝Java Management Extensions）の有効化</value>
+  </data>
+  <data name="P_EnableQuery" xml:space="preserve">
+    <value>GameSpy4の接続を許可</value>
+  </data>
+  <data name="P_EnableRcon" xml:space="preserve">
+    <value>リモートコントロールを許可</value>
+  </data>
+  <data name="P_EnableStatus" xml:space="preserve">
+    <value>サーバーの選択画面でオンライン状態の表示をする</value>
+  </data>
+  <data name="P_EnforceWhiteList" xml:space="preserve">
+    <value>ホワイトリストに登録されたプレイヤー以外の参加を拒否する</value>
+  </data>
+  <data name="P_EntityBroadcastRangePercentage" xml:space="preserve">
+    <value>初期値を100とした際にエンティティの描画をどの範囲で行うかを割合で設定する</value>
+  </data>
+  <data name="P_ForceGamemode" xml:space="preserve">
+    <value>ゲームモードをログイン時に強制する</value>
+  </data>
+  <data name="P_FunctionPermissionLevel" xml:space="preserve">
+    <value>コマンドの利用レベル（１～４で指定）</value>
+  </data>
+  <data name="P_Gamemode" xml:space="preserve">
+    <value>ゲーム内でのゲームモード</value>
+  </data>
+  <data name="P_Hardcore" xml:space="preserve">
+    <value>ハードコアに設定する</value>
+  </data>
+  <data name="P_LevelName" xml:space="preserve">
+    <value>ワールドの名前</value>
+  </data>
+  <data name="P_LevelSeed" xml:space="preserve">
+    <value>ワールドのシード値</value>
+  </data>
+  <data name="P_LevelType" xml:space="preserve">
+    <value>ワールドの生成タイプ</value>
+  </data>
+  <data name="P_MaxPlayers" xml:space="preserve">
+    <value>サーバーで同時にプレイ可能な人数</value>
+  </data>
+  <data name="P_MaxtickTime" xml:space="preserve">
+    <value>サーバーが動作不能になってから強制終了するまでの時間をミリ秒で指定</value>
+  </data>
+  <data name="P_MaxWorldSize" xml:space="preserve">
+    <value>ワールドのサイズを半径で指定</value>
+  </data>
+  <data name="P_Motd" xml:space="preserve">
+    <value>サーバーの選択画面で表示される説明文</value>
+  </data>
+  <data name="P_NetworkCompressionThreshold" xml:space="preserve">
+    <value>ネットワークの圧縮度合いを整数で指定</value>
+  </data>
+  <data name="P_OnlineMode" xml:space="preserve">
+    <value>接続してきたプレイヤーが正規のアカウントを持ったプレイヤーか照合する</value>
+  </data>
+  <data name="P_OpPermissionLevel" xml:space="preserve">
+    <value>ゲーム内における管理者権限のレベル（４が最高）</value>
+  </data>
+  <data name="P_Other" xml:space="preserve">
+    <value>このプロパティの説明は登録されていません。</value>
+  </data>
+  <data name="P_PlayerIdleTimeout" xml:space="preserve">
+    <value>指定した秒数（＝整数値）放置するとサーバーからキックされる</value>
+  </data>
+  <data name="P_PreventProxyConnections" xml:space="preserve">
+    <value>Falseの時にVPNやプロキシからの接続を許可する</value>
+  </data>
+  <data name="P_Pvp" xml:space="preserve">
+    <value>プレイヤー同士の戦闘を許可する</value>
+  </data>
+  <data name="P_QueryPort" xml:space="preserve">
+    <value>クエリサーバーで使用するポート番号</value>
+  </data>
+  <data name="P_RateLimit" xml:space="preserve">
+    <value>クライアントが１秒間に送信できる最大パケット量を指定</value>
+  </data>
+  <data name="P_RconPassword" xml:space="preserve">
+    <value>リモートコントロールで使用するパスワード</value>
+  </data>
+  <data name="P_RconPort" xml:space="preserve">
+    <value>リモートコントロールに使用するポート番号</value>
+  </data>
+  <data name="P_RequireResourcePack" xml:space="preserve">
+    <value>サーバーリソースパックの導入を強制し，導入しない場合はワールドに接続できない</value>
+  </data>
+  <data name="P_ResourcePack" xml:space="preserve">
+    <value>サーバーリソースパックのURL</value>
+  </data>
+  <data name="P_ResourcePacksha1" xml:space="preserve">
+    <value>サーバーリソースパックのハッシュ値</value>
+  </data>
+  <data name="P_ServerIP" xml:space="preserve">
+    <value>サーバーを立てるIPアドレス</value>
+  </data>
+  <data name="P_ServerPort" xml:space="preserve">
+    <value>サーバーを公開する際に使用するポート番号</value>
+  </data>
+  <data name="P_SnooperEnabled" xml:space="preserve">
+    <value>サーバーデータのログをMinecraftに送信する</value>
+  </data>
+  <data name="P_SpawnAnimals" xml:space="preserve">
+    <value>動物が出現する</value>
+  </data>
+  <data name="P_SpawnMonsters" xml:space="preserve">
+    <value>敵MOBが出現する</value>
+  </data>
+  <data name="P_SpawnNpcs" xml:space="preserve">
+    <value>村人が出現する</value>
+  </data>
+  <data name="P_SpawnProtection" xml:space="preserve">
+    <value>ブロック・オブジェクトの設置・破壊が禁止される範囲をスポーン中心からの半径で指定（整数値）
+ただし，OP権限を有するプレイヤーには無効</value>
+  </data>
+  <data name="P_SyncChunkWrites" xml:space="preserve">
+    <value>チャンクの書き込みを同期的に処理する</value>
+  </data>
+  <data name="P_TextFilteringConfig" xml:space="preserve">
+    <value>不適切なチャットをフィルタリングできるが，1.18現在では利用できない</value>
+  </data>
+  <data name="P_UseNativeTransport" xml:space="preserve">
+    <value>Linuxで稼働するサーバーのパケット通信の最適化を行う</value>
+  </data>
+  <data name="P_ViewDistance" xml:space="preserve">
+    <value>チャンク単位の描画距離</value>
+  </data>
+  <data name="P_WhiteList" xml:space="preserve">
+    <value>ホワイトリストによるプレイヤーのログイン管理を行う</value>
+  </data>
+  <data name="Regist" xml:space="preserve">
+    <value>登録</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="RunBar_CheckEula" xml:space="preserve">
+    <value>Eulaへの同意を確認</value>
+  </data>
+  <data name="RunBar_CheckVer" xml:space="preserve">
+    <value>リモートのサーバーバージョンを確認</value>
+  </data>
+  <data name="RunBar_Convert" xml:space="preserve">
+    <value>ワールドのサーバーバージョンを変更</value>
+  </data>
+  <data name="RunBar_CustomMap" xml:space="preserve">
+    <value>配布ワールドの導入</value>
+  </data>
+  <data name="RunBar_Datapack" xml:space="preserve">
+    <value>データパックの導入</value>
+  </data>
+  <data name="RunBar_Download" xml:space="preserve">
+    <value>サーバーデータのダウンロード</value>
+  </data>
+  <data name="RunBar_Eula" xml:space="preserve">
+    <value>サーバーの試験起動とEulaの生成</value>
+  </data>
+  <data name="RunBar_Fetch" xml:space="preserve">
+    <value>リモートの状態を取得</value>
+  </data>
+  <data name="RunBar_Java" xml:space="preserve">
+    <value>サーバーで使用するJavaのバージョンは</value>
+  </data>
+  <data name="RunBar_Plugin" xml:space="preserve">
+    <value>プラグインの導入</value>
+  </data>
+  <data name="RunBar_ReadyVer" xml:space="preserve">
+    <value>サーバーデータの準備中</value>
+  </data>
+  <data name="RunBar_Record" xml:space="preserve">
+    <value>起動したワールドとバージョンの情報を記録</value>
+  </data>
+  <data name="RunBar_RemoteDatapack" xml:space="preserve">
+    <value>リモートからデータパックを導入</value>
+  </data>
+  <data name="RunBar_RemotePlugin" xml:space="preserve">
+    <value>リモートからプラグインを導入</value>
+  </data>
+  <data name="RunBar_RunJava" xml:space="preserve">
+    <value>起動するJavaを取得</value>
+  </data>
+  <data name="RunBar_SaveSettings" xml:space="preserve">
+    <value>設定の保存</value>
+  </data>
+  <data name="RunBar_Title1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RunBar_Title2" xml:space="preserve">
+    <value> を起動中</value>
+  </data>
+  <data name="RunBar_World" xml:space="preserve">
+    <value>ワールド設定の読み込み</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>サーバー</value>
+  </data>
+  <data name="Server_EulaMsg1" xml:space="preserve">
+    <value>サーバーの利用規約（Eula）に同意しますか？</value>
+  </data>
+  <data name="Server_EulaMsg2" xml:space="preserve">
+    <value>Eulaの詳細はこちら</value>
+  </data>
+  <data name="Setup_Net" xml:space="preserve">
+    <value>本システムはインターネット環境下のみで動作します。
+インターネットに接続したうえで、再度起動してください。</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="StartServer_PortMsg" xml:space="preserve">
+    <value>自動ポート開放に失敗しました。
+ポートを開放せずにサーバーを起動します。</value>
+  </data>
+  <data name="StartServer_ShutdownMsg" xml:space="preserve">
+    <value>PCを30秒後にシャットダウンしようとしています。
+シャットダウンしない場合は「キャンセル」を押してください。</value>
+  </data>
+  <data name="SystemSettings_Access" xml:space="preserve">
+    <value>マニュアルページ</value>
+  </data>
+  <data name="SystemSettings_AddA" xml:space="preserve">
+    <value>追加</value>
+  </data>
+  <data name="SystemSettings_AddG" xml:space="preserve">
+    <value>グループ追加</value>
+  </data>
+  <data name="SystemSettings_AddP" xml:space="preserve">
+    <value>プレイヤー追加</value>
+  </data>
+  <data name="SystemSettings_AddRemote" xml:space="preserve">
+    <value>リモート設定（Git）の追加</value>
+  </data>
+  <data name="SystemSettings_Aemail" xml:space="preserve">
+    <value>メールアドレス</value>
+  </data>
+  <data name="SystemSettings_AName" xml:space="preserve">
+    <value>アカウント名</value>
+  </data>
+  <data name="SystemSettings_APM" xml:space="preserve">
+    <value>自動ポート開放</value>
+  </data>
+  <data name="SystemSettings_Apply" xml:space="preserve">
+    <value>この設定を規定値として適用する</value>
+  </data>
+  <data name="SystemSettings_Author" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="SystemSettings_CheckPort" xml:space="preserve">
+    <value>指定されたポート番号が不正な値です。</value>
+  </data>
+  <data name="SystemSettings_Cred" xml:space="preserve">
+    <value>資格情報マネージャー（Windows）</value>
+  </data>
+  <data name="SystemSettings_DefaultP" xml:space="preserve">
+    <value>デフォルト設定</value>
+  </data>
+  <data name="SystemSettings_Edit" xml:space="preserve">
+    <value>編集したい行を選択してください</value>
+  </data>
+  <data name="SystemSettings_Exist" xml:space="preserve">
+    <value>このプレイヤー名は存在しません</value>
+  </data>
+  <data name="SystemSettings_GName" xml:space="preserve">
+    <value>グループ名</value>
+  </data>
+  <data name="SystemSettings_GroupL" xml:space="preserve">
+    <value>登録済みグループ一覧</value>
+  </data>
+  <data name="SystemSettings_LAN" xml:space="preserve">
+    <value>IPアドレス (LAN)</value>
+  </data>
+  <data name="SystemSettings_Lang" xml:space="preserve">
+    <value>言語</value>
+  </data>
+  <data name="SystemSettings_Links" xml:space="preserve">
+    <value>リンク集</value>
+  </data>
+  <data name="SystemSettings_Main" xml:space="preserve">
+    <value>メイン設定</value>
+  </data>
+  <data name="SystemSettings_Manual" xml:space="preserve">
+    <value>マニュアル</value>
+  </data>
+  <data name="SystemSettings_MapTest" xml:space="preserve">
+    <value>開放テスト</value>
+  </data>
+  <data name="SystemSettings_Members" xml:space="preserve">
+    <value>グループメンバー</value>
+  </data>
+  <data name="SystemSettings_NewGName" xml:space="preserve">
+    <value>新規グループ名</value>
+  </data>
+  <data name="SystemSettings_NewPName" xml:space="preserve">
+    <value>新規プレイヤー名</value>
+  </data>
+  <data name="SystemSettings_Ope" xml:space="preserve">
+    <value>設定の操作</value>
+  </data>
+  <data name="SystemSettings_Personal" xml:space="preserve">
+    <value>Personal Access Token (GitHub)</value>
+  </data>
+  <data name="SystemSettings_PlayerL" xml:space="preserve">
+    <value>登録済みプレイヤー一覧</value>
+  </data>
+  <data name="SystemSettings_PName" xml:space="preserve">
+    <value>プレイヤー名</value>
+  </data>
+  <data name="SystemSettings_Port" xml:space="preserve">
+    <value>ポートの閉鎖に失敗しました。
+ポートを開放したままにします。</value>
+  </data>
+  <data name="SystemSettings_PortMap" xml:space="preserve">
+    <value>ポート開放</value>
+  </data>
+  <data name="SystemSettings_PortNum" xml:space="preserve">
+    <value>ポート番号</value>
+  </data>
+  <data name="SystemSettings_PortOn1" xml:space="preserve">
+    <value>この機能はルータに対してポート開放を自動的に行います。
+セキュリティソフトに対してはポート開放されないため、必要に応じてご自身で設定してください。
+詳細は設定方法をご参照ください。</value>
+  </data>
+  <data name="SystemSettings_PortOn2" xml:space="preserve">
+    <value>ポート開放の設定方法</value>
+  </data>
+  <data name="SystemSettings_Property" xml:space="preserve">
+    <value>設定項目</value>
+  </data>
+  <data name="SystemSettings_RegisterG" xml:space="preserve">
+    <value>このグループはすでに登録されています</value>
+  </data>
+  <data name="SystemSettings_Registering" xml:space="preserve">
+    <value>リモートの登録中はこの画面を閉じることができません</value>
+  </data>
+  <data name="SystemSettings_RegisterP" xml:space="preserve">
+    <value>このプレイヤーはすでに登録されています</value>
+  </data>
+  <data name="SystemSettings_RemoteFail" xml:space="preserve">
+    <value>は新規のリモートデータとして存在しません</value>
+  </data>
+  <data name="SystemSettings_RemoteL" xml:space="preserve">
+    <value>リモート設定一覧</value>
+  </data>
+  <data name="SystemSettings_Remove" xml:space="preserve">
+    <value>削除したいプレイヤーを選択して下さい</value>
+  </data>
+  <data name="SystemSettings_Repo" xml:space="preserve">
+    <value>レポジトリ名</value>
+  </data>
+  <data name="SystemSettings_Reset" xml:space="preserve">
+    <value>規定値にリセットする</value>
+  </data>
+  <data name="SystemSettings_Status" xml:space="preserve">
+    <value>ネットワーク情報</value>
+  </data>
+  <data name="SystemSettings_SValue" xml:space="preserve">
+    <value>設定値</value>
+  </data>
+  <data name="SystemSettings_SystemInfo" xml:space="preserve">
+    <value>システム情報</value>
+  </data>
+  <data name="SystemSettings_SystemVer" xml:space="preserve">
+    <value>システムバージョン</value>
+  </data>
+  <data name="SystemSettings_Text" xml:space="preserve">
+    <value>テキスト設定</value>
+  </data>
+  <data name="SystemSettings_Title" xml:space="preserve">
+    <value>システム設定</value>
+  </data>
+  <data name="SystemSettings_TrueFalse" xml:space="preserve">
+    <value>True / False 設定</value>
+  </data>
+  <data name="SystemSettings_UseAPM" xml:space="preserve">
+    <value>自動ポート開放機能を使用する</value>
+  </data>
+  <data name="SystemSettings_UserSet" xml:space="preserve">
+    <value>ユーザー設定</value>
+  </data>
+  <data name="SystemSettings_WAN" xml:space="preserve">
+    <value>IPアドレス</value>
+  </data>
+  <data name="SystemSettings_Warn" xml:space="preserve">
+    <value>指定されたポート番号が不正な値です。
+Auto Port Mappingを使用しない設定に変更します。</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>ユーザー名</value>
+  </data>
+  <data name="User_Read" xml:space="preserve">
+    <value>個人設定の読み込みに失敗しました。
+個人設定の再設定を行ってください。</value>
+  </data>
+  <data name="VerFac_Spigot" xml:space="preserve">
+    <value>Spigotのバージョン一覧の取得に失敗しました。
+新しいバージョンのサーバーの導入はできません。</value>
+  </data>
+  <data name="VerFac_Vanilla" xml:space="preserve">
+    <value>Vanilaのバージョン一覧の取得に失敗しました。
+新しいバージョンのサーバーの導入はできません。</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>バージョン</value>
+  </data>
+  <data name="Version_BuildSpigot" xml:space="preserve">
+    <value>Spigotサーバーのビルドに失敗しました</value>
+  </data>
+  <data name="Version_DownloadSpigot" xml:space="preserve">
+    <value>Spigot サーバーのダウンロードに失敗しました。</value>
+  </data>
+  <data name="Version_DownloadVanilla" xml:space="preserve">
+    <value>Vanila サーバーのダウンロードに失敗しました。</value>
+  </data>
+  <data name="Version_notExist" xml:space="preserve">
+    <value>はマルチサーバーが存在しない可能性があります。</value>
+  </data>
+  <data name="Welcome_Access" xml:space="preserve">
+    <value>利用規約の全文はこちら</value>
+  </data>
+  <data name="Welcome_Agree" xml:space="preserve">
+    <value>Server Starterの利用規約に同意します</value>
+  </data>
+  <data name="Welcome_Agreement" xml:space="preserve">
+    <value>2. 利用規約</value>
+  </data>
+  <data name="Welcome_Desc" xml:space="preserve">
+    <value>Minecraftのサーバーを簡単に起動しましょう！</value>
+  </data>
+  <data name="Welcome_NotRegist" xml:space="preserve">
+    <value>プレイヤー名を登録しない</value>
+  </data>
+  <data name="Welcome_Regist" xml:space="preserve">
+    <value>1. ゲーム内でのプレイヤー名を登録する</value>
+  </data>
+  <data name="Welcome_Start" xml:space="preserve">
+    <value>スタート！</value>
+  </data>
+  <data name="Welcome_Title" xml:space="preserve">
+    <value>ようこそ！</value>
+  </data>
+  <data name="Window_CheckSave" xml:space="preserve">
+    <value>設定を保存しますか？</value>
+  </data>
+  <data name="World" xml:space="preserve">
+    <value>ワールド</value>
+  </data>
+  <data name="WorldSettings_Account" xml:space="preserve">
+    <value>アカウント</value>
+  </data>
+  <data name="WorldSettings_Additionals" xml:space="preserve">
+    <value>追加要素</value>
+  </data>
+  <data name="WorldSettings_AddOp" xml:space="preserve">
+    <value>Opプレイヤーを追加</value>
+  </data>
+  <data name="WorldSettings_AddWhite" xml:space="preserve">
+    <value>プレイヤーをホワイトリストに追加</value>
+  </data>
+  <data name="WorldSettings_DataKinds" xml:space="preserve">
+    <value>データパックの種類</value>
+  </data>
+  <data name="WorldSettings_Datapack" xml:space="preserve">
+    <value>これはデータパックとして無効です。</value>
+  </data>
+  <data name="WorldSettings_Delete1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WorldSettings_Delete2" xml:space="preserve">
+    <value>を削除しますか？</value>
+  </data>
+  <data name="WorldSettings_ImportDP" xml:space="preserve">
+    <value>新規データパックをインポート</value>
+  </data>
+  <data name="WorldSettings_Imported" xml:space="preserve">
+    <value>導入済み一覧</value>
+  </data>
+  <data name="WorldSettings_ImportMap" xml:space="preserve">
+    <value>新規配布ワールドをインポート</value>
+  </data>
+  <data name="WorldSettings_ImportP" xml:space="preserve">
+    <value>新規プラグインをインポート</value>
+  </data>
+  <data name="WorldSettings_Map" xml:space="preserve">
+    <value>これは配布マップとして無効です。</value>
+  </data>
+  <data name="WorldSettings_MapName" xml:space="preserve">
+    <value>ワールド名   :   </value>
+  </data>
+  <data name="WorldSettings_Op" xml:space="preserve">
+    <value>Op権限</value>
+  </data>
+  <data name="WorldSettings_OpLev" xml:space="preserve">
+    <value>Opレベル</value>
+  </data>
+  <data name="WorldSettings_Player" xml:space="preserve">
+    <value>以下のプレイヤーがServer Starterに登録されていません。
+登録しますか？
+</value>
+  </data>
+  <data name="WorldSettings_Plugin" xml:space="preserve">
+    <value>これはプラグインとして無効です。</value>
+  </data>
+  <data name="WorldSettings_Properties" xml:space="preserve">
+    <value>プロパティ</value>
+  </data>
+  <data name="WorldSettings_PropOfWor" xml:space="preserve">
+    <value>各ワールドの設定</value>
+  </data>
+  <data name="WorldSettings_Register" xml:space="preserve">
+    <value>選択されたプレイヤーとグループはすでに登録されています</value>
+  </data>
+  <data name="WorldSettings_RemoteWor" xml:space="preserve">
+    <value>リモートワールド</value>
+  </data>
+  <data name="WorldSettings_Remove" xml:space="preserve">
+    <value>削除したい行を選択してください</value>
+  </data>
+  <data name="WorldSettings_Rpack" xml:space="preserve">
+    <value>サーバーリソースパック（URL）</value>
+  </data>
+  <data name="WorldSettings_SaveProp" xml:space="preserve">
+    <value>既定のサーバープロパティとして保存されました</value>
+  </data>
+  <data name="WorldSettings_Select1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WorldSettings_Select2" xml:space="preserve">
+    <value>を選択してください</value>
+  </data>
+  <data name="WorldSettings_SetProp" xml:space="preserve">
+    <value>既定のサーバープロパティを適用しました</value>
+  </data>
+  <data name="WorldSettings_SW" xml:space="preserve">
+    <value>ShareWorldを利用するための準備がされていません。
+設定画面を表示しますか？</value>
+  </data>
+  <data name="WorldSettings_Title" xml:space="preserve">
+    <value>ワールド設定</value>
+  </data>
+  <data name="WorldSettings_UseSW" xml:space="preserve">
+    <value>ShareWorldを利用する</value>
+  </data>
+  <data name="WorldSettings_WhiteL" xml:space="preserve">
+    <value>ホワイトリスト</value>
+  </data>
+  <data name="World_VerDownMsg1" xml:space="preserve">
+    <value>ワールドデータを</value>
+  </data>
+  <data name="World_VerDownMsg2" xml:space="preserve">
+    <value>から</value>
+  </data>
+  <data name="World_VerDownMsg3" xml:space="preserve">
+    <value>へバージョンダウンしようとしています。</value>
+  </data>
+  <data name="World_VerDownMsg4" xml:space="preserve">
+    <value>データが破損する可能性が極めて高い操作ですが、危険性を理解したうえで実行しますか？</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>はい</value>
+  </data>
+  <data name="ZipFile" xml:space="preserve">
+    <value>圧縮ファイル</value>
+  </data>
+</root>

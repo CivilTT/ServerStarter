@@ -1,0 +1,830 @@
+﻿<base:GeneralCB x:Class="Server_GUI2.Windows.SystemSettings.SystemSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:property="clr-namespace:Server_GUI2.Properties"
+        xmlns:local="clr-namespace:Server_GUI2"
+        xmlns:vm="clr-namespace:Server_GUI2.Windows.SystemSettings"
+        xmlns:base="clr-namespace:Server_GUI2.Windows"
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:SystemSettingsVM}"
+        ResizeMode="NoResize"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Closing="OnClosing"
+        Title="System Settings" Height="600" Width="650" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <!--//Source//-->
+        <Style TargetType="Button" x:Key="ButtonSource" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="0 10"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="BlockSource" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Height" Value="33"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="LightGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBox" x:Key="BoxSource" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Height" Value="33"/>
+            <Setter Property="Padding" Value="10 5 0 0"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="BorderBrush" Value="#EBEBEB"/>
+            <Setter Property="Background" Value="#EBEBEB"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style TargetType="ComboBox" x:Key="ComboSource" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Height" Value="33"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="MaxDropDownHeight" Value="165"/>
+            <Style.Triggers>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Dark">
+                    <Setter Property="Background" Value="#262626"/>
+                </Trigger>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Light">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Line" x:Key="LineStyle">
+            <Style.Setters>
+                <Setter Property="StrokeThickness" Value="0.3"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Dark">
+                    <Setter Property="Stroke" Value="White"/>
+                </Trigger>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Light">
+                    <Setter Property="Stroke" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ScrollViewer" x:Key="ScrollSource" BasedOn="{StaticResource {x:Type ScrollViewer}}">
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Grid.Row" Value="2"/>
+            <Setter Property="Grid.Column" Value="3"/>
+        </Style>
+        <Style TargetType="{x:Type TextBlock}" x:Key="DataGridSource" BasedOn="{x:Static DataGridTextColumn.DefaultElementStyle}">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="1"/>
+        </Style>
+
+
+        <!--//Partial//-->
+        <Style TargetType="Button" x:Key="RunStyle" BasedOn="{StaticResource ButtonSource}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#7CBB00"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#90D000"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#5FAD00"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#939393"/>
+                    <Setter Property="Opacity" Value="0.2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button" x:Key="OtherStyle" BasedOn="{StaticResource ButtonSource}">
+            <Style.Setters>
+                <Setter Property="Margin" Value="10 0"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Background" Value="#FF717171"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#888888"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#424242"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#939393"/>
+                    <Setter Property="Opacity" Value="0.2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button" x:Key="MiniButton" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="33"/>
+            <Setter Property="Height" Value="33"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Margin" Value="35 0"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Grid.Row" Value="1"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Grid" x:Key="SettingContent">
+            <Setter Property="Grid.Row" Value="2"/>
+            <Setter Property="Grid.Column" Value="3"/>
+            <Setter Property="Margin" Value="0 10 0 0"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="TitleBlock" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="20 0 10 0"/>
+        </Style>
+        <Style TargetType="Button" x:Key="Help" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="25"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0 7 30 0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <svgc:SvgViewbox Source="/Resources/help.svg"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--//SideMenu//-->
+        <Style TargetType="Grid" x:Key="SideMenu">
+            <Setter Property="Grid.Row" Value="1"/>
+            <Setter Property="Grid.Column" Value="0"/>
+        </Style>
+        <Style TargetType="ListViewItem" x:Key="MenuItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Height" Value="55"/>
+            <Setter Property="Width" Value="180"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="MenuItemBlock" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Margin" Value="10 5"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="10 0"/>
+        </Style>
+
+        <!--//ShareWorld//-->
+        <Style TargetType="TextBlock" x:Key="SWBlock" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="Width" Value="140"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="SWBox" BasedOn="{StaticResource BoxSource}">
+            <Setter Property="Width" Value="225"/>
+            <Setter Property="Margin" Value="20 5"/>
+            <!--//Delete Buttonで一括削除するとAdd Accountの利用可否が更新されないため、表示していない//-->
+            <!--//MainWindowと同様にTextChangedを使えば解決するが、そうするとMVVMの思想から外れる//-->
+            <Setter Property="ui:TextBoxHelper.IsDeleteButtonVisible" Value="False"/>
+        </Style>
+
+        <!--//Server//-->
+        <Style TargetType="TextBlock" x:Key="TitleBlock2" BasedOn="{StaticResource TitleBlock}">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Margin" Value="30 10 0 0"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="PropertyIndex" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0,20,20,0"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ComboBox" x:Key="PropertyCombo" BasedOn="{StaticResource ComboSource}">
+            <Setter Property="Width" Value="145"/>
+            <Setter Property="Margin" Value="10,20,0,0"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="PropertyBox" BasedOn="{StaticResource BoxSource}">
+            <Setter Property="Width" Value="145"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="MemoryBox" BasedOn="{StaticResource BoxSource}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--//Players//-->
+        <Style TargetType="ComboBox" x:Key="PlayerCombo" BasedOn="{StaticResource ComboSource}">
+            <Setter Property="Width" Value="200"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="PlayerBlock" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0 0 30 0"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="PlayerBox" BasedOn="{StaticResource BoxSource}">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Width" Value="200"/>
+        </Style>
+        <Style TargetType="Button" x:Key="GroupButton" BasedOn="{StaticResource OtherStyle}">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0 10"/>
+        </Style>
+
+        <!--//NetWork//-->
+        <Style TargetType="TextBox" x:Key="PortBox" BasedOn="{StaticResource PropertyBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="NetStatusBlock" BasedOn="{StaticResource PropertyIndex}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="ShowIP">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Height" Value="33"/>
+            <Setter Property="Margin" Value="-3 20 0 0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Padding" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Dark">
+                    <Setter Property="Background" Value="#262626"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Light">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button" x:Key="CopyButton" BasedOn="{StaticResource MiniButton}">
+            <Style.Triggers>
+                <Trigger Property="ClickMode" Value="Release">
+                    <Setter Property="Background" Value="#7CBB00"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="False">
+                    <Setter Property="Background" Value="#FF717171"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--//Others//-->
+        <Style TargetType="Button" x:Key="OthersMiniButton" BasedOn="{StaticResource MiniButton}">
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <!--//Converter//-->
+        <base:InverseBoolConverter x:Key="InverseBoolConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
+        <vm:MemberListConverter x:Key="MemberListConverter"/>
+    </Window.Resources>
+
+    <!--<Window.DataContext>
+        <vm:SystemSettingsVM/>
+    </Window.DataContext>-->
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <FrameworkElement x:Key="proxyElement" />
+        </Grid.Resources>
+        <ContentControl Visibility="Collapsed" Content="{StaticResource proxyElement}"/>
+
+        <Grid Grid.RowSpan="1" Grid.ColumnSpan="3">
+            <TextBlock Text="{Binding Resources.SystemSettings_Title}" Margin="30,15,0,0" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
+            <Line X1="30" X2="610" Y1="70" Y2="70" Style="{StaticResource LineStyle}"/>
+        </Grid>
+
+        <Grid Style="{StaticResource SideMenu}">
+            <StackPanel Margin="0 0 0 50">
+                <ListView Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedIndex="{Binding MenuIndex.Value}">
+
+                    <ListViewItem Style="{StaticResource MenuItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="ShareWorld" Style="{StaticResource MenuItemBlock}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem Style="{StaticResource MenuItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Resources.Server}" Style="{StaticResource MenuItemBlock}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem Style="{StaticResource MenuItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Resources.Players}" Style="{StaticResource MenuItemBlock}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem Style="{StaticResource MenuItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Resources.Network}" Style="{StaticResource MenuItemBlock}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem Style="{StaticResource MenuItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Resources.Others}" Style="{StaticResource MenuItemBlock}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                </ListView>
+
+            </StackPanel>
+
+            <Button Content="{Binding Resources.Save}" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Style="{StaticResource RunStyle}"/>
+
+        </Grid>
+
+        <Line X1="3" X2="3" Y1="10" Y2="470" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
+
+        <!--//ShareWorldContents//-->
+        <ScrollViewer Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" Style="{StaticResource ScrollSource}">
+        <!--<ScrollViewer Style="{StaticResource ScrollSource}">-->
+            <Grid Style="{StaticResource SettingContent}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="240"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+
+                <TextBlock Text="{Binding Resources.SystemSettings_AddRemote}" Style="{StaticResource TitleBlock}"/>
+                <Button Command="{Binding HelpCommand}" CommandParameter="ShareWorld" Style="{StaticResource Help}">
+                    <svgc:SvgViewbox Source="/Resources/help.svg"/>
+                </Button>
+                <StackPanel Orientation="Vertical" Margin="40 40 0 0" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Resources.SystemSettings_AName}" Style="{StaticResource SWBlock}"/>
+                        <TextBox Text="{Binding AccountName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Resources.SystemSettings_Aemail}" Style="{StaticResource SWBlock}"/>
+                        <TextBox Text="{Binding AccountEmail.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Resources.SystemSettings_Repo}" Style="{StaticResource SWBlock}"/>
+                        <TextBox Text="{Binding RepoName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SWBox}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 10" HorizontalAlignment="Right">
+                        <ui:ProgressRing IsActive="{Binding RemoteAdding.Value}" Width="30" Height="30"/>
+                        <Button Content="{Binding Resources.SystemSettings_AddA}" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_SW}" Command="{Binding AddListCommand}" CommandParameter="Remote" Style="{StaticResource RunStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Text="{Binding Resources.SystemSettings_RemoteL}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                <Button Command="{Binding DeleteListCommand}" CommandParameter="Remote" Style="{StaticResource MiniButton}">
+                    <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                </Button>
+                <StackPanel Orientation="Vertical" Grid.Row="1" Margin="20 40 20 10">
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding RemoteList}"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              RowHeaderWidth="0"
+                              AutoGenerateColumns="False"
+                              VirtualizingPanel.ScrollUnit="Pixel"
+                              HorizontalAlignment="Left"
+                              SelectedItem="{Binding RLIndex.Value}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_AName}" IsReadOnly="True" Binding="{Binding Storage.AccountName}"/>
+                            <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_Repo}" IsReadOnly="True" Binding="{Binding Storage.RepositoryName}"/>
+                            <DataGridTextColumn Header="{x:Static property:Resources.World}" IsReadOnly="True" Binding="{Binding Name}"/>
+                            <DataGridTemplateColumn Header="{x:Static property:Resources.Show}" Width="60">
+                                <DataGridTemplateColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </Style>
+                                </DataGridTemplateColumn.HeaderStyle>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="20 0 0 0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <TextBlock Text="{Binding Resources.SystemSettings_Links}" Margin="0 30 0 10" Style="{StaticResource TitleBlock}"/>
+                    <ui:HyperlinkButton Content="{Binding Resources.SystemSettings_Personal}" NavigateUri="https://github.com/settings/tokens" FontSize="20" Margin="20 0"/>
+                    <ui:HyperlinkButton Content="{Binding Resources.SystemSettings_Cred}" Command="{Binding CredentialManagerCommand}" FontSize="20" Margin="20 10"/>
+
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <!--//ServerContents//-->
+        <Grid Visibility="{Binding ShowServer, Converter={StaticResource BoolToVisible}}" Margin="0 -10 0 0" Style="{StaticResource SettingContent}">
+        <!--<Grid Margin="0 -10 0 0" Style="{StaticResource SettingContent}">-->
+            <TabControl>
+                <TabControl.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Transparent" Offset="0"/>
+                        <GradientStop Color="Gold" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabControl.Background>
+
+                <!--//Main//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Main"/>
+                    </TabItem.Header>
+                    <Grid Margin="0 10">
+                        <TextBlock Text="{Binding Resources.SystemSettings_DefaultP}" Style="{StaticResource TitleBlock}"/>
+                        <Button Margin="230 7 0 0" Style="{StaticResource Help}"/>
+                        
+                        <StackPanel Orientation="Horizontal" Margin="0 35 0 0">
+                            <StackPanel Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <TextBlock Text="{Binding Resources.SystemSettings_Main}" Style="{StaticResource TitleBlock2}"/>
+                                <TextBlock Text="difficulty" ToolTip="{Binding Resources.P_Difficult}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="hardcore" ToolTip="{Binding Resources.P_Hardcore}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="gamemode" ToolTip="{Binding Resources.P_Gamemode}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="white-list" ToolTip="{Binding Resources.P_WhiteList}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="level-type" ToolTip="{Binding Resources.P_LevelType}" Style="{StaticResource PropertyIndex}"/>
+                                <TextBlock Text="memory-size" ToolTip="{Binding Resources.MemorySizeToolTip}" Style="{StaticResource PropertyIndex}"/>
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,62,0,0" Style="{StaticResource PropertyCombo}"/>
+                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Hardcore}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
+                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Gamemode}" ItemsSource="{Binding GamemodeCombo}" Style="{StaticResource PropertyCombo}"/>
+                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.WhiteList}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
+                                <ComboBox SelectedItem="{Binding PropertyIndexs.Value.LevelType}" ItemsSource="{Binding TypeCombo}" Style="{StaticResource PropertyCombo}"/>
+                                <StackPanel Orientation="Horizontal" Margin="10 20">
+                                    <TextBox Text="{Binding MemorySize, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="70" HorizontalAlignment="Left" Style="{StaticResource MemoryBox}"/>
+                                    <ComboBox SelectedItem="{Binding MemoryUnitIndex.Value}" ItemsSource="{Binding MemoryUnitList}" Margin="5 0" Width="70" Style="{StaticResource ComboSource}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+
+                <!--//True / False//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="True / False"/>
+                    </TabItem.Header>
+                    <Grid Margin="0 10">
+                        <TextBlock Text="{Binding Resources.SystemSettings_TrueFalse}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                        <DataGrid ItemsSource="{Binding BoolOptions}"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  RowHeaderWidth="0"
+                                  AutoGenerateColumns="False"
+                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                  HorizontalAlignment="Left"
+                                  Margin="30 50 0 0" Width="428">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="{x:Static property:Resources.SystemSettings_Property}" Width="300">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Property}" ToolTip="{Binding ToolTip}" VerticalAlignment="Center" FontSize="16" Margin="11 7"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="{x:Static property:Resources.SystemSettings_SValue}" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.BoolCombo}" SelectedItem="{Binding Value, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Width="80" Style="{StaticResource ComboSource}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!--//Text//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Text"/>
+                    </TabItem.Header>
+                    <Grid Margin="0 10">
+                        <TextBlock Text="{Binding Resources.SystemSettings_Text}" Style="{StaticResource TitleBlock}"/>
+                        <DataGrid ItemsSource="{Binding TextOptions}"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  RowHeaderWidth="0"
+                                  AutoGenerateColumns="False"
+                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                  HorizontalAlignment="Left"
+                                  Margin="30 50 0 0" Width="418">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="{x:Static property:Resources.SystemSettings_Property}" Width="230">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Property}" ToolTip="{Binding ToolTip}" VerticalAlignment="Center" FontSize="16" Margin="11 7"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_SValue}" Binding="{Binding Value}" FontSize="16" Width="170"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+        <!--//Players//-->
+        <Grid Visibility="{Binding ShowPlayers, Converter={StaticResource BoolToVisible}}" Margin="0 -10 0 0" Style="{StaticResource SettingContent}">
+        <!--<Grid Margin="0 -10 0 0" Style="{StaticResource SettingContent}">-->
+            <TabControl SelectedIndex="{Binding PlayersTabIndex.Value}">
+                <TabControl.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Transparent" Offset="0"/>
+                        <GradientStop Color="Gold" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabControl.Background>
+
+                <!--//Player//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="{Binding Resources.Player}"/>
+                    </TabItem.Header>
+                    <ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="180"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Orientation="Vertical" Margin="0 10">
+                                <TextBlock Text="{Binding Resources.SystemSettings_AddP}" Style="{StaticResource TitleBlock}"/>
+                                <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
+                                    <TextBlock Text="{Binding Resources.SystemSettings_NewPName}" Style="{StaticResource PlayerBlock}"/>
+                                    <TextBox Width="210" Text="{Binding PlayerName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerBox}"/>
+                                </StackPanel>
+                                <Button Content="{Binding Resources.Regist}" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" IsEnabled="{Binding CanAddition_Pl}" Command="{Binding AddListCommand}" CommandParameter="Player" Style="{StaticResource RunStyle}"/>
+                            </StackPanel>
+
+                            <TextBlock Text="{Binding Resources.SystemSettings_PlayerL}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                            <Button Command="{Binding DeleteListCommand}" CommandParameter="Player" Margin="20 0" Style="{StaticResource MiniButton}">
+                                <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                            </Button>
+                            <DataGrid ItemsSource="{Binding PlayerList}"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      CanUserResizeRows="False"
+                                      CanUserResizeColumns="False"
+                                      RowHeaderWidth="0"
+                                      VirtualizingPanel.ScrollUnit="Pixel"
+                                      AutoGenerateColumns="False"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Top"
+                                      Grid.Row="1"
+                                      SelectedItem="{Binding PLIndex}"
+                                      Margin="20 50 0 10">
+                                <DataGrid.Columns>
+                                    <!--//Typeは Player or Group を表示する//-->
+                                    <!--<DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>-->
+                                    <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_PName}" IsReadOnly="True" Binding="{Binding Name}" ElementStyle="{StaticResource DataGridSource}"/>
+                                    <DataGridTextColumn Header="UUID" IsReadOnly="True" Binding="{Binding UUID}" ElementStyle="{StaticResource DataGridSource}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
+
+                <!--//Group//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="{Binding Resources.Group}"/>
+                    </TabItem.Header>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="450"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Orientation="Vertical" Margin="0 10">
+                                <TextBlock Text="{Binding Resources.SystemSettings_AddG}" Style="{StaticResource TitleBlock}"/>
+                                <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
+                                    <TextBlock Text="{Binding Resources.SystemSettings_NewGName}" Style="{StaticResource PlayerBlock}"/>
+                                    <TextBox Width="210" Text="{Binding GroupName.Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerBox}"/>
+                                </StackPanel>
+                                <!--<TextBlock Text="New Group Member" Margin="40 20 0 0" Style="{StaticResource PlayerBlock}"/>-->
+                                <UniformGrid Rows="1" Margin="40 20 20 0">
+                                    <StackPanel Orientation="Vertical" Width="180" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding Resources.Players}" Style="{StaticResource PlayerBlock}"/>
+                                        <ListBox ItemsSource="{Binding PlayerList_Group}" SelectedItem="{Binding PLGIndex.Value}" Height="170">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}" FontSize="20" Padding="1"/>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        <Button Content="{Binding Resources.Add}" Command="{Binding AddListCommand}" CommandParameter="GroupPlayer" Style="{StaticResource GroupButton}"/>
+
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical" Width="180" HorizontalAlignment="Right">
+                                        <TextBlock Text="{Binding Resources.SystemSettings_Members}" Style="{StaticResource PlayerBlock}"/>
+                                        <ListBox ItemsSource="{Binding MemberList}" SelectedItem="{Binding MLIndex.Value}" Height="170">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}" FontSize="20" Padding="1"/>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        <Button Content="{Binding Resources.Remove}" Command="{Binding DeleteListCommand}" CommandParameter="GroupMember" Style="{StaticResource GroupButton}"/>
+
+                                    </StackPanel>
+                                </UniformGrid>
+                                <Button Content="{Binding Resources.Regist}" Width="100" HorizontalAlignment="Right" Margin="20 10" IsEnabled="{Binding CanAddition_Gr}" Command="{Binding AddListCommand}" CommandParameter="Group" Style="{StaticResource RunStyle}"/>
+                            </StackPanel>
+
+                            <TextBlock Text="{Binding Resources.SystemSettings_GroupL}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                            <Button Command="{Binding DeleteListCommand}" CommandParameter="Group" Margin="20 0" Style="{StaticResource MiniButton}">
+                                <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                            </Button>
+                            <Button Command="{Binding EditListCommand}" CommandParameter="Group" Margin="70 0" Style="{StaticResource MiniButton}">
+                                <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/pen.svg"/>
+                            </Button>
+                            <DataGrid ItemsSource="{Binding GroupList}"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      CanUserResizeRows="False"
+                                      CanUserResizeColumns="False"
+                                      RowHeaderWidth="0"
+                                      AutoGenerateColumns="False"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Top"
+                                      Grid.Row="1"
+                                      SelectedItem="{Binding GLIndex}"
+                                      Margin="20 50 0 30">
+                                <DataGrid.Columns>
+                                    <!--//Typeは Player or Group を表示する//-->
+                                    <!--<DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding Name}"/>-->
+                                    <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_GName}" IsReadOnly="True" Binding="{Binding GroupName}" ElementStyle="{StaticResource DataGridSource}" Width="1*"/>
+                                    <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_Members}" IsReadOnly="True" Binding="{Binding PlayerList, Converter={StaticResource MemberListConverter}}" ElementStyle="{StaticResource DataGridSource}" Width="3*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <StackPanel Orientation="Vertical" Grid.Row="1">
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+        <!--//NetWork//-->
+        <Grid Visibility="{Binding ShowNet, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <!--<Grid Style="{StaticResource SettingContent}">-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{Binding Resources.SystemSettings_PortMap}" Style="{StaticResource TitleBlock}"/>
+            <Button Command="{Binding HelpCommand}" CommandParameter="AutoPortMapping" Style="{StaticResource Help}"/>
+            <StackPanel Orientation="Horizontal" Margin="40 30 0 0">
+                <TextBlock Text="{Binding Resources.SystemSettings_UseAPM}" Width="275" TextAlignment="Left" Style="{StaticResource PropertyIndex}"/>
+                <ui:ToggleSwitch OnContent="{Binding Resources.Yes}" OffContent="{Binding Resources.No}" FontSize="20" VerticalAlignment="Top" Margin="0 20" IsOn="{Binding UsingPortMapping.Value}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="40 80 0 0">
+                <TextBlock Text="{Binding Resources.SystemSettings_PortNum}" Width="225" TextAlignment="Left" Style="{StaticResource PropertyIndex}"/>
+                <!--<TextBox Text="{Binding PortNumber.Value, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="47 15" IsEnabled="{Binding CanWritePortNumber}" Style="{StaticResource PortBox}"/>-->
+                <TextBox Text="{Binding PortNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="0 15" IsEnabled="{Binding CanWritePortNumber}" Style="{StaticResource PortBox}"/>
+            </StackPanel>
+            <Button Content="{Binding Resources.SystemSettings_MapTest}" HorizontalAlignment="Right" Margin="30 15" IsEnabled="{Binding CanAddition_Po}" Command="{Binding AddPortCommand}" Style="{StaticResource RunStyle}"/>
+
+            <TextBlock Text="{Binding Resources.SystemSettings_Status}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="20 30 0 0">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding Resources.SystemSettings_WAN}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_LAN}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_APM}" IsEnabled="{Binding UsingPortMapping.Value}" Style="{StaticResource PropertyIndex}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBox Text="{Binding GlobalIP, Mode=OneWay}" Style="{StaticResource ShowIP}"/>
+                    <TextBox Text="{Binding LocalIP, Mode=OneWay}" Style="{StaticResource ShowIP}"/>
+                    <TextBlock Text="{Binding PortStatus.Value.DisplayStatus}" IsEnabled="{Binding UsingPortMapping.Value}" Foreground="{Binding StatusColor}" FontWeight="Bold" Style="{StaticResource NetStatusBlock}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <Button Command="{Binding ClipbordCommand}" CommandParameter="global" Margin="20 47" Style="{StaticResource CopyButton}">
+                <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/copy-solid.svg"/>
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Copy"/>
+                </ToolTipService.ToolTip>
+            </Button>
+            <Button Command="{Binding ClipbordCommand}" CommandParameter="local" Margin="20 100" Style="{StaticResource CopyButton}">
+                <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/copy-solid.svg"/>
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Copy"/>
+                </ToolTipService.ToolTip>
+            </Button>
+
+        </Grid>
+
+        <!--//Others//-->
+        <Grid Visibility="{Binding ShowOthers, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <!--<Grid Style="{StaticResource SettingContent}">-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="160"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{Binding Resources.SystemSettings_UserSet}" Style="{StaticResource TitleBlock}"/>
+            <StackPanel Orientation="Horizontal" Margin="40 30 0 0">
+                <StackPanel Orientation="Vertical" Width="165">
+                    <TextBlock Text="{Binding Resources.UserName}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_Lang}" Style="{StaticResource PropertyIndex}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="-10 0">
+                    <TextBlock Text="{Binding UserName.Value}" Margin="15 20" Style="{StaticResource BlockSource}"/>
+                    <ComboBox ItemsSource="{Binding Languages.Keys}" SelectedItem="{Binding LanguageSelected.Value}" HorizontalContentAlignment="Left" Margin="15 0" Style="{StaticResource PlayerCombo}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <TextBlock Text="{Binding Resources.SystemSettings_SystemInfo}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="40 30">
+                <StackPanel Orientation="Vertical" Width="165">
+                    <TextBlock Text="{Binding Resources.SystemSettings_SystemVer}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_Manual}" Style="{StaticResource PropertyIndex}"/>
+                    <TextBlock Text="{Binding Resources.SystemSettings_Author}" Style="{StaticResource PropertyIndex}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="10 0">
+                    <TextBlock Text="{Binding SystemVersion, Mode=OneWay}" Style="{StaticResource NetStatusBlock}"/>
+                    <ui:HyperlinkButton Content="{Binding Resources.SystemSettings_Access}" NavigateUri="https://civiltt.github.io/ServerStarter/" Margin="0,13,20,2" FontSize="20" Height="33" Padding="0"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="CivilTT" Style="{StaticResource NetStatusBlock}"/>
+                        <Button Command="{Binding TwitterCommand}" CommandParameter="CivilT_T" Style="{StaticResource OthersMiniButton}">
+                            <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/twitter-brands.svg"/>
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="Twtter"/>
+                            </ToolTipService.ToolTip>
+                        </Button>
+                        <Button Command="{Binding GitCommandVM}" CommandParameter="CivilTT" Style="{StaticResource OthersMiniButton}">
+                            <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/github-brands.svg"/>
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="GitHub"/>
+                            </ToolTipService.ToolTip>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 5">
+                        <TextBlock Text="txkodo" Margin="0" VerticalAlignment="Bottom" Style="{StaticResource NetStatusBlock}"/>
+                        <Button Command="{Binding TwitterCommand}" CommandParameter="txkodo" Margin="21 5 5 5" Style="{StaticResource OthersMiniButton}">
+                            <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/twitter-brands.svg"/>
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="Twtter"/>
+                            </ToolTipService.ToolTip>
+                        </Button>
+                        <Button Command="{Binding GitCommandVM}" CommandParameter="txkodo" Style="{StaticResource OthersMiniButton}">
+                            <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/SystemSettings/github-brands.svg"/>
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="GitHub"/>
+                            </ToolTipService.ToolTip>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+
+        </Grid>
+
+    </Grid>
+</base:GeneralCB>

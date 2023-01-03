@@ -117,8 +117,803 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="App_Unhandle" xml:space="preserve">
+    <value>An unexpected error has occurred.
+Please check the error and if you suspect a system bug, please contact us at Git Issues.
+
+【What happened?】</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CloseBar_Push" xml:space="preserve">
+    <value>Push the world data to the remote repository</value>
+  </data>
+  <data name="CloseBar_Title" xml:space="preserve">
+    <value>Closing server</value>
+  </data>
+  <data name="CloseBar_Unlock" xml:space="preserve">
+    <value>Unlock the remote world's restricts</value>
+  </data>
+  <data name="CloseBar_UpdateLink" xml:space="preserve">
+    <value>Update the synchoronized relation's data between Remote and Local</value>
+  </data>
+  <data name="CloseBar_UpdateState" xml:space="preserve">
+    <value>Update the world state data in the remote repository</value>
+  </data>
+  <data name="Contents_error" xml:space="preserve">
+    <value>【What happened?】</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>file</value>
+  </data>
+  <data name="Folder" xml:space="preserve">
+    <value>folder</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Guide" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Guide.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;shift_jis</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="InitBar_beforeVup" xml:space="preserve">
+    <value>Check the versionUP about this system, Server Starter</value>
+  </data>
+  <data name="InitBar_ChangeSpe" xml:space="preserve">
+    <value>Checked ChangeSpecification</value>
+  </data>
+  <data name="InitBar_Close" xml:space="preserve">
+    <value>Finished to ready Main Window</value>
+  </data>
+  <data name="InitBar_MCVer" xml:space="preserve">
+    <value>Set Minecraft Versions in Main Window</value>
+  </data>
+  <data name="InitBar_MCWor" xml:space="preserve">
+    <value>Set Minecraft Worlds in Main Window</value>
+  </data>
+  <data name="InitBar_OpenMain" xml:space="preserve">
+    <value>Opening Main Window</value>
+  </data>
+  <data name="InitBar_SetCommands" xml:space="preserve">
+    <value>Set General Commands in Main Window</value>
+  </data>
+  <data name="InitBar_Title" xml:space="preserve">
+    <value>Ready for Server Starter</value>
+  </data>
+  <data name="InitBar_UserSetting" xml:space="preserve">
+    <value>Checked first User Settings</value>
+  </data>
+  <data name="InitBar_VersionUp" xml:space="preserve">
+    <value>Checked the versionUP about this system, Server Starter</value>
+  </data>
+  <data name="Java_Ver1" xml:space="preserve">
+    <value>Java </value>
+  </data>
+  <data name="Java_Ver2" xml:space="preserve">
+    <value> or higher is required to activate this version.</value>
+  </data>
+  <data name="Java_Ver3" xml:space="preserve">
+    <value>Please install Java from the following link and restart me!</value>
+  </data>
+  <data name="Java_Ver4" xml:space="preserve">
+    <value>Install link of Java</value>
+  </data>
+  <data name="LogFolder" xml:space="preserve">
+    <value>Log Folder</value>
+  </data>
+  <data name="Main_DeleteMsg1" xml:space="preserve">
+    <value>Do you want to remove this</value>
+  </data>
+  <data name="Main_DeleteMsg2" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="Main_DeleteMsg3" xml:space="preserve">
+    <value>"</value>
+  </data>
+  <data name="Main_DeleteMsg4" xml:space="preserve">
+    <value>" is completely removed and cannot be restored</value>
+  </data>
+  <data name="Main_InputName" xml:space="preserve">
+    <value>Input_Name</value>
+  </data>
+  <data name="Main_InvalidName" xml:space="preserve">
+    <value>You can use only capital and small letters</value>
+  </data>
+  <data name="Main_Op" xml:space="preserve">
+    <value>has op rights in this version's server</value>
+  </data>
+  <data name="Main_ReWorld" xml:space="preserve">
+    <value>Recreate World (When you want to reset the selected world)</value>
+  </data>
+  <data name="Main_Run" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="Main_SaveWorld" xml:space="preserve">
+    <value>Save old World before recreating it (Save name : ..._old(1))</value>
+  </data>
+  <data name="Main_ServerVersion" xml:space="preserve">
+    <value>Server Version</value>
+  </data>
+  <data name="Main_Show" xml:space="preserve">
+    <value>Show Versions</value>
+  </data>
+  <data name="Main_Shutdown" xml:space="preserve">
+    <value>Shutdown this PC after stopping the server</value>
+  </data>
+  <data name="Main_Spigot" xml:space="preserve">
+    <value>Import Spigot</value>
+  </data>
+  <data name="Main_WorldName" xml:space="preserve">
+    <value>World Name</value>
+  </data>
+  <data name="Main_WorldSettings" xml:space="preserve">
+    <value>World Settings</value>
+  </data>
+  <data name="Manage_FailUpdate" xml:space="preserve">
+    <value>Failed to create update file for Server Starter.
+Run without updating the system.
+【What happened?】</value>
+  </data>
+  <data name="Manage_GetLatestMsg" xml:space="preserve">
+    <value>Failed to get the latest data of Server Starter.
+I will start this system with existing version.
+【What happened?】</value>
+  </data>
+  <data name="Manage_Update" xml:space="preserve">
+    <value>Start the update for Server Starter.
+Setup_ServerStarter.msi to update the system, please allow it on the confirmation screen that appears next.</value>
+  </data>
+  <data name="Manage_Vup1" xml:space="preserve">
+    <value>The upgrade of Server Starter failed at the last startup.
+Do you want to update now?
+
+If this message appears repeatedly, automatic updates may not be compatible with this environment.
+You can get latest version from Git Release.
+Please give me your log file through Git Issues.</value>
+  </data>
+  <data name="Manage_Vup2" xml:space="preserve">
+    <value>Report this Issue</value>
+  </data>
+  <data name="Manage_Vup3" xml:space="preserve">
+    <value>Update now!</value>
+  </data>
+  <data name="Manage_Vup4" xml:space="preserve">
+    <value>Update later...</value>
+  </data>
+  <data name="MemorySizeError" xml:space="preserve">
+    <value>You must set integer number</value>
+  </data>
+  <data name="MemorySizeToolTip" xml:space="preserve">
+    <value>Value of Assigned memory size when a server starting</value>
+  </data>
+  <data name="Network" xml:space="preserve">
+    <value>Network</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Others" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="Player" xml:space="preserve">
+    <value>Player</value>
+  </data>
+  <data name="Players" xml:space="preserve">
+    <value>Players</value>
+  </data>
+  <data name="Plugin" xml:space="preserve">
+    <value>Plugin File</value>
+  </data>
+  <data name="ProgressBar_MoreInfo" xml:space="preserve">
+    <value>More Infomation</value>
+  </data>
+  <data name="ProgressBra_Count1" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="ProgressBra_Count2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="P_AllowFlight" xml:space="preserve">
+    <value>Allowed to fly for more than 5 seconds</value>
+  </data>
+  <data name="P_AllowNether" xml:space="preserve">
+    <value>Possible to move to the Nether</value>
+  </data>
+  <data name="P_BroadcastConsoleToOps" xml:space="preserve">
+    <value>Notifies the player with OP authority when a command is entered from the server console</value>
+  </data>
+  <data name="P_BroadcastRconToOps" xml:space="preserve">
+    <value>Notifies the player with OP when a command is input from a remote control.</value>
+  </data>
+  <data name="P_Difficult" xml:space="preserve">
+    <value>Game difficulty</value>
+  </data>
+  <data name="P_EnableCommandBlock" xml:space="preserve">
+    <value>Allow command block execution</value>
+  </data>
+  <data name="P_EnableJMXmonitoring" xml:space="preserve">
+    <value>Enable JMX (=Java Management Extensions)</value>
+  </data>
+  <data name="P_EnableQuery" xml:space="preserve">
+    <value>GameSpy4 connection allowed</value>
+  </data>
+  <data name="P_EnableRcon" xml:space="preserve">
+    <value>Allow remote control</value>
+  </data>
+  <data name="P_EnableStatus" xml:space="preserve">
+    <value>Display online status on the server selection screen</value>
+  </data>
+  <data name="P_EnforceWhiteList" xml:space="preserve">
+    <value>Deny participation to non-whitelisted players</value>
+  </data>
+  <data name="P_EntityBroadcastRangePercentage" xml:space="preserve">
+    <value>Sets the range of entities to be drawn as a percentage when the initial value is 100.</value>
+  </data>
+  <data name="P_ForceGamemode" xml:space="preserve">
+    <value>Enforce game mode at login</value>
+  </data>
+  <data name="P_FunctionPermissionLevel" xml:space="preserve">
+    <value>Function permission level (set between 1 to 4)</value>
+  </data>
+  <data name="P_Gamemode" xml:space="preserve">
+    <value>Gamemode in the game</value>
+  </data>
+  <data name="P_Hardcore" xml:space="preserve">
+    <value>Set gamemode to hardcore</value>
+  </data>
+  <data name="P_LevelName" xml:space="preserve">
+    <value>World name</value>
+  </data>
+  <data name="P_LevelSeed" xml:space="preserve">
+    <value>World Seed Value</value>
+  </data>
+  <data name="P_LevelType" xml:space="preserve">
+    <value>World generation type</value>
+  </data>
+  <data name="P_MaxPlayers" xml:space="preserve">
+    <value>Number of people who can play on the server at the same time</value>
+  </data>
+  <data name="P_MaxtickTime" xml:space="preserve">
+    <value>Time in milliseconds between server inoperability and forced shutdown</value>
+  </data>
+  <data name="P_MaxWorldSize" xml:space="preserve">
+    <value>World size specified by radius</value>
+  </data>
+  <data name="P_Motd" xml:space="preserve">
+    <value>Description displayed on the server selection screen</value>
+  </data>
+  <data name="P_NetworkCompressionThreshold" xml:space="preserve">
+    <value>Specifies the degree of network compression as an integer.</value>
+  </data>
+  <data name="P_OnlineMode" xml:space="preserve">
+    <value>Verify that the connecting player is a legitimate account holder.</value>
+  </data>
+  <data name="P_OpPermissionLevel" xml:space="preserve">
+    <value>Op permission level in the game (4 is the highest)</value>
+  </data>
+  <data name="P_Other" xml:space="preserve">
+    <value>Description of this property is not registered</value>
+  </data>
+  <data name="P_PlayerIdleTimeout" xml:space="preserve">
+    <value>If left unattended for a specified number of seconds (= an integer value), the server will kick the user.</value>
+  </data>
+  <data name="P_PreventProxyConnections" xml:space="preserve">
+    <value>Allow connection from VPN or Proxy when set to False</value>
+  </data>
+  <data name="P_Pvp" xml:space="preserve">
+    <value>Allow players to fight each other</value>
+  </data>
+  <data name="P_QueryPort" xml:space="preserve">
+    <value>Query port used for the query server</value>
+  </data>
+  <data name="P_RateLimit" xml:space="preserve">
+    <value>Specifies the maximum amount of packets a client can send per second</value>
+  </data>
+  <data name="P_RconPassword" xml:space="preserve">
+    <value>Password used for remote control</value>
+  </data>
+  <data name="P_RconPort" xml:space="preserve">
+    <value>Port number used for remote control</value>
+  </data>
+  <data name="P_RequireResourcePack" xml:space="preserve">
+    <value>Force players to install server resource packs, otherwise they will not be able to connect to the world</value>
+  </data>
+  <data name="P_ResourcePack" xml:space="preserve">
+    <value>URL of the server resource pack</value>
+  </data>
+  <data name="P_ResourcePacksha1" xml:space="preserve">
+    <value>Hash value of the server resource pack</value>
+  </data>
+  <data name="P_ServerIP" xml:space="preserve">
+    <value>IP address to set up a server</value>
+  </data>
+  <data name="P_ServerPort" xml:space="preserve">
+    <value>Port number used for opening my server</value>
+  </data>
+  <data name="P_SnooperEnabled" xml:space="preserve">
+    <value>Send server data logs to Minecraft</value>
+  </data>
+  <data name="P_SpawnAnimals" xml:space="preserve">
+    <value>Animals appear</value>
+  </data>
+  <data name="P_SpawnMonsters" xml:space="preserve">
+    <value>Hostile MOB appear</value>
+  </data>
+  <data name="P_SpawnNpcs" xml:space="preserve">
+    <value>Villagers appear</value>
+  </data>
+  <data name="P_SpawnProtection" xml:space="preserve">
+    <value>Specifies the radius from the center of the spawn (integer value) within which blocks and objects are prohibited from being placed or destroyed.
+However, this is not valid for players with OP.</value>
+  </data>
+  <data name="P_SyncChunkWrites" xml:space="preserve">
+    <value>Process chunk writes synchronously</value>
+  </data>
+  <data name="P_TextFilteringConfig" xml:space="preserve">
+    <value>Can filter inappropriate chat, but not available now</value>
+  </data>
+  <data name="P_UseNativeTransport" xml:space="preserve">
+    <value>Optimize packet communication for servers running on Linux.</value>
+  </data>
+  <data name="P_ViewDistance" xml:space="preserve">
+    <value>View distance by a chunk</value>
+  </data>
+  <data name="P_WhiteList" xml:space="preserve">
+    <value>Manage player login by the white list</value>
+  </data>
+  <data name="Regist" xml:space="preserve">
+    <value>Regist</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="RunBar_CheckEula" xml:space="preserve">
+    <value>Checked to agree eula</value>
+  </data>
+  <data name="RunBar_CheckVer" xml:space="preserve">
+    <value>Checking the remote data's Minecraft version</value>
+  </data>
+  <data name="RunBar_Convert" xml:space="preserve">
+    <value>Converted the world version</value>
+  </data>
+  <data name="RunBar_CustomMap" xml:space="preserve">
+    <value>Importing the Custom Map</value>
+  </data>
+  <data name="RunBar_Datapack" xml:space="preserve">
+    <value>Importing Datapacks</value>
+  </data>
+  <data name="RunBar_Download" xml:space="preserve">
+    <value>Downloading new Server data</value>
+  </data>
+  <data name="RunBar_Eula" xml:space="preserve">
+    <value>Temporary Run Server to Generate Eula</value>
+  </data>
+  <data name="RunBar_Fetch" xml:space="preserve">
+    <value>Fetching the remote data</value>
+  </data>
+  <data name="RunBar_Java" xml:space="preserve">
+    <value>Decide to using</value>
+  </data>
+  <data name="RunBar_Plugin" xml:space="preserve">
+    <value>Importing Plugins</value>
+  </data>
+  <data name="RunBar_ReadyVer" xml:space="preserve">
+    <value>Ready Version Data</value>
+  </data>
+  <data name="RunBar_Record" xml:space="preserve">
+    <value>Recorded Latest Version and World</value>
+  </data>
+  <data name="RunBar_RemoteDatapack" xml:space="preserve">
+    <value>Importing datapacks from the remote data</value>
+  </data>
+  <data name="RunBar_RemotePlugin" xml:space="preserve">
+    <value>Importing plugins from the remote data</value>
+  </data>
+  <data name="RunBar_RunJava" xml:space="preserve">
+    <value>Get Best Java Version</value>
+  </data>
+  <data name="RunBar_SaveSettings" xml:space="preserve">
+    <value>Saving setting data</value>
+  </data>
+  <data name="RunBar_Title1" xml:space="preserve">
+    <value>Start </value>
+  </data>
+  <data name="RunBar_Title2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RunBar_World" xml:space="preserve">
+    <value>Set World Settings</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="Server_EulaMsg1" xml:space="preserve">
+    <value>Do you agree eula?</value>
+  </data>
+  <data name="Server_EulaMsg2" xml:space="preserve">
+    <value>Eula's URL</value>
+  </data>
+  <data name="Setup_Net" xml:space="preserve">
+    <value>This system doesn't work without an Internet connection.
+Connect to the Internet and restart me!</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="StartServer_PortMsg" xml:space="preserve">
+    <value>Failed to auto port mapping.
+I start the server without port mapping.</value>
+  </data>
+  <data name="StartServer_ShutdownMsg" xml:space="preserve">
+    <value>I will shutdown this PC after 30 seconds.
+If you don't want to shutdown, click "Cancel" button.</value>
+  </data>
+  <data name="SystemSettings_Access" xml:space="preserve">
+    <value>Access Here</value>
+  </data>
+  <data name="SystemSettings_AddA" xml:space="preserve">
+    <value>Add Account</value>
+  </data>
+  <data name="SystemSettings_AddG" xml:space="preserve">
+    <value>Add Group</value>
+  </data>
+  <data name="SystemSettings_AddP" xml:space="preserve">
+    <value>Add Player</value>
+  </data>
+  <data name="SystemSettings_AddRemote" xml:space="preserve">
+    <value>Add Remote Settings (Git)</value>
+  </data>
+  <data name="SystemSettings_Aemail" xml:space="preserve">
+    <value>Account E-mail</value>
+  </data>
+  <data name="SystemSettings_AName" xml:space="preserve">
+    <value>Account Name</value>
+  </data>
+  <data name="SystemSettings_APM" xml:space="preserve">
+    <value>Auto Port Mapping</value>
+  </data>
+  <data name="SystemSettings_Apply" xml:space="preserve">
+    <value>Apply these settings to default settings</value>
+  </data>
+  <data name="SystemSettings_Author" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="SystemSettings_CheckPort" xml:space="preserve">
+    <value>This Port Number is invalid</value>
+  </data>
+  <data name="SystemSettings_Cred" xml:space="preserve">
+    <value>Credential Information Manager (Windows)</value>
+  </data>
+  <data name="SystemSettings_DefaultP" xml:space="preserve">
+    <value>Default Properties</value>
+  </data>
+  <data name="SystemSettings_Edit" xml:space="preserve">
+    <value>Select the column what you want to edit from list</value>
+  </data>
+  <data name="SystemSettings_Exist" xml:space="preserve">
+    <value>This player name is not exist</value>
+  </data>
+  <data name="SystemSettings_GName" xml:space="preserve">
+    <value>Group Name</value>
+  </data>
+  <data name="SystemSettings_GroupL" xml:space="preserve">
+    <value>Group List</value>
+  </data>
+  <data name="SystemSettings_LAN" xml:space="preserve">
+    <value>Local IP Address</value>
+  </data>
+  <data name="SystemSettings_Lang" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="SystemSettings_Links" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="SystemSettings_Main" xml:space="preserve">
+    <value>MAIN Settings</value>
+  </data>
+  <data name="SystemSettings_Manual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="SystemSettings_MapTest" xml:space="preserve">
+    <value>Mapping Test</value>
+  </data>
+  <data name="SystemSettings_Members" xml:space="preserve">
+    <value>Members</value>
+  </data>
+  <data name="SystemSettings_NewGName" xml:space="preserve">
+    <value>New Group Name</value>
+  </data>
+  <data name="SystemSettings_NewPName" xml:space="preserve">
+    <value>New Player Name</value>
+  </data>
+  <data name="SystemSettings_Ope" xml:space="preserve">
+    <value>Operation of Properties</value>
+  </data>
+  <data name="SystemSettings_Personal" xml:space="preserve">
+    <value>Personal Access Token (GitHub)</value>
+  </data>
+  <data name="SystemSettings_PlayerL" xml:space="preserve">
+    <value>Player List</value>
+  </data>
+  <data name="SystemSettings_PName" xml:space="preserve">
+    <value>Player Name</value>
+  </data>
+  <data name="SystemSettings_Port" xml:space="preserve">
+    <value>Failed to close the port mapping.
+I leave the port open.</value>
+  </data>
+  <data name="SystemSettings_PortMap" xml:space="preserve">
+    <value>Port Mapping</value>
+  </data>
+  <data name="SystemSettings_PortNum" xml:space="preserve">
+    <value>Port Number</value>
+  </data>
+  <data name="SystemSettings_PortOn1" xml:space="preserve">
+    <value>This function opens ports to the router automatically.
+Since the port is not mapped to security software, please configure it by yourself if necessary.
+Please refer to Configuration for details.</value>
+  </data>
+  <data name="SystemSettings_PortOn2" xml:space="preserve">
+    <value>How to configure port mapping</value>
+  </data>
+  <data name="SystemSettings_Property" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="SystemSettings_RegisterG" xml:space="preserve">
+    <value>Selected group is already registered</value>
+  </data>
+  <data name="SystemSettings_Registering" xml:space="preserve">
+    <value>You cannot close this window while registering remote data</value>
+  </data>
+  <data name="SystemSettings_RegisterP" xml:space="preserve">
+    <value>Selected player is already registered</value>
+  </data>
+  <data name="SystemSettings_RemoteFail" xml:space="preserve">
+    <value> does not exist as new remote data</value>
+  </data>
+  <data name="SystemSettings_RemoteL" xml:space="preserve">
+    <value>Remote List</value>
+  </data>
+  <data name="SystemSettings_Remove" xml:space="preserve">
+    <value>Select the player what you want to remove from list</value>
+  </data>
+  <data name="SystemSettings_Repo" xml:space="preserve">
+    <value>Repository</value>
+  </data>
+  <data name="SystemSettings_Reset" xml:space="preserve">
+    <value>Reset these settings to default settings</value>
+  </data>
+  <data name="SystemSettings_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="SystemSettings_SValue" xml:space="preserve">
+    <value>Setting Value</value>
+  </data>
+  <data name="SystemSettings_SystemInfo" xml:space="preserve">
+    <value>System Infomation</value>
+  </data>
+  <data name="SystemSettings_SystemVer" xml:space="preserve">
+    <value>System Version</value>
+  </data>
+  <data name="SystemSettings_Text" xml:space="preserve">
+    <value>Text Settings</value>
+  </data>
+  <data name="SystemSettings_Title" xml:space="preserve">
+    <value>System Settings</value>
+  </data>
+  <data name="SystemSettings_TrueFalse" xml:space="preserve">
+    <value>True / False Settings</value>
+  </data>
+  <data name="SystemSettings_UseAPM" xml:space="preserve">
+    <value>Using auto port mapping</value>
+  </data>
+  <data name="SystemSettings_UserSet" xml:space="preserve">
+    <value>User Settings</value>
+  </data>
+  <data name="SystemSettings_WAN" xml:space="preserve">
+    <value>Global IP Address</value>
+  </data>
+  <data name="SystemSettings_Warn" xml:space="preserve">
+    <value>The port number has an invalid value.
+Change the setting not to use Auto Port Mapping.</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="User_Read" xml:space="preserve">
+    <value>Failed to load personal settings.
+Please set it again.</value>
+  </data>
+  <data name="VerFac_Spigot" xml:space="preserve">
+    <value>Failed to get the list of Spigot versions.
+You can't import a new Spigot version.</value>
+  </data>
+  <data name="VerFac_Vanilla" xml:space="preserve">
+    <value>Failed to get the list of Vanilla versions.
+You can't import a new Vanilla version.</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="Version_BuildSpigot" xml:space="preserve">
+    <value>Failed to build the Spigot server.</value>
+  </data>
+  <data name="Version_DownloadSpigot" xml:space="preserve">
+    <value>Failed to download the Spigot server.</value>
+  </data>
+  <data name="Version_DownloadVanilla" xml:space="preserve">
+    <value>Failed to download the Vanilla server.</value>
+  </data>
+  <data name="Version_notExist" xml:space="preserve">
+    <value>may not be exist.</value>
+  </data>
+  <data name="Welcome_Access" xml:space="preserve">
+    <value>Access to the Terms of Use</value>
+  </data>
+  <data name="Welcome_Agree" xml:space="preserve">
+    <value>I agree to the Terms of Use</value>
+  </data>
+  <data name="Welcome_Agreement" xml:space="preserve">
+    <value>2. Agreement</value>
+  </data>
+  <data name="Welcome_Desc" xml:space="preserve">
+    <value>Server Starter will help your Minecraft Life!</value>
+  </data>
+  <data name="Welcome_NotRegist" xml:space="preserve">
+    <value>Don't regist your name</value>
+  </data>
+  <data name="Welcome_Regist" xml:space="preserve">
+    <value>1. Regist Your Name in Minecraft</value>
+  </data>
+  <data name="Welcome_Start" xml:space="preserve">
+    <value>START !</value>
+  </data>
+  <data name="Welcome_Title" xml:space="preserve">
+    <value>Welcome !</value>
+  </data>
+  <data name="Window_CheckSave" xml:space="preserve">
+    <value>Do you want to save these settings?</value>
+  </data>
+  <data name="World" xml:space="preserve">
+    <value>World</value>
+  </data>
+  <data name="WorldSettings_Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="WorldSettings_Additionals" xml:space="preserve">
+    <value>Additionals</value>
+  </data>
+  <data name="WorldSettings_AddOp" xml:space="preserve">
+    <value>Add Op Player</value>
+  </data>
+  <data name="WorldSettings_AddWhite" xml:space="preserve">
+    <value>Add WhiteList Player</value>
+  </data>
+  <data name="WorldSettings_DataKinds" xml:space="preserve">
+    <value>Data Kinds</value>
+  </data>
+  <data name="WorldSettings_Datapack" xml:space="preserve">
+    <value>This is invalid as a datapack</value>
+  </data>
+  <data name="WorldSettings_Delete1" xml:space="preserve">
+    <value>Do you want to delete </value>
+  </data>
+  <data name="WorldSettings_Delete2" xml:space="preserve">
+    <value> ?</value>
+  </data>
+  <data name="WorldSettings_ImportDP" xml:space="preserve">
+    <value>Import New Datapack</value>
+  </data>
+  <data name="WorldSettings_Imported" xml:space="preserve">
+    <value>Imported</value>
+  </data>
+  <data name="WorldSettings_ImportMap" xml:space="preserve">
+    <value>Import New Custom Map</value>
+  </data>
+  <data name="WorldSettings_ImportP" xml:space="preserve">
+    <value>Import New Plugin</value>
+  </data>
+  <data name="WorldSettings_Map" xml:space="preserve">
+    <value>This is invalid as a custom map</value>
+  </data>
+  <data name="WorldSettings_MapName" xml:space="preserve">
+    <value>Map Name   :   </value>
+  </data>
+  <data name="WorldSettings_Op" xml:space="preserve">
+    <value>Op Right</value>
+  </data>
+  <data name="WorldSettings_OpLev" xml:space="preserve">
+    <value>Op Level</value>
+  </data>
+  <data name="WorldSettings_Player" xml:space="preserve">
+    <value>The following players are not registered in Server Starter.
+Do you want to register them?
+</value>
+  </data>
+  <data name="WorldSettings_Plugin" xml:space="preserve">
+    <value>This is invalid as a plugin</value>
+  </data>
+  <data name="WorldSettings_Properties" xml:space="preserve">
+    <value>Properties</value>
+  </data>
+  <data name="WorldSettings_PropOfWor" xml:space="preserve">
+    <value>Properties of each Worlds</value>
+  </data>
+  <data name="WorldSettings_Register" xml:space="preserve">
+    <value>Selected player and group is already registered</value>
+  </data>
+  <data name="WorldSettings_RemoteWor" xml:space="preserve">
+    <value>Remote World</value>
+  </data>
+  <data name="WorldSettings_Remove" xml:space="preserve">
+    <value>Select the column what you want to remove from list</value>
+  </data>
+  <data name="WorldSettings_Rpack" xml:space="preserve">
+    <value>Server Resource Pack (URL)</value>
+  </data>
+  <data name="WorldSettings_SaveProp" xml:space="preserve">
+    <value>Default server properties saved</value>
+  </data>
+  <data name="WorldSettings_Select1" xml:space="preserve">
+    <value>Select a </value>
+  </data>
+  <data name="WorldSettings_Select2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WorldSettings_SetProp" xml:space="preserve">
+    <value>Default server properties applied</value>
+  </data>
+  <data name="WorldSettings_SW" xml:space="preserve">
+    <value>You are not prepared to use ShareWorld.
+Do you want to show the setting window?</value>
+  </data>
+  <data name="WorldSettings_Title" xml:space="preserve">
+    <value>World Settings</value>
+  </data>
+  <data name="WorldSettings_UseSW" xml:space="preserve">
+    <value>Use ShareWorld</value>
+  </data>
+  <data name="WorldSettings_WhiteL" xml:space="preserve">
+    <value>White List</value>
+  </data>
+  <data name="World_VerDownMsg1" xml:space="preserve">
+    <value>I am trying to grade down the world data from</value>
+  </data>
+  <data name="World_VerDownMsg2" xml:space="preserve">
+    <value> to </value>
+  </data>
+  <data name="World_VerDownMsg3" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="World_VerDownMsg4" xml:space="preserve">
+    <value>This is an operation with an extremely high possibility of data corruption, but do you know what you are doing?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="ZipFile" xml:space="preserve">
+    <value>Compressed File</value>
   </data>
 </root>

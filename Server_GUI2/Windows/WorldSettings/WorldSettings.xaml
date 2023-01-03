@@ -1,0 +1,687 @@
+﻿<base:GeneralCB x:Class="Server_GUI2.Windows.WorldSettings.WorldSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:property="clr-namespace:Server_GUI2.Properties"
+        xmlns:local="clr-namespace:Server_GUI2.Windows.WorldSettings"
+        xmlns:vm="clr-namespace:Server_GUI2.Windows.WorldSettings"
+        xmlns:base="clr-namespace:Server_GUI2.Windows"
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:WorldSettingsVM}"
+        ResizeMode="NoResize"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Closing="OnClosing"
+        Title="World Settings" Height="600" Width="650" WindowStartupLocation="CenterScreen">
+    
+    <Window.Resources>
+        <!--//Source//-->
+        <Style TargetType="Button" x:Key="ButtonSource" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="0 10"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="BlockSource" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Height" Value="33"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="BoxSource" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Height" Value="33"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="BorderBrush" Value="#EBEBEB"/>
+            <Setter Property="Background" Value="#EBEBEB"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style TargetType="ComboBoxItem" x:Key="ComboItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+            <Setter Property="Height" Value="35"/>
+        </Style>
+        <Style TargetType="ComboBox" x:Key="ComboSource" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Style.Setters>
+                <Setter Property="Height" Value="33"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="MaxDropDownHeight" Value="177"/>
+                <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                <Setter Property="ItemContainerStyle" Value="{StaticResource ComboItem}"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Dark">
+                    <Setter Property="Background" Value="#262626"/>
+                </Trigger>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Light">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Line" x:Key="LineStyle">
+            <Style.Setters>
+                <Setter Property="StrokeThickness" Value="0.3"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Dark">
+                    <Setter Property="Stroke" Value="White"/>
+                </Trigger>
+                <Trigger Property="ui:ThemeManager.ActualTheme" Value="Light">
+                    <Setter Property="Stroke" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--//Partial//-->
+        <Style TargetType="Button" x:Key="RunStyle" BasedOn="{StaticResource ButtonSource}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#7CBB00"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#90D000"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#5FAD00"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#939393"/>
+                    <Setter Property="Opacity" Value="0.2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button" x:Key="OtherStyle" BasedOn="{StaticResource ButtonSource}">
+            <Style.Setters>
+                <Setter Property="Margin" Value="10 0"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Background" Value="#FF717171"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#888888"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#424242"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#939393"/>
+                    <Setter Property="Opacity" Value="0.2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button" x:Key="MiniButton" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="33"/>
+            <Setter Property="Height" Value="33"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Grid.Row" Value="1"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Grid" x:Key="SettingContent">
+            <Setter Property="Grid.Row" Value="2"/>
+            <Setter Property="Grid.Column" Value="3"/>
+            <Setter Property="Margin" Value="0 10 0 0"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="TitleBlock" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="20 0 10 0"/>
+        </Style>
+        <Style TargetType="Button" x:Key="Help" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="25"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0 7 30 0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <svgc:SvgViewbox Source="/Resources/help.svg"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--//SideMenu//-->
+        <Style TargetType="Grid" x:Key="SideMenu">
+            <Setter Property="Grid.Row" Value="1"/>
+            <Setter Property="Grid.Column" Value="0"/>
+        </Style>
+        <Style TargetType="ListViewItem" x:Key="MenuItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Height" Value="55"/>
+            <Setter Property="Width" Value="180"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="MenuItemBlock" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Margin" Value="10 5"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="10 0"/>
+        </Style>
+
+        <!--//Properties//-->
+        <Style TargetType="TextBlock" x:Key="TitleBlock2" BasedOn="{StaticResource TitleBlock}">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Margin" Value="30 10 0 0"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="PropertyIndex" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0,15,20,0"/>
+        </Style>
+        <Style TargetType="ComboBox" x:Key="PropertyCombo" BasedOn="{StaticResource ComboSource}">
+            <Setter Property="Width" Value="145"/>
+            <Setter Property="Margin" Value="10,15,0,0"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="PropertyBox" BasedOn="{StaticResource BoxSource}">
+            <Setter Property="Width" Value="145"/>
+        </Style>
+        <Style TargetType="Button" x:Key="PropertyButton" BasedOn="{StaticResource OtherStyle}">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0 10"/>
+        </Style>
+
+        <!--//ShareWorld//-->
+        <Style TargetType="ComboBox" x:Key="ShareWorldCombo" BasedOn="{StaticResource ComboSource}">
+            <Setter Property="Width" Value="200"/>
+        </Style>
+        <Style TargetType="TextBox" x:Key="ShareWorldBox" BasedOn="{StaticResource BoxSource}">
+            <Setter Property="Margin" Value="0 10"/>
+            <Setter Property="Width" Value="200"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--//Additionals//-->
+        <Style TargetType="TextBlock" x:Key="AddBlock" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <!--<Setter Property="Margin" Value="0 10"/>-->
+        </Style>
+        <Style TargetType="TextBox" x:Key="AddBox" BasedOn="{StaticResource BoxSource}">
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="Grid.Row" Value="1"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+        <Style TargetType="ListBox" x:Key="AddList" BasedOn="{StaticResource {x:Type ListBox}}">
+            <Setter Property="Grid.Row" Value="1"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0 40 0 0"/>
+            <Setter Property="MinHeight" Value="150"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="FontSize" Value="20"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!--//OP//-->
+        <Style TargetType="TextBlock" x:Key="OpTitle" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Margin" Value="20 0"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="OpBlock" BasedOn="{StaticResource BlockSource}">
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="Width" Value="200"/>
+        </Style>
+        <Style TargetType="ComboBox" x:Key="OpCombo" BasedOn="{StaticResource ComboSource}">
+            <Setter Property="Width" Value="100"/>
+        </Style>
+
+        <!--//Converter//-->
+        <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
+    </Window.Resources>
+
+    <!--<Window.DataContext>
+        <vm:WorldSettingsVM/>
+    </Window.DataContext>-->
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.RowSpan="1" Grid.ColumnSpan="3">
+            <TextBlock Text="{Binding Resources.WorldSettings_Title}" Margin="30,15,0,0" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
+            <TextBlock Text="{Binding RunInfo}" MaxWidth="350" TextTrimming="CharacterEllipsis" Margin="20 23" FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+            <Line X1="30" X2="610" Y1="70" Y2="70" Style="{StaticResource LineStyle}"/>
+        </Grid>
+
+        <Grid Style="{StaticResource SideMenu}">
+            <StackPanel Margin="0 0 0 50">
+                <ListView x:Name="SideMenuLV" Background="Transparent" BorderBrush="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedIndex="{Binding MenuIndex.Value}">
+
+                    <ListViewItem Style="{StaticResource MenuItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Resources.WorldSettings_Properties}" Style="{StaticResource MenuItemBlock}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem Style="{StaticResource MenuItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="ShareWorld" Style="{StaticResource MenuItemBlock}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem Style="{StaticResource MenuItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Resources.WorldSettings_Additionals}" Style="{StaticResource MenuItemBlock}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem Style="{StaticResource MenuItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Resources.WorldSettings_Op}" Style="{StaticResource MenuItemBlock}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem Style="{StaticResource MenuItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Resources.WorldSettings_WhiteL}" Style="{StaticResource MenuItemBlock}"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                </ListView>
+
+            </StackPanel>
+
+            <Button Content="{Binding Resources.Save}" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Style="{StaticResource RunStyle}"/>
+
+        </Grid>
+
+        <Line X1="3" X2="3" Y1="10" Y2="470" Grid.Column="1" Grid.Row="1" Style="{StaticResource LineStyle}"/>
+
+        <!--//PropertiesContents//-->
+        <Grid Visibility="{Binding ShowProp, Converter={StaticResource BoolToVisible}}" Margin="0 -10 0 0" Style="{StaticResource SettingContent}">
+        <!--<Grid Margin="0 -10 0 0" Style="{StaticResource SettingContent}">-->
+            <TabControl>
+                <TabControl.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Transparent" Offset="0"/>
+                        <GradientStop Color="Gold" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabControl.Background>
+
+                <!--//Main//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Main"/>
+                    </TabItem.Header>
+                    <ScrollViewer>
+                        <Grid Margin="0 10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="370"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            
+                            <TextBlock Text="{Binding Resources.WorldSettings_PropOfWor}" Style="{StaticResource TitleBlock}"/>
+                            <Button Command="{Binding HelpCommand}" CommandParameter="world" Style="{StaticResource Help}"/>
+
+                            <StackPanel Orientation="Horizontal" Margin="0 35 0 0">
+                                <StackPanel Width="200" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <TextBlock Text="{Binding Resources.SystemSettings_Main}" Style="{StaticResource TitleBlock2}"/>
+                                    <TextBlock Text="difficulty" ToolTip="{Binding Resources.P_Difficult}" Style="{StaticResource PropertyIndex}"/>
+                                    <TextBlock Text="hardcore" ToolTip="{Binding Resources.P_Hardcore}" Style="{StaticResource PropertyIndex}"/>
+                                    <TextBlock Text="gamemode" ToolTip="{Binding Resources.P_Gamemode}" Style="{StaticResource PropertyIndex}"/>
+                                    <TextBlock Text="white-list" ToolTip="{Binding Resources.P_WhiteList}" Style="{StaticResource PropertyIndex}"/>
+                                    <TextBlock Text="level-type" ToolTip="{Binding Resources.P_LevelType}" Style="{StaticResource PropertyIndex}"/>
+                                </StackPanel>
+                                <StackPanel Width="190" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                    <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Difficulty}" ItemsSource="{Binding DifficultyCombo}" Margin="10,62,0,0" Style="{StaticResource PropertyCombo}"/>
+                                    <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Hardcore}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
+                                    <ComboBox SelectedItem="{Binding PropertyIndexs.Value.Gamemode}" ItemsSource="{Binding GamemodeCombo}" Style="{StaticResource PropertyCombo}"/>
+                                    <ComboBox SelectedItem="{Binding PropertyIndexs.Value.WhiteList}" ItemsSource="{Binding BoolCombo}" Style="{StaticResource PropertyCombo}"/>
+                                    <ComboBox SelectedItem="{Binding PropertyIndexs.Value.LevelType}" ItemsSource="{Binding TypeCombo}" Style="{StaticResource PropertyCombo}"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <TextBlock Text="{Binding Resources.SystemSettings_Ope}" Grid.Row="1" Style="{StaticResource TitleBlock2}"/>
+                            <StackPanel Grid.Row="1" Margin="40 55 0 0" VerticalAlignment="Top" Orientation="Horizontal">
+                                <TextBlock Text="{Binding Resources.SystemSettings_Apply}" FontSize="20" Width="270" VerticalAlignment="Center"/>
+                                <Button Content="{Binding Resources.Apply}" Command="{Binding SavePropCommand}" VerticalAlignment="Center" Margin="15 0" Style="{StaticResource PropertyButton}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Margin="40 105 0 0" VerticalAlignment="Top" Orientation="Horizontal">
+                                <TextBlock Text="{Binding Resources.SystemSettings_Reset}" FontSize="20" Width="270" VerticalAlignment="Center"/>
+                                <Button Content="{Binding Resources.Reset}" Command="{Binding SetPropCommand}" VerticalAlignment="Center" Margin="15 0" Style="{StaticResource PropertyButton}"/>
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
+
+                <!--//True / False//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="True / False"/>
+                    </TabItem.Header>
+                    <Grid Margin="0 10">
+                        <TextBlock Text="{Binding Resources.SystemSettings_TrueFalse}" Grid.Row="1" Style="{StaticResource TitleBlock}"/>
+                        <DataGrid ItemsSource="{Binding BoolOptions}"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  RowHeaderWidth="0"
+                                  AutoGenerateColumns="False"
+                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                  HorizontalAlignment="Left"
+                                  Margin="30 50 0 0" Width="428">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="{x:Static property:Resources.SystemSettings_Property}" Width="300">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Property}" ToolTip="{Binding ToolTip}" VerticalAlignment="Center" FontSize="16" Margin="11 7"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="{x:Static property:Resources.SystemSettings_SValue}" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.BoolCombo}" SelectedItem="{Binding Value, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Width="80" Style="{StaticResource ComboSource}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!--//Text//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Text"/>
+                    </TabItem.Header>
+                    <Grid Margin="0 10">
+                        <TextBlock Text="{Binding Resources.SystemSettings_Text}" Style="{StaticResource TitleBlock}"/>
+                        <DataGrid ItemsSource="{Binding TextOptions}"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  RowHeaderWidth="0"
+                                  AutoGenerateColumns="False"
+                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                  HorizontalAlignment="Left"
+                                  Margin="30 50 0 0" Width="418">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="{x:Static property:Resources.SystemSettings_Property}" Width="230">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Property}" ToolTip="{Binding ToolTip}" VerticalAlignment="Center" FontSize="16" Margin="11 7"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_SValue}" Binding="{Binding Value}" FontSize="16" Width="170"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+        <!--//ShareWorldContents//-->
+        <Grid Visibility="{Binding ShowSW, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <!--<Grid Style="{StaticResource SettingContent}">-->
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                    <TextBlock Text="{Binding Resources.WorldSettings_UseSW}" FontSize="24" FontWeight="Bold" Margin="20 0" Width="250"/>
+                    <ui:ToggleSwitch OnContent="{Binding Resources.Yes}" OffContent="{Binding Resources.No}" IsOn="{Binding UseSW.Value}" FontSize="24" Margin="30 0 0 0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="20" VerticalAlignment="Top">
+                    <TextBlock Text="{Binding Resources.WorldSettings_Account}" Width="200" FontSize="20" IsEnabled="{Binding CanEdit}"/>
+                    <ComboBox ItemsSource="{Binding Accounts}" DisplayMemberPath="Id" SelectedItem="{Binding AccountIndex.Value}" IsEnabled="{Binding CanEdit}" Style="{StaticResource ShareWorldCombo}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="20 0" VerticalAlignment="Top">
+                    <TextBlock Text="{Binding Resources.WorldSettings_RemoteWor}" Width="200" FontSize="20" IsEnabled="{Binding CanEdit}"/>
+                    <StackPanel Orientation="Vertical">
+                        <ComboBox ItemsSource="{Binding RemoteDataList}" DisplayMemberPath="DisplayName" SelectedItem="{Binding RemoteIndex.Value}" IsEnabled="{Binding CanSelectRemoteIndex}" Style="{StaticResource ShareWorldCombo}"/>
+                        <TextBox Text="{Binding RemoteName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Visibility="{Binding ShowNewRemoteData, Converter={StaticResource BoolToVisible}}" IsEnabled="{Binding CanEdit}" Style="{StaticResource ShareWorldBox}"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <!--//AdditionalContents//-->
+        <Grid Visibility="{Binding ShowAdd, Converter={StaticResource BoolToVisible}}" Margin="0 -10" Style="{StaticResource SettingContent}">
+        <!--<Grid Margin="0 -10" Style="{StaticResource SettingContent}">-->
+            <TabControl>
+                <TabControl.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Transparent" Offset="0"/>
+                        <GradientStop Color="Gold" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabControl.Background>
+                
+                <!--//DataPack//-->
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Datapacks"/>
+                    </TabItem.Header>
+
+                    <Grid Margin="20 10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="145"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="{Binding Resources.WorldSettings_ImportDP}" Style="{StaticResource AddBlock}"/>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 30" Orientation="Horizontal">
+                            <ui:ToggleSwitch Header="{Binding Resources.WorldSettings_DataKinds}" OnContent="Zip" OffContent="Folder" IsOn="{Binding IsZipDatapack.Value}" FontSize="18"/>
+                            <Button Content="{Binding Resources.Import}" Command="{Binding ImportAdditionalsCommand}" CommandParameter="Datapack" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
+                        </StackPanel>
+                        <Line X1="0" Y1="130" X2="420" Y2="130" Style="{StaticResource LineStyle}"/>
+
+                        <TextBlock Text="{Binding Resources.WorldSettings_Imported}" Grid.Row="1" Style="{StaticResource AddBlock}"/>
+                        <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="Datapack" Style="{StaticResource MiniButton}">
+                            <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                        </Button>
+                        <ListBox ItemsSource="{Binding Datapacks.Datapacks}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedDatapack.Value}" MaxHeight="200" Style="{StaticResource AddList}"/>
+                    </Grid>
+                </TabItem>
+                
+                <!--//Plugin//-->
+                <TabItem Visibility="{Binding ShowPluginTab, Converter={StaticResource BoolToVisible}}">
+                    <TabItem.Header>
+                        <TextBlock Text="Plugins"/>
+                    </TabItem.Header>
+
+                    <Grid Margin="20 -10 20 10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="90"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="{Binding Resources.WorldSettings_ImportP}" Margin="0 0 20 0" VerticalAlignment="Center" Style="{StaticResource AddBlock}"/>
+                        <Button Content="{Binding Resources.Import}" Command="{Binding ImportAdditionalsCommand}" CommandParameter="Plugin" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0" Style="{StaticResource OtherStyle}"/>
+                        <Line X1="0" Y1="80" X2="420" Y2="80" Style="{StaticResource LineStyle}"/>
+
+                        <TextBlock Text="{Binding Resources.WorldSettings_Imported}" Grid.Row="1" Style="{StaticResource AddBlock}"/>
+                        <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="Plugin" Style="{StaticResource MiniButton}">
+                            <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                        </Button>
+                        <StackPanel Orientation="Vertical" Grid.Row="1">
+                            <ListBox ItemsSource="{Binding Plugins.Plugins}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedPlugin.Value}" MaxHeight="240" Style="{StaticResource AddList}"/>
+                            <!--// TODO: クロスプレイの実装//-->
+                            <!--<CheckBox Content="Cross-play with Bedlock Edition" IsChecked="{Binding IsCrossPlay.Value}" Margin="0 10" FontSize="18"/>-->
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                
+                <!--//CustomMap//-->
+                <TabItem Visibility="{Binding ShowMapTab, Converter={StaticResource BoolToVisible}}">
+                    <TabItem.Header>
+                        <TextBlock Text="Custom Map"/>
+                    </TabItem.Header>
+
+                    <Grid Margin="20 10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="160"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="{Binding Resources.WorldSettings_ImportMap}" Style="{StaticResource AddBlock}"/>
+                        <StackPanel VerticalAlignment="Top" Margin="30 40" Orientation="Horizontal">
+                            <ui:ToggleSwitch Header="{Binding Resources.WorldSettings_DataKinds}" OnContent="Zip" OffContent="Folder" IsOn="{Binding IsZipMap}" FontSize="18"/>
+                            <Button Content="{Binding Resources.Import}" Command="{Binding ImportAdditionalsCommand}" CommandParameter="CustomMap" VerticalAlignment="Center" Style="{StaticResource OtherStyle}"/>
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Top" Margin="30 100 0 0" Orientation="Horizontal">
+                            <TextBlock Text="{Binding Resources.WorldSettings_MapName}" FontSize="18" Height="33" Padding="0 3"/>
+                            <TextBlock Text="{Binding CustomMap.Value.Name}" FontSize="18" Padding="0 3" Height="33" Width="180"/>
+                        </StackPanel>
+                        <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="CustomMap" Grid.Row="0" Margin="0 100 0 0" Style="{StaticResource MiniButton}">
+                            <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                        </Button>
+                        <Line X1="0" Y1="150" X2="420" Y2="150" Style="{StaticResource LineStyle}"/>
+
+                        <TextBlock Text="{Binding Resources.WorldSettings_Rpack}" Grid.Row="1" Style="{StaticResource AddBlock}"/>
+                        <TextBox Margin="0 40" Style="{StaticResource AddBox}"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+        <!--//OPContents//-->
+        <Grid Visibility="{Binding ShowOp, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <!--<Grid Style="{StaticResource SettingContent}">-->
+            <ScrollViewer Margin="0 0 0 10" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="250"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Resources.WorldSettings_AddOp}" Style="{StaticResource OpTitle}"/>
+                        <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
+                            <TextBlock Text="{Binding Resources.SystemSettings_PName}" Style="{StaticResource OpBlock}"/>
+                            <ComboBox ItemsSource="{Binding Players}" DisplayMemberPath="Name" SelectedItem="{Binding OpPlayerIndex}" IsEnabled="{Binding ValidPlayers}" Width="200" Style="{StaticResource OpCombo}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="40 10 0 0">
+                            <TextBlock Text="{Binding Resources.SystemSettings_GName}" Style="{StaticResource OpBlock}"/>
+                            <ComboBox ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding OpGroupIndex}" Width="200" Style="{StaticResource OpCombo}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="40 10 0 0">
+                            <TextBlock Text="{Binding Resources.WorldSettings_OpLev}" Style="{StaticResource OpBlock}"/>
+                            <ComboBox ItemsSource="{Binding OpLevels}" SelectedItem="{Binding OpLevelIndex}" Style="{StaticResource OpCombo}"/>
+                        </StackPanel>
+                        <Button Content="{Binding Resources.SystemSettings_AddP}" Command="{Binding AddOpPlayerCommand}" IsEnabled="{Binding CanAddOpPlayer}" HorizontalAlignment="Right" Margin="20" Style="{StaticResource RunStyle}"/>
+                    </StackPanel>                    
+                   
+                    <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="Op" Margin="20 0" Style="{StaticResource MiniButton}">
+                        <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                        <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                    </Button>
+                    <StackPanel Orientation="Vertical" Grid.Row="1">
+                        <TextBlock Text="{Binding Resources.SystemSettings_PlayerL}" Style="{StaticResource OpTitle}"/>
+                        <DataGrid ItemsSource="{Binding OpPlayersList}"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  CanUserResizeRows="False"
+                                  CanUserResizeColumns="False"
+                                  AutoGenerateColumns="False"
+                                  RowHeaderWidth="0"
+                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                  HorizontalAlignment="Left"
+                                  SelectedItem="{Binding OpPlayersListIndex}"
+                                  Margin="20 10">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_PName}" MaxWidth="200" IsReadOnly="True" Binding="{Binding Name}"/>
+                                <!--<DataGridTextColumn Header="UUID" Width="130" IsReadOnly="True" Binding="{Binding UUID}"/>-->
+                                <!--//禁則処理の実装方法　https://docs.microsoft.com/ja-jp/dotnet/desktop/wpf/controls/how-to-implement-validation-with-the-datagrid-control?view=netframeworkdesktop-4.8　//-->
+                                <DataGridTemplateColumn Header="{x:Static property:Resources.WorldSettings_OpLev}" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.OpLevels}" SelectedItem="{Binding Level}" HorizontalAlignment="Center" Style="{StaticResource ComboSource}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <!--//WhiteListContents//-->
+        <Grid Visibility="{Binding ShowWhite, Converter={StaticResource BoolToVisible}}" Style="{StaticResource SettingContent}">
+        <!--<Grid Style="{StaticResource SettingContent}">-->
+            <ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+            
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Resources.WorldSettings_AddWhite}" Style="{StaticResource OpTitle}"/>
+                        <StackPanel Orientation="Horizontal" Margin="40 20 0 0">
+                            <TextBlock Text="{Binding Resources.SystemSettings_PName}" Style="{StaticResource OpBlock}"/>
+                            <ComboBox ItemsSource="{Binding Players}" DisplayMemberPath="Name" SelectedItem="{Binding WhitePlayerIndex}" IsEnabled="{Binding ValidPlayers}" Width="200" Style="{StaticResource OpCombo}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="40 10 0 0">
+                            <TextBlock Text="{Binding Resources.SystemSettings_GName}" Style="{StaticResource OpBlock}"/>
+                            <ComboBox ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding WhiteGroupIndex}" Width="200" Style="{StaticResource OpCombo}"/>
+                        </StackPanel>
+                        <Button Content="{Binding Resources.SystemSettings_AddP}" Command="{Binding AddWhiteCommand}" IsEnabled="{Binding CanAddWhitePlayer}" HorizontalAlignment="Right" Margin="20" Style="{StaticResource RunStyle}"/>
+                    </StackPanel>
+
+                    <Button Command="{Binding DeleteAdditionalsCommand}" CommandParameter="WhiteList" Margin="20 0" Style="{StaticResource MiniButton}">
+                        <!--svgコンテンツはResource、コピーする、の設定をpropertiyから行う必要あり-->
+                        <svgc:SvgViewbox Source="pack://application:,,,/Resources/MainWindow/trash-alt-regular.svg"/>
+                    </Button>
+                    <StackPanel Orientation="Vertical" Grid.Row="1">
+                        <TextBlock Text="{Binding Resources.SystemSettings_PlayerL}" Style="{StaticResource OpTitle}"/>
+                        <DataGrid ItemsSource="{Binding WhitePlayersList}"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      CanUserResizeRows="False"
+                                      CanUserResizeColumns="False"
+                                      AutoGenerateColumns="False"
+                                      RowHeaderWidth="0"
+                                      VirtualizingPanel.ScrollUnit="Pixel"
+                                      HorizontalAlignment="Left"
+                                      SelectedItem="{Binding WhitePlayersListIndex}"
+                                      Margin="20 10">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{x:Static property:Resources.SystemSettings_PName}" MaxWidth="180" IsReadOnly="True" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="UUID" Width="220" IsReadOnly="True" Binding="{Binding UUID}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</base:GeneralCB>
