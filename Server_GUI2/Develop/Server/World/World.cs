@@ -372,16 +372,21 @@ namespace Server_GUI2.Develop.Server.World
 
             LocalWorld.Path.World.Plugins.Directory.CopyTo(version.Path.Plugins.FullName);
 
-            // 実行
-            LocalWorld.WrapRun(version, runFunc);
+            try
+            {
+                // 実行
+                LocalWorld.WrapRun(version, runFunc);
+            }
+            finally
+            {
+                // プラグインの設定の反映
+                logger.Info("save plugin settings");
 
-            // プラグインの設定の反映
-            logger.Info("save plugin settings");
+                LocalWorld.Path.World.Plugins.Delete(true);
+                version.Path.Plugins.Directory.CopyTo(LocalWorld.Path.World.Plugins.FullName);
 
-            LocalWorld.Path.World.Plugins.Delete(true);
-            version.Path.Plugins.Directory.CopyTo(LocalWorld.Path.World.Plugins.FullName);
-
-            logger.Info("</WrapRun_Unlinked>");
+                logger.Info("</WrapRun_Unlinked>");
+            }
         }
 
         /// <summary>

@@ -11,25 +11,42 @@ namespace Server_GUI2.Develop.Util
     {
         public static void CopyTo(this DirectoryInfo dir, string destinationDir, bool recursive = true, bool notExistsOK = true)
         {
+            dir.Refresh();
+
+            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Console.WriteLine(dir.FullName);
+            Console.WriteLine(destinationDir);
+
             // Check if the source directory exists
             if (!dir.Exists)
                 if (notExistsOK)
                     return;
                 else
                     throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
-
             // Cache directories before we start copying
+            Console.WriteLine("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+
             DirectoryInfo[] dirs = dir.GetDirectories();
 
             // Create the destination directory
-            Directory.CreateDirectory(destinationDir);
+            var d = Directory.CreateDirectory(destinationDir);
+            while (!d.Exists)
+            {
+                d.Refresh();
+            }
 
             // Get the files in the source directory and copy to the destination directory
             foreach (FileInfo file in dir.GetFiles())
             {
                 string targetFilePath = Path.Combine(destinationDir, file.Name);
-                file.CopyTo(targetFilePath);
+                var f = file.CopyTo(targetFilePath);
+                while (!f.Exists)
+                {
+                    f.Refresh();
+                }
             }
+
+            Console.WriteLine("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
 
             // If recursive and copying subdirectories, recursively call this method
             if (recursive)
@@ -40,6 +57,7 @@ namespace Server_GUI2.Develop.Util
                     CopyTo(subDir, newDestinationDir, true);
                 }
             }
+            Console.WriteLine("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
         }
     }
 }

@@ -61,6 +61,8 @@ namespace Server_GUI2.Develop.Server
         /// <param name="force"></param>
         public void Delete(bool deletedOk = false,bool force = false)
         {
+            Directory.Refresh();
+
             Console.WriteLine($"DELETED {Directory.FullName}");
             if (deletedOk && !Exists)
                 return;
