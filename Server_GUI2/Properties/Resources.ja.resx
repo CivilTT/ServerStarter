@@ -138,6 +138,9 @@
   <data name="Close" xml:space="preserve">
     <value>閉じる</value>
   </data>
+  <data name="CloseBar_ClosedServer" xml:space="preserve">
+    <value>サーバーを完全に閉鎖</value>
+  </data>
   <data name="CloseBar_Push" xml:space="preserve">
     <value>ワールドデータをリモートにアップロード</value>
   </data>

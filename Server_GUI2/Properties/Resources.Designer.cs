@@ -118,6 +118,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///   Multiplay server was completely closed に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string CloseBar_ClosedServer {
+            get {
+                return ResourceManager.GetString("CloseBar_ClosedServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Push the world data to the remote repository に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string CloseBar_Push {
