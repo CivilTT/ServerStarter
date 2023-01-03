@@ -71,7 +71,7 @@ namespace Server_GUI2
 
             // Close Progress Bar
             //CloseProgressBar.ShowCount();
-            CloseProgressBar.Close();
+            //CloseProgressBar.Close();
 
             //Shutdown
             ShutDown();

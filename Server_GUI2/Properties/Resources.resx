@@ -138,6 +138,9 @@ Please check the error and if you suspect a system bug, please contact us at Git
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="CloseBar_ClosedServer" xml:space="preserve">
+    <value>Multiplay server was completely closed</value>
+  </data>
   <data name="CloseBar_Push" xml:space="preserve">
     <value>Push the world data to the remote repository</value>
   </data>

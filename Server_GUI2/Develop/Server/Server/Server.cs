@@ -103,7 +103,8 @@ namespace Server_GUI2
             }
 
             // TODO: フラグ数の更新
-            StartServer.CloseProgressBar = new Windows.ProgressBar.ProgressBar(Properties.Resources.CloseBar_Title, 4);
+            StartServer.CloseProgressBar = new Windows.ProgressBar.ProgressBar(Properties.Resources.CloseBar_Title, 5);
+            StartServer.CloseProgressBar.AddMessage(Properties.Resources.CloseBar_ClosedServer);
 
             logger.Info("</Start>");
         }
