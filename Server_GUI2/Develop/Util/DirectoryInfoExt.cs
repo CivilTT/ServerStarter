@@ -13,10 +13,6 @@ namespace Server_GUI2.Develop.Util
         {
             dir.Refresh();
 
-            Console.WriteLine("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            Console.WriteLine(dir.FullName);
-            Console.WriteLine(destinationDir);
-
             // Check if the source directory exists
             if (!dir.Exists)
                 if (notExistsOK)
@@ -24,8 +20,7 @@ namespace Server_GUI2.Develop.Util
                 else
                     throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
             // Cache directories before we start copying
-            Console.WriteLine("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-
+            
             DirectoryInfo[] dirs = dir.GetDirectories();
 
             // Create the destination directory
@@ -46,8 +41,6 @@ namespace Server_GUI2.Develop.Util
                 }
             }
 
-            Console.WriteLine("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-
             // If recursive and copying subdirectories, recursively call this method
             if (recursive)
             {
@@ -57,7 +50,6 @@ namespace Server_GUI2.Develop.Util
                     CopyTo(subDir, newDestinationDir, true);
                 }
             }
-            Console.WriteLine("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
         }
     }
 }
