@@ -536,6 +536,7 @@ namespace Server_GUI2.Develop.Server.World
 
                 // リモートのワールドデータを更新し、ロック解除
                 RemoteWorld.Using = false;
+                RemoteWorld.Version = version;
                 StartServer.CloseProgressBar.AddMessage(Properties.Resources.CloseBar_UpdateState, true);
                 RemoteWorld.UpdateWorldState();
 

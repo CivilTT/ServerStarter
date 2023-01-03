@@ -102,7 +102,7 @@ namespace Server_GUI2.Develop.Server.World
         /// </summary>
         public string Id  { get; private set; }
 
-        public Version Version  { get; private set; }
+        public Version Version  { get; set; }
 
         public Storage Storage { get; private set; }
 
