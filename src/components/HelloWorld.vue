@@ -1,10 +1,12 @@
 <script setup lang="ts">
-const a = 'gomi'
-
 interface Props {
   value: string;
 }
 const props = defineProps<Props>();
+
+// getting latest version name
+const jsonObj = await fetch('https://api.github.com/repos/CivilTT/ServerStarter/releases/latest')
+const versionName = (await jsonObj.json()).name.split(' ')[1]
 </script>
 
 <template>
@@ -22,7 +24,7 @@ const props = defineProps<Props>();
           <div class="row justify-center download_button">
             <q-btn color="white" text-color="primary" size="lg" padding="md" href="https://github.com/CivilTT/ServerStarter/releases/latest/download/Setup_ServerStarter.msi">
               <span class="download">
-                Download ver 1.2.0.0
+                Download ver {{versionName}}
               </span>
             </q-btn>
           </div>

@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <HelloWorld value="kusa"/>
+    <Suspense>
+      <HelloWorld value="test"/>
+    </Suspense>
   </div>
 </template>
 
