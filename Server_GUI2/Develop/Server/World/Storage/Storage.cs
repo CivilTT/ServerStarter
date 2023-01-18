@@ -201,6 +201,26 @@ namespace Server_GUI2.Develop.Server.World
 
         public override string Email { get; }
 
+        private static bool? GitInstalled_ = null;
+
+        public static bool GitInstalled
+        {
+            get
+            {
+                if (GitInstalled_.HasValue)
+                {
+                    return GitInstalled_.Value;
+                }
+                else
+                {
+                    // git help が実行可能かどうかをチェックしてgitがインストールされているかを確認
+                    var flag = GitCommand.CheckInstalled();
+                    GitInstalled_ = flag;
+                    return flag;
+                }
+            }
+        }
+
         /// <summary>
         /// 使用可能なブランチ名かどうかを返す
         /// </summary>
@@ -239,6 +259,7 @@ namespace Server_GUI2.Develop.Server.World
         {
             logger.Info($"<AddStorage>");
             var remote = new GitRemote(account,repository, email);
+
             return GitStorageManager.Instance.ReadWorldState(remote).SuccessFunc<GitStorage>(
                 state => {
                     // 登録済みの場合
@@ -257,7 +278,9 @@ namespace Server_GUI2.Develop.Server.World
                     StorageCollection.Instance.Add(storage);
                     logger.Info($"</AddStorage>");
                     return new Success<GitStorage, Exception>(storage);
-                });
+               });
+
+
         }
 
         /// <summary>

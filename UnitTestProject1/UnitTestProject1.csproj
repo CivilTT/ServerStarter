@@ -133,6 +133,7 @@
     <Compile Include="DirectoryTest.cs" />
     <Compile Include="TempTest.cs" />
     <Compile Include="UPnP.cs" />
+    <Compile Include="ProcessTest.cs" />
     <Compile Include="WorldTest.cs" />
     <Compile Include="VersionListTest.cs" />
   </ItemGroup>

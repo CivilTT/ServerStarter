@@ -24,6 +24,32 @@ namespace Server_GUI2.Util
     {
         private static readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+
+        public static bool CheckInstalled()
+        {
+            var StartInfo = new ProcessStartInfo("git", "help")
+            {
+                Arguments = "help",
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+            };
+
+            using (var process = Process.Start(StartInfo))
+            {
+                try
+                {
+                    process.WaitForExit();
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public static string ExecuteThrow(string arguments, string directory)
         {
              return  ExecuteThrow(arguments, (code,str) => new GitException($"failed to execute \"git {arguments}\", errorcode: {code}, error: {str}"), directory);
