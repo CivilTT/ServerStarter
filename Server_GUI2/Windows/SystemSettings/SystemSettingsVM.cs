@@ -40,7 +40,15 @@ namespace Server_GUI2.Windows.SystemSettings
         public BindingValue<string> RepoName { get; private set; }
         public bool HasSWContents => CheckHasContent(new List<BindingValue<string>> { AccountName, AccountEmail, RepoName }, "");
         public bool GitInstalled => GitStorage.GitInstalled;
-        public bool CanAddition_SW => HasSWContents & GitInstalled & !RemoteAdding.Value;
+        public bool CanAddition_SW {
+            get {
+                Console.WriteLine("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                Console.WriteLine(HasSWContents);
+                Console.WriteLine(GitInstalled);
+                Console.WriteLine(!RemoteAdding.Value);
+                return HasSWContents && GitInstalled && !RemoteAdding.Value;
+                }
+        }
         public BindingValue<bool> RemoteAdding { get; private set; }
         public ObservableCollection<IRemoteWorld> RemoteList { get; private set; }
         public BindingValue<IRemoteWorld> RLIndex { get; private set; }

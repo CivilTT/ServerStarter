@@ -36,16 +36,16 @@ namespace Server_GUI2.Util
                 RedirectStandardError = true,
             };
 
-            using (var process = Process.Start(StartInfo))
+            try
             {
-                try
+                using (var process = Process.Start(StartInfo))
                 {
-                    process.WaitForExit();
+                        process.WaitForExit();
                 }
-                catch
-                {
-                    return false;
-                }
+            }
+            catch
+            {
+                return false;
             }
             return true;
         }
