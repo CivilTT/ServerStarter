@@ -23,9 +23,9 @@ namespace Server_GUI2.Windows.SystemSettings
 
         // 設定項目の表示非表示を操作
         public BindingValue<int> MenuIndex { get; private set; }
-        public bool ShowSW => MenuIndex.Value == 0;
-        public bool ShowServer => MenuIndex.Value == 1;
-        public bool ShowPlayers => MenuIndex.Value == 2;
+        public bool ShowServer => MenuIndex.Value == 0;
+        public bool ShowPlayers => MenuIndex.Value == 1;
+        public bool ShowSW => MenuIndex.Value == 2;
         public bool ShowNet => MenuIndex.Value == 3;
         public bool ShowOthers => MenuIndex.Value == 4;
 
@@ -38,7 +38,9 @@ namespace Server_GUI2.Windows.SystemSettings
         public BindingValue<string> AccountName { get; private set; }
         public BindingValue<string> AccountEmail { get; private set; }
         public BindingValue<string> RepoName { get; private set; }
-        public bool CanAddition_SW => CheckHasContent(new List<BindingValue<string>> { AccountName, AccountEmail, RepoName }, "");
+        public bool HasSWContents => CheckHasContent(new List<BindingValue<string>> { AccountName, AccountEmail, RepoName }, "");
+        public bool GitInstalled => GitStorage.GitInstalled;
+        public bool CanAddition_SW => HasSWContents & GitInstalled & !RemoteAdding.Value;
         public BindingValue<bool> RemoteAdding { get; private set; }
         public ObservableCollection<IRemoteWorld> RemoteList { get; private set; }
         public BindingValue<IRemoteWorld> RLIndex { get; private set; }
@@ -170,7 +172,7 @@ namespace Server_GUI2.Windows.SystemSettings
             AccountName = new BindingValue<string>("", () => OnPropertyChanged(new string[2] { "AccountName", "CanAddition_SW" }));
             AccountEmail = new BindingValue<string>("", () => OnPropertyChanged(new string[2] { "AccountEmail", "CanAddition_SW" }));
             RepoName = new BindingValue<string>("ShareWorld", () => OnPropertyChanged(new string[2] { "RepoName", "CanAddition_SW" }));
-            RemoteAdding = new BindingValue<bool>(false, () => OnPropertyChanged(new string[2] { "RemoteAdding", "CanSave" }));
+            RemoteAdding = new BindingValue<bool>(false, () => OnPropertyChanged(new string[3] { "RemoteAdding", "CanAddition_SW", "CanSave" }));
             RemoteList = new ObservableCollection<IRemoteWorld>(Storages.Storages.SelectMany(storage => storage.RemoteWorlds).OfType<RemoteWorld>());
             RemoteList.AddRange(Storages.Storages.Where(storage => storage.RemoteWorlds.Count == 1).SelectMany(storage => storage.RemoteWorlds));  /*RemoteWorldsがないレポジトリを表示するための処理*/
             RLIndex = new BindingValue<IRemoteWorld>(null, () => OnPropertyChanged("RLIndex"));

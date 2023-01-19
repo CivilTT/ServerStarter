@@ -719,6 +719,9 @@ GitのReleaseページにServerStarterの最新バージョンが公開されて
   <data name="SystemSettings_Title" xml:space="preserve">
     <value>システム設定</value>
   </data>
+  <data name="SystemSettings_ToolTipSW" xml:space="preserve">
+    <value>がインストールされていません</value>
+  </data>
   <data name="SystemSettings_TrueFalse" xml:space="preserve">
     <value>True / False 設定</value>
   </data>

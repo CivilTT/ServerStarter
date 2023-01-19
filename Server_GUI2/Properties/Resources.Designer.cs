@@ -1855,6 +1855,15 @@ namespace Server_GUI2.Properties {
         }
         
         /// <summary>
+        ///    is not installed に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SystemSettings_ToolTipSW {
+            get {
+                return ResourceManager.GetString("SystemSettings_ToolTipSW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   True / False Settings に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SystemSettings_TrueFalse {
