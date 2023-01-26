@@ -29,6 +29,10 @@ const repositoryRows = [
     value: '（原則）Private'
   },
   {
+    index: 'Add a README file',
+    value: '(チェックを入れる)'
+  },
+  {
     index: 'その他の項目',
     value: '初期設定の通り'
   },
