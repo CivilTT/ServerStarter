@@ -31,8 +31,8 @@ namespace Server_GUI2.Develop.Util
                 ShowErrorMsg(versionNum);
             foreach ( var dir in javaPath.GetDirectories())
             {
-                var match = Regex.Match(dir.Name, @"jdk-(?<ver>[0-9]+)\.[0-9]+\.[0-9]+");
-                // jdk-??.?.?
+                var match = Regex.Match(dir.Name, @"jdk-(?<ver>[0-9]+)(?:\.[0-9]+)*");
+                // jdk-??(.?)*
                 if (match.Success)
                 {
                     var verint = int.Parse(match.Groups["ver"].Value);

@@ -132,6 +132,7 @@
     <Compile Include="ReadJsonTest.cs" />
     <Compile Include="DirectoryTest.cs" />
     <Compile Include="TempTest.cs" />
+    <Compile Include="RegexTest.cs" />
     <Compile Include="UPnP.cs" />
     <Compile Include="ProcessTest.cs" />
     <Compile Include="WorldTest.cs" />
