@@ -34,7 +34,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
 
         private void SearchCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (Player.UUID == "" || Player.UUID == null)
+            if (Player?.UUID == "" || Player?.UUID == null)
             {
                 CustomMessageBox.Show(Properties.Resources.SystemSettings_Exist, ButtonType.OK, Image.Error);
                 //MW.MessageBox.Show(Owner, "このプレイヤー名は存在しません。""このプレイヤー名は存在しません。", "Server Starter", MessageBoxButton.OK, MessageBoxImage.Error);

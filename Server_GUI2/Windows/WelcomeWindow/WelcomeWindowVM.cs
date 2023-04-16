@@ -15,7 +15,7 @@ namespace Server_GUI2.Windows.WelcomeWindow
 
         // 1.
         public BindingValue<string> PlayerName { get; private set; }
-        public string checkedName = "";
+        public string checkedName = null;
         private bool check => PlayerName.Value == checkedName;
         public BindingValue<bool> IsActive { get; private set; }
         public BindingValue<string> UUID { get; private set; }
