@@ -481,13 +481,17 @@ namespace Server_GUI2.Develop.Server.World
         private void WrapRun_Linked(Version version, bool reGenerate , Action<ServerSettings, string> runFunc)
         {
             logger.Info("ready already linked world data");
-            
+
             if (RemoteWorld.AlreadyUsing) {
+
                 var is_annonimus = RemoteWorld.LastUser == null || RemoteWorld.LastUser == "" || RemoteWorld.LastUser == "Anonymus";
 
-                var msg = is_annonimus ? "このワールドは現在匿名ユーザーによって開かれています。" : $"このワールドは現在{RemoteWorld.LastUser}によって開かれています。";
-                // TODO:英訳
-                ServerStarterException.ShowError(msg, new RemoteWorldException("remoteworld is now used by other member"));
+                if ( is_annonimus || RemoteWorld.LastUser != UserSettings.Instance.userSettings.OwnerName )
+                {
+                    var msg = is_annonimus ? "このワールドは現在匿名ユーザーによって開かれています。" : $"このワールドは現在{RemoteWorld.LastUser}によって開かれています。";
+                    // TODO:英訳
+                    ServerStarterException.ShowError(msg, new RemoteWorldException("remoteworld is now used by other member"));
+                }
             }
 
 
