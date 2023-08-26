@@ -1,8 +1,6 @@
 <template>
-  <div class="home">
-    <HowToStart/>
-    <!-- <Attention/> -->
-  </div>
+  <HowToStart />
+  <!-- <Attention/> -->
 </template>
 
 <script lang="ts" setup>

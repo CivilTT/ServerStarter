@@ -21,20 +21,24 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
+  // {
+  //   path: '/main',
+  //   name: 'main',
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/MainWindow.vue')
+  // },
+  // {
+  //   path: '/world',
+  //   name: 'world',
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/WorldSettings.vue')
+  // },
+  // {
+  //   path: '/system',
+  //   name: 'system',
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/SystemSettings.vue')
+  // },
   {
-    path: '/main',
-    name: 'main',
-    component: () => import(/* webpackChunkName: "about" */ '../views/MainWindow.vue')
-  },
-  {
-    path: '/world',
-    name: 'world',
-    component: () => import(/* webpackChunkName: "about" */ '../views/WorldSettings.vue')
-  },
-  {
-    path: '/system',
-    name: 'system',
-    component: () => import(/* webpackChunkName: "about" */ '../views/SystemSettings.vue')
+    path: '/funcs',
+    component: () => import('../views/FuncsView.vue')
   },
   {
     path: '/ShareWorld',

@@ -1,24 +1,35 @@
 <script setup lang="ts">
-const menuList = [
+interface iMenuItem {
+  to: string,
+  caption: string,
+  label: string
+}
+
+const menuList: iMenuItem[] = [
   {
     to:"/intro",
     caption:"Introduction",
     label:"はじめに"
   },
+  // {
+  //   to:"/main",
+  //   caption:"main",
+  //   label:"メイン画面"
+  // },
+  // {
+  //   to:"/world",
+  //   caption:"world",
+  //   label:"ワールド設定"
+  // },
+  // {
+  //   to:"/system",
+  //   caption:"system",
+  //   label:"システム設定"
+  // },
   {
-    to:"/main",
-    caption:"main",
-    label:"メイン画面"
-  },
-  {
-    to:"/world",
-    caption:"world",
-    label:"ワールド設定"
-  },
-  {
-    to:"/system",
-    caption:"system",
-    label:"システム設定"
+    to: '/funcs',
+    caption: 'Functions',
+    label: '主要機能一覧'
   },
   {
     to:"/ShareWorld",
