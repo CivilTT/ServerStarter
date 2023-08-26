@@ -1,95 +1,33 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import SideMenuView from './views/SideMenuView.vue'
+
+const leftDrawerOpen = ref(false)
+</script>
+
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
         <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu" />
 
-        <q-btn stretch flat to="/" @click="select = null">
+        <q-btn stretch flat to="/">
           <q-toolbar-title>
             <span class="title">
               <b>Server Starter</b> for <b>Minecraft</b>
             </span>
           </q-toolbar-title>
         </q-btn>
-
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-grey-2">
-      <q-item-label header>Menu</q-item-label>
-      <q-list>
-        <template v-for="(menuItem, index) in menuList" :key="index">
-          <q-item :to="menuItem.to"
-            @click="select = index">
-            <q-item-section avatar>
-              <img :src="select == index ? 'images/menuicon_open.svg' : 'images/menuicon.svg'" />
-            </q-item-section>
-            <q-item-section>
-            <q-item-label>{{menuItem.label}}</q-item-label>
-            <q-item-label caption>{{menuItem.caption}}</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-separator :key="'sep' + index"  v-if="menuItem.separator" />
-        </template>
-      </q-list>
-    </q-drawer>
+    <SideMenuView v-model="leftDrawerOpen" />
+
     <q-page-container>
       <router-view></router-view>
     </q-page-container>
   </q-layout>
 </template>
-
-<script>
-import { ref } from 'vue'
-
-export default {
-  name: 'LayoutDefault',
-
-  setup() {
-    return {
-      leftDrawerOpen: ref(false),
-      select:ref(null),
-      menuList:[
-        {
-          to:"/intro",
-          caption:"Introduction",
-          label:"はじめに"
-        },
-        {
-          to:"/main",
-          caption:"main",
-          label:"メイン画面"
-        },
-        {
-          to:"/world",
-          caption:"world",
-          label:"ワールド設定"
-        },
-        {
-          to:"/system",
-          caption:"system",
-          label:"システム設定"
-        },
-        {
-          to:"/ShareWorld",
-          caption:"ShareWorld",
-          label:"ShareWorld"
-        },
-        {
-          to:"/PortMapping",
-          caption:"PortMapping",
-          label:"ポート開放"
-        },
-        {
-          to:"/credit",
-          caption:"credit",
-          label:"利用規約"
-        },
-      ]
-    }
-  }
-}
-</script>
 
 <style scoped lang="scss">
 .title{
