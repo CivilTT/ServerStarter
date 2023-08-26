@@ -1,20 +1,41 @@
-# vueapp
+# ServerStarter (serverstarter)
 
-## Project setup
-```
+Start Minecraft server only ONE click!
+
+## Install the dependencies
+```bash
+yarn
+# or
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-npm run deploy
+### Start the app in development mode (hot-code reloading, error reporting, etc.)
+```bash
+quasar dev
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Lint the files
+```bash
+yarn lint
+# or
+npm run lint
+```
+
+
+### Format the files
+```bash
+yarn format
+# or
+npm run format
+```
+
+
+
+### Build the app for production
+```bash
+quasar build
+```
+
+### Customize the configuration
+See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).

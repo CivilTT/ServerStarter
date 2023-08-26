@@ -1,65 +1,36 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import Introduction from '../views/Introduction.vue'
+import { route } from 'quasar/wrappers';
+import {
+  createMemoryHistory,
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from 'vue-router';
 
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/intro',
-    name: 'intro',
-    component: Introduction
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
-  // {
-  //   path: '/main',
-  //   name: 'main',
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/MainWindow.vue')
-  // },
-  // {
-  //   path: '/world',
-  //   name: 'world',
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/WorldSettings.vue')
-  // },
-  // {
-  //   path: '/system',
-  //   name: 'system',
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/SystemSettings.vue')
-  // },
-  {
-    path: '/funcs',
-    component: () => import('../views/FuncsView.vue')
-  },
-  {
-    path: '/ShareWorld',
-    name: 'sw',
-    component: () => import(/* webpackChunkName: "about" */ '../views/ShareWorld.vue')
-  },
-  {
-    path: '/PortMapping',
-    name: 'apm',
-    component: () => import(/* webpackChunkName: "about" */ '../views/AutoPortMapping.vue')
-  },
-  {
-    path: '/credit',
-    name: 'credit',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Credit.vue')
-  }
-]
+import routes from './routes';
 
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+/*
+ * If not building with SSR mode, you can
+ * directly export the Router instantiation;
+ *
+ * The function below can be async too; either use
+ * async/await or return a Promise which resolves
+ * with the Router instance.
+ */
 
-export default router
+export default route(function (/* { store, ssrContext } */) {
+  const createHistory = process.env.SERVER
+    ? createMemoryHistory
+    : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
+
+  const Router = createRouter({
+    scrollBehavior: () => ({ left: 0, top: 0 }),
+    routes,
+
+    // Leave this as is and make changes in quasar.conf.js instead!
+    // quasar.conf.js -> build -> vueRouterMode
+    // quasar.conf.js -> build -> publicPath
+    history: createHistory(process.env.VUE_ROUTER_BASE),
+  });
+
+  return Router;
+});

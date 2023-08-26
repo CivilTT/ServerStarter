@@ -1,10 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-import SideMenuView from './pages/SideMenuView.vue'
-
-const leftDrawerOpen = ref(false)
-</script>
-
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
@@ -29,18 +22,10 @@ const leftDrawerOpen = ref(false)
   </q-layout>
 </template>
 
-<style scoped lang="scss">
-.title{
-  text-transform: none;
-  font-size: 1.2rem;
-  line-height: 1rem;
-  font-family: 'Quicksand';
-  font-weight: 400;
-  
-  b {
-    font-size: 1.5rem;
-    font-family: 'PT Sans', sans-serif;
-    font-weight: 900;
-  }
-}
-</style>
+<script setup lang="ts">
+import { ref } from 'vue';
+import SideMenuView from 'src/pages/SideMenuView.vue';
+
+const leftDrawerOpen = ref(false)
+
+</script>

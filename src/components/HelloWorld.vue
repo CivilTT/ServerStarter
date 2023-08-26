@@ -1,18 +1,24 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+
 interface Props {
   value: string;
 }
-const props = defineProps<Props>();
+defineProps<Props>();
 
-// getting latest version name
-const jsonObj = await fetch('https://api.github.com/repos/CivilTT/ServerStarter/releases/latest')
-const versionName = (await jsonObj.json()).name.split(' ')[1]
+const versionName = ref('')
+
+onMounted(async () => {
+  // getting latest version name
+  const jsonObj = await fetch('https://api.github.com/repos/CivilTT/ServerStarter/releases/latest')
+  versionName.value = (await jsonObj.json()).name.split(' ')[1]
+})
 </script>
 
 <template>
   <q-page>
     <div class="row justify-center" style="min-height: inherit;">
-      <q-img src="images/main_image4.png" alt=""/>
+      <q-img src="src/assets/titleImg.png"/>
       <div class="title_box_full row justify-center items-center">
         <div class="title_box">
           <h1 class="title">
@@ -34,7 +40,7 @@ const versionName = (await jsonObj.json()).name.split(' ')[1]
     <!-- <div class="row justify-center desc">
       <p>ServerStarterはJava版マインクラフトのサーバーのインストールと起動をサポートするwindowsアプリケーションです。</p>
     </div> -->
-</q-page>
+  </q-page>
 </template>
 
 <style lang="scss" scoped>
