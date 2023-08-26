@@ -10,6 +10,6 @@ import APM from '@/components/AutoPortMapping/APM.vue';
     <What/>
     <How/>
     <Settings/>
-    <APM/>
+    <!-- <APM/> -->
   </div>
 </template>

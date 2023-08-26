@@ -76,9 +76,9 @@ export default {
           label:"ShareWorld"
         },
         {
-          to:"/AutoPortMapping",
-          caption:"AutoPortMapping",
-          label:"自動ポート開放"
+          to:"/PortMapping",
+          caption:"PortMapping",
+          label:"ポート開放"
         },
         {
           to:"/credit",
