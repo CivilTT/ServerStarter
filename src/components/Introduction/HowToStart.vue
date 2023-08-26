@@ -138,12 +138,15 @@ var step_participant = ref(1)
         </q-step>
         <q-step :name="3" title="3. ほかの人がサーバーに参加する" :done="step_participant > 3">
           <p>
-            他の人がサーバーに参加するためにはサーバーの起動者に<a class="a" href="AutoPortMapping">ポート開放</a>の設定が必要です
+            他の人がサーバーに参加するためにはサーバーの起動者に<a class="a" href="PortMapping">ポート開放</a>の設定が必要です
           </p>
           <p>
             サーバーの起動者でない人がサーバーに参加する際には、ServerStarterの画面右上に映っているIPアドレスを、Minecraftのサーバーアドレス欄に入力してください
           </p>
-          <q-img src="@/assets/Introduction/ip.png"  width="min(500px,100%)"/>
+          <div class="row q-gutter-md">
+            <q-img src="@/assets/Introduction/ip.png"  width="min(500px,100%)"/>
+            <q-img src="@/assets/Introduction/client2.png"  width="min(500px,100%)"/>
+          </div>
           <q-stepper-navigation>
             <q-btn flat @click="step_participant = 2" color="secondary" label="Back" class="q-ml-sm" />
           </q-stepper-navigation>
