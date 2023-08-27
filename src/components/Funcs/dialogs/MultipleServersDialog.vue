@@ -12,6 +12,23 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
       title="6種類のサーバーに対応"
       @close="onDialogOK"
     >
+      <p>ServerStarterでは6種類のサーバーを起動することができます</p>
+      <ul>
+        <li>バニラ（Minecraftの公式サーバー）</li>
+        <li>Spigot</li>
+        <li>PaperMC</li>
+        <li>Fabric</li>
+        <li>Forge</li>
+        <li>MohistMC</li>
+      </ul>
+
+      <p>
+        サーバーの種類を後から変更することも可能！<br>
+        様々な遊び方に柔軟に対応できます
+      </p>
+
+      <!-- サーバー選択の画像を入れる？ -->
+      <!-- TODO: Dialog内で使用する画像のスタイリングをどこかで定義しておく -->
     </BaseDialogCard>
   </q-dialog>
 </template>
