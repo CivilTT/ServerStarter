@@ -7,24 +7,24 @@ interface iMenuItem {
 
 const menuList: iMenuItem[] = [
   {
-    to:"/intro",
-    caption:"Introduction",
-    label:"はじめに"
+    to:'/intro',
+    caption:'Introduction',
+    label:'はじめに'
   },
   // {
-  //   to:"/main",
-  //   caption:"main",
-  //   label:"メイン画面"
+  //   to:'/main',
+  //   caption:'main',
+  //   label:'メイン画面'
   // },
   // {
-  //   to:"/world",
-  //   caption:"world",
-  //   label:"ワールド設定"
+  //   to:'/world',
+  //   caption:'world',
+  //   label:'ワールド設定'
   // },
   // {
-  //   to:"/system",
-  //   caption:"system",
-  //   label:"システム設定"
+  //   to:'/system',
+  //   caption:'system',
+  //   label:'システム設定'
   // },
   {
     to: '/funcs',
@@ -32,19 +32,19 @@ const menuList: iMenuItem[] = [
     label: '主要機能一覧'
   },
   {
-    to:"/ShareWorld",
-    caption:"ShareWorld",
-    label:"ShareWorld"
+    to:'/ShareWorld',
+    caption:'ShareWorld',
+    label:'ShareWorld'
   },
   {
-    to:"/PortMapping",
-    caption:"PortMapping",
-    label:"ポート開放"
+    to:'/PortMapping',
+    caption:'PortMapping',
+    label:'ポート開放'
   },
   {
-    to:"/credit",
-    caption:"credit",
-    label:"利用規約"
+    to:'/credit',
+    caption:'credit',
+    label:'利用規約'
   },
 ]
 </script>
