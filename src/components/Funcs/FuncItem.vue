@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Component } from 'vue';
 import { useQuasar } from 'quasar';
+import { funcDialogProp } from './dialogs/baseDialog/iBaseDialog';
 
 interface Prop {
   assetPath: string
@@ -13,7 +14,11 @@ const $q = useQuasar()
 
 function openDialog() {
   $q.dialog({
-    component: prop.dialogComponent
+    component: prop.dialogComponent,
+    componentProps: {
+      title: prop.title,
+      assetPath: prop.assetPath
+    } as funcDialogProp
   })
 }
 </script>

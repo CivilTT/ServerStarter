@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { baseDialogProp } from './iBaseDialog';
-
+interface baseDialogProp {
+  title: string
+  color?: string
+  onClose?: () => void
+}
 defineProps<baseDialogProp>()
 </script>
 

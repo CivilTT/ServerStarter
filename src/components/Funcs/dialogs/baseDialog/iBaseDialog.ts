@@ -1,5 +1,5 @@
-export interface baseDialogProp {
+export interface funcDialogProp {
+  assetPath: string
   title: string
   color?: string
-  onClose?: () => void
 }

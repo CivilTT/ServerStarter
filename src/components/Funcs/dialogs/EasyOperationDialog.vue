@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useDialogPluginComponent } from 'quasar';
+import { funcDialogProp } from './baseDialog/iBaseDialog';
 import BaseDialogCard from './baseDialog/BaseDialogCard.vue';
 
+defineProps<funcDialogProp>()
 defineEmits({...useDialogPluginComponent.emitsObject})
 const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
 </script>
@@ -9,7 +11,7 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <BaseDialogCard
-      title="直感的な分かりやすさ"
+      :title="title"
       @close="onDialogOK"
     >
       <p>複雑なサーバーの仕組みや設定の難しさは一切ありません</p>
