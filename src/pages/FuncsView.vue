@@ -5,6 +5,7 @@ import MultipleServersDialog from 'src/components/Funcs/dialogs/MultipleServersD
 import PlayerDialog from 'src/components/Funcs/dialogs/PlayerDialog.vue';
 import SinglePlayDialog from 'src/components/Funcs/dialogs/SinglePlayDialog.vue';
 import WorldFolderDialog from 'src/components/Funcs/dialogs/WorldFolderDialog.vue';
+import ShareWorldDialog from 'src/components/Funcs/dialogs/ShareWorldDialog.vue';
 
 </script>
 
@@ -53,12 +54,13 @@ import WorldFolderDialog from 'src/components/Funcs/dialogs/WorldFolderDialog.vu
       OP権限やホワイトリストを視覚的な操作で簡単に設定できます
     </FuncItem>
 
-    <!-- <FuncItem
+    <FuncItem
       title="ワールドを複数人で共有"
       asset-path="https://cdn.quasar.dev/img/parallax2.jpg"
+      :dialog-component="ShareWorldDialog"
     >
-      ShareWorldタブに飛ぶ
-    </FuncItem> -->
+      最新のプレイデータを誰でも起動可能に。面倒な共有作業は自動化しましょう。
+    </FuncItem>
 
     <!-- <FuncItem
       title="サーバーの顔"
