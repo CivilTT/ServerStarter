@@ -9,7 +9,7 @@
       <p>
         ※ShareWorldについては左側Menuの「ShareWorld」タブをご覧ください
       </p>
-      <q-img src="src/assets/WorldSettings/WorldSettings.png" :width="`min(100%,800px)`" class="img" />
+      <q-img src="~assets/WorldSettings/WorldSettings.png" :width="`min(100%,800px)`" class="img" />
     </q-card-section>
   </q-card>
 </template>

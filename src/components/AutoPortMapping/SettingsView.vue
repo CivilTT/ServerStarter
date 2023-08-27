@@ -51,17 +51,17 @@ const rows = [
       <ol>
         <li>ルーターやセキュリティソフトの設定画面を開く</li>
         <li>「ファイアウォール」や「セキュリティー」の設定画面を開く</li>
-        <q-img src="src/assets/AutoPortMapping/FireWallList.png" width="min(500px,100%)" />
+        <q-img src="~assets/AutoPortMapping/FireWallList.png" width="min(500px,100%)" />
         <li>「ルールの追加」や「ポートの追加」を開く</li>
-        <q-img src="src/assets/AutoPortMapping/AddPortMapping.png" width="min(500px,100%)" />
+        <q-img src="~assets/AutoPortMapping/AddPortMapping.png" width="min(500px,100%)" />
         <li>各設定項目を次のように設定する</li>
         <div style="width: min(600px, 100%);" class="q-pa-md">
           <q-table :rows="rows" :columns="columns" hide-bottom />
         </div>
-        <q-img src="src/assets/AutoPortMapping/PortNum.png" width="min(500px,100%)" />
-        <q-img src="src/assets/AutoPortMapping/PortRange.png" width="min(500px,100%)" />
-        <q-img src="src/assets/AutoPortMapping/PortTarget.png" width="min(500px,100%)" />
-        <q-img src="src/assets/AutoPortMapping/PortName.png" width="min(500px,100%)" />
+        <q-img src="~assets/AutoPortMapping/PortNum.png" width="min(500px,100%)" />
+        <q-img src="~assets/AutoPortMapping/PortRange.png" width="min(500px,100%)" />
+        <q-img src="~assets/AutoPortMapping/PortTarget.png" width="min(500px,100%)" />
+        <q-img src="~assets/AutoPortMapping/PortName.png" width="min(500px,100%)" />
         <li>設定を保存し、サーバーにほかの人がログインできれば設定終了</li>
       </ol>
       <p>

@@ -11,7 +11,7 @@
       <p>
         友人やそのほかのユーザーがサーバーに接続するためにはそれらアクセスを許可する設定（ポート開放）を経路上の機器にする必要があります
       </p>
-      <q-img src="src/assets/AutoPortMapping/Abstruct.png" width="min(800px,100%)" class="img" />
+      <q-img src="~assets/AutoPortMapping/Abstruct.png" width="min(800px,100%)" class="img" />
     </q-card-section>
   </q-card>
 </template>

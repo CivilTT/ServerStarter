@@ -6,7 +6,7 @@
         デフォルトのサーバープロパティを設定できます<br />
         ここでの設定内容が新規でワールドを起動する際のプロパティに反映されます
       </p>
-      <q-img src="src/assets/SystemSettings/ServerSettings.png" width="min(500px,100%)" />
+      <q-img src="~assets/SystemSettings/ServerSettings.png" width="min(500px,100%)" />
     </q-card-section>
   </q-card>
 </template>

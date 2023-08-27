@@ -12,7 +12,7 @@
         <li>開放するポート番号（基本は25565）を指定し、「開放テスト」を押す</li>
         <li>ステータスがOpened!になれば，本機能を利用してルーターのポート開放を行うことが可能</li>
       </ol>
-      <q-img src="src/assets/AutoPortMapping/APM_Opened.png" width="min(500px,100%)" />
+      <q-img src="~assets/AutoPortMapping/APM_Opened.png" width="min(500px,100%)" />
 
       <h3>ステータスがFailed…になった場合</h3>
       <p>

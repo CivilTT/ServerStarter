@@ -4,16 +4,13 @@ import { funcDialogProp } from './baseDialog/iBaseDialog';
 import BaseDialogCard from './baseDialog/BaseDialogCard.vue';
 
 defineProps<funcDialogProp>()
-defineEmits({...useDialogPluginComponent.emitsObject})
+defineEmits({ ...useDialogPluginComponent.emitsObject })
 const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
 </script>
 
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide">
-    <BaseDialogCard
-      :title="title"
-      @close="onDialogOK"
-    >
+    <BaseDialogCard :title="title" @close="onDialogOK">
       <p>
         サーバーの参加者が複数のサーバーを見分ける際に重要視する要素の一つに「サーバーアイコン」があります<br>
         適切なサーバーアイコンの設定はサーバーの様子を一目で確認できる一方，適切な画像を自前で用意するのは面倒でした
@@ -30,8 +27,8 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
           <li>お好きなブロックをクリックするか，左上の「＋」ボタンから好きな画像を選択するだけ！</li>
         </ol>
         <div class="column q-gutter-md q-pr-md">
-          <q-img src="src/assets/Funcs/IconSettings/defaultIcons.png" />
-          <q-img src="src/assets/Funcs/IconSettings/CustomImg.png" />
+          <q-img src="~assets/Funcs/IconSettings/defaultIcons.png" />
+          <q-img src="~assets/Funcs/IconSettings/CustomImg.png" />
         </div>
       </template>
     </BaseDialogCard>

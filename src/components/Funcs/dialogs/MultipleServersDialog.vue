@@ -4,16 +4,13 @@ import { funcDialogProp } from './baseDialog/iBaseDialog';
 import BaseDialogCard from './baseDialog/BaseDialogCard.vue';
 
 defineProps<funcDialogProp>()
-defineEmits({...useDialogPluginComponent.emitsObject})
+defineEmits({ ...useDialogPluginComponent.emitsObject })
 const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
 </script>
 
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide">
-    <BaseDialogCard
-      :title="title"
-      @close="onDialogOK"
-    >
+    <BaseDialogCard :title="title" @close="onDialogOK">
       <p>ServerStarterでは6種類のサーバーを起動することができます</p>
       <ul>
         <li>バニラ（Minecraftの公式サーバー）</li>
@@ -30,7 +27,7 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
       </p>
 
       <!-- サーバー選択の画像を入れる？ -->
-      <q-img src="src/assets/Funcs/MultipleServers/servers.png" />
+      <q-img src="~assets/Funcs/MultipleServers/servers.png" />
       <!-- TODO: Dialog内で使用する画像のスタイリングをどこかで定義しておく -->
     </BaseDialogCard>
   </q-dialog>

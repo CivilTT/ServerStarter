@@ -16,7 +16,7 @@
         <li>ゴミ箱ボタンを押し，削除する</li>
       </ol>
 
-      <q-img src="src/assets/WorldSettings/Op.png" :width="`min(100%,500px)`" />
+      <q-img src="~assets/WorldSettings/Op.png" :width="`min(100%,500px)`" />
     </q-card-section>
   </q-card>
 </template>

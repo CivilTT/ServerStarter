@@ -56,7 +56,8 @@ const menuList: iMenuItem[] = [
       <template v-for="(menuItem, index) in menuList" :key="index">
         <q-item :to="menuItem.to">
           <q-item-section avatar>
-            <img :src="$route.path == menuItem.to ? 'src/assets/icons/menuicon_open.svg' : 'src/assets/icons/menuicon.svg'" />
+            <img v-if="$route.path == menuItem.to" src="~assets/icons/menuicon_open.svg" />
+            <img v-else src="~assets/icons/menuicon.svg" />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{menuItem.label}}</q-item-label>

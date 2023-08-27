@@ -10,7 +10,7 @@
         ワールドの諸設定は「ワールド設定」からできます<br />
         準備ができたら「実行」を押してサーバーを起動しましょう！
       </p>
-      <q-img src="src/assets/MainWindow/main1.png" :width="`min(100%,800px)`" class="img" />
+      <q-img src="~assets/MainWindow/main1.png" :width="`min(100%,800px)`" class="img" />
     </q-card-section>
   </q-card>
 </template>

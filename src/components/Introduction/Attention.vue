@@ -11,7 +11,7 @@
               Development Kit）</a>が必要です．<br />
             リンクを開くとインストーラーをダウンロードします．
           </p>
-          <q-img src="src/assets/Introduction/JavaInstall.png" width="min(500px,100%)" />
+          <q-img src="~assets/Introduction/JavaInstall.png" width="min(500px,100%)" />
         </li>
         <li>
           <p>

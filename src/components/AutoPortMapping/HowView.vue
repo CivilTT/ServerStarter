@@ -11,7 +11,7 @@
       <p>
         ポート開放を行うことでLAN内のサーバーと通信することができます
       </p>
-      <q-img src="src/assets/AutoPortMapping/Abstruct2.png" width="min(800px,100%)" class="img" />
+      <q-img src="~assets/AutoPortMapping/Abstruct2.png" width="min(800px,100%)" class="img" />
     </q-card-section>
   </q-card>
 </template>

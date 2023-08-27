@@ -10,7 +10,7 @@
         ※ShareWorldについては左側Menuの「ShareWorld」タブをご覧ください<br />
         ※ネットワークについては左側Menuの「自動ポート開放」タブをご覧ください
       </p>
-      <q-img src="src/assets/SystemSettings/SystemSettings.png" width="min(800px,100%)" class="img" />
+      <q-img src="~assets/SystemSettings/SystemSettings.png" width="min(800px,100%)" class="img" />
     </q-card-section>
   </q-card>
 </template>

@@ -4,16 +4,13 @@ import { funcDialogProp } from './baseDialog/iBaseDialog';
 import BaseDialogCard from './baseDialog/BaseDialogCard.vue';
 
 defineProps<funcDialogProp>()
-defineEmits({...useDialogPluginComponent.emitsObject})
+defineEmits({ ...useDialogPluginComponent.emitsObject })
 const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
 </script>
 
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide">
-    <BaseDialogCard
-      :title="title"
-      @close="onDialogOK"
-    >
+    <BaseDialogCard :title="title" @close="onDialogOK">
       <ul>
         <li>一人で遊んでいたワールドをみんなとシェアしたい</li>
         <li>ワールド製作をみんなに協力してもらいたい</li>
@@ -27,9 +24,9 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
       <template #install>
         <ol>
           <li>ホームタブにある「既存ワールドを選択」ボタンをクリック</li>
-          <q-img src="src/assets/Funcs/SinglePlay/importCustomMapBtn.png" class="q-mb-md" />
+          <q-img src="~assets/Funcs/SinglePlay/importCustomMapBtn.png" class="q-mb-md" />
           <li>シングルプレイのワールド一覧から好きなワールドを選択するだけ！</li>
-          <q-img src="src/assets/Funcs/SinglePlay/singleMaps.png" />
+          <q-img src="~assets/Funcs/SinglePlay/singleMaps.png" />
         </ol>
       </template>
     </BaseDialogCard>

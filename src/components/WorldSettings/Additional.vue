@@ -20,7 +20,7 @@
         <li>配布ワールドについては新規ワールド（【new World】）のみ導入可能になります</li>
         <li>プラグインについてはSpigotサーバーのみ導入可能になります</li>
       </ul>
-      <q-img src="src/assets/WorldSettings/Additional.png" :width="`min(100%,500px)`" />
+      <q-img src="~assets/WorldSettings/Additional.png" :width="`min(100%,500px)`" />
     </q-card-section>
   </q-card>
 </template>

@@ -4,16 +4,13 @@ import { funcDialogProp } from './baseDialog/iBaseDialog';
 import BaseDialogCard from './baseDialog/BaseDialogCard.vue';
 
 defineProps<funcDialogProp>()
-defineEmits({...useDialogPluginComponent.emitsObject})
+defineEmits({ ...useDialogPluginComponent.emitsObject })
 const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
 </script>
 
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide">
-    <BaseDialogCard
-      :title="title"
-      @close="onDialogOK"
-    >
+    <BaseDialogCard :title="title" @close="onDialogOK">
       <p>
         個人でサーバーを立てて友人と遊ぶ際に，サーバーを立てた人がいないと友人だけではマルチプレイワールドに入れませんでした．<br>
         データを共有するにも，遊び終わった後に共有作業をするのは非常に面倒です
@@ -32,8 +29,8 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
       </p>
       <!-- 画面のスクショを入れる -->
       <div class="column q-gutter-md q-mr-md">
-        <q-img src="src/assets/Funcs/ShareWorld/BeforeSetting.png" />
-        <q-img src="src/assets/Funcs/ShareWorld/AfterSetting.png" />
+        <q-img src="~assets/Funcs/ShareWorld/BeforeSetting.png" />
+        <q-img src="~assets/Funcs/ShareWorld/AfterSetting.png" />
       </div>
     </BaseDialogCard>
   </q-dialog>
