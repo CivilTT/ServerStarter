@@ -6,6 +6,7 @@ import PlayerDialog from 'src/components/Funcs/dialogs/PlayerDialog.vue';
 import SinglePlayDialog from 'src/components/Funcs/dialogs/SinglePlayDialog.vue';
 import WorldFolderDialog from 'src/components/Funcs/dialogs/WorldFolderDialog.vue';
 import ShareWorldDialog from 'src/components/Funcs/dialogs/ShareWorldDialog.vue';
+import ServerIconDialog from 'src/components/Funcs/dialogs/ServerIconDialog.vue';
 
 </script>
 
@@ -62,11 +63,12 @@ import ShareWorldDialog from 'src/components/Funcs/dialogs/ShareWorldDialog.vue'
       最新のプレイデータを誰でも起動可能に。面倒な共有作業は自動化しましょう。
     </FuncItem>
 
-    <!-- <FuncItem
-      title="サーバーの顔"
+    <FuncItem
+      title="サーバーの顔をセット"
       asset-path="https://cdn.quasar.dev/img/parallax2.jpg"
+      :dialog-component="ServerIconDialog"
     >
-      アイコンを自由に設定可能
-    </FuncItem> -->
+      参加者がワールドに入る際に表示されるアイコンを，自由にカスタマイズできます
+    </FuncItem>
   </div>
 </template>
