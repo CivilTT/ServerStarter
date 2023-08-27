@@ -1,7 +1,7 @@
 {
   "name": "serverstarter",
   "version": "0.0.1",
-  "description": "Start Minecraft server only ONE click! ServerStarterを利用してMinecraftのマルチプレイサーバーを素早く起動しましょう！",
+  "description": "ServerStarterを利用してMinecraftのマルチプレイサーバーを素早く起動しましょう！【Start Minecraft server only ONE click! 】",
   "productName": "ServerStarter",
   "author": "CivilTT",
   "private": true,
