@@ -21,25 +21,31 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
       <p>
         ユーザーの一覧と権限の様子は視覚的に分かりやすく表示されるようになります！
       </p>
-      <!-- Player一覧の画像（名前を入力中）（アップ） -->
-
+      <q-img src="src/assets/Funcs/Player/PlayerSettings.png" class="q-mb-md" />
+      
       <p>
         複数のユーザーを登録するときには，グループ機能が便利です<br>
         一括でホワイトリストに登録したり，OP権限を設定したりすることができます！
       </p>
-      <!-- グループ一覧の画像（アップ） -->
+      <q-img src="src/assets/Funcs/Player/Groups.png" />
 
       <template #install>
         <ol>
           <li>プレイヤータブを選択</li>
+          <q-img src="src/assets/Funcs/Player/tabs.png" class="q-mb-md" />
+
           <li>プレイヤー一覧を更新</li>
           <ul>
-            <li>登録したいプレイヤー名を入力欄で検索して追加</li>
+            <li>登録したいプレイヤー名を入力欄で検索</li>
             <li>グループから一括で追加</li>
-            <li>個々のプレイヤーを選択したり，グループで選択したプレイヤーを削除</li>
-            右側の操作盤から様々な設定をすることができます！
-            <!-- 操作盤の画像を載せる -->
+            <li>個々のプレイヤーや，グループで選択したプレイヤーを削除</li>
           </ul>
+
+          右側の操作盤から様々な設定をすることができます！
+          <div class="row q-gutter-md q-pr-md q-pt-md justify-center">
+            <q-img src="src/assets/Funcs/Player/PlayerOperation.png" style="width: 45%;" />
+            <q-img src="src/assets/Funcs/Player/GroupOperation.png" style="width: 45%;" />
+          </div>
         </ol>
       </template>
     </BaseDialogCard>

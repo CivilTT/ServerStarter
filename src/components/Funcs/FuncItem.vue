@@ -25,7 +25,7 @@ function openDialog() {
 
 <template>
   <q-card class="card">
-    <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+    <q-img :src="assetPath">
       <div class="absolute-bottom text-h6">
         {{ title }}
       </div>

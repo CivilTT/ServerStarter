@@ -23,3 +23,10 @@ defineProps<baseDialogProp>()
     </q-card-section>
   </q-card>
 </template>
+
+<style scoped lang="scss">
+.title {
+  font-size: 1.2rem;
+  padding-right: 2.5rem;
+}
+</style>

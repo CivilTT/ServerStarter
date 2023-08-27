@@ -30,6 +30,7 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
       </p>
 
       <!-- サーバー選択の画像を入れる？ -->
+      <q-img src="src/assets/Funcs/MultipleServers/servers.png" />
       <!-- TODO: Dialog内で使用する画像のスタイリングをどこかで定義しておく -->
     </BaseDialogCard>
   </q-dialog>

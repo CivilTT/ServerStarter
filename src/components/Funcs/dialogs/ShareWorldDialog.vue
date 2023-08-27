@@ -27,10 +27,14 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
       </p>
       <p>
         事前準備や使い方の詳細は，
-        <a href="/ShareWorld">ShareWorldの解説記事</a>
+        <router-link class="a" to="/ShareWorld">ShareWorldの解説記事</router-link>
         をご覧ください！
       </p>
       <!-- 画面のスクショを入れる -->
+      <div class="column q-gutter-md q-mr-md">
+        <q-img src="src/assets/Funcs/ShareWorld/BeforeSetting.png" />
+        <q-img src="src/assets/Funcs/ShareWorld/AfterSetting.png" />
+      </div>
     </BaseDialogCard>
   </q-dialog>
 </template>

@@ -27,9 +27,9 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
       <template #install>
         <ol>
           <li>ホームタブにある「既存ワールドを選択」ボタンをクリック</li>
-          <!-- 操作画面の画像を入れる -->
+          <q-img src="src/assets/Funcs/SinglePlay/importCustomMapBtn.png" class="q-mb-md" />
           <li>シングルプレイのワールド一覧から好きなワールドを選択するだけ！</li>
-          <!-- 操作画面の画像を入れる -->
+          <q-img src="src/assets/Funcs/SinglePlay/singleMaps.png" />
         </ol>
       </template>
     </BaseDialogCard>

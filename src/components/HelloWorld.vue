@@ -16,9 +16,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <q-page>
+  <q-page style="background-color: black;">
     <div class="row justify-center" style="min-height: inherit;">
-      <q-img src="src/assets/titleImg.png"/>
+      <q-img src="src/assets/titleImg.png" style="opacity: .6;"/>
       <div class="title_box_full row justify-center items-center">
         <div class="title_box">
           <h1 class="title">
@@ -27,11 +27,62 @@ onMounted(async () => {
           <h1 class="row justify-center">
             <span class="title_text">- start Minecraft server only <strong class="title_text_strong">ONE</strong> click ! -</span>
           </h1>
-          <div class="row justify-center download_button">
-            <q-btn color="white" text-color="primary" size="lg" padding="md" href="https://github.com/CivilTT/ServerStarter/releases/latest/download/Setup_ServerStarter.msi">
-              <span class="download">
-                Download ver {{versionName}}
-              </span>
+
+          <!-- <p class="row justify-center download_button text-bold">お使いのプラットフォームに合わせてダウンロードしてください（バージョン：{{versionName}}）</p> -->
+          <p class="row justify-center download_button text-bold text-yellow">2023年9月2日 15：00に公開予定！！</p>
+          <div class="row q-gutter-md justify-center">
+            <q-btn
+              disable
+              color="white"
+              text-color="primary"
+              padding="md"
+              href="https://github.com/CivilTT/ServerStarter/releases/latest/download/Setup_ServerStarter.msi"
+              style="width: 10rem;"
+            >
+              <div class="row items-center">
+                <q-avatar size="2rem" square class="q-mr-md">
+                  <q-img src="src/assets/OS/windows.svg" />
+                </q-avatar>
+                <div class="download">
+                  Windows
+                </div>
+              </div>
+            </q-btn>
+
+            <q-btn
+              disable
+              color="white"
+              text-color="primary"
+              padding="md"
+              href="https://github.com/CivilTT/ServerStarter/releases/latest/download/Setup_ServerStarter.msi"
+              style="width: 10rem;"
+            >
+              <div class="row items-center">
+                <q-avatar size="2rem" square class="q-mr-md">
+                  <q-img src="src/assets/OS/mac.svg" />
+                </q-avatar>
+                <div class="download">
+                  Mac OS
+                </div>
+              </div>
+            </q-btn>
+
+            <q-btn
+              disable
+              color="white"
+              text-color="primary"
+              padding="md"
+              href="https://github.com/CivilTT/ServerStarter/releases/latest/download/Setup_ServerStarter.msi"
+              style="width: 10rem;"
+            >
+              <div class="row items-center">
+                <q-avatar size="2rem" square class="q-mr-md">
+                  <q-img src="src/assets/OS/linux.svg" />
+                </q-avatar>
+                <div class="download">
+                  Linux
+                </div>
+              </div>
             </q-btn>
           </div>
         </div>
@@ -90,10 +141,3 @@ onMounted(async () => {
   padding-top: 10rem;
 }
 </style>
-
-<!-- <script>
-export default {
-  name: 'HelloWorld'
-}
-</script> -->
-

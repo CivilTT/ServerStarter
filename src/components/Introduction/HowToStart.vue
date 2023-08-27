@@ -139,7 +139,7 @@ var step_participant = ref(1)
         </q-step>
         <q-step :name="3" title="3. ほかの人がサーバーに参加する" :done="step_participant > 3">
           <p>
-            他の人がサーバーに参加するためにはサーバーの起動者に<a class="a" href="PortMapping">ポート開放</a>の設定が必要です
+            他の人がサーバーに参加するためにはサーバーの起動者に<router-link class="a" to="/PortMapping">ポート開放</router-link>の設定が必要です
           </p>
           <p>
             サーバーの起動者でない人がサーバーに参加する際には、ServerStarterの画面右上に映っているIPアドレスを、Minecraftのサーバーアドレス欄に入力してください

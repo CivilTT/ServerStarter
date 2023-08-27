@@ -28,8 +28,11 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
         <ol>
           <li>ホームタブ右上の「アイコンを変更」ボタンをクリック</li>
           <li>お好きなブロックをクリックするか，左上の「＋」ボタンから好きな画像を選択するだけ！</li>
-          <!-- 画像一覧と画像抽出中の画像を並べる -->
         </ol>
+        <div class="column q-gutter-md q-pr-md">
+          <q-img src="src/assets/Funcs/IconSettings/defaultIcons.png" />
+          <q-img src="src/assets/Funcs/IconSettings/CustomImg.png" />
+        </div>
       </template>
     </BaseDialogCard>
   </q-dialog>
