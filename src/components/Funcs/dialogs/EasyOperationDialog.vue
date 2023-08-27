@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDialogPluginComponent } from 'quasar';
-import BaseDialogCard from './BaseDialogCard.vue';
+import BaseDialogCard from './baseDialog/BaseDialogCard.vue';
 
 defineEmits({...useDialogPluginComponent.emitsObject})
 const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
