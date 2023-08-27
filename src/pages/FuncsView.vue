@@ -2,6 +2,7 @@
 import FuncItem from 'src/components/Funcs/FuncItem.vue';
 import EasyOperationDialog from 'src/components/Funcs/dialogs/EasyOperationDialog.vue';
 import MultipleServersDialog from 'src/components/Funcs/dialogs/MultipleServersDialog.vue';
+import PlayerDialog from 'src/components/Funcs/dialogs/PlayerDialog.vue';
 import SinglePlayDialog from 'src/components/Funcs/dialogs/SinglePlayDialog.vue';
 import WorldFolderDialog from 'src/components/Funcs/dialogs/WorldFolderDialog.vue';
 
@@ -44,11 +45,13 @@ import WorldFolderDialog from 'src/components/Funcs/dialogs/WorldFolderDialog.vu
       保存場所の変更も「ワンクリック」ですぐに反映することができます
     </FuncItem>
 
-    <!-- <FuncItem
+    <FuncItem
       title="プレイヤー権限設定"
       asset-path="https://cdn.quasar.dev/img/parallax2.jpg"
+      :dialog-component="PlayerDialog"
     >
-    </FuncItem> -->
+      OP権限やホワイトリストを視覚的な操作で簡単に設定できます
+    </FuncItem>
 
     <!-- <FuncItem
       title="ワールドを複数人で共有"
