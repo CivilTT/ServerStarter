@@ -3,6 +3,7 @@ import FuncItem from 'src/components/Funcs/FuncItem.vue';
 import EasyOperationDialog from 'src/components/Funcs/dialogs/EasyOperationDialog.vue';
 import MultipleServersDialog from 'src/components/Funcs/dialogs/MultipleServersDialog.vue';
 import SinglePlayDialog from 'src/components/Funcs/dialogs/SinglePlayDialog.vue';
+import WorldFolderDialog from 'src/components/Funcs/dialogs/WorldFolderDialog.vue';
 
 </script>
 
@@ -12,7 +13,7 @@ import SinglePlayDialog from 'src/components/Funcs/dialogs/SinglePlayDialog.vue'
   <div class="row q-gutter-md q-pa-md justify-center">
     <!-- アイコンを6つ並べた画像を表示？ -->
     <FuncItem
-      title="様々なサーバー"
+      title="6種類のサーバーに対応"
       asset-path="https://cdn.quasar.dev/img/parallax2.jpg"
       :dialog-component="MultipleServersDialog"
     >
@@ -35,12 +36,13 @@ import SinglePlayDialog from 'src/components/Funcs/dialogs/SinglePlayDialog.vue'
       各種設定、データパックなどを視覚的にわかりやすい操作で導入できるようにこだわりました
     </FuncItem>
 
-    <!-- <FuncItem
+    <FuncItem
       title="保存場所は自由自在"
       asset-path="https://cdn.quasar.dev/img/parallax2.jpg"
+      :dialog-component="WorldFolderDialog"
     >
-
-    </FuncItem> -->
+      保存場所の変更も「ワンクリック」ですぐに反映することができます
+    </FuncItem>
 
     <!-- <FuncItem
       title="プレイヤー権限設定"
