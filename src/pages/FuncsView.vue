@@ -37,9 +37,9 @@ import ServerIconDialog from 'src/components/Funcs/dialogs/ServerIconDialog.vue'
       OP権限やホワイトリストを視覚的な操作で簡単に設定できます
     </FuncItem>
 
-    <FuncItem title="ワールドを複数人で共有" asset-path="funcsTopImgs/ShareWorld.png" :dialog-component="ShareWorldDialog">
+    <!-- <FuncItem title="ワールドを複数人で共有" asset-path="funcsTopImgs/ShareWorld.png" :dialog-component="ShareWorldDialog">
       最新のプレイデータを誰でも起動可能に。面倒な共有作業は自動化しましょう。
-    </FuncItem>
+    </FuncItem> -->
 
     <FuncItem title="サーバーの顔をセット" asset-path="funcsTopImgs/IconSettings.png" :dialog-component="ServerIconDialog">
       参加者がワールドに入る際に表示されるアイコンを，自由にカスタマイズできます

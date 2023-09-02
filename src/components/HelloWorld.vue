@@ -10,8 +10,8 @@ const versionName = ref('')
 
 onMounted(async () => {
   // getting latest version name
-  const jsonObj = await fetch('https://api.github.com/repos/CivilTT/ServerStarter/releases/latest')
-  versionName.value = (await jsonObj.json()).name.split(' ')[1]
+  const jsonObj = await fetch('https://api.github.com/repos/CivilTT/ServerStarter2/releases/latest')
+  versionName.value = (await jsonObj.json()).name
 })
 </script>
 
@@ -29,12 +29,15 @@ onMounted(async () => {
               -</span>
           </h1>
 
-          <!-- <p class="row justify-center download_button text-bold">お使いのプラットフォームに合わせてダウンロードしてください（バージョン：{{versionName}}）</p> -->
-          <p class="row justify-center download_button text-bold text-yellow">2023年9月2日 15：00に公開予定！！</p>
+          <p class="row justify-center download_button text-bold">お使いのプラットフォームに合わせてダウンロードしてください（バージョン：{{versionName}}）</p>
           <div class="row q-gutter-md justify-center">
-            <q-btn disable color="white" text-color="primary" padding="md"
-              href="https://github.com/CivilTT/ServerStarter/releases/latest/download/Setup_ServerStarter.msi"
-              style="width: 10rem;">
+            <q-btn
+              color="white"
+              text-color="primary"
+              padding="md"
+              href="https://github.com/CivilTT/ServerStarter2/releases/latest/download/ServerStarter2.2.0.0.msi"
+              style="width: 10rem;"
+            >
               <div class="row items-center">
                 <q-avatar size="2rem" square class="q-mr-md">
                   <q-img src="~assets/OS/windows.svg" />
@@ -45,9 +48,13 @@ onMounted(async () => {
               </div>
             </q-btn>
 
-            <q-btn disable color="white" text-color="primary" padding="md"
-              href="https://github.com/CivilTT/ServerStarter/releases/latest/download/Setup_ServerStarter.msi"
-              style="width: 10rem;">
+            <q-btn
+              color="white"
+              text-color="primary"
+              padding="md"
+              href="https://github.com/CivilTT/ServerStarter2/releases/latest/download/ServerStarter2-2.0.0.pkg"
+              style="width: 10rem;"
+            >
               <div class="row items-center">
                 <q-avatar size="2rem" square class="q-mr-md">
                   <q-img src="~assets/OS/mac.svg" />
@@ -58,9 +65,14 @@ onMounted(async () => {
               </div>
             </q-btn>
 
-            <q-btn disable color="white" text-color="primary" padding="md"
-              href="https://github.com/CivilTT/ServerStarter/releases/latest/download/Setup_ServerStarter.msi"
-              style="width: 10rem;">
+            <q-btn
+              disable
+              color="white"
+              text-color="primary"
+              padding="md"
+              href="https://github.com/CivilTT/ServerStarter2/releases/latest/download/???"
+              style="width: 10rem;"
+            >
               <div class="row items-center">
                 <q-avatar size="2rem" square class="q-mr-md">
                   <q-img src="~assets/OS/linux.svg" />
@@ -71,6 +83,7 @@ onMounted(async () => {
               </div>
             </q-btn>
           </div>
+          <p class="row justify-center text-bold text-yellow">Linux版は年度末ごろの長期リリース版に合わせて公開します！</p>
         </div>
       </div>
     </div>

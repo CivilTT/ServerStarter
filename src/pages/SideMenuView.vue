@@ -31,11 +31,11 @@ const menuList: iMenuItem[] = [
     caption: 'Functions',
     label: '主要機能一覧'
   },
-  {
-    to:'/ShareWorld',
-    caption:'ShareWorld',
-    label:'ShareWorld'
-  },
+  // {
+  //   to:'/ShareWorld',
+  //   caption:'ShareWorld',
+  //   label:'ShareWorld'
+  // },
   {
     to:'/PortMapping',
     caption:'PortMapping',
