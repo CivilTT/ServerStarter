@@ -28,7 +28,7 @@ const menuList: iMenuItem[] = [
   // },
   {
     to: '/funcs',
-    caption: 'Functions',
+    caption: 'Features',
     label: '主要機能一覧'
   },
   // {
