@@ -24,8 +24,7 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
 
       <template #install>
         <ol>
-          <!-- TODO: それぞれに画像を付ける -->
-          <li>「ホーム」タブの「ワールドフォルダ」を開く</li>
+          <li>「その他の設定」タブの「ワールドフォルダ」を開く</li>
           <q-img src="~assets/Funcs/WorldFolder/BeforeAdding.png" class="q-mb-md" />
 
           <li>「ワールドフォルダを追加」ボタンをクリックし，好きな名前の設定と，設定するフォルダを選択</li>

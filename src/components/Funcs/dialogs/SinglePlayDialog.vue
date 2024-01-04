@@ -23,7 +23,7 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
 
       <template #install>
         <ol>
-          <li>ホームタブにある「既存ワールドを選択」ボタンをクリック</li>
+          <li>画面左側のワールド一覧から「ワールドを追加」を選択し，「既存のワールドを導入」を選択</li>
           <q-img src="~assets/Funcs/SinglePlay/importCustomMapBtn.png" class="q-mb-md" />
           <li>シングルプレイのワールド一覧から好きなワールドを選択するだけ！</li>
           <q-img src="~assets/Funcs/SinglePlay/singleMaps.png" />

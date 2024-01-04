@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Component, onBeforeMount, ref } from 'vue';
+import { Component } from 'vue';
 import { useQuasar } from 'quasar';
 import { funcDialogProp } from './dialogs/baseDialog/iBaseDialog';
+import SsImg from '../utils/SsImg.vue';
 
 interface Prop {
   assetPath: string
@@ -11,7 +12,6 @@ interface Prop {
 const prop = defineProps<Prop>()
 
 const $q = useQuasar()
-const gotImg = ref('')
 
 function openDialog() {
   $q.dialog({
@@ -22,22 +22,15 @@ function openDialog() {
     } as funcDialogProp
   })
 }
-
-async function loadImg() {
-  const baseURL = window.location.origin + import.meta.env.BASE_URL
-  gotImg.value = (new URL(prop.assetPath, baseURL)).href
-}
-
-onBeforeMount(loadImg)
 </script>
 
 <template>
   <q-card class="card">
-    <q-img :src="gotImg">
+    <ss-img :path="assetPath" style="aspect-ratio: 16/9;">
       <div class="absolute-bottom text-h6">
         {{ title }}
       </div>
-    </q-img>
+    </ss-img>
 
     <q-card-section>
       <slot />
