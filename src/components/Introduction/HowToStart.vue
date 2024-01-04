@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import DownloadBtn from 'src/components/HOME/DownloadBtn.vue';
+import SsImg from '../utils/SsImg.vue';
 
-var step_intro = ref(1)
-var step_run = ref(1)
-var step_participant = ref(1)
+const step_intro = ref(1)
+const step_run = ref(1)
+const step_participant = ref(1)
+const tab_index = ref('win')
 </script>
 
 <template>
@@ -14,12 +17,14 @@ var step_participant = ref(1)
       <p>ワンクリックでサーバーを起動し，マルチプレイの世界にダイブしましょう！</p>
 
       <h1>導入方法</h1>
-      <q-stepper v-model="step_intro" flat vertical animated>
+      <q-stepper v-model="step_intro" flat animated>
         <q-step :name="1" title="1. 導入" :done="step_intro > 1">
-          <p>ServerStarterのインストーラーをダウンロード</p>
-          <p>インストーラーを起動してServerStarterをPCにインストール</p>
+          <p>
+            ServerStarter2のインストーラーをダウンロードしましょう<br>
+            インストーラーを起動してServerStarterをPCにインストールしてください
+          </p>
 
-          <div class="q-pb-md">
+          <div class="q-py-md q-gutter-md">
             <q-expansion-item label="ダウンロード時に警告が出た場合" header-class="bg-orange-4">
               <q-card flat class="bg-orange-2">
                 <q-card-section>
@@ -33,16 +38,70 @@ var step_participant = ref(1)
                     <a href="https://github.com/CivilTT/ServerStarter" target="_blank" class="a">GitHub</a>
                     にて公開しておりますので，そちらもご確認いただけますと幸いです
                   </p>
-                  <q-img src="~assets/Introduction/Edge_Save1.png" width="min(400px,100%)" />
-                  <q-img src="~assets/Introduction/Edge_Save2.png" width="min(400px,100%)" />
+                  <div class="row q-gutter-md items-center">
+                    <q-img src="~assets/Introduction/Edge_Save1.png" style="min-width: 15rem;" class="col fit" />
+                    <q-img src="~assets/Introduction/Edge_Save2.png" style="min-width: 15rem;" class="col" />
+                  </div>
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+
+            <q-expansion-item label="インストール時に警告が出た場合" header-class="bg-orange-4">
+              <q-card flat class="bg-orange-2">
+                <q-card-section>
+                  <p>
+                    ServerStarter2では現在，アプリに対する署名を付けることができていません<br>
+                    このため，以下のような警告がインストール時に表示されることがありますので，下記の手順に従って操作をお願いします
+                  </p>
+
+                  <q-card class="fit">
+                    <q-tabs
+                      v-model="tab_index"
+                      dense
+                      active-color="primary"
+                      indicator-color="primary"
+                      align="justify"
+                    >
+                      <q-tab no-caps name="win" label="Windows" />
+                      <q-tab no-caps name="mac" label="Mac OS" />
+                      <q-tab disable no-caps name="linux" label="Linux" />
+                    </q-tabs>
+
+                    <q-separator />
+
+                    <q-tab-panels v-model="tab_index" animated>
+                      <q-tab-panel name="win">
+                        <ol>
+                          <li>表示された画面中部にある「詳細設定」をクリック</li>
+                          <ss-img path="assets/Introduction/defender1.png" style="max-width: 15rem;" />
+                          <li>「実行」をクリックするとインストールが開始されます</li>
+                          <ss-img path="assets/Introduction/defender2.png" style="max-width: 15rem;" />
+                        </ol>
+                      </q-tab-panel>
+
+                      <q-tab-panel name="mac">
+                        <ol>
+                          <li>この画面はOKを押して閉じる</li>
+                          <ss-img path="assets/Introduction/unopen.png" style="max-width: 15rem;" />
+                          <li>「システム環境設定」＞「セキュリティとプライバシー」＞「一般」の順に開き，「このまま開く」を押すとインストールが開始されます</li>
+                          <ss-img path="assets/Introduction/privacy.png" style="max-width: 15rem;" />
+                        </ol>
+                      </q-tab-panel>
+
+                      <q-tab-panel name="linux">
+                      </q-tab-panel>
+                    </q-tab-panels>
+                  </q-card>
                 </q-card-section>
               </q-card>
             </q-expansion-item>
           </div>
 
-          <!-- TODO: インストーラーのダウンロードパスを変更 -->
-          <q-btn size="20px" color="primary" label="インストーラーのダウンロード"
-            href="https://github.com/CivilTT/ServerStarter/releases/latest/download/Setup_ServerStarter.msi" />
+          <div class="row q-gutter-md">
+            <download-btn outline :os-name="'windows'" />
+            <download-btn outline :os-name="'mac'" />
+            <download-btn outline disable :os-name="'linux'" />
+          </div>
 
           <q-stepper-navigation>
             <q-btn @click="step_intro = 2" color="secondary" label="next" />
@@ -69,11 +128,14 @@ var step_participant = ref(1)
 
         <q-step :name="4" title="3-2. 初期設定（プレイヤー登録）" :done="step_intro > 3">
           <p>Minecraftのプレイヤーアカウントを持っている場合は、ゲーム内でのプレイヤー名を登録しましょう！</p>
-          <q-img src="~assets/Introduction/OwnerPlayerSetting1.png" width="min(500px,100%)" />
           <p>
-            自身のプレイヤー名を入力すると、以下の画像のように候補が表示されます<br>
-            「このプレイヤーを登録」ボタンを押し、「オーナーを登録」できるようになります</p>
-          <q-img src="~assets/Introduction/OwnerPlayerSetting2.png" width="min(500px,100%)" />
+            自身のプレイヤー名を入力すると、画像のように候補が表示されます<br>
+            「このプレイヤーを登録」ボタンを押し、「オーナーを登録」をクリックしましょう！
+          </p>
+          <div class="row q-gutter-md items-center">
+            <q-img src="~assets/Introduction/OwnerPlayerSetting1.png" style="min-width: 15rem;" class="col fit" />
+            <q-img src="~assets/Introduction/OwnerPlayerSetting2.png" style="min-width: 15rem;" class="col" />
+          </div>
           <q-stepper-navigation>
             <q-btn flat @click="step_intro = 3" color="secondary" label="Back" class="q-ml-sm" />
           </q-stepper-navigation>
@@ -81,10 +143,11 @@ var step_participant = ref(1)
       </q-stepper>
 
       <h1>サーバーの起動</h1>
-      <q-stepper v-model="step_run" flat vertical animated>
+      <q-stepper v-model="step_run" flat animated>
         <q-step :name="1" title="1. 設定" :done="step_run > 1">
-          <p>ワールド名を好きな名称に変更し、サーバーのバージョン指定、シングルワールドの導入設定などができます</p>
-          <p>プロパティタグやプレイヤータグでもサーバーの詳細な設定を行うことができます！</p>
+          <p>ワールド名を好きな名称に変更し、サーバーのバージョン指定、などができます</p>
+          <p class="text-red text-bold ">「ポート開放不要化」ではご友人などがサーバーに入室するための設定を行いますのでお忘れなく！</p>
+          <p>プロパティタグやプレイヤータグでも詳細な設定ができます！</p>
           <q-img src="~assets/Introduction/MainWindow.png" width="min(900px,100%)" />
           <q-stepper-navigation>
             <q-btn @click="step_run = 2" color="secondary" label="next" />
@@ -92,13 +155,13 @@ var step_participant = ref(1)
         </q-step>
 
         <q-step :name="2" title="2. 起動" :done="step_run > 2">
-          <p>準備が整ったら、「サーバータグ」を開いて、サーバーを起動しましょう！</p>
-          <q-img src="~assets/Introduction/Server1.png" width="min(700px,100%)" />
-
-          <p class="q-pt-md">
-            サーバーが起動するとこのような画面が表示されます<br>
-            初回起動時は起動前にEulaへの同意を求められます<br>
-            終わったときには左下の「停止」ボタンを押してサーバーを閉じましょう！
+          <p>準備が整ったら、サーバーを起動しましょう！</p>
+          <p>
+            サーバーが起動するとこのような画面が表示されます！<br>
+            遊び終わった後には左下の「停止」ボタンを押してサーバーを閉じましょう！
+          </p>
+          <p>
+            ※ 初回起動時は起動前にEula（利用規約）への同意を求められます
           </p>
           <q-img src="~assets/Introduction/Server2.png" width="min(700px,100%)" />
           <q-stepper-navigation>
@@ -108,13 +171,13 @@ var step_participant = ref(1)
       </q-stepper>
 
       <h1>サーバーに参加</h1>
-      <q-stepper v-model="step_participant" flat vertical animated>
+      <q-stepper v-model="step_participant" flat animated>
         <q-step :name="1" title="1. Minecraftの起動" :done="step_participant > 1">
           <p>
-            Minecraft Launcherを起動し，サーバーを起動したバージョンでゲームを開始する
+            Minecraft Launcherを起動し，サーバーを起動したバージョンでゲームを開始してください
           </p>
           <p>
-            必要に応じて「起動構成」から起動したいバージョンを追加する
+            バージョンがない時には「起動構成」から起動したいバージョンの追加が必要です！
           </p>
           <q-img src="~assets/Introduction/Launcher.png" width="min(500px,100%)" />
           <q-stepper-navigation>
@@ -123,13 +186,15 @@ var step_participant = ref(1)
         </q-step>
         <q-step :name="2" title="2. マルチプレイの設定" :done="step_participant > 2">
           <p>
-            起動するとシングルプレイの下にあるマルチプレイを選択し，右下の「サーバーを追加」を押す
+            Minecraftが起動した後は以下の手順でご自身のサーバーを追加しましょう！
           </p>
+          <ol>
+            <li>画面中央の「マルチプレイ」を選択</li>
+            <li>画面右下の「サーバーを追加」を選択</li>
+            <li>開いた画面に対して画像のように各項目を設定</li>
+          </ol>
           <p>
-            分かりやすいサーバー名を設定し，サーバーアドレスには「localhost」と記入
-          </p>
-          <p>
-            「完了」を押せばワールドに入ることができる
+            「完了」を押して作成されたサーバーに入れば準備完了です！
           </p>
           <q-img src="~assets/Introduction/client.png" width="min(500px,100%)" />
           <q-stepper-navigation>
@@ -137,16 +202,14 @@ var step_participant = ref(1)
             <q-btn flat @click="step_participant = 1" color="secondary" label="Back" class="q-ml-sm" />
           </q-stepper-navigation>
         </q-step>
-        <q-step :name="3" title="3. ほかの人がサーバーに参加する" :done="step_participant > 3">
+        <q-step :name="3" title="3. ご友人などがサーバーに参加する" :done="step_participant > 3">
           <p>
-            他の人がサーバーに参加するためにはサーバーの起動者に<router-link class="a" to="/PortMapping">ポート開放</router-link>の設定が必要です
-          </p>
-          <p>
-            サーバーの起動者でない人がサーバーに参加する際には、ServerStarterの画面右上に映っているIPアドレスを、Minecraftのサーバーアドレス欄に入力してください
+            ご友人などがサーバーに参加する際には、
+            サーバー起動時にServerStarterの画面右上に映っているIPアドレスを、Minecraftのサーバーアドレス欄に入力してください
           </p>
           <div class="row q-gutter-md">
-            <q-img src="~assets/Introduction/ip.png" width="min(500px,100%)" />
-            <q-img src="~assets/Introduction/client2.png" width="min(500px,100%)" />
+            <q-img src="~assets/Introduction/ip.png" style="min-width: 15rem;" class="col" />
+            <q-img src="~assets/Introduction/client2.png" style="min-width: 15rem;" class="col" />
           </div>
           <q-stepper-navigation>
             <q-btn flat @click="step_participant = 2" color="secondary" label="Back" class="q-ml-sm" />

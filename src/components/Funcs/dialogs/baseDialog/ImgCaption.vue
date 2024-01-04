@@ -1,23 +1,14 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue';
+import SsImg from 'src/components/utils/SsImg.vue';
 
 interface Prop {
-  img: string
-  caption: string
+  img: string;
+  caption: string;
 }
-const prop = defineProps<Prop>()
-
-const gotImg = ref('')
-
-async function loadImg() {
-  const baseURL = window.location.origin + import.meta.env.BASE_URL
-  gotImg.value = (new URL(prop.img, baseURL)).href
-}
-
-onBeforeMount(loadImg)
+defineProps<Prop>();
 </script>
 
 <template>
-  <q-img :src="gotImg" />
+  <SsImg :path="img" />
   <p class="text-caption q-mt-sm">{{ caption }}</p>
 </template>

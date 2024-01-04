@@ -29,27 +29,27 @@ const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent()
       <template #install>
         <div class="q-gutter-md q-pa-md">
           <ImgCaption
-            img="src/assets/Funcs/Perfect/main.png"
+            img="assets/Funcs/Perfect/main.png"
             caption="メイン画面ではサーバーを開くために必要な最低限の設定項目を指定できます"
           />
           <ImgCaption
-            img="src/assets/Funcs/Perfect/consoleRunning.png"
+            img="assets/Funcs/Perfect/consoleRunning.png"
             caption="サーバーの起動中は見やすくなったコンソール画面の下にはサーバーの停止や再起動ができるボタンを配置しました"
           />
           <ImgCaption
-            img="src/assets/Funcs/Perfect/property.png"
+            img="assets/Funcs/Perfect/property.png"
             caption="サーバーの細かい設定も充実した検索機能を使えば簡単に行うことができます"
           />
           <ImgCaption
-            img="src/assets/Funcs/Perfect/player.png"
+            img="assets/Funcs/Perfect/player.png"
             caption="参加者の権限やホワイトリストの設定も直感的な操作を実現しました"
           />
           <ImgCaption
-            img="src/assets/Funcs/Perfect/contents.png"
+            img="assets/Funcs/Perfect/contents.png"
             caption="データパック・プラグイン・MODの全てを簡単に導入したり外したりすることができます"
           />
           <ImgCaption
-            img="src/assets/Funcs/Perfect/others.png"
+            img="assets/Funcs/Perfect/others.png"
             caption="普段は操作しないような細かい設定も簡単にできるように配慮しました"
           />
         </div>
