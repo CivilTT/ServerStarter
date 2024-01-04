@@ -3,6 +3,7 @@ import { onBeforeMount, ref } from 'vue';
 
 interface Prop {
   path: string;
+  width?: string;
 }
 const prop = defineProps<Prop>();
 
@@ -17,7 +18,7 @@ onBeforeMount(loadImg);
 </script>
 
 <template>
-  <q-img :src="img">
+  <q-img :src="img" :width="width">
     <slot />
   </q-img>
 </template>

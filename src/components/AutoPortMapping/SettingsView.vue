@@ -41,9 +41,6 @@ const rows = [
 </script>
 
 <template>
-  <q-card flat style="max-width: 100%;">
-    <q-card-section>
-      <h1>設定項目</h1>
       <p>
         各ルーターやセキュリティソフトごとに細かい設定内容や説明文の表現方法が異なります<br />
         ここではWindowsDefenderを一例に一般的な設定項目を説明しますが，詳細な設定方法については各メーカーの取扱説明書をご参照下さい
@@ -68,6 +65,4 @@ const rows = [
         ※一人でポート開放の確認を行う場合は、サーバー起動後に<a href="https://www.cman.jp/network/support/port.html"
           class="a">こちらのHP</a>にアクセスすることで確認できます
       </p>
-    </q-card-section>
-  </q-card>
 </template>

@@ -1,34 +1,89 @@
-<template>
-  <q-card flat style="max-width: 100%;">
-    <q-card-section>
-      <h1>自動ポート開放</h1>
-      <p>
-        <b>ルーターに対しては</b>自動でポートを解放する機能がServerStarterに付属しています<br />
-        自動でポートの開放を行い、素早くサーバーを起動しましょう！
-      </p>
-      <ol>
-        <li>ServerStarterを開き、システム設定を開く</li>
-        <li>Networkタブを開き、「自動ポート開放を利用する」を「はい」に設定</li>
-        <li>開放するポート番号（基本は25565）を指定し、「開放テスト」を押す</li>
-        <li>ステータスがOpened!になれば，本機能を利用してルーターのポート開放を行うことが可能</li>
-      </ol>
-      <q-img src="~assets/AutoPortMapping/APM_Opened.png" width="min(500px,100%)" />
+<script setup lang="ts">
+import { ref } from 'vue';
+import BaseCard from './base/BaseCard.vue'
 
-      <h3>ステータスがFailed…になった場合</h3>
-      <p>
-        ご利用者様の環境では本機能をご利用いただけませんので、ご自分でルーターにポート開放を行っていただく必要があります
-      </p>
-      <p>
-        Failed...になる主な理由としましては
-      </p>
-      <ul>
-        <li>すでに25565番のポート開放設定がされている</li>
-        <li>ルーターにてUPnPを拒否する設定を行っている</li>
-        <li>多重ルーターによるネットワークになっている</li>
-      </ul>
-      <p>
-        などが考えられます
-      </p>
-    </q-card-section>
-  </q-card>
+const slide = ref(1)
+</script>
+
+<template>
+  <p>
+    ServerStarter2ではポート開放不要化を実現するために
+    <a href="https://ngrok.com/" class="text-primary">Ngrok</a>を利用します<br>
+    下記の手順に従って，アカウントの登録と設定を完了しましょう！
+  </p>
+
+  <q-carousel
+    v-model="slide"
+    animated
+    transition-prev="slide-right"
+    transition-next="slide-left"
+    control-color="primary"
+    navigation
+    padding
+    arrows
+    class="shadow-1 rounded-borders"
+  >
+    <template v-slot:navigation-icon="{ active, btnProps, onClick }">
+      <q-btn v-if="active" :icon="btnProps.icon" color="primary" flat round dense @click="onClick" />
+      <q-btn v-else :icon="btnProps.icon" flat round dense @click="onClick" style="opacity: .2;" />
+    </template>
+
+    <q-carousel-slide :name="1">
+      <BaseCard
+        title="アカウント登録"
+        img="assets/AutoPortMapping/Ngrok/signUp.png"
+        img-width="9rem"
+      >
+        <p>
+          Ngrokのアカウント登録は
+          <a target="_blank" href="https://dashboard.ngrok.com/signup" class="text-primary">
+            こちらの登録画面で行います
+          </a>
+        </p>
+        <p>
+          任意のユーザー名，メールアドレス，パスワードを記入して
+          Sign upをクリックしましょう！
+        </p>
+      </BaseCard>
+    </q-carousel-slide>
+    <q-carousel-slide :name="2">
+      <BaseCard
+        title="Eメールの認証"
+        img="assets/AutoPortMapping/Ngrok/verifyEmail.png"
+        img-width="20rem"
+      >
+        <p>
+          登録したE-mailにNgrokよりメールが届くため，
+          メールに記載されたURLをクリックして認証を完了しましょう
+        </p>
+      </BaseCard>
+    </q-carousel-slide>
+    <q-carousel-slide :name="3">
+      <BaseCard
+        title="アンケートへの回答"
+        img="assets/AutoPortMapping/Ngrok/welcome.png"
+        img-width="14rem"
+      >
+        <p>
+          これで登録は完了ですが，最後にNgrokからのアンケートを画像に倣って回答をお願いします
+        </p>
+      </BaseCard>
+    </q-carousel-slide>
+    <q-carousel-slide :name="4">
+      <BaseCard
+        title="接続方法"
+        img="assets/AutoPortMapping/Ngrok/mcInput.png"
+        img-width="14rem"
+      >
+        <p>
+          ServerStarter2でサーバーを起動すると画面の右上に
+          <b><u>起動ごとに値が変更される</u></b>IPアドレスが表示されます
+        </p>
+        <p>
+          このアドレスをMinecraftのマルチプレイサーバーのアドレス欄に入力することで，
+          サーバーに接続することができます！
+        </p>
+      </BaseCard>
+    </q-carousel-slide>
+  </q-carousel>
 </template>
