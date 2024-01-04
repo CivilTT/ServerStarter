@@ -1,6 +1,8 @@
 <script setup lang="ts">
 interface baseDialogProp {
   title: string
+  secTitle?: string
+  noSec?: boolean
   color?: string
   onClose?: () => void
 }
@@ -17,8 +19,8 @@ defineProps<baseDialogProp>()
     <q-card-section class="q-pt-none">
       <slot />
     </q-card-section>
-    <q-card-section class="q-pt-none">
-      <span>■やり方</span>
+    <q-card-section v-if="!noSec" class="q-pt-none">
+      <span>■{{ secTitle ? secTitle : 'やり方' }}</span>
       <slot name="install"/>
     </q-card-section>
   </q-card>
