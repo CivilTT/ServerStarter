@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import SsImg from '../utils/SsImg.vue';
-
 interface Prop {
   osName: 'windows' | 'mac' | 'linux';
   disable?: boolean
@@ -47,7 +45,7 @@ function getOSName() {
   >
     <div class="row items-center">
       <q-avatar size="2rem" square class="q-mr-md">
-        <ss-img :path="`assets/OS/${osName}.svg`" />
+        <q-img :src="`assets/OS/${osName}.svg`" />
       </q-avatar>
       <div class="download">
         {{ getOSName() }}

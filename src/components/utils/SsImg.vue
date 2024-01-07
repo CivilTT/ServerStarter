@@ -18,7 +18,7 @@ onBeforeMount(loadImg);
 </script>
 
 <template>
-  <q-img :src="img" :width="width">
+  <q-img :src="path" :width="width">
     <slot />
   </q-img>
 </template>

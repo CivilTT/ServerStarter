@@ -31,7 +31,7 @@ const slide = ref(1)
     <q-carousel-slide :name="1">
       <BaseCard
         title="アカウント登録"
-        img="assets/AutoPortMapping/Ngrok/signUp.png"
+        img="assets/Ngrok/signUp.png"
         img-width="9rem"
       >
         <p>
@@ -49,7 +49,7 @@ const slide = ref(1)
     <q-carousel-slide :name="2">
       <BaseCard
         title="Eメールの認証"
-        img="assets/AutoPortMapping/Ngrok/verifyEmail.png"
+        img="assets/Ngrok/verifyEmail.png"
         img-width="20rem"
       >
         <p>
@@ -61,7 +61,7 @@ const slide = ref(1)
     <q-carousel-slide :name="3">
       <BaseCard
         title="アンケートへの回答"
-        img="assets/AutoPortMapping/Ngrok/welcome.png"
+        img="assets/Ngrok/welcome.png"
         img-width="14rem"
       >
         <p>
@@ -72,7 +72,7 @@ const slide = ref(1)
     <q-carousel-slide :name="4">
       <BaseCard
         title="接続方法"
-        img="assets/AutoPortMapping/Ngrok/mcInput.png"
+        img="assets/Ngrok/mcInput.png"
         img-width="14rem"
       >
         <p>
