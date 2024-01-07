@@ -35,9 +35,9 @@ onMounted(async () => {
             お使いのプラットフォームに合わせてダウンロードしてください（バージョン：{{versionName}}）
           </p>
           <div class="row q-gutter-md justify-center">
-            <download-btn :os-name="'windows'"/>
-            <download-btn :os-name="'mac'"/>
-            <download-btn disable :os-name="'linux'"/>
+            <download-btn :version="versionName" :os-name="'windows'"/>
+            <download-btn :version="versionName" :os-name="'mac'"/>
+            <download-btn :version="versionName" disable :os-name="'linux'"/>
           </div>
           <p class="row justify-center text-bold text-yellow">
             Linux版は年度末ごろの長期リリース版に合わせて公開します！
