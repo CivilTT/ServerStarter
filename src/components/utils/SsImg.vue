@@ -11,7 +11,7 @@ const img = ref('');
 
 async function loadImg() {
   const baseURL = window.location.origin + import.meta.env.BASE_URL;
-  img.value = new URL(`src/${prop.path}`, baseURL).href;
+  img.value = new URL(`${prop.path}`, baseURL).href;
 }
 
 onBeforeMount(loadImg);
