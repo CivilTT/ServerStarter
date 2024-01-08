@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import DownloadBtn from 'src/components/HOME/DownloadBtn.vue';
 import SsImg from '../utils/SsImg.vue';
 
@@ -7,6 +7,14 @@ const step_intro = ref(1)
 const step_run = ref(1)
 const step_participant = ref(1)
 const tab_index = ref('win')
+
+const versionName = ref('')
+
+onMounted(async () => {
+  // getting latest version name
+  const jsonObj = await fetch('https://api.github.com/repos/CivilTT/ServerStarter2/releases/latest')
+  versionName.value = (await jsonObj.json()).name
+})
 </script>
 
 <template>
@@ -98,9 +106,9 @@ const tab_index = ref('win')
           </div>
 
           <div class="row q-gutter-md">
-            <download-btn outline :os-name="'windows'" />
-            <download-btn outline :os-name="'mac'" />
-            <download-btn outline disable :os-name="'linux'" />
+            <download-btn :version="versionName" outline :os-name="'windows'" />
+            <download-btn :version="versionName" outline :os-name="'mac'" />
+            <download-btn :version="versionName" outline disable :os-name="'linux'" />
           </div>
 
           <q-stepper-navigation>
